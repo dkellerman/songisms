@@ -11,7 +11,7 @@ export const clientConfig = {
 export const getAPIClient = memoize(async ctx => {
   const cache = new InMemoryCache();
 
-  if (process.env.NODE_ENV !== 'development') {
+  if (process.env.NODE_ENV !== 'development' && typeof window !== 'undefined') {
     await persistCache({
       cache,
       storage: new SessionStorageWrapper(window.sessionStorage),

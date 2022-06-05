@@ -21,6 +21,7 @@ export const Nav = styled.nav`
     a,
     button {
       margin: 0 0 0 25px;
+      padding: 7px;
       color: black;
       font-size: medium;
     }
