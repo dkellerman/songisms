@@ -1,5 +1,6 @@
 import Layout from '../components/Layout';
 import Script from 'next/script';
+import 'papercss/dist/paper.min.css';
 
 function MyApp({ Component, pageProps }) {
   return (

@@ -1725,6 +1725,11 @@ p-try@^1.0.0:
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-1.0.0.tgz#cbc79cdbaf8fd4228e13f621f2b1a237c1b207b3"
   integrity sha1-y8ec26+P1CKOE/Yh8rGiN8GyB7M=
 
+papercss@^1.8.3:
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/papercss/-/papercss-1.8.3.tgz#2b1f40727190228496590eb7651a31799ecb6dd9"
+  integrity sha512-dRlaR5Kw6NbuMnHEIPLa6JvGndIE2RZ27ebSfjYXV6XAYEnxOMsNeYGDkmJgXol1A0LexmyP3F6F7+HL0XdGqA==
+
 parent-module@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/parent-module/-/parent-module-1.0.1.tgz#691d2709e78c79fae3a156622452d00762caaaa2"
