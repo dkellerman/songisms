@@ -89,12 +89,13 @@ WSGI_APPLICATION = 'songisms.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# django-on-heroku replaces this with DATABASE_URL in production
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'songisms',
         'USER': 'songisms',
-        'PASSWORD': os.environ['SISM2_DB_PASSWORD'],
+        'PASSWORD': os.environ['SISM_DB_PASSWORD'],
     }
 }
 
