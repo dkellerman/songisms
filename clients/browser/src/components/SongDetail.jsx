@@ -30,7 +30,9 @@ export default function SongDetail({ song }) {
 
       <div dangerouslySetInnerHTML={{ __html: song.spotifyPlayer }} />
 
-      <small>[ <a  href={adminLink} target="_blank" rel="noreferrer">Admin</a> ]</small>
+      <small>
+        [ <a href={adminLink} target="_blank" rel="noreferrer">Admin</a> ]
+      </small>
 
       <dl>
         <dt>Artists</dt>
