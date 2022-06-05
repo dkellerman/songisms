@@ -1,5 +1,5 @@
 ## Folders
-* `api`` - django app for db/admin/graphql, deployed to heroku
+* `api` - django app for db/admin/graphql, deployed to heroku
 * `client` - api browser (NextJS), deployed to vercel
 * `data` - misc data
 * `rhymes` - rhymium app (NextJS), deployed to vercel
