@@ -31,6 +31,7 @@ export default function SongDetail({ song }) {
       <small>[ <a
         href={`https://songisms.herokuapp.com/admin/api/song/?q=${encodeURIComponent(song.title)}`}
         target="_blank"
+        rel="noreferrer"
       >Admin</a> ]</small>
 
       <dl>
