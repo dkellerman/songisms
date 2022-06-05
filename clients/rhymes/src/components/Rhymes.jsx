@@ -96,10 +96,7 @@ export default function Rhymes() {
     const newQuery = { ...router.query, q: newQ, t: newSearchType };
     if (!newQ?.trim()) delete newQuery.q;
     if (newSearchType !== 'suggest') delete newQuery.t;
-    if (window.gtag) window.gtag('event', `${newSearchType || 'rhyme'}`, {
-      'event_category': 'engagement',
-      'event_label': newQ,
-    });
+    track('engagement', `${newSearchType || 'rhyme'}`, newQ);
     return router.push({ query: newQuery });
   }, []);
 
@@ -194,7 +191,10 @@ export default function Rhymes() {
             </ul>
 
             {limit < 200 && rhymes.length >= limit && (
-              <button className="more" onClick={() => setLimit(limit + 50)}>
+              <button className="more" onClick={() => {
+                track('engagement', `more_${searchType}`, q);
+                setLimit(limit + 50);
+              }}>
                 More...
               </button>
             )}
@@ -203,6 +203,15 @@ export default function Rhymes() {
       </output>
     </StyledRhymes>
   );
+}
+
+function track(category, action, label) {
+  if (window.gtag) {
+    window.gtag('event', action, {
+      event_category: category,
+      event_label: label,
+    });
+  }
 }
 
 function ct2str(ct, singularWord, pluralWord) {
