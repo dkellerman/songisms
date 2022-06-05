@@ -1,0 +1,31 @@
+{
+  "name": "napp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "NEXT_PUBLIC_SISM_API_BASE_URL=http://localhost:8000 next dev",
+    "dev:prodapi": "NEXT_PUBLIC_SISM_API_BASE_URL=https://songisms.herokuapp.com next dev",
+    "build": "next build",
+    "start": "next start -p $PORT",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.6.4",
+    "apollo3-cache-persist": "^0.14.0",
+    "axios": "^0.27.2",
+    "graphql": "^16.5.0",
+    "local-storage": "^2.0.0",
+    "lodash": "^4.17.21",
+    "next": "12.1.6",
+    "nookies": "^2.5.2",
+    "react": "18.1.0",
+    "react-device-detect": "^2.2.2",
+    "react-dom": "18.1.0",
+    "sass": "^1.52.1",
+    "styled-components": "^5.3.5"
+  },
+  "devDependencies": {
+    "eslint": "8.15.0",
+    "eslint-config-next": "12.1.6"
+  }
+}

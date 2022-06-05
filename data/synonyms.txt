@@ -1,0 +1,214 @@
+'til;til;till;until
+whoa;wo
+'cause;cuz;cos;coz
+na;nah
+one;1
+two;2
+three;3
+four;4
+five;5
+six;6
+seven;7
+eight;8
+nine;9
+ten;10
+twenty;20
+hundred;100
+ain't;aint;a'int
+ok;okay;o.k.;o k
+alright;allright;all right
+around;'round;round
+what;whaa;wha;wot;wut
+meltdown;melt-down;melt down
+about;'bout;bout
+o's;ohs;oh's
+o;oh;ohh
+oo;ooh;oooh
+bye;goodbye;'bye
+breakthrough;break-through;break through
+youre;you're
+you;u
+zee;z
+hon';hon
+then;than
+rock n' roll;rock n roll;rock and roll;rocknroll;rock & roll;rock&roll
+nite;night
+rite;right
+site;sight
+lite;light
+gonna;gunna;'gonna
+little;lil;'lil
+downtown;down town
+uh huh;uhhuh
+c'mon;cmon;come on
+LA;L.A.
+band-aid;bandaid;band aid
+woo;wooh
+tailgate;tail gate;tail-gate
+bittersweet;bittersweet
+ya;you
+getcha;get ya;get you
+letcha;let ya;let you
+whatcha;wacha;what ya;what you
+gotta;got to;'gotta
+lotta;lot of;'lotta
+wanna;want to;'wanna
+woulda;would have
+shoulda;should have
+coulda;could have
+munna;gonna
+yadda;yada
+its;it's;it is
+monalisa;mona lisa
+let's;lets
+baby's;baby;babe
+of;o'
+aj;ay;uy;oy
+i'll;ill;i will
+bran';brand
+thatta;that;thadda
+a.m.;am
+p.m.;pm
+an';and
+musta;must have
+healin';healing
+ceilin';ceiling
+wearin';wearing
+whisperin';whispering
+everythin';everything
+whistlin';whistling
+listenin';listening
+burnin';burning
+rollin';rolling
+scrollin';scrolling
+refuelin';refueling
+peek-a-boo;peek a-boo
+spinnin';spinning
+cryin';crying
+lovin';loving
+shinin';shining
+flyin';flying
+fadin';fading
+runnin';running
+somethin';something
+motorboatin';motorboating
+rainin';raining
+wanin';waning
+waitin';waiting
+escapin';escaping
+chillin';chilling
+livin';living
+changin';changing
+feelin';feeling
+romancin';romancing
+dancin';dancing
+tippin';tipping
+spillin';spilling
+pleasin';pleasing
+confusin';confusing
+cruisin';cruising
+crippin';cripping
+trippin';tripping
+lookin';looking
+dyin';dying
+tryin';trying
+nothin';nothing
+frontin';fronting
+t-shirt;t shirt
+thinkin';thinking
+in-between;in between
+hittin';hitting
+playin';playing
+replacin';replacing
+singin';singing
+knowin';knowing
+blowin';blowing
+ringin';ringing
+strin';string
+bleedin';bleeding
+leavin';leaving
+needin';needing
+drinkin';drinking
+callin';calling
+fallin';falling
+fearin';fearing
+steerin';steering
+poppin';popping
+stoppin';stopping
+levitatin';levitating
+renegadin';renegading
+debatin';debating
+hatin';hating
+chasin';chasing
+crushin';crushing
+pickin';picking
+mornin';morning
+anythin';anything
+clappin';clapping
+kidnappin';kidnapping
+laughin';laughing
+warnin';warning
+stormin';storming
+hidin';hiding
+lightnin';lightning
+drivin';driving
+jumpin';jumping
+thumpin';thumping
+swimmin';swimming
+sleepin';sleeping
+creepin';creeping
+holdin';holding
+showin';showing
+formin';forming
+amazin';amazing
+searchin';searching
+wildin';wilding
+disappearin';disappearing
+givin';giving
+anticipatin';anticipating
+melt-down;melt down
+smashin';smashing
+wonderin';wondering
+breakin';breaking
+happenin';happening
+mood rin';mood ring
+keepin';keeping
+buyin';buying
+multiplyin';multiplying
+turnin';turning
+kiddin';kidding
+followin';following
+offerin';offering
+sufferin';suffering
+comin';coming
+sayin';saying
+walkin';walking
+talkin';talking
+endin';ending
+wendin';wending
+stickin';sticking
+flowin';flowing
+beginnin';beginning
+meanin';meaning
+glowin';glowing
+goin';going
+fightin';fighting
+takin';taking
+dreamin';dreaming
+kissin';kissing
+reminiscin';reminiscing
+standin';standing
+demandin';demanding
+jaywalkin';jaywalking
+movin';moving
+groovin';grooving
+band-aid;band aid
+sprin';spring
+wastin';wasting
+wantin';wanting
+stealin';stealing
+grievin';grieving
+shakin';shaking
+quakin';quaking
+achin';aching
+makin';making
