@@ -96,6 +96,7 @@ export default function Rhymes() {
     const newQuery = { ...router.query, q: newQ, t: newSearchType };
     if (!newQ?.trim()) delete newQuery.q;
     if (newSearchType !== 'suggest') delete newQuery.t;
+    if (window.gtag) window.gtag('event', 'search', { q: newQ, t: newSearchType || 'rhyme' });
     return router.push({ query: newQuery });
   }, []);
 
