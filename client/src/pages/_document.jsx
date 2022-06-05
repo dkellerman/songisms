@@ -4,8 +4,7 @@ export default function Document(ctx) {
   return (
     <Html>
       <Head>
-        <title>Songisms</title>
-        <link href="https://unpkg.com/papercss@1.8.3/dist/paper.min.css" rel="stylesheet" key="papercss" />
+        <link href="https://unpkg.com/papercss@1.8.3/dist/paper.min.css" rel="stylesheet" key="stylelib" />
       </Head>
       <body>
         <Main />

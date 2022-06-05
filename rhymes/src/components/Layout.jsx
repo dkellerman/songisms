@@ -1,8 +1,7 @@
-import {useMemo} from "react";
+import { useMemo } from 'react';
 import Link from 'next/link';
-import Head from "next/head";
+import Head from 'next/head';
 import { StyledLayout, Nav, Main } from './StyledLayout';
-
 
 export default function Layout({ children }) {
   return (

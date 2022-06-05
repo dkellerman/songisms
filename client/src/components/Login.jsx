@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
 import styled from 'styled-components';
-import Layout from "../components/Layout";
+import { useAuth } from '../hooks/useAuth';
 
 const LoginForm = styled.form`
   h2,
@@ -10,7 +9,7 @@ const LoginForm = styled.form`
   }
 `;
 
-export default function Login() {
+export function Login() {
   const [error, setError] = useState();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -33,7 +32,7 @@ export default function Login() {
   }
 
   return (
-    <Layout>
+    <>
       <h2>Log in</h2>
 
       <LoginForm>
@@ -46,6 +45,6 @@ export default function Login() {
         </fieldset>
         <button onClick={onLogin}>Log in</button>
       </LoginForm>
-    </Layout>
+    </>
   );
 }

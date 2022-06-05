@@ -1,7 +1,6 @@
 import { gql } from '@apollo/client';
-import { getClient } from '../../hooks/useClient';
+import { getAPIClient } from '../../hooks/useAPIClient';
 import SongDetail from '../../components/SongDetail';
-import Layout from "../../components/Layout";
 
 const GET_SONG = gql`
   query ($id: String!) {
@@ -26,16 +25,12 @@ const GET_SONG = gql`
 `;
 
 export default function SongDetailPage({ song }) {
-  return (
-    <Layout site="songs">
-      <SongDetail song={song} />
-    </Layout>
-  );
+  return <SongDetail song={song} />;
 }
 
 export async function getServerSideProps(ctx) {
   const { id } = ctx.query;
-  const client = await getClient(ctx);
+  const client = await getAPIClient(ctx);
 
   const resp = await client.query({
     query: GET_SONG,

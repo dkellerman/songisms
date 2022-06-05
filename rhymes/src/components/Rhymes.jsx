@@ -12,7 +12,7 @@ const StyledRhymes = styled.article`
   fieldset {
     display: flex;
     align-items: center;
-    margin: 10px 0 12px 0;
+    margin: 20px 0 12px 0;
 
     input[type='search'] {
       width: 65vw;

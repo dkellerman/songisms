@@ -7,6 +7,8 @@ export async function middleware(req) {
 
   if (!PUBLIC_PATHS.includes(req.nextUrl.pathname) && !loggedIn) {
     return redirect(req, '/login');
+  } else if (loggedIn && req.nextUrl.pathname === '/') {
+    return redirect(req, '/songs');
   }
 }
 

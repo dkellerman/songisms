@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
-import { useClient, clientConfig } from './useClient';
+import { useAPIClient, clientConfig } from './useAPIClient';
 import { gql } from '@apollo/client';
 
 export const USER_COOKIE = 'sism2_u';
@@ -29,7 +29,7 @@ export function getUser(ctx) {
 
 export function useAuth() {
   const [user, setUser] = useState();
-  const client = useClient();
+  const client = useAPIClient();
 
   useEffect(() => {
     setUser(getUser());

@@ -8,7 +8,7 @@ export const clientConfig = {
   accessToken: null,
 };
 
-export const getClient = memoize(async ctx => {
+export const getAPIClient = memoize(async ctx => {
   const cache = new InMemoryCache();
 
   if (process.env.NODE_ENV !== 'development') {
@@ -44,10 +44,10 @@ export const getClient = memoize(async ctx => {
   return client;
 });
 
-export function useClient() {
+export function useAPIClient() {
   const [client, setClient] = useState();
   useEffect(() => {
-    getClient().then(setClient);
+    getAPIClient().then(setClient);
   }, []);
   return client;
 }

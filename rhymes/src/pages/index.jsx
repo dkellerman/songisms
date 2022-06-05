@@ -5,7 +5,5 @@ const Rhymes = dynamic(() => import('../components/Rhymes'), {
 });
 
 export default function RhymesPage() {
-  return (
-    <Rhymes />
-  );
+  return <Rhymes />;
 }

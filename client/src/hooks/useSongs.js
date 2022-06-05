@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { gql } from '@apollo/client';
-import { useClient } from '../hooks/useClient';
+import { useAPIClient } from '../hooks/useAPIClient';
 
 export const LIST_SONGS = gql`
   query Songs($q: String, $page: Int, $ordering: [String]) {
@@ -23,7 +23,7 @@ export const LIST_SONGS = gql`
 export function useSongs(initialFilters) {
   const [songs, setSongs] = useState();
   const [filters, setFilters] = useState(initialFilters);
-  const client = useClient();
+  const client = useAPIClient();
 
   useEffect(() => {
     if (!client) return;
