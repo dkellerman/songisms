@@ -1,10 +1,7 @@
 import { useMemo } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
-import styled from 'styled-components';
-import merge from 'lodash/merge';
 import { useAuth } from '../hooks/useAuth';
-import { StyledLayout, Nav, Main } from './StyledLayout';
 
 export default function Layout({ site = 'default', children }) {
   const { user, logout } = useAuth();
@@ -15,18 +12,20 @@ export default function Layout({ site = 'default', children }) {
   }
 
   return (
-    <StyledLayout>
+    <>
       <Head>
         <title>Songisms</title>
       </Head>
-      <Nav>
+      <nav>
         <h1>
           <Link href="/">Songisms</Link>
         </h1>
-        <div className="links">{user && <button onClick={onLogout}>Log out</button>}</div>
-      </Nav>
+        <div className="links">
+          {user && <button className="logout compact" onClick={onLogout}>Log out</button>}
+        </div>
+      </nav>
 
-      <Main>{children}</Main>
-    </StyledLayout>
+      <main>{children}</main>
+    </>
   );
 }

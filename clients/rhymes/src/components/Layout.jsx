@@ -1,24 +1,23 @@
 import { useMemo } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
-import { StyledLayout, Nav, Main } from './StyledLayout';
 
 export default function Layout({ children }) {
   return (
-    <StyledLayout>
+    <>
       <Head>
         <title>Rhymium</title>
       </Head>
-      <Nav>
+      <nav>
         <h1>
           <Link href="/">Rhymium</Link>
         </h1>
         <div className="links">
           <a href="https://bipium.com">Metronome</a>
         </div>
-      </Nav>
+      </nav>
 
-      <Main>{children}</Main>
-    </StyledLayout>
+      <main>{children}</main>
+    </>
   );
 }

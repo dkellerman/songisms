@@ -1,81 +1,11 @@
 import { useCallback, useEffect, useRef, useState, useLayoutEffect, useMemo } from 'react';
-import styled from 'styled-components';
 import debounce from 'lodash/debounce';
 import { isMobile } from 'react-device-detect';
 import { useRouter } from 'next/router';
 import { useRhymes } from '../hooks/useRhymes';
+import { ColumnLayout, DEFAULT_GRID_HEIGHT, RhymeItem, StyledRhymes } from './Rhymes.styles';
 
-const DEFAULT_HEIGHT = '50vh';
 const SEARCH_DEBOUNCE = isMobile ? 1000 : 500;
-
-const StyledRhymes = styled.article`
-  fieldset {
-    display: flex;
-    align-items: center;
-    margin: 20px 0 12px 0;
-
-    input[type='search'] {
-      width: 65vw;
-      min-width: 180px;
-      max-width: 500px;
-      &::-webkit-search-cancel-button {
-        -webkit-appearance: searchfield-cancel-button;
-      }
-    }
-    input[type='checkbox'] {
-      margin: 0 7px 0 20px;
-      zoom: 1.5;
-    }
-    label {
-      font-size: large;
-      position: relative;
-      top: 3px;
-    }
-  }
-
-  output label {
-    font-size: large;
-  }
-
-  ul {
-    list-style: none;
-    padding-left: 0;
-    display: flex;
-    flex-flow: column wrap;
-    max-width: 700px;
-    max-height: ${DEFAULT_HEIGHT};
-    gap: 7px;
-    li {
-      white-space: nowrap;
-      text-indent: 0;
-      font-size: larger;
-      &:before {
-        display: none;
-      }
-      .freq {
-        font-size: medium;
-        color: #666;
-      }
-      .hit {
-        text-decoration: underline;
-        color: blue;
-        cursor: pointer;
-        &.rhyme-l2 {
-          opacity: 0.6;
-        }
-        &.suggestion {
-          opacity: 0.6;
-        }
-      }
-    }
-  }
-
-  button.more {
-    padding: 10px;
-    margin-top: 15px;
-    font-size: medium;
-  }
-`;
 
 export default function Rhymes() {
   const router = useRouter();
@@ -91,7 +21,7 @@ export default function Rhymes() {
     setQ(newQ);
     setSearchType(newSearchType);
     setLimit(50);
-    listRef.current.style.maxHeight = DEFAULT_HEIGHT;
+    listRef.current.style.maxHeight = DEFAULT_GRID_HEIGHT;
 
     const newQuery = { ...router.query, q: newQ, t: newSearchType };
     if (!newQ?.trim()) delete newQuery.q;
@@ -179,20 +109,20 @@ export default function Rhymes() {
               </label>
             )}
 
-            <ul ref={listRef}>
+            <ColumnLayout ref={listRef}>
               {rhymes.map(r => (
-                <li key={r.ngram}>
+                <RhymeItem key={r.ngram}>
                   <span className={`hit ${r.type}`} onClick={() => search(r.ngram, searchType)}>
                     {r.ngram}
                   </span>{' '}
                   {!!r.frequency && <span className="freq">({r.frequency})</span>}
-                </li>
+                </RhymeItem>
               ))}
-            </ul>
+            </ColumnLayout>
 
             {limit < 200 && rhymes.length >= limit && (
               <button
-                className="more"
+                className="more compact"
                 onClick={() => {
                   track('engagement', `more_${searchType}`, q);
                   setLimit(limit + 50);

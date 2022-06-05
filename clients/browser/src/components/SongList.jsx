@@ -35,7 +35,6 @@ const StyledSongList = styled.article`
 
   button {
     margin: 10px;
-    padding: 10px;
   }
 `;
 
@@ -88,7 +87,7 @@ export default function SongList() {
         </table>
       )}
 
-      {hasNext && <button onClick={loadMore}>Show more</button>}
+      {hasNext && <button className="more compact" onClick={loadMore}>Show more</button>}
     </StyledSongList>
   );
 }

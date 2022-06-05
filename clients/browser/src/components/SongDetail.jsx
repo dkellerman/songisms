@@ -8,8 +8,8 @@ const StyledSongDetail = styled.article`
     dt {
       font-weight: bold;
       background: #eee;
-      margin-bottom: 5px;
-      padding: 3px;
+      margin-bottom: 10px;
+      padding: 5px 5px 3px 5px;
     }
     dd {
       margin: 5px 0 30px 0;
@@ -38,10 +38,10 @@ export default function SongDetail({ song }) {
         <dt>Links</dt>
         <dd>
           <ul>
-            <li>{song.youtubeUrl && <a href={song.youtubeUrl}>Youtube</a>}</li>
-            <li>{song.jaxstaUrl && <a href={song.jaxstaUrl}>Jaxsta</a>}</li>
-            <li>{song.spotifyUrl && <a href={song.spotifyUrl}>Spotify</a>}</li>
-            <li>{song.audioFileUrl && <a href={song.audioFileUrl}>Audio</a>}</li>
+            {song.youtubeUrl && <li><a href={song.youtubeUrl}>Youtube</a></li>}
+            {song.jaxstaUrl && <li><a href={song.jaxstaUrl}>Jaxsta</a></li>}
+            {song.spotifyUrl && <li><a href={song.spotifyUrl}>Spotify</a></li>}
+            {song.audioFileUrl && <li><a href={song.audioFileUrl}>Audio</a>}</li>}
           </ul>
         </dd>
 
@@ -49,6 +49,13 @@ export default function SongDetail({ song }) {
         <dd
           dangerouslySetInnerHTML={{
             __html: song.lyrics?.replace(/\n/g, '<br>'),
+          }}
+        ></dd>
+
+        <dt>Rhymes</dt>
+        <dd
+          dangerouslySetInnerHTML={{
+            __html: song.rhymesRaw?.replace(/\n/g, '<br>').replace(/;/g, ' / '),
           }}
         ></dd>
       </dl>

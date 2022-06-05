@@ -30,7 +30,8 @@ class SongType(DjangoObjectType):
                   'lyrics_raw', 'lyrics_ipa', 'jaxsta_id', 'rhymes',
                   'youtube_id', 'audio_file', 'metadata', 'tagged_texts',
                   'created', 'updated', 'spotify_url', 'jaxsta_url', 'youtube_url',
-                  'spotify_player', 'youtube_player', 'audio_file_url', ]
+                  'spotify_player', 'youtube_player', 'audio_file_url',
+                  'rhymes_raw']
 
 
 class ArtistType(DjangoObjectType):

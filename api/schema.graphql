@@ -58,7 +58,7 @@ type Query {
   artist(name: String!): ArtistType
   writers(page: Int, q: String, ordering: [String]): WritersPaginatedType
   writer(name: String!): WriterType
-  rhymes(q: String, limit: Int, tags: [String]): [RhymeType]
+  rhymes(q: String, limit: Int, tags: [String], searchType: String): [RhymeType]
   ngrams(page: Int, q: String, tags: [String], ordering: [String]): NGramsPaginatedType
   tagsByCategory(category: String!): [TagType]
 }
@@ -72,6 +72,7 @@ type Refresh {
 type RhymeType {
   ngram: String
   frequency: Int
+  type: String
 }
 
 type SongType {
@@ -82,7 +83,8 @@ type SongType {
   lyrics: String
   lyricsRaw: String
   lyricsIpa: String
-  spotifyId: String
+  rhymesRaw: String
+  spotifyId: String!
   jaxstaId: String
   youtubeId: String
   audioFile: String

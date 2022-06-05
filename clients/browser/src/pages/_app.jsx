@@ -1,7 +1,8 @@
 import Layout from '../components/Layout';
 import 'papercss/dist/paper.min.css';
+import '../../../shared/layout.scss';
 
-function MyApp({ Component, pageProps }) {
+function BrowserApp({ Component, pageProps }) {
   return (
     <Layout>
       <Component {...pageProps} />
@@ -9,4 +10,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+export default BrowserApp;

@@ -1,8 +1,9 @@
 import Layout from '../components/Layout';
 import Script from 'next/script';
 import 'papercss/dist/paper.min.css';
+import '../../../shared/layout.scss';
 
-function MyApp({ Component, pageProps }) {
+function RhymesApp({ Component, pageProps }) {
   return (
     <>
       <Script src="https://www.googletagmanager.com/gtag/js?id=UA-158752156-1" strategy="afterInteractive"></Script>
@@ -26,4 +27,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+export default RhymesApp;

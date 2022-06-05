@@ -13,6 +13,7 @@ const GET_SONG = gql`
       youtubeUrl
       audioFileUrl
       lyrics
+      rhymesRaw
 
       artists {
         name
