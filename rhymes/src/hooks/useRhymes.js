@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { gql } from '@apollo/client';
-import { useClient } from './useClient';
+import { useAPIClient } from './useAPIClient';
 
 export const FETCH_RHYMES = gql`
   query Rhymes($q: String, $limit: Int, $searchType: String) {
@@ -15,7 +15,7 @@ export const FETCH_RHYMES = gql`
 export function useRhymes(q, searchType, limit) {
   const [rhymes, setRhymes] = useState();
   const [loading, setLoading] = useState();
-  const client = useClient();
+  const client = useAPIClient();
 
   useEffect(() => {
     if (!client) return;
