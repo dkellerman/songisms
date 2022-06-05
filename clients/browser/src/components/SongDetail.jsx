@@ -28,6 +28,11 @@ export default function SongDetail({ song }) {
 
       <div dangerouslySetInnerHTML={{ __html: song.spotifyPlayer }} />
 
+      <small>[ <a
+        href={`https://songisms.herokuapp.com/admin/api/song/?q=${encodeURIComponent(song.title)}`}
+        target="_blank"
+      >Admin</a> ]</small>
+
       <dl>
         <dt>Artists</dt>
         <dd>{song.artists?.map(a => a.name).join(', ')}</dd>
