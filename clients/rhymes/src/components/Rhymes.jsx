@@ -191,10 +191,13 @@ export default function Rhymes() {
             </ul>
 
             {limit < 200 && rhymes.length >= limit && (
-              <button className="more" onClick={() => {
-                track('engagement', `more_${searchType}`, q);
-                setLimit(limit + 50);
-              }}>
+              <button
+                className="more"
+                onClick={() => {
+                  track('engagement', `more_${searchType}`, q);
+                  setLimit(limit + 50);
+                }}
+              >
                 More...
               </button>
             )}
