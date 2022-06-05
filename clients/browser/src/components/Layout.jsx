@@ -15,6 +15,8 @@ export default function Layout({ site = 'default', children }) {
     <>
       <Head>
         <title>Songisms</title>
+        <link rel="icon" href="/favicon.png?v=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <nav>
         <h1>

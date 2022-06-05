@@ -7,6 +7,8 @@ export default function Layout({ children }) {
     <>
       <Head>
         <title>Rhymium</title>
+        <link rel="icon" href="/favicon.ico?v=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <nav>
         <h1>
