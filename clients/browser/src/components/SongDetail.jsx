@@ -18,6 +18,8 @@ const StyledSongDetail = styled.article`
 `;
 
 export default function SongDetail({ song }) {
+  const adminLink = `https://songisms.herokuapp.com/admin/api/song/?q=${encodeURIComponent(song.title)}`;
+
   return (
     <StyledSongDetail>
       <nav aria-label="breadcrumbs">
@@ -28,11 +30,7 @@ export default function SongDetail({ song }) {
 
       <div dangerouslySetInnerHTML={{ __html: song.spotifyPlayer }} />
 
-      <small>[ <a
-        href={`https://songisms.herokuapp.com/admin/api/song/?q=${encodeURIComponent(song.title)}`}
-        target="_blank"
-        rel="noreferrer"
-      >Admin</a> ]</small>
+      <small>[ <a  href={adminLink} target="_blank" rel="noreferrer">Admin</a> ]</small>
 
       <dl>
         <dt>Artists</dt>
