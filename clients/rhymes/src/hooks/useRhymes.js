@@ -50,6 +50,12 @@ export function useRhymes(q, searchType, page = 1, pageSize = 50) {
     rhymes,
     loading,
     hasNextPage: rhymes?.length === page * pageSize,
-    abort: abortController.current?.abort,
+    abort: () => {
+      try {
+        abortController.current?.abort();
+      } catch (e) {
+        console.error(e);
+      }
+    },
   };
 }

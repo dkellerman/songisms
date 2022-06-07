@@ -80,6 +80,7 @@ class RhymeManager(models.Manager):
                               ELSE 'rhyme'
                             END AS type
                         FROM rhymes
+                        WHERE to_ngram_text NOT ILIKE ANY(%(q)s)
                         ORDER BY to_ngram_text, level
                     ) results
                         ORDER BY frequency DESC
@@ -135,6 +136,7 @@ class RhymeManager(models.Manager):
                         0 AS frequency,
                         'suggestion' AS type
                     FROM results
+                    WHERE ngram_text NOT ILIKE ANY(%(q)s)
                     ORDER BY phones_distance
                     -- {f'LIMIT %(limit)s OFFSET %(offset)s' if limit else ''}
                 ;
