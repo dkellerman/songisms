@@ -70,13 +70,13 @@ export const RhymeItem = styled.li`
     }
   }
 
-  @media screen and (max-width: 375px) {
+  @media screen and (max-width: 374px) {
     width: ${colWidth(1)};
   }
-  @media screen and (min-width: 376px) and (max-width: 480px) {
+  @media screen and (min-width: 375px) and (max-width: 479px) {
     width: ${colWidth(2)};
   }
-  @media screen and (min-width: 481px) {
+  @media screen and (min-width: 480px) {
     width: ${colWidth(3)};
   }
 `;
