@@ -74,7 +74,7 @@ export default function Rhymes() {
       <fieldset>
         <input
           ref={inputRef}
-          type="search"
+          type="text"
           onChange={onInput}
           defaultValue={q}
           placeholder="Search for rhymes in songs..."

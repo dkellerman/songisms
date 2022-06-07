@@ -10,7 +10,7 @@ export const StyledRhymes = styled.article`
     padding-right: 10px;
     gap: 20px;
 
-    input[type='search'] {
+    input[type='text'] {
       border-radius: 0;
       width: 50vw;
       min-width: 200px;
