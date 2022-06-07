@@ -12,7 +12,7 @@ export default function Rhymes() {
   const [q, setQ] = useState(router.query ? router.query.q : '');
   const [searchType, setSearchType] = useState(router.query ? router.query.t : 'rhyme');
   const [limit, setLimit] = useState(50);
-  const { rhymes, loading } = useRhymes(q, searchType, limit);
+  const { rhymes, loading, abort } = useRhymes(q, searchType, limit);
   const inputRef = useRef();
   const suggestRef = useRef();
   const listRef = useRef();
@@ -21,27 +21,35 @@ export default function Rhymes() {
     setQ(newQ);
     setSearchType(newSearchType);
     setLimit(50);
-    listRef.current.style.maxHeight = DEFAULT_GRID_HEIGHT;
+    if (listRef.current) listRef.current.style.maxHeight = DEFAULT_GRID_HEIGHT;
 
     const newQuery = { ...router.query, q: newQ, t: newSearchType };
     if (!newQ?.trim()) delete newQuery.q;
     if (newSearchType !== 'suggest') delete newQuery.t;
     track('engagement', `${newSearchType || 'rhyme'}`, newQ);
     return router.push({ query: newQuery });
-  }, []);
+  }, [router]);
+
+  const debouncedSearch = useCallback(
+    debounce(e => {
+      return search(e.target.value, searchType);
+    }, SEARCH_DEBOUNCE),
+    [search, searchType],
+  );
 
   const onInput = useCallback(
-    debounce(async e => {
-      search(e.target.value?.trim(), searchType);
-    }, SEARCH_DEBOUNCE),
-    [searchType],
+    async e => {
+      abort?.();
+      return debouncedSearch(e);
+    },
+    [debouncedSearch, abort],
   );
 
   const onSetSearchType = useCallback(
     async e => {
       search(q, e.target.checked ? 'suggest' : 'rhyme');
     },
-    [q],
+    [q, search],
   );
 
   useEffect(() => {

@@ -31,7 +31,11 @@ export default function SongDetail({ song }) {
       <div dangerouslySetInnerHTML={{ __html: song.spotifyPlayer }} />
 
       <small>
-        [ <a href={adminLink} target="_blank" rel="noreferrer">Admin</a> ]
+        [{' '}
+        <a href={adminLink} target="_blank" rel="noreferrer">
+          Admin
+        </a>{' '}
+        ]
       </small>
 
       <dl>
@@ -44,10 +48,26 @@ export default function SongDetail({ song }) {
         <dt>Links</dt>
         <dd>
           <ul>
-            {song.youtubeUrl && <li><a href={song.youtubeUrl}>Youtube</a></li>}
-            {song.jaxstaUrl && <li><a href={song.jaxstaUrl}>Jaxsta</a></li>}
-            {song.spotifyUrl && <li><a href={song.spotifyUrl}>Spotify</a></li>}
-            {song.audioFileUrl && <li><a href={song.audioFileUrl}>Audio</a></li>}
+            {song.youtubeUrl && (
+              <li>
+                <a href={song.youtubeUrl}>Youtube</a>
+              </li>
+            )}
+            {song.jaxstaUrl && (
+              <li>
+                <a href={song.jaxstaUrl}>Jaxsta</a>
+              </li>
+            )}
+            {song.spotifyUrl && (
+              <li>
+                <a href={song.spotifyUrl}>Spotify</a>
+              </li>
+            )}
+            {song.audioFileUrl && (
+              <li>
+                <a href={song.audioFileUrl}>Audio</a>
+              </li>
+            )}
           </ul>
         </dd>
 

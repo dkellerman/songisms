@@ -23,7 +23,11 @@ export default function Layout({ site = 'default', children }) {
           <Link href="/">Songisms</Link>
         </h1>
         <div className="links">
-          {user && <button className="logout compact" onClick={onLogout}>Log out</button>}
+          {user && (
+            <button className="logout compact" onClick={onLogout}>
+              Log out
+            </button>
+          )}
         </div>
       </nav>
 

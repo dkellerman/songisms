@@ -36,7 +36,7 @@ class RhymeManager(models.Manager):
                     FROM api_rhyme r
                     INNER JOIN api_ngram from_ngram ON from_ngram.id = r.from_ngram_id
                     INNER JOIN api_ngram to_ngram ON to_ngram.id = r.to_ngram_id
-                    WHERE from_ngram.text = ANY(%(q)s)
+                    WHERE UPPER(from_ngram.text) ILIKE ANY(%(q)s)
                     GROUP BY from_ngram.text, to_ngram.text, level
 
                     UNION ALL
@@ -50,8 +50,8 @@ class RhymeManager(models.Manager):
                     INNER JOIN api_ngram from_ngram ON from_ngram.id = r2.from_ngram_id
                     INNER JOIN api_ngram to_ngram ON to_ngram.id = r2.to_ngram_id
                     WHERE
-                        from_ngram.text = rhymes.to_ngram_text
-                        AND NOT (to_ngram.text = ANY(%(q)s))
+                        UPPER(from_ngram.text) = UPPER(rhymes.to_ngram_text)
+                        AND NOT UPPER(to_ngram.text) ILIKE ANY(%(q)s)
                         AND to_ngram.text != rhymes.to_ngram_text
                         AND rhymes.level <= 1
                     GROUP BY from_ngram.text, to_ngram.text, rhymes.level

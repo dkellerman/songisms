@@ -87,7 +87,11 @@ export default function SongList() {
         </table>
       )}
 
-      {hasNext && <button className="more compact" onClick={loadMore}>Show more</button>}
+      {hasNext && (
+        <button className="more compact" onClick={loadMore}>
+          Show more
+        </button>
+      )}
     </StyledSongList>
   );
 }
