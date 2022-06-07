@@ -1,5 +1,5 @@
 import reversion
-from django.db import models, transaction
+from django.db import transaction
 from django.contrib.postgres.fields import ArrayField
 from django.utils.safestring import mark_safe
 from .utils import get_storage_blob
@@ -23,6 +23,7 @@ class Artist(models.Model):
 @reversion.register()
 class Writer(models.Model):
     name = models.CharField(max_length=300, unique=True)
+    alt_names = ArrayField(models.CharField(max_length=300, unique=True), default=list, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = WriterManager()

@@ -73,7 +73,8 @@ class ArtistAdmin(CompareVersionAdmin):
 
 @admin.register(Writer)
 class WriterAdmin(CompareVersionAdmin):
-    search_fields = ('name',)
+    search_fields = ('name', 'alt_names',)
+    list_display = ('name', 'alt_names',)
 
 
 @admin.register(NGram)
