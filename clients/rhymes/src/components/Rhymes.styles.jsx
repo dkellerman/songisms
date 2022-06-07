@@ -1,30 +1,33 @@
-import styled from 'styled-components';
-
-export const DEFAULT_GRID_HEIGHT = '50vh';
+import styled, { css } from 'styled-components';
 
 export const StyledRhymes = styled.article`
   fieldset {
     display: flex;
+    flex-flow: row wrap;
     align-items: center;
+    width: 100%;
     margin: 20px 0 12px 0;
+    padding-right: 10px;
+    gap: 20px;
 
     input[type='search'] {
       border-radius: 0;
-      width: 65vw;
-      min-width: 180px;
+      width: 50vw;
+      min-width: 200px;
       max-width: 500px;
       &::-webkit-search-cancel-button {
         -webkit-appearance: searchfield-cancel-button;
       }
     }
     input[type='checkbox'] {
-      margin: 0 7px 0 20px;
       zoom: 1.5;
+      display: inline-block;
+      margin-right: 5px;
     }
     label {
       font-size: large;
       position: relative;
-      top: 3px;
+      top: -3px;
     }
   }
 
@@ -33,18 +36,19 @@ export const StyledRhymes = styled.article`
   }
 `;
 
+const gap = 20;
+const colWidth = (cols) => css`calc((100% - ${(cols - 1) * gap}px) / ${cols})`;
+
 export const ColumnLayout = styled.ul`
   list-style: none;
   padding-left: 0;
   display: flex;
-  flex-flow: column wrap;
-  max-width: 700px;
-  max-height: ${DEFAULT_GRID_HEIGHT};
-  gap: 7px;
+  flex-flow: row wrap;
+  max-width: 768px;
+  gap: ${gap}px;
 `;
 
 export const RhymeItem = styled.li`
-  white-space: nowrap;
   text-indent: 0;
   font-size: larger;
   &:before {
@@ -64,5 +68,15 @@ export const RhymeItem = styled.li`
     &.suggestion {
       opacity: 0.6;
     }
+  }
+
+  @media screen and (max-width: 375px) {
+    width: ${colWidth(1)};
+  }
+  @media screen and (min-width: 376px) and (max-width: 480px) {
+    width: ${colWidth(2)};
+  }
+  @media screen and (min-width: 481px) {
+    width: ${colWidth(3)};
   }
 `;

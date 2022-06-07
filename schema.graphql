@@ -1,0 +1,147 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type ArtistType {
+  name: String!
+  songs: [SongType!]!
+}
+
+type ArtistsPaginatedType {
+  items: [ArtistType]
+  page: Int
+  pages: Int
+  total: Int
+  hasNext: Boolean
+  hasPrev: Boolean
+  q: String
+}
+
+scalar DateTime
+
+scalar GenericScalar
+
+scalar JSONString
+
+type Mutation {
+  tokenAuth(username: String!, password: String!): ObtainJSONWebToken
+  verifyToken(token: String): Verify
+  refreshToken(token: String): Refresh
+}
+
+type NGramType {
+  text: String!
+}
+
+type NGramsPaginatedType {
+  items: [NGramType]
+  page: Int
+  pages: Int
+  total: Int
+  hasNext: Boolean
+  hasPrev: Boolean
+  q: String
+}
+
+type ObtainJSONWebToken {
+  payload: GenericScalar!
+  refreshExpiresIn: Int!
+  token: String!
+}
+
+type Query {
+  user: UserType
+  songs(page: Int, q: String, tags: [String], ordering: [String]): SongsPaginatedType
+  song(spotifyId: String!): SongType
+  artists(page: Int, q: String, ordering: [String]): ArtistsPaginatedType
+  artist(name: String!): ArtistType
+  writers(page: Int, q: String, ordering: [String]): WritersPaginatedType
+  writer(name: String!): WriterType
+  rhymes(q: String, limit: Int, offset: Int, tags: [String], searchType: String): [RhymeType]
+  ngrams(page: Int, q: String, tags: [String], ordering: [String]): NGramsPaginatedType
+  tagsByCategory(category: String!): [TagType]
+}
+
+type Refresh {
+  payload: GenericScalar!
+  refreshExpiresIn: Int!
+  token: String!
+}
+
+type RhymeType {
+  ngram: String
+  frequency: Int
+  type: String
+}
+
+type SongType {
+  title: String!
+  artists: [ArtistType!]!
+  writers: [WriterType!]!
+  tags: [TagType!]!
+  lyrics: String
+  lyricsRaw: String
+  lyricsIpa: String
+  rhymesRaw: String
+  spotifyId: String!
+  jaxstaId: String
+  youtubeId: String
+  audioFile: String
+  metadata: JSONString
+  created: DateTime!
+  updated: DateTime
+  taggedTexts: [TaggedTextType!]!
+  spotifyUrl: String
+  spotifyPlayer: String
+  jaxstaUrl: String
+  youtubeUrl: String
+  youtubePlayer: String
+  audioFileUrl: String
+}
+
+type SongsPaginatedType {
+  items: [SongType]
+  page: Int
+  pages: Int
+  total: Int
+  hasNext: Boolean
+  hasPrev: Boolean
+  q: String
+}
+
+type TagType {
+  value: String!
+  label: String!
+  texts: [TaggedTextType!]!
+  songs: [SongType!]!
+}
+
+type TaggedTextType {
+  tag: TagType!
+  text: String!
+  song: SongType
+}
+
+type UserType {
+  username: String!
+}
+
+type Verify {
+  payload: GenericScalar!
+}
+
+type WriterType {
+  name: String!
+  songs: [SongType!]!
+}
+
+type WritersPaginatedType {
+  items: [WriterType]
+  page: Int
+  pages: Int
+  total: Int
+  hasNext: Boolean
+  hasPrev: Boolean
+  q: String
+}

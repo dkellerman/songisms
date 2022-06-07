@@ -102,6 +102,7 @@ class Query(graphene.ObjectType):
     rhymes = graphene.List(RhymeType,
                            q=graphene.String(required=False),
                            limit=graphene.Int(required=False),
+                           offset=graphene.Int(required=False),
                            tags=graphene.List(required=False, of_type=graphene.String),
                            search_type=graphene.String(required=False))
     ngrams = graphene.Field(NGramsPaginatedType,
@@ -167,13 +168,13 @@ class Query(graphene.ObjectType):
         return Tag.objects.filter(category=category).order_by('label')
 
     @staticmethod
-    def resolve_rhymes(root, info, q=None, limit=50, search_type='rhyme'):
+    def resolve_rhymes(root, info, q=None, offset=0, limit=50, search_type='rhyme'):
         if not q or search_type == 'top':
-            qs = Rhyme.objects.top(limit=limit)
+            qs = Rhyme.objects.top(limit=limit, offset=offset)
         elif search_type == 'rhyme':
-            qs = Rhyme.objects.query(q, limit=limit)
+            qs = Rhyme.objects.query(q, limit=limit, offset=offset)
         elif search_type == 'suggest':
-            qs = Rhyme.objects.suggest(q, limit=limit)
+            qs = Rhyme.objects.suggest(q, limit=limit, offset=offset)
         else:
             return []
 

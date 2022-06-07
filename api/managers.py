@@ -3,7 +3,7 @@ from .utils import make_synonyms, get_phones
 
 
 class RhymeManager(models.Manager):
-    def top(self, limit=None):
+    def top(self, limit=None, offset=0):
         from api.models import NGram
         qs = NGram.objects.annotate(
             frequency=models.Count('rhymed_from__song__id', distinct=True),
@@ -14,11 +14,11 @@ class RhymeManager(models.Manager):
          .values('ngram', 'frequency', 'type')
 
         if limit:
-            qs = qs[:limit]
+            qs = qs[offset:offset+limit]
 
         return qs
 
-    def query(self, q, limit=None):
+    def query(self, q, limit=None, offset=0):
         if not q:
             return []
 
@@ -66,21 +66,24 @@ class RhymeManager(models.Manager):
                               ELSE 'rhyme'
                             END AS type
                         FROM rhymes
-                        ORDER BY to_ngram_text
+                        ORDER BY to_ngram_text, level
                     ) results
                         ORDER BY frequency DESC
-                        {f'LIMIT %(limit)s' if limit else ''}
+                        -- {f'LIMIT %(limit)s OFFSET %(offset)s' if limit else ''}
                 ;
-                ''', dict(q=q, limit=limit)
+                ''', dict(q=q, limit=limit, offset=offset)
             )
 
             columns = [col[0] for col in cursor.description]
-            return [
+            vals = [
                 dict(zip(columns, row))
                 for row in cursor.fetchall()
             ]
+            if limit:
+                vals = vals[offset:offset+limit]
+            return vals
 
-    def suggest(self, q, limit=None):
+    def suggest(self, q, limit=None, offset=0):
         if not q:
             return []
 
@@ -120,15 +123,18 @@ class RhymeManager(models.Manager):
                         'suggestion' AS type
                     FROM results
                     ORDER BY phones_distance
-                    {f'LIMIT %(limit)s' if limit else ''}
+                    -- {f'LIMIT %(limit)s OFFSET %(offset)s' if limit else ''}
                 ;
-            ''', dict(q=q, qn=qn, qphones=qphones, limit=limit))
+            ''', dict(q=q, qn=qn, qphones=qphones, limit=limit, offset=offset))
 
             columns = [col[0] for col in cursor.description]
-            return [
+            vals = [
                 dict(zip(columns, row))
                 for row in cursor.fetchall()
             ]
+            if limit:
+                vals = vals[offset:offset+limit]
+            return vals
 
 
 class NGramManager(models.Manager):

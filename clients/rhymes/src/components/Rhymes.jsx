@@ -1,52 +1,46 @@
-import { useCallback, useEffect, useRef, useState, useLayoutEffect, useMemo } from 'react';
+import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import debounce from 'lodash/debounce';
 import { isMobile } from 'react-device-detect';
 import { useRouter } from 'next/router';
 import { useRhymes } from '../hooks/useRhymes';
-import { ColumnLayout, DEFAULT_GRID_HEIGHT, RhymeItem, StyledRhymes } from './Rhymes.styles';
+import { ColumnLayout, RhymeItem, StyledRhymes } from './Rhymes.styles';
 
 const SEARCH_DEBOUNCE = isMobile ? 1000 : 500;
+const PAGE_SIZE = 50;
 
 export default function Rhymes() {
   const router = useRouter();
   const [q, setQ] = useState(router.query ? router.query.q : '');
   const [searchType, setSearchType] = useState(router.query ? router.query.t : 'rhyme');
-  const [limit, setLimit] = useState(50);
-  const { rhymes, loading, abort } = useRhymes(q, searchType, limit);
+  const [page, setPage] = useState(1);
+  const { rhymes, loading, abort, hasNextPage } = useRhymes(q, searchType, page, PAGE_SIZE);
+
   const inputRef = useRef();
   const suggestRef = useRef();
-  const listRef = useRef();
 
   const search = useCallback((newQ, newSearchType) => {
+    if (!(newQ || '').trim()) return;
+
     setQ(newQ);
     setSearchType(newSearchType);
-    setLimit(50);
-    if (listRef.current) listRef.current.style.maxHeight = DEFAULT_GRID_HEIGHT;
-
-    const newQuery = { ...router.query, q: newQ, t: newSearchType };
-    if (!newQ?.trim()) delete newQuery.q;
-    if (newSearchType !== 'suggest') delete newQuery.t;
+    setPage(1);
     track('engagement', `${newSearchType || 'rhyme'}`, newQ);
-    return router.push({ query: newQuery });
+
+    const routerQuery = { ...router.query, q: newQ, t: newSearchType };
+    if (!newQ?.trim()) delete routerQuery.q;
+    if (newSearchType !== 'suggest') delete routerQuery.t;
+    return router.push({ query: routerQuery });
   }, [router]);
 
   const debouncedSearch = useCallback(
-    debounce(e => {
-      const val = (e.target.value ?? '').trim();
-      if (val) {
-        return search(val, searchType);
-      }
-    }, SEARCH_DEBOUNCE),
+    debounce(e => search(e.target.value, searchType), SEARCH_DEBOUNCE),
     [search, searchType],
   );
 
-  const onInput = useCallback(
-    async e => {
-      abort?.();
-      return debouncedSearch(e);
-    },
-    [debouncedSearch, abort],
-  );
+  const onInput = useCallback(async e => {
+    abort?.();  // cancel any current requests
+    return debouncedSearch(e);
+  },[debouncedSearch, abort]);
 
   const onSetSearchType = useCallback(
     async e => {
@@ -65,23 +59,6 @@ export default function Rhymes() {
     setQ(router.query?.q || '');
     setSearchType(router.query?.t || 'rhyme');
   }, [router.query]);
-
-  useLayoutEffect(() => {
-    resize();
-  }, [rhymes]);
-
-  useEffect(() => {
-    window.addEventListener('resize', resize);
-    return () => window.removeEventListener('resize', resize);
-  }, []);
-
-  function resize() {
-    if (!listRef.current) return;
-    const { scrollWidth, clientWidth, clientHeight } = listRef.current;
-    if (scrollWidth > clientWidth) {
-      listRef.current.style.maxHeight = `${clientHeight * 2}px`;
-    }
-  }
 
   const counts = useMemo(
     () => ({
@@ -102,8 +79,10 @@ export default function Rhymes() {
           defaultValue={q}
           placeholder="Search for rhymes in songs..."
         />
-        <input type="checkbox" ref={suggestRef} onInput={onSetSearchType} />
-        <label>Suggestions</label>
+        <div className="suggestions">
+          <input type="checkbox" ref={suggestRef} onInput={onSetSearchType} />
+          <label>Suggestions</label>
+        </div>
       </fieldset>
 
       <output>
@@ -120,7 +99,7 @@ export default function Rhymes() {
               </label>
             )}
 
-            <ColumnLayout ref={listRef}>
+            <ColumnLayout>
               {rhymes.map(r => (
                 <RhymeItem key={r.ngram}>
                   <span className={`hit ${r.type}`} onClick={() => search(r.ngram, searchType)}>
@@ -131,12 +110,12 @@ export default function Rhymes() {
               ))}
             </ColumnLayout>
 
-            {limit < 200 && rhymes.length >= limit && (
+            {hasNextPage && (
               <button
                 className="more compact"
                 onClick={() => {
                   track('engagement', `more_${searchType}`, q);
-                  setLimit(limit + 50);
+                  setPage(page + 1);
                 }}
               >
                 More...

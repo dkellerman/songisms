@@ -3,8 +3,8 @@ import { gql } from '@apollo/client';
 import { useAPIClient } from './useAPIClient';
 
 export const FETCH_RHYMES = gql`
-  query Rhymes($q: String, $limit: Int, $searchType: String) {
-    rhymes(q: $q, limit: $limit, searchType: $searchType) {
+  query Rhymes($q: String, $searchType: String, $offset: Int, $limit: Int) {
+    rhymes(q: $q, searchType: $searchType, offset: $offset, limit: $limit) {
       ngram
       frequency
       type
@@ -12,7 +12,7 @@ export const FETCH_RHYMES = gql`
   }
 `;
 
-export function useRhymes(q, searchType, limit) {
+export function useRhymes(q, searchType, page = 1, pageSize = 50) {
   const [rhymes, setRhymes] = useState();
   const [loading, setLoading] = useState();
   const client = useAPIClient();
@@ -22,13 +22,14 @@ export function useRhymes(q, searchType, limit) {
     if (!client) return;
 
     (async function () {
-      setLoading(true);
+      if (page === 1) setLoading(true);
       abortController.current = new AbortController();
 
       const qstr = (q ?? '').toLowerCase().trim();
+      const offset = (page - 1) * pageSize;
       const resp = await client.query({
         query: FETCH_RHYMES,
-        variables: { q: qstr, limit, searchType },
+        variables: { q: qstr, offset, limit: pageSize, searchType },
         context: {
           fetchOptions: {
             signal: abortController.current.signal,
@@ -36,11 +37,19 @@ export function useRhymes(q, searchType, limit) {
         },
       });
       abortController.current = null;
-      console.log('* rhymes', resp.data.rhymes);
-      setRhymes(resp.data.rhymes);
+      console.log('* rhymes', page, resp.data.rhymes);
+      if (page === 1)
+        setRhymes(resp.data.rhymes);
+      else
+        setRhymes(cur => [...cur, ...resp.data.rhymes]);
       setLoading(false);
     })();
-  }, [q, client, searchType, limit]);
+  }, [q, client, searchType, page, pageSize]);
 
-  return { rhymes, loading, abort: abortController.current?.abort };
+  return {
+    rhymes,
+    loading,
+    hasNextPage: rhymes?.length === page * pageSize,
+    abort: abortController.current?.abort,
+  };
 }

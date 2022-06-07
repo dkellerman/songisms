@@ -222,16 +222,16 @@ class Song(models.Model):
             for text1, text2 in rhymes:
                 n1 = len(text1.split())
                 n2 = len(text2.split())
-                from_ngram, _ = NGram.objects.get_or_create(text=text1, n=n1)
-                to_ngram, _ = NGram.objects.get_or_create(text=text2, n=n2)
+                ngram1, _ = NGram.objects.get_or_create(text=text1, n=n1)
+                ngram2, _ = NGram.objects.get_or_create(text=text2, n=n2)
                 Rhyme.objects.get_or_create(
-                    from_ngram=from_ngram,
-                    to_ngram=to_ngram,
+                    from_ngram=ngram1,
+                    to_ngram=ngram2,
                     song=self,
                 )
                 Rhyme.objects.get_or_create(
-                    from_ngram=to_ngram,
-                    to_ngram=from_ngram,
+                    from_ngram=ngram2,
+                    to_ngram=ngram1,
                     song=self,
                 )
 
