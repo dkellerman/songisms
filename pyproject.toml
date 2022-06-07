@@ -35,6 +35,8 @@ ffmpeg-python = "^0.2.0"
 sh = "^1.14.2"
 gruut-ipa = "^0.13.0"
 autopep8 = "^1.6.0"
+gensim = "^4.2.0"
+pyLDAvis = "^3.3.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
