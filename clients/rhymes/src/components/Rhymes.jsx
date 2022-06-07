@@ -78,7 +78,7 @@ export default function Rhymes() {
           type="text"
           onChange={onInput}
           defaultValue={q}
-          placeholder="Search for rhymes in songs..."
+          placeholder="Find rhymes in songs..."
         />
         <div className="suggestions">
           <input type="checkbox" ref={suggestRef} onInput={onSetSearchType} />
@@ -92,7 +92,7 @@ export default function Rhymes() {
         {!loading && !!rhymes && (
           <>
             {!q && counts.rhyme > 0 && <label>Top {counts.rhyme} rhymes</label>}
-            {!q && counts.sug > 0 && <label>Top {counts.sug} three-word suggestions</label>}
+            {!q && counts.sug > 0 && <label>Top {counts.sug} suggestions</label>}
             {q && (
               <label>
                 {!counts.sug && `${ct2str(counts.rhyme, 'rhyme')} found`}

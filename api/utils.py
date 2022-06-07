@@ -17,7 +17,7 @@ from firebase_admin import firestore, credentials
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.core.files import File
 from django.db import transaction
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.conf import settings
 from google.cloud.storage import Client as SClient
 from google.oauth2 import service_account
@@ -202,7 +202,7 @@ def fetch_audio(song, convert=False):
 
 
 def make_ngrams(song, force_update=False):
-    ngrams = get_lyric_ngrams(song.lyrics, range(3))
+    ngrams = get_lyric_ngrams(song.lyrics, range(5))
     print('found', len(ngrams), 'ngrams...')
 
     with transaction.atomic():
@@ -236,11 +236,21 @@ def prune():
         print("[PRUNE WRITER]", w.pk, w.name)
         w.delete()
 
-    ngrams = models.NGram.objects.annotate(song_ct=Count('songs'), rhyme_ct=Count('rhymes')).filter(
-        song_ct=0, rhyme_ct=0)
-    for n in ngrams:
-        print("[PRUNE NGRAM]", n.pk, n.text)
-        n.delete()
+    ngrams = models.NGram.objects.annotate(
+        song_ct=Count('songs'),
+        rhyme_ct=Count('rhymes')
+    ).filter(
+        Q(song_ct=0, rhyme_ct=0) |
+        Q(n__gt=3, song_ct__lt=5)
+    )
+
+    ngram_ct = ngrams.count()
+    if ngram_ct > 0:
+        print('[PRUNE NGRAMS]', ngram_ct, '...')
+        for n in ngrams:
+            if ngram_ct < 100:
+                print("\t[PRUNE NGRAM]", n.pk, n.text)
+            n.delete()
 
 
 def phones_for_word(w):

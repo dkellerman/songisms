@@ -24,7 +24,7 @@ class RhymeManager(models.Manager):
             frequency=models.Count('songs', distinct=True),
             ngram=models.F('text'),
             type=models.Value('suggestion'),
-        ).filter(frequency__gte=3, n=3) \
+        ).filter(frequency__gte=5, n__gte=3) \
          .order_by('-frequency', 'text') \
          .values('ngram', 'frequency', 'type')
 
@@ -38,7 +38,6 @@ class RhymeManager(models.Manager):
             return self.top_rhymes(limit, offset)
 
         syns = make_synonyms(q)
-        q = [q] + syns
 
         with connection.cursor() as cursor:
             cursor.execute(f'''
@@ -86,7 +85,7 @@ class RhymeManager(models.Manager):
                         ORDER BY frequency DESC
                         -- {f'LIMIT %(limit)s OFFSET %(offset)s' if limit else ''}
                 ;
-                ''', dict(q=q, limit=limit, offset=offset)
+                ''', dict(q=[q] + syns, limit=limit, offset=offset)
             )
 
             columns = [col[0] for col in cursor.description]
@@ -105,7 +104,6 @@ class RhymeManager(models.Manager):
         syns = make_synonyms(q)
         qphones = get_phones(q, vowels_only=True, include_stresses=False)
         qn = len(q.split())
-        q = [q] + syns
 
         with connection.cursor() as cursor:
             cursor.execute(f'''
@@ -140,7 +138,7 @@ class RhymeManager(models.Manager):
                     ORDER BY phones_distance
                     -- {f'LIMIT %(limit)s OFFSET %(offset)s' if limit else ''}
                 ;
-            ''', dict(q=q, qn=qn, qphones=qphones, limit=limit, offset=offset))
+            ''', dict(q=[q] + syns, qn=qn, qphones=qphones, limit=limit, offset=offset))
 
             columns = [col[0] for col in cursor.description]
             vals = [
