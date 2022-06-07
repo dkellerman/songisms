@@ -32,7 +32,10 @@ export default function Rhymes() {
 
   const debouncedSearch = useCallback(
     debounce(e => {
-      return search(e.target.value, searchType);
+      const val = (e.target.value ?? '').trim();
+      if (val) {
+        return search(val, searchType);
+      }
     }, SEARCH_DEBOUNCE),
     [search, searchType],
   );
