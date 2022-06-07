@@ -19,7 +19,8 @@ export default function Rhymes() {
   const suggestRef = useRef();
 
   const search = useCallback((newQ, newSearchType) => {
-    if (!(newQ || '').trim()) return;
+    if (!(newQ || '').trim() && (searchType === newSearchType))
+      return;
 
     setQ(newQ);
     setSearchType(newSearchType);
@@ -62,9 +63,9 @@ export default function Rhymes() {
 
   const counts = useMemo(
     () => ({
-      rhyme: rhymes?.filter(r => ['rhyme', 'top'].includes(r.type)).length || 0,
-      ror: rhymes?.filter(r => ['rhyme-l2'].includes(r.type)).length || 0,
-      sug: rhymes?.filter(r => ['suggestion'].includes(r.type)).length || 0,
+      rhyme: rhymes?.filter(r => r.type === 'rhyme').length || 0,
+      ror: rhymes?.filter(r => r.type === 'rhyme-l2').length || 0,
+      sug: rhymes?.filter(r => r.type === 'suggestion').length || 0,
     }),
     [rhymes],
   );
@@ -90,7 +91,8 @@ export default function Rhymes() {
 
         {!loading && !!rhymes && (
           <>
-            {!q && <label>Top {counts.rhyme} rhymes</label>}
+            {!q && counts.rhyme > 0 && <label>Top {counts.rhyme} rhymes</label>}
+            {!q && counts.sug > 0 && <label>Top {counts.sug} three-word suggestions</label>}
             {q && (
               <label>
                 {!counts.sug && `${ct2str(counts.rhyme, 'rhyme')} found`}
@@ -105,7 +107,7 @@ export default function Rhymes() {
                   <span className={`hit ${r.type}`} onClick={() => search(r.ngram, searchType)}>
                     {r.ngram}
                   </span>{' '}
-                  {!!r.frequency && <span className="freq">({r.frequency})</span>}
+                  {!!r.frequency && r.type === 'rhyme' && <span className="freq">({r.frequency})</span>}
                 </RhymeItem>
               ))}
             </ColumnLayout>

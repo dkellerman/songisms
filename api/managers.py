@@ -3,13 +3,28 @@ from .utils import make_synonyms, get_phones
 
 
 class RhymeManager(models.Manager):
-    def top(self, limit=None, offset=0):
+    def top_rhymes(self, limit=None, offset=0):
         from api.models import NGram
         qs = NGram.objects.annotate(
             frequency=models.Count('rhymed_from__song__id', distinct=True),
             ngram=models.F('text'),
-            type=models.Value('top'),
+            type=models.Value('rhyme'),
         ).filter(frequency__gt=0) \
+         .order_by('-frequency', 'text') \
+         .values('ngram', 'frequency', 'type')
+
+        if limit:
+            qs = qs[offset:offset+limit]
+
+        return qs
+
+    def top_suggestions(self, limit=None, offset=0):
+        from api.models import NGram
+        qs = NGram.objects.annotate(
+            frequency=models.Count('songs', distinct=True),
+            ngram=models.F('text'),
+            type=models.Value('suggestion'),
+        ).filter(frequency__gte=3, n=3) \
          .order_by('-frequency', 'text') \
          .values('ngram', 'frequency', 'type')
 
@@ -20,7 +35,7 @@ class RhymeManager(models.Manager):
 
     def query(self, q, limit=None, offset=0):
         if not q:
-            return []
+            return self.top_rhymes(limit, offset)
 
         syns = make_synonyms(q)
         q = [q] + syns
@@ -85,7 +100,7 @@ class RhymeManager(models.Manager):
 
     def suggest(self, q, limit=None, offset=0):
         if not q:
-            return []
+            return self.top_suggestions(limit, offset)
 
         syns = make_synonyms(q)
         qphones = get_phones(q, vowels_only=True, include_stresses=False)

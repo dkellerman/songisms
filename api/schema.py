@@ -169,9 +169,7 @@ class Query(graphene.ObjectType):
 
     @staticmethod
     def resolve_rhymes(root, info, q=None, offset=0, limit=50, search_type='rhyme'):
-        if not q or search_type == 'top':
-            qs = Rhyme.objects.top(limit=limit, offset=offset)
-        elif search_type == 'rhyme':
+        if search_type == 'rhyme':
             qs = Rhyme.objects.query(q, limit=limit, offset=offset)
         elif search_type == 'suggest':
             qs = Rhyme.objects.suggest(q, limit=limit, offset=offset)
