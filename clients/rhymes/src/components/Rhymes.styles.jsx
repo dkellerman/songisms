@@ -9,6 +9,7 @@ export const StyledRhymes = styled.article`
     margin: 20px 0 12px 0;
 
     input[type='search'] {
+      border-radius: 0;
       width: 65vw;
       min-width: 180px;
       max-width: 500px;

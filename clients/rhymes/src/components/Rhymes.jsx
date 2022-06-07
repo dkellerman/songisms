@@ -103,7 +103,7 @@ export default function Rhymes() {
           placeholder="Search for rhymes in songs..."
         />
         <input type="checkbox" ref={suggestRef} onInput={onSetSearchType} />
-        <label>Suggestions (beta)</label>
+        <label>Suggestions</label>
       </fieldset>
 
       <output>
