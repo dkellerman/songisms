@@ -7,7 +7,6 @@
 <script setup>
   import auth from './auth';
   import router from './router';
-  console.log(router.currentRoute.value.path);
 
   async function doLogout() {
     await auth.logout();

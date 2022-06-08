@@ -43,12 +43,12 @@ const login = async (username, password) => {
   const resp2 = await axios.post(url, {
     query: GET_CURRENT_USER,
   });
-  if (resp2.data.errors) throw new Error(resp.data.errors[0].message);
+  if (resp2.data.errors) throw new Error(resp2.data.errors[0].message);
 
-  const u = { ...resp.data.data.user, accessToken };
+  const u = { ...resp2.data.data.user, accessToken };
   window.localStorage.setItem(USER_KEY, JSON.stringify(u));
   user.value = u;
-  return user;
+  return u;
 };
 
 const logout = async () => {
