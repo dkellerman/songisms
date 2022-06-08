@@ -134,6 +134,7 @@ type Verify {
 type WriterType {
   name: String!
   songs: [SongType!]!
+  songCt: Int
 }
 
 type WritersPaginatedType {

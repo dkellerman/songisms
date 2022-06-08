@@ -168,6 +168,18 @@ class ArtistManager(models.Manager):
 
 
 class WriterManager(models.Manager):
+    def query(self, q=None, ordering=None):
+        writers = self.prefetch_related('songs').annotate(
+            song_ct=models.Count('songs', distinct=True),
+        )
+        if q:
+            writers = writers.filter(name__icontains=q)
+            ordering = ordering or ['name']
+        else:
+            ordering = ordering or ['-song_ct']
+        return writers.order_by(*ordering)
+
+
     def get_by_natural_key(self, name):
         return self.get(name=name)
 
