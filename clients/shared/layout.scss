@@ -1,5 +1,5 @@
 nav {
-  padding: 10px 0px 10px 20px;
+  padding: 10px 0 10px 20px;
   background: aliceblue;
   display: flex;
   align-items: center;
@@ -20,7 +20,7 @@ nav {
 
     a,
     button {
-      margin: 0 0 0 25px;
+      margin: 0 0 0 10px;
       color: black;
       font-size: medium;
     }
@@ -42,6 +42,7 @@ main {
 
   nav[aria-label='breadcrumbs'] {
     padding: 20px 0 10px 0;
+    background: initial;
   }
 
   a,
@@ -62,7 +63,12 @@ main {
 
 button.compact {
   padding: 10px;
+  font-size: medium;
+}
+
+button.more {
   margin-top: 15px;
+  padding: 10px;
   font-size: medium;
 }
 

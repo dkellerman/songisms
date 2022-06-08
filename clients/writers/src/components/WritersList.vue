@@ -1,7 +1,13 @@
+<script>
+  export default {
+    name: 'WritersList'
+  }
+</script>
+
 <script setup>
   import axios from 'axios';
   import debounce from 'lodash/debounce';
-  import { ref, watch } from 'vue'
+  import { ref, watch } from 'vue';
 
   const FETCH_WRITERS = `
     query Writers($q: String, $page: Int) {
@@ -17,9 +23,8 @@
     }
   `;
 
-  const writers = ref(null);
+  const result = ref();
   const page = ref(null);
-  const hasNext = ref(false);
   const q = ref('');
 
   async function fetchWriters() {
@@ -28,13 +33,15 @@
       query: FETCH_WRITERS,
       variables: { q: q.value ?? null, page: page.value },
     });
-    const newWriters = resp.data.data.writers.items;
-    console.log('* writers', newWriters);
+    const newResult = resp.data.data.writers;
+    console.log('* writers', newResult);
     if (page.value === 1)
-      writers.value = newWriters;
+      result.value = newResult;
     else
-      writers.value.push(...newWriters);
-    hasNext.value = resp.data.data.writers.hasNext;
+      result.value = {
+        ...newResult,
+        items: [ ...result.value.items, ...newResult.items ]
+      };
   }
 
   watch(page, fetchWriters);
@@ -50,21 +57,16 @@
   <h2>Writers</h2>
 
   <input v-model.trim="q" placeholder="Search by name..." />
+  <label v-if="result?.total">{{ result.total }} writers found</label>
 
   <ul class="none">
-    <li v-for="writer in writers" :key="writer.name">
+    <li v-for="writer in result?.items" :key="writer.name">
       <a href="javascript:void(0)">{{ writer.name }}</a>
       <small>({{ writer.songCt }})</small>
     </li>
   </ul>
-  <button class="more compact" v-if="hasNext" @click="page++">More...</button>
+  <button class="more compact" v-if="result?.hasNext" @click="page++">More...</button>
 </template>
-
-<script>
-  export default {
-    name: 'WritersComponent'
-  }
-</script>
 
 <style scoped lang="scss">
   h2 {
@@ -73,6 +75,10 @@
   input {
     width: 100%;
     max-width: 500px;
+    margin-bottom: 10px;
+  }
+  label {
+    font-size: large;
   }
   li {
     margin-bottom: 10px;
