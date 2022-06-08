@@ -18,13 +18,7 @@ def gen_topics(num_topics=10):
     # load songs
     songs = Song.objects.exclude(lyrics=None)
     stop_words = stopwords.words('english')
-    data_words = [
-        list(set([
-            tok for tok in tokenize_lyrics(' '.join(song.lyrics.split('\n')))
-            if tok not in stop_words
-        ]))
-        for song in songs
-    ]
+    data_words = [ tokenize_lyrics(song.lyrics, stop_words, True) for song in songs ]
 
     # gen lda model
     id2word = corpora.Dictionary(data_words)
@@ -41,4 +35,4 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         gen_topics(int(sys.argv[1]))
     else:
-        print('specify num topics')
+        print('usage: specify num topics')

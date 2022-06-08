@@ -49,8 +49,17 @@ with open(syn_file_name, 'r') as syn_file:
         for line in syn_file.readlines()
     ]
 
+def tokenize_lyrics(lyrics, stop_words=[], unique=False):
+    toks = [
+        tok for tok in tokenize_lyric_line(' '.join(lyrics.split('\n')))
+        if tok not in stop_words
+    ]
+    if unique:
+        toks = list(set(toks))
+    return toks
 
-def tokenize_lyrics(val):
+
+def tokenize_lyric_line(val):
     val = val.lower()
     val = re.sub(r'[\,\"]', '', val)
     val = re.sub(r'\)', '', val)
@@ -66,9 +75,10 @@ def tokenize_lyrics(val):
     return toks
 
 
-def get_lyric_ngrams(val, n_range=range(5)):
+def get_lyric_ngrams(lyrics, n_range=range(5)):
     ngrams = []
-    toks = tokenize_lyrics(val)
+    line = ' '.join(lyrics.split('\n'))
+    toks = tokenize_lyric_line(line)
     for i in n_range:
         for ngram in nltk_make_ngrams(sequence=toks, n=i+1):
             ngrams.append((' '.join(ngram), i+1))
