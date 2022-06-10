@@ -56,6 +56,7 @@ class RhymeManager(models.Manager):
                     SELECT
                         from_ngram.text AS from_ngram_text,
                         to_ngram.text AS to_ngram_text,
+                        to_ngram.n as to_ngram_n,
                         count(to_ngram.id) AS frequency,
                         to_ngram.adj_pct AS adj_pct,
                         1 AS level
@@ -63,13 +64,14 @@ class RhymeManager(models.Manager):
                     INNER JOIN api_ngram from_ngram ON from_ngram.id = r.from_ngram_id
                     INNER JOIN api_ngram to_ngram ON to_ngram.id = r.to_ngram_id
                     WHERE UPPER(from_ngram.text) ILIKE ANY(%(q)s)
-                    GROUP BY from_ngram.text, to_ngram.text, to_ngram.adj_pct, level
+                    GROUP BY from_ngram.text, to_ngram.text, to_ngram.n, to_ngram.adj_pct, level
 
                     UNION ALL
 
                     SELECT
                         from_ngram.text AS from_ngram_text,
                         to_ngram.text AS to_ngram_text,
+                        to_ngram.n AS to_ngram_n,
                         0 AS frequency,
                         to_ngram.adj_pct AS adj_pct,
                         rhymes.level + 1 AS level2
@@ -81,12 +83,13 @@ class RhymeManager(models.Manager):
                         AND NOT UPPER(to_ngram.text) ILIKE ANY(%(q)s)
                         AND to_ngram.text != rhymes.to_ngram_text
                         AND rhymes.level <= 1
-                    GROUP BY from_ngram.text, to_ngram.text, to_ngram.adj_pct, rhymes.level
+                    GROUP BY from_ngram.text, to_ngram.text, to_ngram.n, to_ngram.adj_pct, rhymes.level
                 )
                     SELECT * from (
                         SELECT
                             DISTINCT ON (to_ngram_text)
                             to_ngram_text AS ngram,
+                            to_ngram_n AS n,
                             frequency,
                             adj_pct,
                             CASE
@@ -95,12 +98,14 @@ class RhymeManager(models.Manager):
                             END AS type
                         FROM rhymes
                         WHERE to_ngram_text NOT ILIKE ANY(%(q)s)
+                        {f'AND n >= %(n_min)s' if n_min else ''}
+                        {f'AND n <= %(n_max)s' if n_max else ''}
                         ORDER BY to_ngram_text, level
                     ) results
                         ORDER BY frequency DESC, adj_pct DESC NULLS LAST
                         -- {f'LIMIT %(limit)s OFFSET %(offset)s' if limit else ''}
                 ;
-                ''', dict(q=[q] + syns, limit=limit, offset=offset)
+                ''', dict(q=[q] + syns, limit=limit, offset=offset, n_min=n_min, n_max=n_max)
             )
 
             columns = [col[0] for col in cursor.description]
@@ -137,6 +142,7 @@ class RhymeManager(models.Manager):
                     WHERE
                         NOT (ngram.text = ANY(%(q)s))
                         AND ngram.n <= 2
+                        AND adj_pct > 0
                     GROUP BY
                         ngram.text, ngram.phones, ngram.adj_pct, ngram.n, phones_distance
                     HAVING
@@ -154,9 +160,10 @@ class RhymeManager(models.Manager):
                         'suggestion' AS type
                     FROM results
                     WHERE ngram_text NOT ILIKE ANY(%(q)s)
+                    AND adj_pct > 0
                     {f'AND n >= %(n_min)s' if n_min else ''}
                     {f'AND n <= %(n_max)s' if n_max else ''}
-                    ORDER BY phones_distance, adj_pct DESC NULLS LAST
+                    ORDER BY phones_distance, adj_pct DESC NULLS LAST, ndiff
                     -- {f'LIMIT %(limit)s OFFSET %(offset)s' if limit else ''}
                 ;
             ''', dict(q=[q] + syns, qn=qn, qphones=qphones, limit=limit, offset=offset,
