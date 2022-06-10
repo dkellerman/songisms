@@ -11,7 +11,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "songisms.settings")
 django.setup()
 
 from api.models import Song
-from api.utils import tokenize_lyrics
+from api.nlp_utils import tokenize_lyrics
 
 
 def gen_topics(num_topics=10):

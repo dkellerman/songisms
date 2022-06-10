@@ -1,8 +1,9 @@
 import reversion
 from django.db import transaction
+from django.db.models import Count
 from django.contrib.postgres.fields import ArrayField
 from django.utils.safestring import mark_safe
-from .utils import get_storage_blob
+from .cloud_utils import get_storage_blob
 from .managers import *
 
 
@@ -79,6 +80,8 @@ class NGram(models.Model):
     ipa = models.CharField(max_length=500, blank=True, null=True)
     phones = models.CharField(max_length=500, blank=True, null=True)
     formants = ArrayField(ArrayField(models.IntegerField(), size=4), blank=True, null=True)
+    pct = models.FloatField(blank=True, null=True)
+    adj_pct = models.FloatField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = NGramManager()
@@ -111,6 +114,20 @@ class Rhyme(models.Model):
 
 
 @reversion.register()
+class SongNGram(models.Model):
+    ngram = models.ForeignKey('NGram', on_delete=models.CASCADE, related_name='song_ngrams')
+    song = models.ForeignKey('Song', on_delete=models.CASCADE, related_name='song_ngrams')
+    count = models.PositiveIntegerField()
+    objects = RhymeManager()
+
+    class Meta:
+        unique_together = [['ngram', 'song']]
+
+    def __str__(self):
+        return f'{self.ngram.text} [{self.count}x IN {self.song.title}]'
+
+
+@reversion.register()
 class Song(models.Model):
     title = models.CharField(max_length=300, db_index=True)
     artists = models.ManyToManyField(Artist, related_name='songs', blank=True)
@@ -119,7 +136,7 @@ class Song(models.Model):
     lyrics = models.TextField(blank=True, null=True)
     lyrics_raw = models.TextField(blank=True, null=True)
     lyrics_ipa = models.TextField(blank=True, null=True)
-    ngrams = models.ManyToManyField(NGram, related_name='songs', blank=True)
+    ngrams = models.ManyToManyField(NGram, through='SongNGram', blank=True, related_name='songs')
     rhymes_raw = models.TextField(blank=True, null=True)
     spotify_id = models.SlugField()
     jaxsta_id = models.SlugField(blank=True, null=True)
@@ -216,7 +233,7 @@ class Song(models.Model):
 
     def set_rhymes(self, rhymes=[]):
         if type(rhymes) == str:
-            from .utils import get_rhyme_pairs
+            from .nlp_utils import get_rhyme_pairs
             rhymes = get_rhyme_pairs(rhymes)
 
         with transaction.atomic():
@@ -265,3 +282,20 @@ class Song(models.Model):
                 )[0]
             )[0] for tag, text in tagged_texts
         ])
+
+
+def prune():
+    artists = Artist.objects.annotate(song_ct=Count('songs')).filter(song_ct=0)
+    for a in artists:
+        print("[PRUNE ARTIST]", a.pk, a.name)
+        a.delete()
+
+    writers = Writer.objects.annotate(song_ct=Count('songs')).filter(song_ct=0)
+    for w in writers:
+        print("[PRUNE WRITER]", w.pk, w.name)
+        w.delete()
+
+    ngrams = NGram.objects.annotate(song_ct=Count('song_ngrams'), rhyme_ct=Count('rhymes')) \
+        .filter(song_ct=0, rhyme_ct=0)
+    print("[PRUNE NGRAMS]", ngrams.count())
+    ngrams.delete()

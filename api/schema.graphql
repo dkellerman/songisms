@@ -58,7 +58,7 @@ type Query {
   artist(name: String!): ArtistType
   writers(page: Int, q: String, ordering: [String]): WritersPaginatedType
   writer(name: String!): WriterType
-  rhymes(q: String, limit: Int, offset: Int, tags: [String], searchType: String): [RhymeType]
+  rhymes(q: String, limit: Int, offset: Int, tags: [String], nMin: Int, nMax: Int, searchType: String): [RhymeType]
   ngrams(page: Int, q: String, tags: [String], ordering: [String]): NGramsPaginatedType
   tagsByCategory(category: String!): [TagType]
 }

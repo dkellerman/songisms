@@ -7,13 +7,13 @@ export const StyledRhymes = styled.article`
     align-items: center;
     width: 100%;
     margin: 20px 0 12px 0;
-    padding-right: 10px;
+    padding-right: 5px;
     gap: 20px;
 
     input[type='text'] {
       border-radius: 0;
       width: 50vw;
-      min-width: 200px;
+      min-width: 180px;
       max-width: 500px;
       &::-webkit-search-cancel-button {
         -webkit-appearance: searchfield-cancel-button;
@@ -33,6 +33,21 @@ export const StyledRhymes = styled.article`
 
   output label {
     font-size: large;
+  }
+
+  .word-links {
+    display: inline-block;
+    margin-left: 15px;
+    font-size: medium;
+    span {
+      display: inline-block;
+      margin-right: 10px;
+      &:not(.selected) {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
   }
 `;
 

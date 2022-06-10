@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import debounce from 'lodash/debounce';
 import { isMobile } from 'react-device-detect';
 import { useRouter } from 'next/router';
@@ -12,8 +12,14 @@ export default function Rhymes() {
   const router = useRouter();
   const [q, setQ] = useState(router.query ? router.query.q : '');
   const [searchType, setSearchType] = useState(router.query ? router.query.t : 'rhyme');
+
+  const showTop = !q;
+  const showSuggestions = searchType === 'suggest';
+  const showRhymes = searchType !== 'suggest';
+
   const [page, setPage] = useState(1);
-  const { rhymes, loading, abort, hasNextPage } = useRhymes(q, searchType, page, PAGE_SIZE);
+  const [n, setN] = useState(showSuggestions ? [3, 3] : undefined);
+  const { rhymes, loading, abort, hasNextPage } = useRhymes(q, searchType, page, PAGE_SIZE, n);
 
   const inputRef = useRef();
   const suggestRef = useRef();
@@ -25,6 +31,11 @@ export default function Rhymes() {
     setQ(newQ);
     setSearchType(newSearchType);
     setPage(1);
+
+    if (newSearchType !== 'suggest') setN(undefined);
+    else if (newQ) setN([1, 3]);
+    else setN([3, 3]);
+
     track('engagement', `${newSearchType || 'rhyme'}`, newQ);
 
     const routerQuery = { ...router.query, q: newQ, t: newSearchType };
@@ -91,14 +102,25 @@ export default function Rhymes() {
 
         {!loading && !!rhymes && (
           <>
-            {!q && counts.rhyme > 0 && <label>Top {counts.rhyme} rhymes</label>}
-            {!q && counts.sug > 0 && <label>Top {counts.sug} suggestions</label>}
-            {q && (
+            {showTop && showRhymes && counts.rhyme > 0 && <label>Top {counts.rhyme} rhymes</label>}
+            {showTop && showSuggestions && counts.sug > 0 && <label>Top {counts.sug} suggestions</label>}
+            {!showTop && (
               <label>
-                {!counts.sug && `${ct2str(counts.rhyme, 'rhyme')} found`}
-                {counts.ror > 0 && `, ${ct2str(counts.ror, 'rhyme-of-rhyme', 'rhymes-of-rhymes')}`}
-                {counts.sug > 0 && `${ct2str(counts.sug, 'suggestion')}`}
+                {showRhymes && `${ct2str(counts.rhyme, 'rhyme')} found`}
+                {showRhymes && counts.ror > 0 && `, ${ct2str(counts.ror, 'rhyme-of-rhyme', 'rhymes-of-rhymes')}`}
+                {showSuggestions && `${ct2str(counts.sug, 'suggestion')} found`}
               </label>
+            )}
+            {showSuggestions && (
+              <>
+                <span className="word-links">[&nbsp; Words: &nbsp;
+                  <span onClick={() => setN(null)}>all</span>
+                  <span onClick={() => setN([1, 1])}>1</span>
+                  <span onClick={() => setN([2, 2])}>2</span>
+                  <span onClick={() => setN([3, 3])}>3</span>
+                  <span onClick={() => setN([3, null])}>3+</span>
+                ]&nbsp;</span>
+              </>
             )}
 
             <ColumnLayout>

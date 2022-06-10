@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NEXT_PUBLIC_SISM_API_BASE_URL=http://localhost:8000 next dev",
-    "dev:prodapi": "NEXT_PUBLIC_SISM_API_BASE_URL=https://songisms.herokuapp.com next dev",
+    "dev": "PORT=3001 NEXT_PUBLIC_SISM_API_BASE_URL=http://localhost:8000 next dev",
+    "dev:prodapi": "PORT=3001 NEXT_PUBLIC_SISM_API_BASE_URL=https://songisms.herokuapp.com next dev",
     "build": "next build",
     "start": "next start -p $PORT",
     "lint": "next lint"

@@ -8,7 +8,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "songisms.settings")
 django.setup()
 
 from api.models import Song
-from api.utils import get_firestore
+from api.cloud_utils import get_firestore
 
 db = get_firestore()
 songs_coll = db.collection('songs')

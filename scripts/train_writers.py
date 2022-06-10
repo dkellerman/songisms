@@ -5,7 +5,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "songisms.settings")
 django.setup()
 
 from api.models import *
-from api.utils import *
+from api.nlp_utils import *
 from tqdm import tqdm
 from nltk.corpus import stopwords
 from sklearn.preprocessing import LabelEncoder

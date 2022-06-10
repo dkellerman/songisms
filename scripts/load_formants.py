@@ -7,7 +7,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "songisms.settings")
 django.setup()
 
 from api.models import NGram
-from api.utils import get_formants, get_phones
+from api.nlp_utils import get_formants, get_phones
 
 for n in tqdm(NGram.objects.all()):
     n.formants = get_formants(n.text)

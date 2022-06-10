@@ -3,7 +3,9 @@
 import multiprocessing as mp
 from django.core.management.base import BaseCommand, CommandError
 from api.models import *
-from api.utils import fetch_audio, make_ngrams, set_lyrics_ipa, prune
+from api.cloud_utils import fetch_audio
+from api.nlp_utils import make_ngrams, score_ngrams, set_lyrics_ipa
+
 
 class Command(BaseCommand):
     help = 'Process songs'
@@ -14,7 +16,6 @@ class Command(BaseCommand):
         parser.add_argument('--process', '-p', nargs='+', type=str, help='[all|rhymes|ngrams|audio|audiolink|ipa]')
         parser.add_argument('--dry-run', '-D', action='store_true')
         parser.add_argument('--no-prune', '-P', action='store_true')
-
 
     def handle(self, *args, **options):
         ids = options.get('id')
@@ -87,6 +88,10 @@ class Command(BaseCommand):
                     print('\t[IPA]')
                     if not dry_run:
                         set_lyrics_ipa(song)
+
+        if process_ngrams:
+            if not dry_run:
+                score_ngrams(force_update=force_update)
 
         if not no_prune:
             print('[PRUNING]')

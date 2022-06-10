@@ -1,6 +1,5 @@
 from django.contrib import admin
-from django.db.models import JSONField, Count
-from django.utils.safestring import mark_safe
+from django.db.models import JSONField, Count, Sum
 from django_json_widget.widgets import JSONEditorWidget
 from reversion_compare.admin import CompareVersionAdmin
 from .models import *
@@ -12,7 +11,7 @@ class SongAdmin(CompareVersionAdmin):
               'writers', 'tags', 'lyrics', 'lyrics_raw', 'lyrics_ipa',
               'rhymes_raw', 'jaxsta_id', 'jaxsta_link', 'youtube_id',
               'youtube_link', 'audio_file', 'metadata',)
-    search_fields = ('title', 'spotify_id',)
+    search_fields = ('title', 'spotify_id', 'lyrics',)
     list_display = ('title', 'artists_display', 'spotify_link', 'has_lyrics',
                     'has_audio', 'has_metadata', 'has_ipa', 'has_jaxsta_id',)
     readonly_fields = ('spotify_player', 'jaxsta_link', 'youtube_link', 'rhymes',)
@@ -80,17 +79,22 @@ class WriterAdmin(CompareVersionAdmin):
 @admin.register(NGram)
 class NGramAdmin(admin.ModelAdmin):
     search_fields = ('text',)
-    list_display = ('text', 'n', 'song_ct', 'stresses', 'ipa', 'phones',)
-    fields = ('text', 'n', 'song_ct', 'stresses', 'ipa', 'phones',)
+    list_display = ('text', 'n', 'song_ct', 'total_ct', 'stresses', 'ipa', 'phones',)
+    fields = ('text', 'n', 'song_ct', 'total_ct', 'stresses', 'ipa', 'phones',)
+    readonly_fields = ('song_ct', 'total_ct',)
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         return queryset.prefetch_related('songs').annotate(
-            song_ct=Count('songs'),
+            song_ct=Count('song_ngrams'),
+            total_ct=Sum('song_ngrams__count'),
         ).order_by('-n', '-song_ct',)
 
     def song_ct(self, obj):
         return obj.song_ct
+
+    def total_ct(self, obj):
+        return obj.total_ct
 
 
 @admin.register(Rhyme)
