@@ -78,10 +78,10 @@ class NGram(models.Model):
     rhymes = models.ManyToManyField('self', through='Rhyme')
     stresses = models.CharField(max_length=50, blank=True, null=True)
     ipa = models.CharField(max_length=500, blank=True, null=True)
-    phones = models.CharField(max_length=500, blank=True, null=True)
+    phones = models.CharField(max_length=500, blank=True, null=True, db_index=True)
     formants = ArrayField(ArrayField(models.IntegerField(), size=4), blank=True, null=True)
-    pct = models.FloatField(blank=True, null=True)
-    adj_pct = models.FloatField(blank=True, null=True)
+    pct = models.FloatField(blank=True, null=True, db_index=True)
+    adj_pct = models.FloatField(blank=True, null=True, db_index=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = NGramManager()
@@ -117,7 +117,7 @@ class Rhyme(models.Model):
 class SongNGram(models.Model):
     ngram = models.ForeignKey('NGram', on_delete=models.CASCADE, related_name='song_ngrams')
     song = models.ForeignKey('Song', on_delete=models.CASCADE, related_name='song_ngrams')
-    count = models.PositiveIntegerField()
+    count = models.PositiveIntegerField(db_index=True)
     objects = RhymeManager()
 
     class Meta:
