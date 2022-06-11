@@ -49,6 +49,7 @@ class RhymeManager(models.Manager):
             return self.top_rhymes(limit, offset)
 
         syns = make_synonyms(q)
+        all_q = [q.upper()] + [s.upper() for s in syns]
 
         with connection.cursor() as cursor:
             cursor.execute(f'''
@@ -63,7 +64,7 @@ class RhymeManager(models.Manager):
                     FROM api_rhyme r
                     INNER JOIN api_ngram from_ngram ON from_ngram.id = r.from_ngram_id
                     INNER JOIN api_ngram to_ngram ON to_ngram.id = r.to_ngram_id
-                    WHERE UPPER(from_ngram.text) ILIKE ANY(%(q)s)
+                    WHERE UPPER(from_ngram.text) = ANY(%(q)s)
                     GROUP BY from_ngram.text, to_ngram.text, to_ngram.n, to_ngram.adj_pct, level
 
                     UNION ALL
@@ -80,7 +81,7 @@ class RhymeManager(models.Manager):
                     INNER JOIN api_ngram to_ngram ON to_ngram.id = r2.to_ngram_id
                     WHERE
                         UPPER(from_ngram.text) = UPPER(rhymes.to_ngram_text)
-                        AND NOT UPPER(to_ngram.text) ILIKE ANY(%(q)s)
+                        AND UPPER(to_ngram.text) != ANY(%(q)s)
                         AND to_ngram.text != rhymes.to_ngram_text
                         AND rhymes.level <= 1
                     GROUP BY from_ngram.text, to_ngram.text, to_ngram.n, to_ngram.adj_pct, rhymes.level
@@ -97,7 +98,7 @@ class RhymeManager(models.Manager):
                               ELSE 'rhyme'
                             END AS type
                         FROM rhymes
-                        WHERE to_ngram_text NOT ILIKE ANY(%(q)s)
+                        WHERE UPPER(to_ngram_text) != ANY(%(q)s)
                         {f'AND n >= %(n_min)s' if n_min else ''}
                         {f'AND n <= %(n_max)s' if n_max else ''}
                         ORDER BY to_ngram_text, level
@@ -105,7 +106,7 @@ class RhymeManager(models.Manager):
                         ORDER BY frequency DESC, adj_pct DESC NULLS LAST
                         -- {f'LIMIT %(limit)s OFFSET %(offset)s' if limit else ''}
                 ;
-                ''', dict(q=[q] + syns, limit=limit, offset=offset, n_min=n_min, n_max=n_max)
+                ''', dict(q=all_q, limit=limit, offset=offset, n_min=n_min, n_max=n_max)
             )
 
             columns = [col[0] for col in cursor.description]
@@ -122,6 +123,7 @@ class RhymeManager(models.Manager):
             return self.top_suggestions(limit, offset, n_min, n_max)
 
         syns = make_synonyms(q)
+        all_q = [q.upper()] + [s.upper() for s in syns]
         qphones = get_phones(q, vowels_only=True, include_stresses=False)
         qn = len(q.split())
 
@@ -140,7 +142,7 @@ class RhymeManager(models.Manager):
                     INNER JOIN
                         api_songngram sn ON sn.ngram_id = ngram.id
                     WHERE
-                        NOT (ngram.text = ANY(%(q)s))
+                        UPPER(ngram.text) != ANY(%(q)s)
                         AND ngram.n <= 2
                         AND adj_pct > 0
                     GROUP BY
@@ -159,14 +161,14 @@ class RhymeManager(models.Manager):
                         0 AS frequency,
                         'suggestion' AS type
                     FROM results
-                    WHERE ngram_text NOT ILIKE ANY(%(q)s)
+                    WHERE UPPER(ngram_text) != ANY(%(q)s)
                     AND adj_pct > 0
                     {f'AND n >= %(n_min)s' if n_min else ''}
                     {f'AND n <= %(n_max)s' if n_max else ''}
                     ORDER BY phones_distance, adj_pct DESC NULLS LAST, ndiff
                     -- {f'LIMIT %(limit)s OFFSET %(offset)s' if limit else ''}
                 ;
-            ''', dict(q=[q] + syns, qn=qn, qphones=qphones, limit=limit, offset=offset,
+            ''', dict(q=all_q, qn=qn, qphones=qphones, limit=limit, offset=offset,
                       n_min=n_min, n_max=n_max))
 
             columns = [col[0] for col in cursor.description]
