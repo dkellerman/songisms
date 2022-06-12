@@ -63,7 +63,7 @@
       newRhymes = [...rhymes.value, ...newRhymes];
 
     rhymes.value = newRhymes;
-    hasNextPage.value = newRhymes.length === page.value * PER_PAGE;
+    hasNextPage.value = newRhymes?.length === page.value * PER_PAGE;
     loading.value = false;
   }
 
