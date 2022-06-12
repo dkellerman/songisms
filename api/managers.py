@@ -36,7 +36,7 @@ class RhymeManager(models.Manager):
                         rto.n AS n,
                         r.level AS level,
                         COUNT(r.song_id) AS frequency,
-                        LEVENSHTEIN(n.phones, %(qphones)s) AS distance,
+                        0 AS distance,
                         n.adj_pct AS adj_pct
                     FROM
                         api_ngram n
@@ -69,8 +69,8 @@ class RhymeManager(models.Manager):
                         api_ngram n
                     WHERE
                         NOT (UPPER(n.text) = ANY(%(q)s))
-                        AND LEVENSHTEIN(n.phones, %(qphones)s) <= 4
-                        AND adj_pct > 0.001
+                        AND LEVENSHTEIN(n.phones, %(qphones)s) <= 3
+                        AND adj_pct > 0.00005
                 )
                     SELECT
                         ngram,
