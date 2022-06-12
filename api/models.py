@@ -101,7 +101,8 @@ class NGram(models.Model):
 class Rhyme(models.Model):
     from_ngram = models.ForeignKey(NGram, on_delete=models.CASCADE, related_name='rhymed_from')
     to_ngram = models.ForeignKey(NGram, on_delete=models.CASCADE, related_name='rhymed_to')
-    song = models.ForeignKey('Song', on_delete=models.CASCADE, related_name='rhymes')
+    song = models.ForeignKey('Song', on_delete=models.CASCADE, related_name='rhymes', blank=True, null=True)
+    level = models.PositiveIntegerField(default=1, db_index=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = RhymeManager()
@@ -110,7 +111,7 @@ class Rhyme(models.Model):
         unique_together = [['from_ngram', 'to_ngram', 'song']]
 
     def __str__(self):
-        return f'{self.from_ngram.text} => {self.to_ngram.text} [{self.song.title}]'
+        return f'{self.from_ngram.text} => {self.to_ngram.text} [L{self.level}]'
 
 
 @reversion.register()
@@ -230,28 +231,6 @@ class Song(models.Model):
                 for name in (names or [])
             ]
             self.writers.set(new_writers)
-
-    def set_rhymes(self, rhymes=[]):
-        if type(rhymes) == str:
-            from .nlp_utils import get_rhyme_pairs
-            rhymes = get_rhyme_pairs(rhymes)
-
-        with transaction.atomic():
-            for text1, text2 in rhymes:
-                n1 = len(text1.split())
-                n2 = len(text2.split())
-                ngram1, _ = NGram.objects.get_or_create(text=text1, n=n1)
-                ngram2, _ = NGram.objects.get_or_create(text=text2, n=n2)
-                Rhyme.objects.get_or_create(
-                    from_ngram=ngram1,
-                    to_ngram=ngram2,
-                    song=self,
-                )
-                Rhyme.objects.get_or_create(
-                    from_ngram=ngram2,
-                    to_ngram=ngram1,
-                    song=self,
-                )
 
     def set_song_tags(self, tags=[]):
         if type(tags) == str:

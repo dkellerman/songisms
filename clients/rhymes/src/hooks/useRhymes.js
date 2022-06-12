@@ -3,8 +3,8 @@ import { gql } from '@apollo/client';
 import { useAPIClient } from './useAPIClient';
 
 export const FETCH_RHYMES = gql`
-  query Rhymes($q: String, $searchType: String, $offset: Int, $limit: Int, $nMin: Int, $nMax: Int) {
-    rhymes(q: $q, searchType: $searchType, offset: $offset, limit: $limit, nMin: $nMin, nMax: $nMax) {
+  query Rhymes($q: String, $offset: Int, $limit: Int) {
+    rhymes(q: $q, offset: $offset, limit: $limit) {
       ngram
       frequency
       type
@@ -12,7 +12,7 @@ export const FETCH_RHYMES = gql`
   }
 `;
 
-export function useRhymes(q, searchType, page = 1, pageSize = 50, n = undefined) {
+export function useRhymes(q, page = 1, pageSize = 50) {
   const [rhymes, setRhymes] = useState();
   const [loading, setLoading] = useState();
   const client = useAPIClient();
@@ -25,11 +25,10 @@ export function useRhymes(q, searchType, page = 1, pageSize = 50, n = undefined)
       if (page === 1) setLoading(true);
       abortController.current = new AbortController();
 
-      const qstr = (q ?? '').toLowerCase().trim();
       const offset = (page - 1) * pageSize;
       const resp = await client.query({
         query: FETCH_RHYMES,
-        variables: { q: qstr, offset, limit: pageSize, searchType, nMin: n?.[0], nMax: n?.[1] },
+        variables: { q, offset, limit: pageSize },
         context: {
           fetchOptions: {
             signal: abortController.current.signal,
@@ -44,7 +43,7 @@ export function useRhymes(q, searchType, page = 1, pageSize = 50, n = undefined)
         setRhymes(cur => [...cur, ...resp.data.rhymes]);
       setLoading(false);
     })();
-  }, [q, client, searchType, page, pageSize, n]);
+  }, [q, client, page, pageSize]);
 
   return {
     rhymes,

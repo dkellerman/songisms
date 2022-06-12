@@ -4,7 +4,7 @@ import multiprocessing as mp
 from django.core.management.base import BaseCommand, CommandError
 from api.models import *
 from api.cloud_utils import fetch_audio
-from api.nlp_utils import make_ngrams, score_ngrams, set_lyrics_ipa
+from api.nlp_utils import make_ngrams, score_ngrams, set_lyrics_ipa, make_rhymes, make_rhymes_l2
 
 
 class Command(BaseCommand):
@@ -48,7 +48,7 @@ class Command(BaseCommand):
                 if process_rhymes and (force_update or not song.rhymes.count()):
                     print('\t[RHYMES]')
                     if not dry_run:
-                        song.set_rhymes(song.rhymes_raw)
+                        make_rhymes(song)
 
             if song.lyrics:
                 if process_ngrams and (force_update or not song.ngrams.count()):
@@ -92,6 +92,11 @@ class Command(BaseCommand):
         if process_ngrams:
             if not dry_run:
                 score_ngrams(force_update=force_update)
+
+        if process_rhymes:
+            print('\t[RHYMES L2]')
+            if not dry_run:
+                make_rhymes_l2()
 
         if not no_prune:
             print('[PRUNING]')

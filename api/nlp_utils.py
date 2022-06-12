@@ -133,6 +133,58 @@ def set_lyrics_ipa(song):
     song.save()
 
 
+def make_rhymes(song):
+    rhymes = get_rhyme_pairs(song.rhymes_raw)
+
+    for text1, text2 in rhymes:
+        n1 = len(text1.split())
+        n2 = len(text2.split())
+        with transaction.atomic():
+            ngram1, _ = models.NGram.objects.get_or_create(text=text1, n=n1)
+            ngram2, _ = models.NGram.objects.get_or_create(text=text2, n=n2)
+            models.Rhyme.objects.get_or_create(
+                from_ngram=ngram1,
+                to_ngram=ngram2,
+                song=song,
+                level=1,
+            )
+            models.Rhyme.objects.get_or_create(
+                from_ngram=ngram2,
+                to_ngram=ngram1,
+                song=song,
+                level=1,
+            )
+
+
+def make_rhymes_l2():
+    l1 = models.Rhyme.objects.distinct('from_ngram', 'to_ngram').filter(level=1)
+    l2 = models.Rhyme.objects.distinct('from_ngram', 'to_ngram').filter(level=2)
+    created = [(r.from_ngram_id, r.to_ngram_id) for r in l2]
+
+    for r1 in tqdm(l1):
+        for r2 in l1.filter(from_ngram_id=r1.to_ngram_id):
+            with transaction.atomic():
+                id1 = r1.from_ngram_id
+                id2 = r2.to_ngram_id
+                if (id1, id2) not in created:
+                    models.Rhyme.objects.create(
+                        from_ngram_id=id1,
+                        to_ngram_id=id2,
+                        song=None,
+                        level=2,
+                    )
+                    created.append((id1, id2))
+
+                if (id2, id1) not in created:
+                    models.Rhyme.objects.create(
+                        from_ngram_id=id2,
+                        to_ngram_id=id1,
+                        song=None,
+                        level=2,
+                    )
+                    created.append((id2, id1))
+
+
 def get_rhyme_pairs(val=''):
     lines = val.strip().split('\n')
     pairs = []

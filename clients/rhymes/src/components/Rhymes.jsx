@@ -11,42 +11,26 @@ const PAGE_SIZE = 50;
 export default function Rhymes() {
   const router = useRouter();
   const [q, setQ] = useState(router.query ? router.query.q : '');
-  const [searchType, setSearchType] = useState(router.query ? router.query.t : 'rhyme');
-
-  const showTop = !q;
-  const showSuggestions = searchType === 'suggest';
-  const showRhymes = searchType !== 'suggest';
-
   const [page, setPage] = useState(1);
-  const [n, setN] = useState(showSuggestions ? [3, 3] : undefined);
-  const { rhymes, loading, abort, hasNextPage } = useRhymes(q, searchType, page, PAGE_SIZE, n);
-
+  const { rhymes, loading, abort, hasNextPage } = useRhymes(q, page, PAGE_SIZE);
   const inputRef = useRef();
-  const suggestRef = useRef();
 
-  const search = useCallback((newQ, newSearchType) => {
-    if (!(newQ || '').trim() && (searchType === newSearchType))
-      return;
+  const search = useCallback((newQ) => {
+    const qVal = (newQ || '').trim();
+    if (!qVal) return;
 
-    setQ(newQ);
-    setSearchType(newSearchType);
+    setQ(qVal);
     setPage(1);
 
-    if (newSearchType !== 'suggest') setN(undefined);
-    else if (newQ) setN([1, 3]);
-    else setN([3, 3]);
+    track('engagement', 'search', qVal);
 
-    track('engagement', `${newSearchType || 'rhyme'}`, newQ);
-
-    const routerQuery = { ...router.query, q: newQ, t: newSearchType };
-    if (!newQ?.trim()) delete routerQuery.q;
-    if (newSearchType !== 'suggest') delete routerQuery.t;
+    const routerQuery = { ...router.query, q: qVal };
     return router.push({ query: routerQuery });
   }, [router]);
 
   const debouncedSearch = useCallback(
-    debounce(e => search(e.target.value, searchType), SEARCH_DEBOUNCE),
-    [search, searchType],
+    debounce(e => search(e.target.value), SEARCH_DEBOUNCE),
+    [search],
   );
 
   const onInput = useCallback(async e => {
@@ -54,28 +38,19 @@ export default function Rhymes() {
     return debouncedSearch(e);
   },[debouncedSearch, abort]);
 
-  const onSetSearchType = useCallback(
-    async e => {
-      search(q, e.target.checked ? 'suggest' : 'rhyme');
-    },
-    [q, search],
-  );
-
   useEffect(() => {
-    if (!inputRef.current || !suggestRef.current) return;
+    if (!inputRef.current) return;
     inputRef.current.value = q ?? '';
-    suggestRef.current.checked = searchType === 'suggest';
-  }, [q, searchType]);
+  }, [q]);
 
   useEffect(() => {
-    setQ(router.query?.q || '');
-    setSearchType(router.query?.t || 'rhyme');
+    setQ(router.query?.q ?? '');
   }, [router.query]);
 
   const counts = useMemo(
     () => ({
       rhyme: rhymes?.filter(r => r.type === 'rhyme').length || 0,
-      ror: rhymes?.filter(r => r.type === 'rhyme-l2').length || 0,
+      l2: rhymes?.filter(r => r.type === 'rhyme-l2').length || 0,
       sug: rhymes?.filter(r => r.type === 'suggestion').length || 0,
     }),
     [rhymes],
@@ -91,10 +66,6 @@ export default function Rhymes() {
           defaultValue={q}
           placeholder="Find rhymes in songs..."
         />
-        <div className="suggestions">
-          <input type="checkbox" ref={suggestRef} onInput={onSetSearchType} />
-          <label>Suggestions</label>
-        </div>
       </fieldset>
 
       <output>
@@ -102,31 +73,18 @@ export default function Rhymes() {
 
         {!loading && !!rhymes && (
           <>
-            {showTop && showRhymes && counts.rhyme > 0 && <label>Top {counts.rhyme} rhymes</label>}
-            {showTop && showSuggestions && counts.sug > 0 && <label>Top {counts.sug} suggestions</label>}
-            {!showTop && (
-              <label>
-                {showRhymes && `${ct2str(counts.rhyme, 'rhyme')} found`}
-                {showRhymes && counts.ror > 0 && `, ${ct2str(counts.ror, 'rhyme-of-rhyme', 'rhymes-of-rhymes')}`}
-                {showSuggestions && `${ct2str(counts.sug, 'suggestion')} found`}
-              </label>
-            )}
-            {showSuggestions && (
-              <>
-                <span className="word-links">[&nbsp; Words: &nbsp;
-                  <span onClick={() => setN(null)}>all</span>
-                  <span onClick={() => setN([1, 1])}>1</span>
-                  <span onClick={() => setN([2, 2])}>2</span>
-                  <span onClick={() => setN([3, 3])}>3</span>
-                  <span onClick={() => setN([3, null])}>3+</span>
-                ]&nbsp;</span>
-              </>
-            )}
+            {!q && <label>Top {counts.rhyme} rhymes</label>}
+
+            {!!q && [
+              `${ct2str(counts.rhyme, 'rhyme')} found`,
+              counts.l2 > 0 && ct2str(counts.l2, 'rhyme-of-rhyme', 'rhymes-of-rhymes'),
+              counts.sug > 0 && ct2str(counts.sug, 'suggestion'),
+            ].filter(Boolean).join(', ')}
 
             <ColumnLayout>
               {rhymes.map(r => (
                 <RhymeItem key={r.ngram}>
-                  <span className={`hit ${r.type}`} onClick={() => search(r.ngram, searchType)}>
+                  <span className={`hit ${r.type}`} onClick={() => search(r.ngram)}>
                     {r.ngram}
                   </span>{' '}
                   {!!r.frequency && r.type === 'rhyme' && <span className="freq">({r.frequency})</span>}
@@ -138,7 +96,7 @@ export default function Rhymes() {
               <button
                 className="more compact"
                 onClick={() => {
-                  track('engagement', `more_${searchType}`, q);
+                  track('engagement', 'more', q);
                   setPage(page + 1);
                 }}
               >

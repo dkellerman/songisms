@@ -19,35 +19,10 @@ export const StyledRhymes = styled.article`
         -webkit-appearance: searchfield-cancel-button;
       }
     }
-    input[type='checkbox'] {
-      zoom: 1.5;
-      display: inline-block;
-      margin-right: 5px;
-    }
-    label {
-      font-size: large;
-      position: relative;
-      top: -3px;
-    }
   }
 
   output label {
     font-size: large;
-  }
-
-  .word-links {
-    display: inline-block;
-    margin-left: 15px;
-    font-size: medium;
-    span {
-      display: inline-block;
-      margin-right: 10px;
-      &:not(.selected) {
-        color: blue;
-        text-decoration: underline;
-        cursor: pointer;
-      }
-    }
   }
 `;
 
@@ -82,6 +57,7 @@ export const RhymeItem = styled.li`
     }
     &.suggestion {
       opacity: 0.6;
+      font-style: italic;
     }
   }
 
