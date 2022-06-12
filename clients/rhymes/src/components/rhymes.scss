@@ -25,17 +25,19 @@ fieldset {
   }
 
   ul {
+    --gap: 20;
     margin-top: 30px;
     list-style: none;
     padding-left: 0;
     display: flex;
     flex-flow: row wrap;
     max-width: 768px;
-    gap: 20px;
+    gap: var(--gap)px;
 
     li {
       text-indent: 0;
       font-size: larger;
+      margin-bottom: 12px;
 
       &:before {
         display: none;
@@ -62,16 +64,16 @@ fieldset {
 
 @media screen and (max-width: 374px) {
   ul li {
-    width: 100%;
+    width: calc((((100% - (var(--gap) * (var(--cols, 1) - 1) * 1px))) / var(--cols, 1)));
   }
 }
 @media screen and (min-width: 375px) and (max-width: 479px) {
   ul li {
-    width: calc((100% - 20px) / 2);
+    width: calc((((100% - (var(--gap) * (var(--cols, 2) - 1) * 1px))) / var(--cols, 2)));
   }
 }
 @media screen and (min-width: 480px) {
   ul li {
-    width: calc((100% - 40px) / 3);
+    width: calc((((100% - (var(--gap) * (var(--cols, 3) - 1) * 1px))) / var(--cols, 3)));
   }
 }

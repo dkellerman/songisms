@@ -4,13 +4,13 @@ const routes = [
   {
     path: '/',
     name: 'RhymesPage',
-    component: () => import(/* webpackChunkName: "rhymes" */ './components/RhymesPage.vue')
+    component: () => import(/* webpackChunkName: "rhymes" */ './components/RhymesPage.vue'),
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
 });
 
 export default router;

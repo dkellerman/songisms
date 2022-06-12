@@ -1,7 +1,7 @@
 <script>
-  export default {
-    name: 'App',
-  };
+export default {
+  name: 'App',
+};
 </script>
 
 <template>
@@ -10,7 +10,6 @@
     <div class="links">
       <a href="https://bipium.com">Metronome</a>
     </div>
-
   </nav>
   <main>
     <router-view />
@@ -18,13 +17,15 @@
 </template>
 
 <style lang="scss">
-  @import "../node_modules/papercss/dist/paper.min.css";
-  @import "../../shared/layout.scss";
-  html, body, #app {
-    padding: 0;
-    margin: 0;
-  }
-  main {
-    padding: 20px;
-  }
+@import '../node_modules/papercss/dist/paper.min.css';
+@import '../../shared/layout.scss';
+html,
+body,
+#app {
+  padding: 0;
+  margin: 0;
+}
+main {
+  padding: 20px;
+}
 </style>
