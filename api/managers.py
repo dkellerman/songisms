@@ -1,5 +1,5 @@
 from django.db import models, connection
-from .nlp_utils import make_synonyms, get_phones
+from .nlp_utils import make_synonyms, get_phones, tokenize_lyric_line
 
 
 class RhymeManager(models.Manager):
@@ -23,6 +23,7 @@ class RhymeManager(models.Manager):
         if not q:
             return self.top_rhymes(limit, offset)
 
+        q = ' '.join(tokenize_lyric_line(q))
         syns = make_synonyms(q)
         qphones = get_phones(q, vowels_only=True, include_stresses=False)
         qn = len(q.split())

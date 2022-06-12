@@ -68,7 +68,7 @@ async function fetchRhymes() {
 
   if (page.value > 1) newRhymes = [...rhymes.value, ...newRhymes];
 
-  if (outputEl.value && some(newRhymes, r => r.ngram.length >= 18)) {
+  if (outputEl.value && some(newRhymes, r => r.ngram.length >= 15)) {
     outputEl.value.style.setProperty('--cols', 1);
   } else {
     outputEl.value.style.removeProperty('--cols');
