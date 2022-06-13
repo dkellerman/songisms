@@ -37,7 +37,11 @@ rite;right
 site;sight
 lite;light
 gonna;gunna;'gonna
+watcha;what ya;what you;whatcha
+meetcha;meet ya;meet you
+tryna;tryin' to;trying to
 little;lil;'lil
+em;'em;them
 downtown;down town
 uh huh;uhhuh;uh-huh
 c'mon;cmon;come on
@@ -63,6 +67,10 @@ yadda;yada
 its;it's;it is
 monalisa;mona lisa
 let's;lets
+s'posta;supposed to
+burnt;burned
+hifi;hi-fi
+lofi;lo-fi
 baby's;baby;babe
 of;o'
 aj;ay;uy;oy
