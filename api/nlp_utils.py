@@ -225,6 +225,9 @@ def make_synonyms(word):
         elif word.endswith('ing'):
             syns.add(re.sub(r'g$', '\'', word))
             syns.add(word[:-1])
+        elif word.endswith('in'):
+            syns.add(word + 'g')
+            syns.add(word + "'")
         elif word.endswith("'ve"):
             syns.add(word[:-3] + 'a')
 

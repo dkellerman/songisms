@@ -41,15 +41,15 @@ little;lil;'lil
 downtown;down town
 uh huh;uhhuh
 c'mon;cmon;come on
-L.A.
 band-aid;bandaid;band aid
 woo;wooh
 tailgate;tail gate;tail-gate
-ya;you
+ya;you;u
 getcha;get ya;get you
 letcha;let ya;let you
 whatcha;wacha;what ya;what you
 gotta;got to;'gotta
+gotcha;got ya;got you
 lotta;lot of;'lotta
 wanna;want to;'wanna
 woulda;would have;would've
@@ -211,3 +211,4 @@ quakin';quaking
 achin';aching
 makin';making
 love;luv
+4u;for you
