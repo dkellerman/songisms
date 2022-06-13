@@ -86,7 +86,7 @@ class RhymeManager(models.Manager):
             WHERE
                 NOT (UPPER(n.text) = ANY(%(q)s))
                 AND LEVENSHTEIN(n.phones, %(qphones)s) <= 3
-                AND adj_pct >= 0.0005
+                AND adj_pct >= 0.00005
         ''' if qphones and len(qphones) else ''
 
         with connection.cursor() as cursor:
