@@ -1,18 +1,22 @@
 from django.db import models, connection
+from django.core.cache import cache
 from .nlp_utils import make_synonyms, get_phones, tokenize_lyric_line
 
 
 class RhymeManager(models.Manager):
     def top_rhymes(self, limit=None, offset=0):
-        from api.models import NGram
-        qs = NGram.objects.annotate(
-            frequency=models.Count('rhymed_from__song__id', distinct=True),
-            ngram=models.F('text'),
-            type=models.Value('rhyme'),
-        ).filter(frequency__gt=0) \
-         .filter(rhymed_from__level=1) \
-         .order_by('-frequency', 'text') \
-         .values('ngram', 'frequency', 'type')
+        qs = cache.get('top_rhymes')
+        if not qs:
+            from api.models import NGram
+            qs = NGram.objects.annotate(
+                frequency=models.Count('rhymed_from__song__id', distinct=True),
+                ngram=models.F('text'),
+                type=models.Value('rhyme'),
+            ).filter(frequency__gt=0) \
+             .filter(rhymed_from__level=1) \
+             .order_by('-frequency', 'text') \
+             .values('ngram', 'frequency', 'type')
+            cache.set('top_rhymes', qs)
 
         if limit:
             qs = qs[offset:offset+limit]
@@ -22,6 +26,13 @@ class RhymeManager(models.Manager):
     def query(self, q, limit=None, offset=0):
         if not q:
             return self.top_rhymes(limit, offset)
+
+        cache_key = f'query:{q}'
+        vals = cache.get(cache_key)
+        if vals:
+            if limit:
+                vals = vals[offset:offset+limit]
+            return vals
 
         q = ' '.join(tokenize_lyric_line(q))
         syns = make_synonyms(q)
@@ -103,6 +114,7 @@ class RhymeManager(models.Manager):
                 dict(zip(columns, row))
                 for row in cursor.fetchall()
             ]
+            cache.set(cache_key, vals)
             if limit:
                 vals = vals[offset:offset+limit]
             return vals

@@ -1,8 +1,8 @@
 ## Folders
 * `api` - django app for db/admin/graphql, deployed to heroku @ songisms.herokuapp.com
 * `clients` - client apps
-  * `browser` - api browser (NextJS), deployed to vercel @ songisms.vercel.app
-  * `rhymes` - rhymium app (NextJS), deployed to vercel @ rhymes.vercel.app
+  * `browser` - api browser (VueJS), deployed to vercel @ songisms.vercel.app
+  * `rhymes` - rhymium app (VueJS), deployed to vercel @ rhymes.vercel.app
 * `data` - misc data
 * `scripts` - misc scripts
 * `songisms` - django project settings
@@ -24,8 +24,8 @@
 * Browse admin: https://localhost:8000/admin/
 * Browse GraphQL: https://localhost:8000/graphql/
 
-## NextJS setup
-* `cd client` (or `rhymes`)
+## Client app setup
+* `cd client/rhymes` (or `browser`)
 * `nvm use 14`
 * `yarn`
 * `yarn dev` OR `vercel dev` (should have env vars setup)

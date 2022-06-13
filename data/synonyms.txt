@@ -39,7 +39,7 @@ lite;light
 gonna;gunna;'gonna
 little;lil;'lil
 downtown;down town
-uh huh;uhhuh
+uh huh;uhhuh;uh-huh
 c'mon;cmon;come on
 band-aid;bandaid;band aid
 woo;wooh
@@ -53,6 +53,12 @@ gotcha;got ya;got you
 lotta;lot of;'lotta
 wanna;want to;'wanna
 munna;gonna
+wouldya;would ya;would you
+shoulda;should've;should have
+coulda;could've;could have
+kinda;kind of
+sorta;sort of
+betcha;bet ya;bet you
 yadda;yada
 its;it's;it is
 monalisa;mona lisa

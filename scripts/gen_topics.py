@@ -16,9 +16,16 @@ from api.nlp_utils import tokenize_lyrics
 
 def gen_topics(num_topics=10):
     # load songs
-    songs = Song.objects.exclude(lyrics=None)
+    songs = Song.objects.exclude(lyrics=None).exclude(metadata__songMeanings__comments=None)
     stop_words = stopwords.words('english')
-    data_words = [ tokenize_lyrics(song.lyrics, stop_words, True) for song in songs ]
+    data_words = []
+    for song in songs:
+        toks = tokenize_lyrics(song.lyrics, stop_words, True)
+        comments = song.metadata['songMeanings']['comments']
+        for comment in comments:
+            toks += [t for t in tokenize_lyrics(comment['content'].lower().strip())
+                     if t not in stop_words + ['song', 'lyrics']]
+        data_words.append(toks)
 
     # gen lda model
     id2word = corpora.Dictionary(data_words)

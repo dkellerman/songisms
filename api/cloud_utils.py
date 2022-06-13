@@ -18,6 +18,7 @@ storage_credentials = service_account.Credentials.from_service_account_info(key)
 sclient = SClient(credentials=storage_credentials)
 bucket = sclient.bucket(settings.GS_BUCKET_NAME)
 
+
 def get_firestore():
     return firestore.client()
 
