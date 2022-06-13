@@ -64,18 +64,25 @@ fieldset {
   }
 }
 
+@function colWidth($defaultCols) {
+  @return calc(
+    (100% - (var(--gap) * var(--cols, #{$defaultCols - 1}) * 1px)) /
+    var(--cols, #{$defaultCols})
+  );
+}
+
 @media screen and (max-width: 374px) {
   ul li {
-    width: #{'calc((((100% - (var(--gap) * (var(--cols, 1) - 1) * 1px))) / var(--cols, 1)))'};
+    width: colWidth(1);
   }
 }
 @media screen and (min-width: 375px) and (max-width: 479px) {
   ul li {
-    width: #{'calc((((100% - (var(--gap) * (var(--cols, 2) - 1) * 1px))) / var(--cols, 2)))'};
+    width: colWidth(2);
   }
 }
 @media screen and (min-width: 480px) {
   ul li {
-    width: #{'calc((((100% - (var(--gap) * (var(--cols, 3) - 1) * 1px))) / var(--cols, 3)))'};
+    width: colWidth(3);
   }
 }
