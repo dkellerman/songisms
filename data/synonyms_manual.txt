@@ -21,6 +21,7 @@ around;'round;round
 what;whaa;wha;wot;wut
 meltdown;melt-down; melt down
 about;'bout;bout
+4u; for you
 o's; ohs; oh's
 o; oh; ohh
 oo; ooh; oooh
@@ -31,7 +32,7 @@ you; u
 zee; z
 hon'; hon
 then; than
-rock n' roll; rock n roll; rock and roll; rocknroll; rock & roll; rock&roll
+rock n' roll; rock n roll; rock and roll; rocknroll; rock & roll; rock&roll; rock 'n' roll
 nite; night
 rite; right
 site; sight
@@ -41,11 +42,9 @@ little; lil; 'lil
 downtown; down town
 uh huh; uhhuh
 c'mon; cmon; come on
-LA; L.A.
 band-aid; bandaid; band aid
 woo; wooh
 tailgate; tail gate; tail-gate
-bittersweet; bittersweet
 ya; you
 getcha; get ya; get you
 letcha; let ya; let you
@@ -53,9 +52,10 @@ whatcha; wacha; what ya; what you
 gotta; got to; 'gotta
 lotta; lot of; 'lotta
 wanna; want to; 'wanna
-woulda; would have
-shoulda; should have
-coulda; could have
+woulda; would have; would've
+shoulda; should have; should've
+coulda; could have; could've
+musta; must have; must've
 munna; gonna
 yadda; yada
 its; it's; it is
@@ -67,7 +67,5 @@ aj; ay; uy; oy
 i'll; ill; i will
 bran'; brand
 thatta; that; thadda
-a.m.; am
 p.m.; pm
-an'; and
-musta; must have
+an'; and; 'n'; n'; 'n
