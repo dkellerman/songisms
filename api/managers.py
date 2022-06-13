@@ -1,3 +1,4 @@
+import re
 from django.db import models, connection
 from django.core.cache import cache
 from .nlp_utils import make_synonyms, get_phones, tokenize_lyric_line
@@ -9,7 +10,7 @@ class RhymeManager(models.Manager):
     def top_rhymes(self, offset=0, limit=50):
         offset = offset or 0
         limit = limit or 50
-        cache_key = f'top_rhymes:{offset}-{offset+limit}'
+        cache_key = f'top_rhymes_{offset}_{offset+limit}'
         qs = cache.get(cache_key)
         if not qs:
             from api.models import NGram
@@ -33,7 +34,8 @@ class RhymeManager(models.Manager):
 
         offset = offset or 0
         limit = limit or 50
-        cache_key = f'query:{q}'
+        qkey = re.sub(' ', '_', q)
+        cache_key = f'query_{qkey}'
         vals = cache.get(cache_key)
         if vals:
             return vals[offset:min(self.HARD_LIMIT, offset+limit)]
@@ -84,7 +86,7 @@ class RhymeManager(models.Manager):
             WHERE
                 NOT (UPPER(n.text) = ANY(%(q)s))
                 AND LEVENSHTEIN(n.phones, %(qphones)s) <= 3
-                AND adj_pct > 0.00005
+                AND adj_pct >= 0.00005
         ''' if qphones and len(qphones) else ''
 
         with connection.cursor() as cursor:
@@ -106,8 +108,8 @@ class RhymeManager(models.Manager):
                     ORDER BY
                         level NULLS LAST,
                         frequency DESC NULLS LAST,
-                        distance,
                         adj_pct DESC NULLS LAST,
+                        distance,
                         ndiff
                     OFFSET 0
                     LIMIT %(limit)s

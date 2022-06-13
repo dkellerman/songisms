@@ -11,7 +11,7 @@ import { isMobile } from 'mobile-device-detect';
 import { ref, watch, computed } from 'vue';
 import router from '@/router';
 
-const PER_PAGE = 50;
+const PER_PAGE = 100;
 const DEBOUNCE_TIME = isMobile ? 1000 : 500;
 const FETCH_RHYMES = `
     query Rhymes($q: String, $offset: Int, $limit: Int) {
@@ -75,7 +75,7 @@ async function fetchRhymes() {
   }
 
   rhymes.value = newRhymes;
-  hasNextPage.value = newRhymes?.length === page.value * PER_PAGE;
+  hasNextPage.value = newRhymes?.length === page.value * PER_PAGE && newRhymes.length < 200;
   loading.value = false;
 }
 

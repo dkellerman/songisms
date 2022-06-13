@@ -1,39 +1,60 @@
 import re
+import string
 import spacy
 import inflect
 import sh
 import eng_to_ipa
 import pronouncing as pron
 from tqdm import tqdm
+from nltk import FreqDist
 from nltk.util import ngrams as nltk_make_ngrams
+from nltk.corpus import brown
 from num2words import num2words
 from django.db import transaction
-from django.db.models import Count, Sum
+from django.db.models import Sum
 import api.models as models
 
-vocab = 'en_core_web_sm'
-try:
-    nlp = spacy.load(vocab)
-except:
-    spacy.cli.download(vocab)
-    nlp = spacy.load(vocab)
-
-nlp.tokenizer = spacy.tokenizer.Tokenizer(nlp.vocab)
-
+_syn_data = None
+_common_words = None
 inflector = inflect.engine()
-syn_file_name = './data/synonyms.txt'
-
-with open(syn_file_name, 'r') as syn_file:
-    syn_data = [
-        [l.strip() for l in line.split(';')]
-        for line in syn_file.readlines()
-    ]
 
 
-def tokenize_lyrics(lyrics, stop_words=[], unique=False):
+def get_common_words():
+    global _common_words
+    if _common_words is not None:
+        return _common_words
+    flist = FreqDist(i.lower() for i in brown.words())
+    _common_words = [w[0] for w in flist.most_common()[:1000]]
+    return _common_words
+
+
+def get_synonyms():
+    global _syn_data
+    if _syn_data is not None:
+        return _syn_data
+    with open('./data/synonyms.txt', 'r') as syn_file:
+        _syn_data = [
+            [l.strip() for l in line.split(';')]
+            for line in syn_file.readlines()
+        ]
+    return _syn_data
+
+
+def get_word_splits(word):
+    splits = set()
+    common = get_common_words()
+    for sp in range(1, len(word)):
+        w1 = word[:sp]
+        w2 = word[sp:]
+        if w1 in common and w2 in common:
+            splits.add(' '.join([w1, w2]))
+    return list(splits)
+
+
+def tokenize_lyrics(lyrics, stop_words=None, unique=False):
     toks = [
         tok for tok in tokenize_lyric_line(' '.join(lyrics.split('\n')))
-        if tok not in stop_words
+        if tok not in stop_words or []
     ]
     if unique:
         toks = list(set(toks))
@@ -50,8 +71,7 @@ def tokenize_lyric_line(val):
     val = re.sub(r'[^\w\s\'-.]', '', val)
     val = re.sub(r'(\w+in)\'[^\w]', r'\1g ', val)
     val = re.sub(r'\s+', ' ', val)
-    toks = nlp(val)
-    toks = [t.text for t in toks if t.pos_ not in ['PUNCT']]
+    toks = [t for t in val.split() if t not in string.punctuation]
     toks = [t + ('.' if '.' in t else '') for t in toks]
     toks = [re.sub(r'\.+', '.', t) for t in toks]
     return toks
@@ -257,15 +277,23 @@ def make_synonyms(gram):
             syns.add(simple_sing)
 
         match_w = word.lower().strip()
-        matches = [line for line in syn_data if match_w in line]
+        matches = [line for line in get_synonyms() if match_w in line]
         for line in matches:
             for l in line:
                 tok = l.lower().strip()
                 if tok != match_w:
                     syns.add(tok)
 
+        for splitw in get_word_splits(word):
+            syns.add(splitw)
+
         for syn in syns:
             all_syns.add(re.sub(r'\b%s\b' % word, syn, str(gram)))
+
+    if ' ' in gram:
+        compound = re.sub(' ', '', gram)
+        if compound in get_common_words():
+            all_syns.add(compound)
 
     return [syn for syn in all_syns if syn != gram]
 
@@ -274,6 +302,18 @@ def phones_for_word(w):
     w = re.sub(r'in\'', 'ing', w)
     val = pron.phones_for_word(w)
     return val[0] if len(val) else ''
+
+
+def load_nlp():
+    vocab = 'en_core_web_sm'
+    try:
+        nlp = spacy.load(vocab)
+    except:
+        spacy.cli.download(vocab)
+        nlp = spacy.load(vocab)
+
+    nlp.tokenizer = spacy.tokenizer.Tokenizer(nlp.vocab)
+    return nlp
 
 
 def pstresses(w):
