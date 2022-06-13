@@ -4,8 +4,13 @@ from .nlp_utils import make_synonyms, get_phones, tokenize_lyric_line
 
 
 class RhymeManager(models.Manager):
-    def top_rhymes(self, limit=None, offset=0):
-        qs = cache.get('top_rhymes')
+    HARD_LIMIT = 200
+
+    def top_rhymes(self, offset=0, limit=50):
+        offset = offset or 0
+        limit = limit or 50
+        cache_key = f'top_rhymes:{offset}-{offset+limit}'
+        qs = cache.get(cache_key)
         if not qs:
             from api.models import NGram
             qs = NGram.objects.annotate(
@@ -16,23 +21,22 @@ class RhymeManager(models.Manager):
              .filter(rhymed_from__level=1) \
              .order_by('-frequency', 'text') \
              .values('ngram', 'frequency', 'type')
-            cache.set('top_rhymes', qs)
 
-        if limit:
-            qs = qs[offset:offset+limit]
+            qs = qs[offset:min(self.HARD_LIMIT, offset+limit)]
+            cache.set(cache_key, qs)
 
         return qs
 
-    def query(self, q, limit=None, offset=0):
+    def query(self, q, offset=0, limit=50):
         if not q:
-            return self.top_rhymes(limit, offset)
+            return self.top_rhymes(offset, limit)
 
+        offset = offset or 0
+        limit = limit or 50
         cache_key = f'query:{q}'
         vals = cache.get(cache_key)
         if vals:
-            if limit:
-                vals = vals[offset:offset+limit]
-            return vals
+            return vals[offset:min(self.HARD_LIMIT, offset+limit)]
 
         q = ' '.join(tokenize_lyric_line(q))
         syns = make_synonyms(q)
@@ -105,9 +109,10 @@ class RhymeManager(models.Manager):
                         distance,
                         adj_pct DESC NULLS LAST,
                         ndiff
-                    -- {f'LIMIT %(limit)s OFFSET %(offset)s' if limit else ''}
+                    OFFSET 0
+                    LIMIT %(limit)s
                 ;
-            ''', dict(q=all_q, qn=qn, qphones=qphones, limit=limit, offset=offset))
+            ''', dict(q=all_q, qn=qn, qphones=qphones, limit=self.HARD_LIMIT))
 
             columns = [col[0] for col in cursor.description]
             vals = [
@@ -115,8 +120,7 @@ class RhymeManager(models.Manager):
                 for row in cursor.fetchall()
             ]
             cache.set(cache_key, vals)
-            if limit:
-                vals = vals[offset:offset+limit]
+            vals = vals[offset:min(self.HARD_LIMIT, offset+limit)]
             return vals
 
 

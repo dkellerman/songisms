@@ -166,7 +166,7 @@ class Query(graphene.ObjectType):
 
     @staticmethod
     def resolve_rhymes(root, info, q=None, offset=0, limit=50):
-        return Rhyme.objects.query(q, limit=limit, offset=offset)
+        return Rhyme.objects.query(q, offset, limit)
 
     @staticmethod
     def resolve_ngrams(root, info, q, tags, page=1, ordering=None):
