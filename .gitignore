@@ -5,6 +5,8 @@
 __pycache__
 staticfiles
 
+data/ldavis*
+
 # dependencies
 node_modules
 /.pnp

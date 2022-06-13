@@ -25,11 +25,7 @@ class RhymeManager(models.Manager):
 
         q = ' '.join(tokenize_lyric_line(q))
         syns = make_synonyms(q)
-        for tok in [q] + syns:
-            qphones = get_phones(tok, vowels_only=True, include_stresses=False)
-            if qphones and len(qphones):
-                print("using", tok)
-                break
+        qphones = get_phones(q, vowels_only=True, include_stresses=False, try_syns=syns)
         qn = len(q.split())
         all_q = [q.upper()] + [s.upper() for s in syns]
 

@@ -5,13 +5,11 @@ description = ""
 authors = ["David Kellerman <david@silvermoon.org>"]
 
 [tool.poetry.dependencies]
-python = "3.9.12"
+python = "3.9.13"
 Django = "^4.0.4"
 psycopg2 = "^2.9.3"
 gunicorn = "^20.1.0"
 django-on-heroku = "^1.1.2"
-Markdown = "^3.3.7"
-django-filter = "^21.1"
 django-storages = {extras = ["google"], version = "^1.12.3"}
 nltk = "^3.7"
 spacy = "^3.3.0"
@@ -25,7 +23,6 @@ django-reversion = "^5.0.0"
 django-reversion-compare = "^0.15.0"
 django-json-widget = {git = "https://github.com/dkellerman/django-json-widget"}
 django-debug-toolbar = "^3.4.0"
-django-model-utils = "^4.2.0"
 eng-to-ipa = "^0.0.2"
 pronouncing = "^0.2.0"
 inflect = "^5.6.0"
@@ -38,6 +35,7 @@ autopep8 = "^1.6.0"
 gensim = "^4.2.0"
 pyLDAvis = "^3.3.1"
 scikit-learn = "^1.1.1"
+num2words = "^0.5.10"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

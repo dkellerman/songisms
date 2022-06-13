@@ -91,15 +91,15 @@ class Command(BaseCommand):
                     if not dry_run:
                         set_lyrics_ipa(song)
 
+        if process_rhymes and not dry_run:
+            print('\t[RHYMES L2]')
+            make_rhymes_l2()
+
         if process_extra and not dry_run:
             make_extra_ngrams(force_update=force_update)
 
         if (process_ngrams or process_extra) and not dry_run:
             score_ngrams(force_update=force_update)
-
-        if process_rhymes and not dry_run:
-            print('\t[RHYMES L2]')
-            make_rhymes_l2()
 
         if not no_prune:
             print('[PRUNING]')

@@ -52,9 +52,6 @@ gotta;got to;'gotta
 gotcha;got ya;got you
 lotta;lot of;'lotta
 wanna;want to;'wanna
-woulda;would have;would've
-shoulda;should have;should've
-coulda;could have;could've
 munna;gonna
 yadda;yada
 its;it's;it is
@@ -69,146 +66,9 @@ thatta;that;thadda
 p.m.;pm
 an';and;'n;n';'n';n
 musta;must have;must've
-healin';healing;healin
-ceilin';ceiling;ceilin
-wearin';wearing;wearin
-whisperin';whispering;whisperin
-everythin';everything;everythin
-whistlin';whistling;whistlin
-listenin';listening;listenin
-burnin';burning;burnin
-rollin';rolling
-scrollin';scrolling
-refuelin';refueling
 peek-a-boo;peek a-boo
-spinnin';spinning
-cryin';crying
-lovin';loving
-shinin';shining
-flyin';flying;flyin
-fadin';fading
-runnin';running
-somethin';something
-motorboatin';motorboating
-rainin';raining
-wanin';waning
-waitin';waiting
-escapin';escaping
-chillin';chilling
-livin';living
-changin';changing
-feelin';feeling
-romancin';romancing
-dancin';dancing
-tippin';tipping
-spillin';spilling
-pleasin';pleasing
-confusin';confusing
-cruisin';cruising
-crippin';cripping
-trippin';tripping
-lookin';looking
-dyin';dying
-tryin';trying
-nothin';nothing
-frontin';fronting
 t-shirt;t shirt
-thinkin';thinking
 in-between;in between
-hittin';hitting
-playin';playing
-replacin';replacing
-singin';singing
-knowin';knowing
-blowin';blowing
-ringin';ringing
-strin';string
-bleedin';bleeding
-leavin';leaving
-needin';needing
-drinkin';drinking
-callin';calling
-fallin';falling
-fearin';fearing
-steerin';steering
-poppin';popping
-stoppin';stopping
-levitatin';levitating
-renegadin';renegading
-debatin';debating
-hatin';hating
-chasin';chasing
-crushin';crushing
-pickin';picking
-mornin';morning
-anythin';anything
-clappin';clapping
-kidnappin';kidnapping
-laughin';laughing
-warnin';warning
-stormin';storming
-hidin';hiding
-lightnin';lightning
-drivin';driving
-jumpin';jumping
-thumpin';thumping
-swimmin';swimming
-sleepin';sleeping
-creepin';creeping
-holdin';holding
-showin';showing
-formin';forming
-amazin';amazing
-searchin';searching
-wildin';wilding
-disappearin';disappearing
-givin';giving
-anticipatin';anticipating
 melt-down;melt down
-smashin';smashing
-wonderin';wondering
-breakin';breaking
-happenin';happening
-mood rin';mood ring
-keepin';keeping
-buyin';buying
-multiplyin';multiplying
-turnin';turning
-kiddin';kidding
-followin';following
-offerin';offering
-sufferin';suffering
-comin';coming
-sayin';saying
-walkin';walking
-talkin';talking
-endin';ending
-wendin';wending
-stickin';sticking
-flowin';flowing
-beginnin';beginning
-meanin';meaning
-glowin';glowing
-goin';going
-fightin';fighting
-takin';taking
-dreamin';dreaming
-kissin';kissing
-reminiscin';reminiscing
-standin';standing
-demandin';demanding
-jaywalkin';jaywalking
-movin';moving
-groovin';grooving
-band-aid;band aid
-sprin';spring
-wastin';wasting
-wantin';wanting
-stealin';stealing
-grievin';grieving
-shakin';shaking
-quakin';quaking
-achin';aching
-makin';making
 love;luv
 4u;for you

@@ -6,6 +6,7 @@ import eng_to_ipa
 import pronouncing as pron
 from tqdm import tqdm
 from nltk.util import ngrams as nltk_make_ngrams
+from num2words import num2words
 from django.db import transaction
 from django.db.models import Count, Sum
 import api.models as models
@@ -214,41 +215,59 @@ def get_rhyme_pairs(val=''):
     return list(set(pairs))
 
 
-def make_synonyms(word):
-    syns = set()
+def make_synonyms(gram):
+    all_syns = set()
 
-    # in' <-> ing
-    if len(word) >= 5:
-        if word.endswith('in\''):
-            syns.add(re.sub(r"'$", "g", word))
-            syns.add(word[:-1])
-        elif word.endswith('ing'):
-            syns.add(re.sub(r'g$', '\'', word))
-            syns.add(word[:-1])
-        elif word.endswith('in'):
-            syns.add(word + 'g')
-            syns.add(word + "'")
-        elif word.endswith("'ve"):
-            syns.add(word[:-3] + 'a')
+    words = gram.split()
+    for idx, word in enumerate(words):
+        syns = set()
 
-    # add plural/singular if it only involves adding/removing an s
-    simple_plural = word + 's'
-    simple_sing = word[:-1]
+        if len(word) >= 5:
+            if word.endswith('in\''):
+                syns.add(re.sub(r"'$", "g", word))
+                syns.add(word[:-1])
+            elif word.endswith('ing'):
+                syns.add(re.sub(r'g$', '\'', word))
+                syns.add(word[:-1])
+            elif word.endswith('in'):
+                syns.add(word + 'g')
+                syns.add(word + "'")
 
-    if simple_plural == inflector.plural(word):
-        syns.add(simple_plural)
-    elif simple_sing == inflector.singular_noun(word):
-        syns.add(simple_sing)
+        if word.startswith('a-'):
+            syns.add(word[2:])
+            syns.add('a' + word[2:])
 
-    match_w = word.lower().strip()
-    matches = [line for line in syn_data if match_w in line]
-    for line in matches:
-        for l in line:
-            tok = l.lower().strip()
-            if tok != match_w:
-                syns.add(tok)
+        if word.endswith("'ve") and len(word) > 3:
+            if word[-4] == 'd':
+                syns.add(word[:-3] + 'a')
+            syns.add(word[:-3] + ' have')
 
-    return list(syns)
+        try:
+            syns.add(num2words(word))
+        except:
+            pass
+
+        # add plural/singular if it only involves adding/removing an s
+        simple_plural = word + 's'
+        simple_sing = word[:-1]
+
+        if simple_plural == inflector.plural(word):
+            syns.add(simple_plural)
+        elif simple_sing == inflector.singular_noun(word):
+            syns.add(simple_sing)
+
+        match_w = word.lower().strip()
+        matches = [line for line in syn_data if match_w in line]
+        for line in matches:
+            for l in line:
+                tok = l.lower().strip()
+                if tok != match_w:
+                    syns.add(tok)
+
+        for syn in syns:
+            all_syns.add(re.sub(r'\b%s\b' % word, syn, str(gram)))
+
+    return [syn for syn in all_syns if syn != gram]
 
 
 def phones_for_word(w):
@@ -266,20 +285,30 @@ def get_stresses(q):
     return ' '.join([pstresses(w) for w in q.split()])
 
 
-def get_phones(q, vowels_only=False, include_stresses=False):
-    words = q.split()
-    phones = [phones_for_word(w) for w in words]
-    phones = [p for p in phones if p]
-    if len(phones) != len(words):
-        return ''
-    phones = ' '.join(phones)
-    if vowels_only:
-        phones = re.sub(r'[A-Z]+\b', '', phones)
-    if not include_stresses:
-        phones = re.sub(r'[\d]+', '', phones)
-    phones = re.sub(r'\s+', ' ', phones)
-    phones = phones.strip()
-    return phones
+def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True):
+    if try_syns == True:
+        try_syns = make_synonyms(q)
+    phones = None
+
+    for tok in [q] + (try_syns or []):
+        words = tok.split()
+        word_phones = [phones_for_word(w) for w in words]
+        word_phones = [p for p in word_phones if p]
+        if len(word_phones) != len(words):
+            continue
+
+        phones = ' '.join(word_phones)
+        if vowels_only:
+            phones = re.sub(r'[A-Z]+\b', '', phones)
+        if not include_stresses:
+            phones = re.sub(r'[\d]+', '', phones)
+
+        phones = re.sub(r'\s+', ' ', phones)
+        phones = phones.strip()
+        if phones:
+            break
+
+    return phones or ''
 
 
 GRUUT_CACHE = {}
