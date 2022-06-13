@@ -25,53 +25,62 @@ class RhymeManager(models.Manager):
 
         q = ' '.join(tokenize_lyric_line(q))
         syns = make_synonyms(q)
-        qphones = get_phones(q, vowels_only=True, include_stresses=False)
+        for tok in [q] + syns:
+            qphones = get_phones(tok, vowels_only=True, include_stresses=False)
+            if qphones and len(qphones):
+                print("using", tok)
+                break
         qn = len(q.split())
         all_q = [q.upper()] + [s.upper() for s in syns]
+
+        rhymes_sql = f'''
+            SELECT DISTINCT ON (ngram)
+                rto.text AS ngram,
+                rto.n AS n,
+                r.level AS level,
+                COUNT(r.song_id) AS frequency,
+                0 AS distance,
+                n.adj_pct AS adj_pct
+            FROM
+                api_ngram n
+            INNER JOIN
+                api_rhyme r ON r.from_ngram_id = n.id
+            INNER JOIN
+                api_ngram rfrom ON rfrom.id = r.from_ngram_id
+            INNER JOIN
+                api_ngram rto ON rto.id = r.to_ngram_id
+            WHERE
+                UPPER(n.text) = ANY(%(q)s)
+                AND NOT (UPPER(rto.text) = ANY(%(q)s))
+            GROUP BY
+                ngram,
+                rto.n,
+                level,
+                distance,
+                n.adj_pct
+        '''
+
+        suggestions_sql = f'''
+            SELECT
+                n.text AS ngram,
+                n.n AS n,
+                NULL AS level,
+                NULL AS frequency,
+                LEVENSHTEIN(n.phones, %(qphones)s) AS distance,
+                n.adj_pct AS adj_pct
+            FROM
+                api_ngram n
+            WHERE
+                NOT (UPPER(n.text) = ANY(%(q)s))
+                AND LEVENSHTEIN(n.phones, %(qphones)s) <= 3
+                AND adj_pct > 0.00005
+        ''' if qphones and len(qphones) else ''
 
         with connection.cursor() as cursor:
             cursor.execute(f'''
                 WITH results AS (
-                    SELECT DISTINCT ON (ngram)
-                        rto.text AS ngram,
-                        rto.n AS n,
-                        r.level AS level,
-                        COUNT(r.song_id) AS frequency,
-                        0 AS distance,
-                        n.adj_pct AS adj_pct
-                    FROM
-                        api_ngram n
-                    INNER JOIN
-                        api_rhyme r ON r.from_ngram_id = n.id
-                    INNER JOIN
-                        api_ngram rfrom ON rfrom.id = r.from_ngram_id
-                    INNER JOIN
-                        api_ngram rto ON rto.id = r.to_ngram_id
-                    WHERE
-                        UPPER(n.text) = ANY(%(q)s)
-                        AND NOT (UPPER(rto.text) = ANY(%(q)s))
-                    GROUP BY
-                        ngram,
-                        rto.n,
-                        level,
-                        distance,
-                        n.adj_pct
-
-                    UNION ALL
-
-                    SELECT
-                        n.text AS ngram,
-                        n.n AS n,
-                        NULL AS level,
-                        NULL AS frequency,
-                        LEVENSHTEIN(n.phones, %(qphones)s) AS distance,
-                        n.adj_pct AS adj_pct
-                    FROM
-                        api_ngram n
-                    WHERE
-                        NOT (UPPER(n.text) = ANY(%(q)s))
-                        AND LEVENSHTEIN(n.phones, %(qphones)s) <= 3
-                        AND adj_pct > 0.00005
+                    {rhymes_sql}
+                    {f'UNION ALL {suggestions_sql}' if suggestions_sql else ''}
                 )
                     SELECT
                         ngram,

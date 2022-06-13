@@ -221,8 +221,12 @@ def make_synonyms(word):
     if len(word) >= 5:
         if word.endswith('in\''):
             syns.add(re.sub(r"'$", "g", word))
+            syns.add(word[:-1])
         elif word.endswith('ing'):
             syns.add(re.sub(r'g$', '\'', word))
+            syns.add(word[:-1])
+        elif word.endswith("'ve"):
+            syns.add(word[:-3] + 'a')
 
     # add plural/singular if it only involves adding/removing an s
     simple_plural = word + 's'

@@ -41,11 +41,10 @@ little;lil;'lil
 downtown;down town
 uh huh;uhhuh
 c'mon;cmon;come on
-LA;L.A.
+L.A.
 band-aid;bandaid;band aid
 woo;wooh
 tailgate;tail gate;tail-gate
-bittersweet;bittersweet
 ya;you
 getcha;get ya;get you
 letcha;let ya;let you
@@ -53,9 +52,9 @@ whatcha;wacha;what ya;what you
 gotta;got to;'gotta
 lotta;lot of;'lotta
 wanna;want to;'wanna
-woulda;would have
-shoulda;should have
-coulda;could have
+woulda;would have;would've
+shoulda;should have;should've
+coulda;could have;could've
 munna;gonna
 yadda;yada
 its;it's;it is
@@ -67,18 +66,17 @@ aj;ay;uy;oy
 i'll;ill;i will
 bran';brand
 thatta;that;thadda
-a.m.;am
 p.m.;pm
-an';and
-musta;must have
-healin';healing
-ceilin';ceiling
-wearin';wearing
-whisperin';whispering
-everythin';everything
-whistlin';whistling
-listenin';listening
-burnin';burning
+an';and;'n;n';'n';n
+musta;must have;must've
+healin';healing;healin
+ceilin';ceiling;ceilin
+wearin';wearing;wearin
+whisperin';whispering;whisperin
+everythin';everything;everythin
+whistlin';whistling;whistlin
+listenin';listening;listenin
+burnin';burning;burnin
 rollin';rolling
 scrollin';scrolling
 refuelin';refueling
@@ -87,7 +85,7 @@ spinnin';spinning
 cryin';crying
 lovin';loving
 shinin';shining
-flyin';flying
+flyin';flying;flyin
 fadin';fading
 runnin';running
 somethin';something
@@ -212,3 +210,4 @@ shakin';shaking
 quakin';quaking
 achin';aching
 makin';making
+love;luv
