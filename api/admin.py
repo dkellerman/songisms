@@ -1,6 +1,8 @@
 from django.contrib import admin
-from django.db.models import JSONField, Count, Sum
+from django.db.models import JSONField, Sum
 from django_json_widget.widgets import JSONEditorWidget
+from django.forms import Textarea, ModelForm
+from django.db import models
 from reversion_compare.admin import CompareVersionAdmin
 from .models import *
 
@@ -8,21 +10,25 @@ from .models import *
 @admin.register(Song)
 class SongAdmin(CompareVersionAdmin):
     fields = ('title', 'spotify_id', 'spotify_player', 'artists',
-              'writers', 'tags', 'lyrics', 'lyrics_raw', 'lyrics_ipa',
-              'rhymes_raw', 'jaxsta_id', 'jaxsta_link', 'youtube_id',
-              'youtube_link', 'audio_file', 'metadata',)
+              'writers', 'tags', 'lyrics', 'rhymes_raw',
+              'lyrics_raw', 'lyrics_ipa', 'jaxsta_id', 'jaxsta_link',
+              'youtube_id', 'youtube_link', 'audio_file', 'metadata',)
     search_fields = ('title', 'spotify_id', 'lyrics',)
     list_display = ('title', 'artists_display', 'spotify_link', 'has_lyrics',
                     'has_audio', 'has_metadata', 'has_ipa', 'has_jaxsta_id',)
     readonly_fields = ('spotify_player', 'jaxsta_link', 'youtube_link', 'rhymes',)
-    filter_horizontal = ('tags', 'artists', 'writers',)
     list_filter = ('tags',)
-    formfield_overrides = {
-        JSONField: {'widget': JSONEditorWidget},
-    }
+    autocomplete_fields = ('artists', 'tags', 'writers',)
+    formfield_overrides = dict(JSONField={'widget': JSONEditorWidget})
 
     def queryset(self, request, queryset):
         return queryset.prefetch_related('artists', 'writers', 'tags', 'rhymes')
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        formfield = super().formfield_for_dbfield(db_field, **kwargs)
+        if db_field.name == 'lyrics':
+            formfield.widget = Textarea(attrs=dict(rows=40, cols=100))
+        return formfield
 
     def artists_display(self, obj):
         return ', '.join([a.name for a in obj.artists.all()])
@@ -99,14 +105,22 @@ class NGramAdmin(admin.ModelAdmin):
 
 @admin.register(Rhyme)
 class RhymeAdmin(admin.ModelAdmin):
-    fields = ('from_ngram', 'to_ngram', 'song',)
-    search_fields = ('from_ngram__text',)
-    list_display = ('from_ngram', 'to_ngram', 'song',)
+    fields = ('from_ngram', 'to_ngram', 'song', 'level',)
+    search_fields = ('from_ngram__text', 'to_ngram__text', 'song__title',)
+    list_display = ('from_ngram', 'to_ngram', 'level', 'song',)
+    autocomplete_fields = ('to_ngram', 'from_ngram', 'song',)
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset \
+            .select_related('song', 'from_ngram', 'to_ngram') \
+            .order_by('level', 'song', 'from_ngram', 'to_ngram')
 
 
 @admin.register(TaggedText)
 class TaggedTextAdmin(admin.ModelAdmin):
     list_display = ('tag', 'song', 'snip',)
+    autocomplete_fields = ('tag', 'song',)
 
     def snip(self, obj):
         return obj.text[0:50] + ('...' if len(obj.text) > 50 else '')
@@ -115,6 +129,7 @@ class TaggedTextAdmin(admin.ModelAdmin):
 @admin.register(Tag)
 class TagAdmin(CompareVersionAdmin):
     list_display = ('value', 'label', 'category',)
+    search_fields = ('value', 'label', 'category',)
 
 
 def check(val):

@@ -273,8 +273,3 @@ def prune():
     for w in writers:
         print("[PRUNE WRITER]", w.pk, w.name)
         w.delete()
-
-    ngrams = NGram.objects.annotate(song_ct=Count('song_ngrams'), rhyme_ct=Count('rhymes')) \
-        .filter(song_ct=0, rhyme_ct=0)
-    print("[PRUNE NGRAMS]", ngrams.count())
-    ngrams.delete()

@@ -58,7 +58,7 @@ def tokenize_lyric_line(val):
 
 def get_lyric_ngrams(lyrics, n_range=range(5)):
     ngrams = []
-    text = ' '.join(lyrics.split('\n'))
+    text = ' '.join([l for l in lyrics.split('\n') if l.strip()])
     toks = tokenize_lyric_line(text)
     for i in n_range:
         for ngram in nltk_make_ngrams(sequence=toks, n=i+1):
@@ -66,28 +66,46 @@ def get_lyric_ngrams(lyrics, n_range=range(5)):
     return ngrams
 
 
-def make_ngrams(song, force_update=False):
-    ngrams = get_lyric_ngrams(song.lyrics, range(5))
-    print('found', len(ngrams), 'ngrams...')
+def make_extra_ngrams(force_update=False):
+    with open('./data/mine.txt', 'r') as f:
+        lines = f.read().split('\n')
+        make_ngrams_for_lyrics(lines, None, force_update=force_update)
 
+    with open('./data/idioms.txt', 'r') as f:
+        lines = [l.strip() for l in f.read().split('\n') if l.strip()]
+        make_ngrams_for_lyrics(lines, None, force_update=force_update)
+
+
+def make_ngrams_for_song(song, force_update=False):
     with transaction.atomic():
-        print('creating ngrams...')
         models.SongNGram.objects.filter(song=song).delete()
+        make_ngrams_for_lyrics(song.lyrics, song, force_update=force_update)
+
+
+def make_ngrams_for_lyrics(lyrics, song=None, force_update=False):
+    if type(lyrics) == str:
+        lyrics = [lyrics]
+
+    print('creating ngrams...')
+    with transaction.atomic():
         sn_to_update = []
         n_to_update = []
-        for key, n in ngrams:
-            ngram, _ = models.NGram.objects.get_or_create(text=key, n=n)
-            if not ngram.phones or force_update:
-                ngram.phones = get_phones(ngram.text, vowels_only=True, include_stresses=False)
-                # ngram.stresses = get_stresses(ngram.text)
-                # ngram.ipa = get_ipa(ngram.text)
-                # ngram.formants = get_formants(ngram.text)
-                n_to_update.append(ngram)
-            sn, created = models.SongNGram.objects.get_or_create(ngram=ngram, song=song, defaults=dict(count=1))
-            if not created:
-                sn.count += 1
-                sn_to_update.append(sn)
-        print('saving...')
+        for lyric in lyrics:
+            ngrams = get_lyric_ngrams(lyric, range(5))
+            for key, n in ngrams:
+                ngram, _ = models.NGram.objects.get_or_create(text=key, n=n)
+                if not ngram.phones or force_update:
+                    ngram.phones = get_phones(ngram.text, vowels_only=True, include_stresses=False)
+                    # ngram.stresses = get_stresses(ngram.text)
+                    # ngram.ipa = get_ipa(ngram.text)
+                    # ngram.formants = get_formants(ngram.text)
+                    n_to_update.append(ngram)
+                if song:
+                    sn, created = models.SongNGram.objects.get_or_create(ngram=ngram, song=song, defaults=dict(count=1))
+                    if not created:
+                        sn.count += 1
+                        sn_to_update.append(sn)
+        print('saving', len(n_to_update), 'ngrams...')
         models.SongNGram.objects.bulk_update(sn_to_update, ['count'])
         models.NGram.objects.bulk_update(n_to_update, ['phones'])
 
@@ -95,13 +113,12 @@ def make_ngrams(song, force_update=False):
 def score_ngrams(force_update=False):
     ngrams = models.NGram.objects.annotate(
         ct=Sum('song_ngrams__count'),
-        song_ct=Count('songs'),
-    ).filter(song_ct__gt=0)
+    )
 
     words = list(ngrams.filter(n=1))
-    word_ct = sum([n.ct for n in words])
+    word_ct = sum([n.ct or 0 for n in words])
     by_text = dict([(n.text, n) for n in ngrams])
-    n_counts = [sum([gram.ct for gram in ngrams if gram.n == n]) for n in range(15)]
+    n_counts = [sum([gram.ct or 0 for gram in ngrams if gram.n == n]) for n in range(15)]
     ngrams = list(ngrams)
     to_update = [n for n in ngrams if n.pct is None and n.adj_pct is None] if not force_update else ngrams
 
@@ -109,18 +126,18 @@ def score_ngrams(force_update=False):
     for ngram in tqdm(to_update):
         if not ngram.pct or not ngram.adj_pct or force_update:
             if ngram.n > 1:
-                subgrams = [by_text[gram] for gram in ngram.text.split() if gram]
+                subgrams = [by_text[gram] for gram in ngram.text.split() if gram and (gram in by_text)]
                 total_with_same_n = n_counts[ngram.n - 1]
-                ngram_pct = float(ngram.ct / total_with_same_n)
+                ngram_pct = float((ngram.ct or 0.0) / total_with_same_n)
                 chance_pct = 1.0
                 for gram in subgrams:
-                    gram_pct = float(gram.ct / word_ct)
+                    gram_pct = float((gram.ct or 0.0) / word_ct)
                     chance_pct *= gram_pct
                 ngram.pct = ngram_pct
                 ngram.adj_pct = ngram_pct - chance_pct
             else:
-                ngram.pct = float(ngram.ct / word_ct)
-                ngram.adj_pct = float(ngram.ct / word_ct)
+                ngram.pct = float((ngram.ct or 0.0) / word_ct)
+                ngram.adj_pct = float((ngram.ct or 0.0) / word_ct)
 
     print("updating...")
     models.NGram.objects.bulk_update(to_update, ['pct', 'adj_pct'])

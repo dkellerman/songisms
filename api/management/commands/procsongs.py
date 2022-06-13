@@ -3,8 +3,8 @@
 import multiprocessing as mp
 from django.core.management.base import BaseCommand, CommandError
 from api.models import *
+from api.nlp_utils import *
 from api.cloud_utils import fetch_audio
-from api.nlp_utils import make_ngrams, score_ngrams, set_lyrics_ipa, make_rhymes, make_rhymes_l2
 
 
 class Command(BaseCommand):
@@ -13,7 +13,8 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--id', nargs='+', type=int)
         parser.add_argument('--force-update', '-u', action='store_true')
-        parser.add_argument('--process', '-p', nargs='+', type=str, help='[all|rhymes|ngrams|audio|audiolink|ipa]')
+        parser.add_argument('--process', '-p', nargs='+', type=str,
+                            help='[all|rhymes|ngrams|audio|audiolink|ipa|extra]')
         parser.add_argument('--dry-run', '-D', action='store_true')
         parser.add_argument('--no-prune', '-P', action='store_true')
 
@@ -32,6 +33,7 @@ class Command(BaseCommand):
         process_audio = 'all' in process or 'audio' in process
         process_audiolinks = 'all' in process or 'audiolink' in process
         process_ipa = 'all' in process or 'ipa' in process
+        process_extra = 'all' in process or 'extra' in process
 
         if ids:
             songs = Song.objects.filter(pk__in=ids)
@@ -54,7 +56,7 @@ class Command(BaseCommand):
                 if process_ngrams and (force_update or not song.ngrams.count()):
                     print('\t[NGRAMS]')
                     if not dry_run:
-                        make_ngrams(song, force_update=force_update)
+                        make_ngrams_for_song(song, force_update=force_update)
 
             if process_audiolinks:
                 if (not song.youtube_id) and song.audio_file:
@@ -89,14 +91,15 @@ class Command(BaseCommand):
                     if not dry_run:
                         set_lyrics_ipa(song)
 
-        if process_ngrams:
-            if not dry_run:
-                score_ngrams(force_update=force_update)
+        if process_extra and not dry_run:
+            make_extra_ngrams(force_update=force_update)
 
-        if process_rhymes:
+        if (process_ngrams or process_extra) and not dry_run:
+            score_ngrams(force_update=force_update)
+
+        if process_rhymes and not dry_run:
             print('\t[RHYMES L2]')
-            if not dry_run:
-                make_rhymes_l2()
+            make_rhymes_l2()
 
         if not no_prune:
             print('[PRUNING]')
