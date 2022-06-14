@@ -5,11 +5,11 @@ export default {
 </script>
 
 <script setup>
-import auth from './auth';
-import router from './router';
+import { logout, isLoggedIn } from '@/auth';
+import router from '@/router';
 
 async function doLogout() {
-  await auth.logout();
+  await logout();
   window.location.href = '/login';
 }
 </script>
@@ -18,12 +18,12 @@ async function doLogout() {
   <nav>
     <h1><router-link to="/">Songisms</router-link></h1>
     <div class="links">
-      <router-link to="/songs" v-if="auth.user.value">Songs</router-link>
+      <router-link to="/songs" v-if="isLoggedIn">Songs</router-link>
       <router-link to="/writers">Writers</router-link>
-      <router-link to="/login" v-if="!auth.user.value && router.currentRoute.value.path !== '/login'"
+      <router-link to="/login" v-if="!isLoggedIn && router.currentRoute.value.path !== '/login'"
         >Login</router-link
       >
-      <button v-if="auth.user.value" class="logout compact" @click="doLogout">Logout</button>
+      <button v-if="isLoggedIn" class="logout compact" @click="doLogout">Logout</button>
     </div>
   </nav>
   <main>

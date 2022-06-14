@@ -5,7 +5,7 @@
 __pycache__
 staticfiles
 
-data/ldavis*
+data/*.html
 clients/**/dist
 
 # dependencies
