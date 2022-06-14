@@ -8,7 +8,6 @@ const requireLogin = () => {
 };
 
 const routes = [
-  { path: '/', redirect: '/writers' },
   {
     path: '/login',
     name: 'Login',
