@@ -5,9 +5,11 @@ export default {
 </script>
 
 <script setup>
+import axios from 'axios';
 import { ref } from 'vue';
 import router from '@/router';
-import axios from 'axios';
+import {useSongsStore} from "@/stores/songs";
+import {storeToRefs} from "pinia";
 
 const GET_SONG = `
     query ($id: String!) {
@@ -37,6 +39,23 @@ const song = ref();
 const adminLink = song.value
   ? `https://songisms.herokuapp.com/admin/api/song/?q=${encodeURIComponent(song.value.title)}`
   : null;
+const { songsIndex, songs } = storeToRefs(useSongsStore());
+
+function next() {
+  const songsList = songs.value?.length ? songs.value : songsIndex.value;
+  if (!songsList?.length) return;
+
+  const curIdx = songsList.findIndex(s => s.spotifyId === id) ?? 0;
+  const idx = curIdx >= songsList.length - 1 ? 0 : curIdx + 1;
+  router.push({ path: `/songs/${songsList[idx].spotifyId}` });
+}
+
+function random() {
+  const songsList = songsIndex.value;
+  if (!songsList?.length) return;
+  const idx = Math.floor(Math.random() * songsList.length);
+  router.push({ path: `/songs/${songsList[idx].spotifyId}` });
+}
 
 async function fetchSong() {
   const url = `${process.env.VUE_APP_SISM_API_BASE_URL}/graphql/`;
@@ -54,9 +73,14 @@ fetchSong();
 <template>
   <nav aria-label="breadcrumbs">
     <router-link to="/songs">&lt; All Songs</router-link>
+    &nbsp;&mdash;&nbsp;
+    <small>
+      <a @click="next">Next</a>
+      &#183; <a @click="random">Random</a>
+    </small>
   </nav>
 
-  <article>
+  <article v-if="song">
     <h2>{{ song.title }}</h2>
     <div v-html="song.spotifyPlayer" />
 

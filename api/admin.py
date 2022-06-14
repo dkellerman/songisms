@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.db.models import JSONField, Sum
 from django_json_widget.widgets import JSONEditorWidget
-from django.forms import Textarea, ModelForm
-from django.db import models
+from django.forms import Textarea
 from reversion_compare.admin import CompareVersionAdmin
 from .models import *
 
@@ -19,7 +18,9 @@ class SongAdmin(CompareVersionAdmin):
     readonly_fields = ('spotify_player', 'jaxsta_link', 'youtube_link', 'rhymes',)
     list_filter = ('tags',)
     autocomplete_fields = ('artists', 'tags', 'writers',)
-    formfield_overrides = dict(JSONField={'widget': JSONEditorWidget})
+    formfield_overrides = {
+        JSONField: {'widget': JSONEditorWidget}
+    }
 
     def queryset(self, request, queryset):
         return queryset.prefetch_related('artists', 'writers', 'tags', 'rhymes')

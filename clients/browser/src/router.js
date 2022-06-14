@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { isLoggedIn } from './auth';
+import auth from './auth';
 
 const requireLogin = () => {
-  if (!isLoggedIn.value) {
+  if (!auth.isLoggedIn) {
     return { path: '/login' };
   }
 };

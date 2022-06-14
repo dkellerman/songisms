@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import { ref } from 'vue';
-import { login } from '@/auth';
+import auth from '@/auth';
 import router from '@/router';
 
 const username = ref('');
@@ -15,7 +15,7 @@ const error = ref('');
 
 async function doLogin() {
   try {
-    await login(username.value, password.value);
+    await auth.login(username.value, password.value);
     await router.push('/');
   } catch (e) {
     console.error(e);

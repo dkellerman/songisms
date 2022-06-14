@@ -5,73 +5,44 @@ export default {
 </script>
 
 <script setup>
-import axios from 'axios';
 import { debounce } from 'lodash-es';
 import { ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useSongsStore } from "@/stores/songs";
 
-const LIST_SONGS = `
-    query Songs($q: String, $page: Int, $ordering: [String]) {
-      songs(q: $q, page: $page, ordering: $ordering) {
-        q
-        total
-        page
-        hasNext
-        items {
-          title
-          artists {
-            name
-          }
-          spotifyId
-        }
-      }
-    }
-  `;
-
-const result = ref();
-const page = ref(null);
+const page = ref(1);
 const q = ref('');
+const store = useSongsStore();
+const { songs, hasNext, total } = storeToRefs(store);
+const { fetchSongs } = store;
 
-async function fetchSongs() {
-  const url = `${process.env.VUE_APP_SISM_API_BASE_URL}/graphql/`;
-  const resp = await axios.post(url, {
-    query: LIST_SONGS,
-    variables: { q: q.value ?? null, page: page.value },
-  });
+const newSearch = () => {
+  page.value = 1;
+  fetchSongs(q.value, page.value);
+};
 
-  const newResult = resp.data.data.songs;
-  console.log('* songs', newResult);
-  if (page.value === 1) result.value = newResult;
-  else
-    result.value = {
-      ...newResult,
-      items: [...result.value.items, ...newResult.items],
-    };
+watch(page, () => fetchSongs(q.value, page.value));
+watch(q, debounce(newSearch, 500));
+
+if (!songs.value) {
+  fetchSongs(q.value, 1);
 }
 
-watch(page, fetchSongs);
-watch(
-  q,
-  debounce(() => {
-    page.value = 1;
-    fetchSongs();
-  }, 500),
-);
-
-page.value = 1;
 </script>
 
 <template>
   <h2>Songs</h2>
 
   <input v-model.trim="q" placeholder="Search by name..." />
-  <label v-if="result?.total">{{ result.total }} songs found</label>
+  <label v-if="total !== undefined">{{ total }} songs found</label>
 
-  <ul class="none">
-    <li v-for="song in result?.items" :key="song.spotifyId">
+  <ul class="none" v-if="songs">
+    <li v-for="song in songs" :key="song.spotifyId">
       <router-link :to="`/songs/${song.spotifyId}`">{{ song.title }}</router-link>
+      &mdash; {{ song.artists.map(a => a.name).join(', ') }}
     </li>
   </ul>
-  <button class="more compact" v-if="result?.hasNext" @click="page++">More...</button>
+  <button class="more compact" v-if="hasNext" @click="page++">More...</button>
 </template>
 
 <style scoped lang="scss">

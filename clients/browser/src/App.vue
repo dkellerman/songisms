@@ -5,11 +5,15 @@ export default {
 </script>
 
 <script setup>
-import { logout, isLoggedIn } from '@/auth';
+import auth from '@/auth';
 import router from '@/router';
+import {useSongsStore} from "@/stores/songs";
+
+const { fetchSongsIndex } = useSongsStore();
+fetchSongsIndex();
 
 async function doLogout() {
-  await logout();
+  await auth.logout();
   window.location.href = '/login';
 }
 </script>
@@ -18,16 +22,16 @@ async function doLogout() {
   <nav>
     <h1><router-link to="/">Songisms</router-link></h1>
     <div class="links">
-      <router-link to="/songs" v-if="isLoggedIn">Songs</router-link>
+      <router-link to="/songs" v-if="auth.isLoggedIn">Songs</router-link>
       <router-link to="/writers">Writers</router-link>
-      <router-link to="/login" v-if="!isLoggedIn && router.currentRoute.value.path !== '/login'"
+      <router-link to="/login" v-if="!auth.isLoggedIn && router.currentRoute.value.path !== '/login'"
         >Login</router-link
       >
-      <button v-if="isLoggedIn" class="logout compact" @click="doLogout">Logout</button>
+      <button v-if="auth.isLoggedIn" class="logout compact" @click="doLogout">Logout</button>
     </div>
   </nav>
   <main>
-    <router-view />
+    <router-view :key="$route.path" />
   </main>
 </template>
 

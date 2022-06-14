@@ -16,6 +16,12 @@ class UserType(DjangoObjectType):
         fields = ['username']
 
 
+class SongIndexType(DjangoObjectType):
+    class Meta:
+        model = Song
+        fields = ['title', 'spotify_id']
+
+
 class SongType(DjangoObjectType):
     spotify_url = graphene.String(source='spotify_url')
     spotify_player = graphene.String(source='spotify_player')
@@ -89,6 +95,7 @@ class Query(graphene.ObjectType):
                            q=graphene.String(required=False),
                            tags=graphene.List(required=False, of_type=graphene.String),
                            ordering=graphene.List(required=False, of_type=graphene.String))
+    songs_index = graphene.List(SongIndexType)
     song = graphene.Field(SongType, spotify_id=graphene.String(required=True))
     artists = graphene.Field(ArtistsPaginatedType,
                              page=graphene.Int(required=False),
@@ -119,11 +126,19 @@ class Query(graphene.ObjectType):
 
     @staticmethod
     @login_required
+    def resolve_songs_index(root, info):
+        return Song.objects.all().order_by('title')
+
+    @staticmethod
+    @login_required
     def resolve_songs(root, info, q=None, tags=None, page=1, ordering=()):
         songs = Song.objects.prefetch_related('artists', 'tags').order_by(*ordering)
 
         if q:
-            songs = songs.filter(title__icontains=q)
+            if q.startswith('lyrics:'):
+                songs = songs.filter(lyrics__icontains=q[7:])
+            else:
+                songs = songs.filter(title__icontains=q)
         if tags:
             for tag in tags:
                 songs = songs.filter(tags__value=tag)
