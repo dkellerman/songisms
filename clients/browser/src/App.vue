@@ -8,8 +8,8 @@ export default {
 import router from '@/router';
 import { useAuth } from '@/stores/auth';
 import { useSongsStore } from '@/stores/songs';
-import {storeToRefs} from "pinia";
-import {watchEffect} from "vue";
+import { storeToRefs } from 'pinia';
+import { watchEffect } from 'vue';
 
 const { isLoggedIn } = storeToRefs(useAuth());
 const { logout } = useAuth();
@@ -34,9 +34,7 @@ async function doLogout() {
     <div class="links">
       <router-link to="/songs" v-if="isLoggedIn">Songs</router-link>
       <router-link to="/writers">Writers</router-link>
-      <router-link to="/login" v-if="!isLoggedIn && router.currentRoute.value.path !== '/login'"
-        >Login</router-link
-      >
+      <router-link to="/login" v-if="!isLoggedIn && router.currentRoute.value.path !== '/login'">Login</router-link>
       <button v-if="isLoggedIn" class="logout compact" @click="doLogout">Logout</button>
     </div>
   </nav>

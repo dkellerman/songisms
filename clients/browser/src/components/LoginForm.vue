@@ -6,8 +6,8 @@ export default {
 
 <script setup>
 import { ref } from 'vue';
-import { useAuth } from '@/stores/auth';
 import router from '@/router';
+import { useAuth } from '@/stores/auth';
 
 const username = ref('');
 const password = ref('');

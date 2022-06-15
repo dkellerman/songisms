@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuth } from '@/stores/auth';
-import {storeToRefs} from "pinia";
+import { storeToRefs } from 'pinia';
 
 const requireLogin = () => {
   const { isLoggedIn } = storeToRefs(useAuth());
