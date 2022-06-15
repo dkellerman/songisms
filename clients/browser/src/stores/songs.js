@@ -36,6 +36,8 @@ export const useSongsStore = defineStore('songs', {
     songs: undefined,
     total: undefined,
     hasNext: undefined,
+    curQuery: undefined,
+    curPage: undefined,
   }),
   actions: {
     async fetchSongsIndex() {
@@ -60,6 +62,8 @@ export const useSongsStore = defineStore('songs', {
       } else {
         this.songs = [...(this.songs ?? []), ...result.items];
       }
+      this.curQuery = q;
+      this.curPage = page;
     },
   },
 });

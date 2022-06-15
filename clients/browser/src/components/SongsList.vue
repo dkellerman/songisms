@@ -10,10 +10,10 @@ import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useSongsStore } from '@/stores/songs';
 
-const page = ref(1);
-const q = ref('');
-const { songs, hasNext, total } = storeToRefs(useSongsStore());
+const { songs, hasNext, total, curQuery, curPage } = storeToRefs(useSongsStore());
 const { fetchSongs } = useSongsStore();
+const page = ref(curPage.value);
+const q = ref(curQuery.value);
 
 const newSearch = () => {
   page.value = 1;

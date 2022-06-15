@@ -135,14 +135,21 @@ class Query(graphene.ObjectType):
         songs = Song.objects.prefetch_related('artists', 'tags').order_by(*ordering)
 
         if q:
-            if q.startswith('lyrics:'):
+            if q.lower().startswith('lyrics:'):
                 songs = songs.filter(lyrics__icontains=q[7:])
+            elif q.lower().startswith('writer:'):
+                songs = songs.filter(writers__name__icontains=q[7:])
+            elif q.lower().startswith('artist:'):
+                songs = songs.filter(artists__name__icontains=q[7:])
+            elif q.lower().startswith('tag:'):
+                songs = songs.filter(tags__value__icontains=q[4:])
             else:
                 songs = songs.filter(title__icontains=q)
         if tags:
             for tag in tags:
                 songs = songs.filter(tags__value=tag)
 
+        songs = songs.order_by('title')
         return get_paginator(songs, DEFAULT_PAGE_SIZE, page, SongsPaginatedType, q=q)
 
     @staticmethod
