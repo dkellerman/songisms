@@ -1,13 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import auth from './auth';
+import { useAuth } from '@/stores/auth';
+import {storeToRefs} from "pinia";
 
 const requireLogin = () => {
-  if (!auth.isLoggedIn) {
+  const { isLoggedIn } = storeToRefs(useAuth());
+  if (!isLoggedIn.value) {
     return { path: '/login' };
   }
 };
 
 const routes = [
+  { path: '/', redirect: '/songs' },
   {
     path: '/login',
     name: 'Login',

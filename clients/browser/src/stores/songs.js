@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import { defineStore } from 'pinia';
 
 const SONGS_INDEX = `
@@ -6,9 +6,6 @@ const SONGS_INDEX = `
     songsIndex {
       spotifyId
       title
-      artists {
-        name
-      }
     }
   }
 `;
@@ -48,7 +45,7 @@ export const useSongsStore = defineStore('songs', {
       this.songsIndex = resp.data.data.songsIndex;
     },
 
-    async fetchSongs(q, page=1) {
+    async fetchSongs(q, page = 1) {
       const resp = await axios.post(url, {
         query: LIST_SONGS,
         variables: { q: q ?? null, page },
@@ -60,9 +57,9 @@ export const useSongsStore = defineStore('songs', {
       this.hasNext = result.hasNext;
       if (page === 1) {
         this.songs = result.items;
-      }  else {
+      } else {
         this.songs = [...(this.songs ?? []), ...result.items];
       }
-    }
-  }
+    },
+  },
 });

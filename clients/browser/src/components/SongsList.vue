@@ -8,13 +8,12 @@ export default {
 import { debounce } from 'lodash-es';
 import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useSongsStore } from "@/stores/songs";
+import { useSongsStore } from '@/stores/songs';
 
 const page = ref(1);
 const q = ref('');
-const store = useSongsStore();
-const { songs, hasNext, total } = storeToRefs(store);
-const { fetchSongs } = store;
+const { songs, hasNext, total } = storeToRefs(useSongsStore());
+const { fetchSongs } = useSongsStore();
 
 const newSearch = () => {
   page.value = 1;
@@ -27,7 +26,6 @@ watch(q, debounce(newSearch, 500));
 if (!songs.value) {
   fetchSongs(q.value, 1);
 }
-
 </script>
 
 <template>

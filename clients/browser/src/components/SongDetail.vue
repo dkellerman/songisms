@@ -8,8 +8,8 @@ export default {
 import axios from 'axios';
 import { ref } from 'vue';
 import router from '@/router';
-import {useSongsStore} from "@/stores/songs";
-import {storeToRefs} from "pinia";
+import { useSongsStore } from '@/stores/songs';
+import { storeToRefs } from 'pinia';
 
 const GET_SONG = `
     query ($id: String!) {
