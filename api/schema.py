@@ -1,4 +1,5 @@
 import graphene
+import re
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from graphene_django import DjangoObjectType
@@ -37,7 +38,7 @@ class SongType(DjangoObjectType):
                   'youtube_id', 'audio_file', 'metadata', 'tagged_texts',
                   'created', 'updated', 'spotify_url', 'jaxsta_url', 'youtube_url',
                   'spotify_player', 'youtube_player', 'audio_file_url',
-                  'rhymes_raw']
+                  'rhymes_raw', 'id']
 
 
 class ArtistType(DjangoObjectType):
@@ -94,7 +95,6 @@ class Query(graphene.ObjectType):
     songs = graphene.Field(SongsPaginatedType,
                            page=graphene.Int(required=False),
                            q=graphene.String(required=False),
-                           tags=graphene.List(required=False, of_type=graphene.String),
                            ordering=graphene.List(required=False, of_type=graphene.String))
     songs_index = graphene.List(SongIndexType)
     song = graphene.Field(SongType, spotify_id=graphene.String(required=True))
@@ -111,8 +111,7 @@ class Query(graphene.ObjectType):
     rhymes = graphene.List(RhymeType,
                            q=graphene.String(required=False),
                            limit=graphene.Int(required=False),
-                           offset=graphene.Int(required=False),
-                           tags=graphene.List(required=False, of_type=graphene.String))
+                           offset=graphene.Int(required=False))
     ngrams = graphene.Field(NGramsPaginatedType,
                             page=graphene.Int(required=False),
                             q=graphene.String(required=False),
@@ -132,25 +131,8 @@ class Query(graphene.ObjectType):
 
     @staticmethod
     @login_required
-    def resolve_songs(root, info, q=None, tags=None, page=1, ordering=()):
-        songs = Song.objects.prefetch_related('artists', 'tags').order_by(*ordering)
-
-        if q:
-            if q.lower().startswith('lyrics:'):
-                songs = songs.filter(lyrics__icontains=q[7:])
-            elif q.lower().startswith('writer:'):
-                songs = songs.filter(writers__name__icontains=q[7:])
-            elif q.lower().startswith('artist:'):
-                songs = songs.filter(artists__name__icontains=q[7:])
-            elif q.lower().startswith('tag:'):
-                songs = songs.filter(tags__value__icontains=q[4:])
-            else:
-                songs = songs.filter(title__icontains=q)
-        if tags:
-            for tag in tags:
-                songs = songs.filter(tags__value=tag)
-
-        songs = songs.order_by('title')
+    def resolve_songs(root, info, q=None, page=1, ordering=('title',)):
+        songs = Song.objects.query(q).order_by(*ordering)
         return get_paginator(songs, DEFAULT_PAGE_SIZE, page, SongsPaginatedType, q=q)
 
     @staticmethod

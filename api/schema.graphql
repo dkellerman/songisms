@@ -52,14 +52,14 @@ type ObtainJSONWebToken {
 
 type Query {
   user: UserType
-  songs(page: Int, q: String, tags: [String], ordering: [String]): SongsPaginatedType
+  songs(page: Int, q: String, ordering: [String]): SongsPaginatedType
   songsIndex: [SongIndexType]
   song(spotifyId: String!): SongType
   artists(page: Int, q: String, ordering: [String]): ArtistsPaginatedType
   artist(name: String!): ArtistType
   writers(page: Int, q: String, ordering: [String]): WritersPaginatedType
   writer(id: Int!): WriterType
-  rhymes(q: String, limit: Int, offset: Int, tags: [String]): [RhymeType]
+  rhymes(q: String, limit: Int, offset: Int): [RhymeType]
   ngrams(page: Int, q: String, tags: [String], ordering: [String]): NGramsPaginatedType
   tagsByCategory(category: String!): [TagType]
 }
@@ -84,6 +84,7 @@ type SongIndexType {
 type SongType {
   title: String!
   spotifyId: String!
+  id: ID!
   artists: [ArtistType!]!
   writers: [WriterType!]!
   tags: [TagType!]!

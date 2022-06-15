@@ -132,8 +132,43 @@ class NGramManager(models.Manager):
 
 
 class SongManager(models.Manager):
+    filter_map = {
+        'lyrics': ('lyrics__icontains', None),
+        'writer': ('writers__name__icontains', None),
+        'artist': ('artists__name__icontains', None),
+        'tag': ('tags__value__iexact', None),
+        'title': ('title__icontains', None),
+    }
+
     def get_by_natural_key(self, spotify_id):
         return self.get(spotify_id=spotify_id)
+
+    def query(self, q=None):
+        songs = self.prefetch_related('artists', 'tags')
+
+        if q:
+            includes = {}
+            excludes = {}
+            matches = re.findall(r'(~?[^\s]+:)?([^\s]+)', q.lower())
+            for field, qstr in matches:
+                field = (field or 'title:')[:-1]
+                reverse = field[0] == '~'
+                if reverse:
+                    field = field[1:]
+                if field == 'has':
+                    excludes[field] = None
+                elif field == 'not':
+                    includes[field] = None
+                else:
+                    include, exclude = self.filter_map.get(field, (None, None))
+                    if include:
+                        includes[include] = qstr
+                    if exclude:
+                        excludes[exclude] = qstr
+            if reverse:
+                includes, excludes = excludes, includes
+            songs = songs.filter(**includes).exclude(**excludes)
+        return songs
 
 
 class ArtistManager(models.Manager):

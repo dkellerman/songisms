@@ -10,7 +10,7 @@ import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useSongsStore } from '@/stores/songs';
 
-const { songs, hasNext, total, curQuery, curPage } = storeToRefs(useSongsStore());
+const { songs, hasNext, total, curQuery, curPage, songsIndex } = storeToRefs(useSongsStore());
 const { fetchSongs } = useSongsStore();
 const page = ref(curPage.value);
 const q = ref(curQuery.value);
@@ -32,7 +32,8 @@ if (!songs.value) {
   <h2>Songs</h2>
 
   <input v-model.trim="q" placeholder="Search by name..." />
-  <label v-if="total !== undefined">{{ total }} songs found</label>
+  <label v-if="total !== undefined && total == songsIndex.length">{{ total }} songs</label>
+  <label v-if="q && total != songsIndex.length">Matched {{ total }} out of {{ songsIndex.length }} songs</label>
 
   <ul class="none" v-if="songs">
     <li v-for="song in songs" :key="song.spotifyId">

@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import router from '@/router';
 import { useSongsStore } from '@/stores/songs';
 import { storeToRefs } from 'pinia';
@@ -14,6 +14,7 @@ import { storeToRefs } from 'pinia';
 const GET_SONG = `
     query ($id: String!) {
       song(spotifyId: $id) {
+        id
         title
         spotifyId
         spotifyPlayer
@@ -28,6 +29,7 @@ const GET_SONG = `
           name
         }
         writers {
+          id
           name
         }
       }
@@ -36,9 +38,9 @@ const GET_SONG = `
 
 const id = router.currentRoute.value.params.id;
 const song = ref();
-const adminLink = song.value
-  ? `https://songisms.herokuapp.com/admin/api/song/?q=${encodeURIComponent(song.value.title)}`
-  : null;
+const adminLink = computed(() => song.value
+  ? `https://songisms.herokuapp.com/admin/api/song/${song.value.id}`
+  : null);
 const { songsIndex, songs } = storeToRefs(useSongsStore());
 
 function next() {
@@ -72,10 +74,10 @@ fetchSong();
 
 <template>
   <nav aria-label="breadcrumbs">
-    <router-link to="/songs">&lt; All Songs</router-link>
-    &nbsp;&mdash;&nbsp;
+    <router-link to="/songs">&lt; All Songs</router-link> &nbsp;&mdash;&nbsp;
     <small>
-      <a @click="next">Next</a>
+      <a :href="adminLink" target="_blank" rel="noreferrer">Admin link</a>
+      &#183; <a @click="next">Next</a>
       &#183; <a @click="random">Random</a>
     </small>
   </nav>
@@ -84,14 +86,17 @@ fetchSong();
     <h2>{{ song.title }}</h2>
     <div v-html="song.spotifyPlayer" />
 
-    <small> [ <a :href="adminLink" target="_blank" rel="noreferrer">Admin</a> ] </small>
-
     <dl>
       <dt>Artists</dt>
       <dd>{{ song.artists?.map(a => a.name).join(', ') }}</dd>
 
       <dt>Writers</dt>
-      <dd>{{ song.writers?.map(w => w.name).join(', ') }}</dd>
+      <dd>
+        <span v-for="(w, index) in song.writers" :key="w.id">
+          <span v-if="index != 0">, </span>
+          <router-link :to="`/writers/${w.id}`">{{ w.name }}</router-link>
+        </span>
+      </dd>
 
       <dt>Links</dt>
       <dd>
