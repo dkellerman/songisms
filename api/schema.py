@@ -48,9 +48,10 @@ class ArtistType(DjangoObjectType):
 
 class WriterType(DjangoObjectType):
     song_ct = graphene.Int()
+
     class Meta:
         model = Writer
-        fields = ['name', 'songs', 'song_ct']
+        fields = ['id', 'name', 'songs', 'song_ct', 'alt_names']
 
 
 class RhymeType(graphene.ObjectType):
@@ -106,7 +107,7 @@ class Query(graphene.ObjectType):
                              page=graphene.Int(required=False),
                              q=graphene.String(required=False),
                              ordering=graphene.List(required=False, of_type=graphene.String))
-    writer = graphene.Field(WriterType, name=graphene.String(required=True))
+    writer = graphene.Field(WriterType, id=graphene.Int(required=True))
     rhymes = graphene.List(RhymeType,
                            q=graphene.String(required=False),
                            limit=graphene.Int(required=False),
@@ -159,14 +160,15 @@ class Query(graphene.ObjectType):
         return get_object_or_404(qs, spotify_id=spotify_id)
 
     @staticmethod
+    @login_required
     def resolve_writers(root, info, q, page=1, ordering=None):
         writers = Writer.objects.query(q, ordering)
         return get_paginator(writers, DEFAULT_PAGE_SIZE, page, WritersPaginatedType, q=q)
 
     @staticmethod
     @login_required
-    def resolve_writer(root, info, name):
-        return get_object_or_404(Writer.objects.prefetch_related('songs'), name=name)
+    def resolve_writer(root, info, id):
+        return get_object_or_404(Writer.objects.prefetch_related('songs'), pk=id)
 
     @staticmethod
     @login_required

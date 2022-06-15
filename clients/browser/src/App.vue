@@ -33,7 +33,7 @@ async function doLogout() {
     <h1><router-link to="/">Songisms</router-link></h1>
     <div class="links">
       <router-link to="/songs" v-if="isLoggedIn">Songs</router-link>
-      <router-link to="/writers">Writers</router-link>
+      <router-link to="/writers" v-if="isLoggedIn">Writers</router-link>
       <router-link to="/login" v-if="!isLoggedIn && router.currentRoute.value.path !== '/login'">Login</router-link>
       <button v-if="isLoggedIn" class="logout compact" @click="doLogout">Logout</button>
     </div>

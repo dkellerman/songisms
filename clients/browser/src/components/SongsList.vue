@@ -40,6 +40,7 @@ if (!songs.value) {
       &mdash; {{ song.artists.map(a => a.name).join(', ') }}
     </li>
   </ul>
+
   <button class="more compact" v-if="hasNext" @click="page++">More...</button>
 </template>
 

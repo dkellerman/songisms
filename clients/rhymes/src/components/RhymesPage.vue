@@ -133,26 +133,24 @@ search();
 </script>
 
 <template>
-  <article>
-    <fieldset>
-      <input type="text" :value="q" @input="onInput" placeholder="Find rhymes in songs..." />
-    </fieldset>
+  <fieldset>
+    <input type="text" :value="q" @input="onInput" placeholder="Find rhymes in songs..." />
+  </fieldset>
 
-    <div class="output" ref="outputEl">
-      <label v-if="loading">Searching...</label>
-      <label v-else-if="!q">Top {{ counts.rhyme }} rhymes</label>
-      <label v-else-if="q">{{ label }}</label>
+  <section class="output" ref="outputEl">
+    <label v-if="loading">Searching...</label>
+    <label v-else-if="!q">Top {{ counts.rhyme }} rhymes</label>
+    <label v-else-if="q">{{ label }}</label>
 
-      <ul v-if="rhymes && (!loading || page > 1)">
-        <li v-for="r of rhymes" :key="r.ngram" :class="`hit ${r.type}`">
-          <router-link :to="{ path: '/', query: { q: r.ngram } }">{{ r.ngram }}</router-link>
-          <span v-if="!!r.frequency && r.type === 'rhyme'" class="freq"> ({{ r.frequency }}) </span>
-        </li>
-      </ul>
+    <ul v-if="rhymes && (!loading || page > 1)">
+      <li v-for="r of rhymes" :key="r.ngram" :class="`hit ${r.type}`">
+        <router-link :to="{ path: '/', query: { q: r.ngram } }">{{ r.ngram }}</router-link>
+        <span v-if="!!r.frequency && r.type === 'rhyme'" class="freq"> ({{ r.frequency }}) </span>
+      </li>
+    </ul>
 
-      <button v-if="!loading && hasNextPage" class="more" @click="page++">More...</button>
-    </div>
-  </article>
+    <button v-if="!loading && hasNextPage" class="more" @click="page++">More...</button>
+  </section>
 </template>
 
 <style scoped lang="scss">

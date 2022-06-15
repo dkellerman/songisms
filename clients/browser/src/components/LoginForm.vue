@@ -28,7 +28,7 @@ async function doLogin() {
 <template>
   <h2>Log in</h2>
 
-  <div>
+  <section>
     <div v-if="error" role="alert">{{ error }}</div>
     <fieldset>
       <label>Username:</label>
@@ -37,7 +37,7 @@ async function doLogin() {
       <input type="password" v-model="password" />
     </fieldset>
     <button @click="doLogin">Log in</button>
-  </div>
+  </section>
 </template>
 
 <style scoped lang="scss">

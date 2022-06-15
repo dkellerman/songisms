@@ -80,7 +80,7 @@ fetchSong();
     </small>
   </nav>
 
-  <article v-if="song">
+  <section v-if="song">
     <h2>{{ song.title }}</h2>
     <div v-html="song.spotifyPlayer" />
 
@@ -117,11 +117,11 @@ fetchSong();
       <dt>Rhymes</dt>
       <dd v-html="song.rhymesRaw?.replace(/\n/g, '<br>').replace(/;/g, ' / ')"></dd>
     </dl>
-  </article>
+  </section>
 </template>
 
 <style scoped lang="scss">
-article {
+section {
   min-width: 320px;
   max-width: 800px;
 

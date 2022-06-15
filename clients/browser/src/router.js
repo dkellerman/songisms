@@ -20,6 +20,13 @@ const routes = [
     path: '/writers',
     name: 'Writers',
     component: () => import(/* webpackChunkName: "writers" */ './components/WritersList.vue'),
+    beforeEnter: [requireLogin],
+  },
+  {
+    path: '/writers/:id',
+    name: 'WriterDetail',
+    component: () => import(/* webpackChunkName: "writer" */ './components/WriterDetail.vue'),
+    beforeEnter: [requireLogin],
   },
   {
     path: '/songs',

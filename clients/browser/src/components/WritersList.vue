@@ -13,6 +13,7 @@ const FETCH_WRITERS = `
     query Writers($q: String, $page: Int) {
       writers(q: $q, page: $page) {
         items {
+          id
           name
           songCt
         }
@@ -62,8 +63,8 @@ page.value = 1;
   <label v-if="result?.total">{{ result.total }} writers found</label>
 
   <ul class="none">
-    <li v-for="writer in result?.items" :key="writer.name">
-      <a href="javascript:void(0)">{{ writer.name }}</a>
+    <li v-for="writer in result?.items" :key="writer.id">
+      <router-link :to="`/writers/${writer.id}`">{{ writer.name }}</router-link>
       <small>({{ writer.songCt }})</small>
     </li>
   </ul>
