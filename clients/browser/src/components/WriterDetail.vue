@@ -27,7 +27,7 @@ const GET_WRITER = `
 
 const id = ref(router.currentRoute.value.params.id);
 const writer = ref();
-const adminLink = writer.value ? `https://songisms.herokuapp.com/admin/api/writer/${id}` : null;
+const adminLink = `https://songisms.herokuapp.com/admin/api/writer/${id.value}`;
 
 async function fetchWriter() {
   const url = `${process.env.VUE_APP_SISM_API_BASE_URL}/graphql/`;
@@ -47,6 +47,7 @@ watchEffect(() => {
 <template>
   <nav aria-label="breadcrumbs">
     <router-link to="/writers">&lt; All Writers</router-link>
+    <small>&nbsp;&mdash;&nbsp;<a :href="adminLink" target="_blank" rel="noreferrer">Admin link</a></small>
   </nav>
 
   <div v-if="writer">
