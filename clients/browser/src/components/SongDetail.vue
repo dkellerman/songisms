@@ -100,7 +100,7 @@ fetchSong();
 
       <dt>Links</dt>
       <dd>
-        <ul>
+        <ul class="none links">
           <li v-if="song.youtubeUrl">
             <a :href="song.youtubeUrl">Youtube</a>
           </li>
@@ -129,6 +129,17 @@ fetchSong();
 section {
   min-width: 320px;
   max-width: 800px;
+
+  ul.links {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 10px;
+    li:not(:last-of-type) {
+      &:after {
+        content: ' | ';
+      }
+    }
+  }
 
   dl {
     dt {
