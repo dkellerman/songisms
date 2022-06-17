@@ -13,6 +13,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--id', nargs='+', type=int)
         parser.add_argument('--force-update', '-u', action='store_true')
+        parser.add_argument('--reset', '-r', action='store_true')
         parser.add_argument('--process', '-p', nargs='+', type=str,
                             help='[all|rhymes|ngrams|audio|audiolink|ipa|extra]')
         parser.add_argument('--dry-run', '-D', action='store_true')
@@ -23,6 +24,7 @@ class Command(BaseCommand):
         dry_run = options.get('dry_run', False)
         no_prune = options.get('no_prune', False)
         force_update = options.get('force_update', False)
+        reset = options.get('reset', False)
 
         process = options.get('process')
         if not process:
@@ -41,6 +43,15 @@ class Command(BaseCommand):
             songs = Song.objects.all()
 
         audio = []
+
+        if reset:
+            if process_rhymes:
+                Rhyme.objects.all().delete()
+            if process_ngrams:
+                NGram.objects.all().delete()
+                SongNGram.objects.all().delete()
+            if process_ipa:
+                Song.objects.all().update(lyrics_ipa=None)
 
         song_ct = songs.count()
         for idx, song in enumerate(songs):
