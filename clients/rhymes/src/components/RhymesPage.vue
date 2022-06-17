@@ -8,7 +8,7 @@ export default {
 import axios from 'axios';
 import { debounce, some } from 'lodash-es';
 import { isMobile } from 'mobile-device-detect';
-import {ref, computed, watch} from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const PER_PAGE = 50;
@@ -120,8 +120,7 @@ function onInput(e) {
 
 watch([q, page], () => {
   track('engagement', 'more', q.value);
-  const newRoute = { query: { q: q.value } };
-  router.push(newRoute);
+  router.push({ query: { q: q.value } });
   fetchRhymes();
 });
 

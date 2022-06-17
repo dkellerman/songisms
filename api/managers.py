@@ -53,7 +53,8 @@ class RhymeManager(models.Manager):
                 r.level AS level,
                 COUNT(r.song_id) AS frequency,
                 0 AS distance,
-                n.adj_pct AS adj_pct
+                n.adj_pct AS adj_pct,
+                0 AS ndiff
             FROM
                 api_ngram n
             INNER JOIN
@@ -80,13 +81,14 @@ class RhymeManager(models.Manager):
                 NULL AS level,
                 NULL AS frequency,
                 LEVENSHTEIN(n.phones, %(qphones)s) AS distance,
-                n.adj_pct AS adj_pct
+                n.adj_pct AS adj_pct,
+                ABS(n - %(qn)s) AS ndiff
             FROM
                 api_ngram n
             WHERE
                 NOT (UPPER(n.text) = ANY(%(q)s))
                 AND LEVENSHTEIN(n.phones, %(qphones)s) <= 3
-                AND adj_pct >= 0.00005
+                AND adj_pct >= 0.0005
         ''' if qphones and len(qphones) else ''
 
         with connection.cursor() as cursor:
@@ -102,15 +104,14 @@ class RhymeManager(models.Manager):
                             WHEN level = 1 THEN 'rhyme'
                             WHEN level = 2 THEN 'rhyme-l2'
                             ELSE 'suggestion'
-                        END AS type,
-                        ABS(n - 1) AS ndiff
+                        END AS type
                     FROM (SELECT DISTINCT ON (ngram) * FROM results ORDER BY ngram, level) uniq_results
                     ORDER BY
                         level NULLS LAST,
                         frequency DESC NULLS LAST,
-                        adj_pct DESC NULLS LAST,
                         distance,
-                        ndiff
+                        ndiff - (adj_pct * 10000),
+                        adj_pct DESC NULLS LAST
                     OFFSET 0
                     LIMIT %(limit)s
                 ;
