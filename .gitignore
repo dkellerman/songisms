@@ -8,6 +8,11 @@ staticfiles
 data/*.html
 clients/**/dist
 
+scripts/**/*
+!scripts/load_data.py
+!scripts/lyric_sim.py
+!scripts/output_rhymes.py
+
 # dependencies
 node_modules
 /.pnp

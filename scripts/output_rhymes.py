@@ -1,11 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python ./manage.py script
 
-import os, django, random
+import random
 from tqdm import tqdm
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "songisms.settings")
-django.setup()
-
 from api.models import *
 
 lines = set()

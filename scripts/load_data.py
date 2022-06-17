@@ -1,12 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python ./manage.py script
 
-import os, datetime, django
+import datetime
 from django.utils import timezone
 from django.db import transaction
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "songisms.settings")
-django.setup()
-
 from api.models import Song
 from api.cloud_utils import get_firestore
 

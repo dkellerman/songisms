@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python ./manage.py script
 
-import os, django, sys
+import sys
 import numpy as np
 import gensim
 import gensim.corpora as corpora
@@ -8,10 +8,6 @@ import pyLDAvis
 import pyLDAvis.gensim_models as gensimvis
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import CountVectorizer
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "songisms.settings")
-django.setup()
-
 from api.models import Song
 from api.nlp_utils import tokenize_lyrics
 from biterm.utility import vec_to_biterms, topic_summuary
@@ -81,7 +77,8 @@ def is_english(s):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        gen_topics(int(sys.argv[1]))
+    args = sys.argv[3:]
+    if len(args):
+        gen_topics(int(args[0]))
     else:
         print('usage: specify num topics')

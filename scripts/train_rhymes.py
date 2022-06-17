@@ -1,8 +1,4 @@
-#!/usr/bin/env python
-
-import os, django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "songisms.settings")
-django.setup()
+#!/usr/bin/env python ./manage.py script
 
 from api.nlp_utils import *
 from api.models import *
@@ -64,14 +60,15 @@ unique_train_label=np.array(train['class'].unique().tolist())
 labels_train=np.array(train['class'].tolist())
 map_train_label_indices = {label: np.flatnonzero(labels_train == label) for label in unique_train_label}
 
+
 def get_triplets(unique_train_label,map_train_label_indices):
       label_l, label_r = np.random.choice(unique_train_label, 2, replace=False)
       a, p = np.random.choice(map_train_label_indices[label_l],2, replace=False)
       n = np.random.choice(map_train_label_indices[label_r])
       return a, p, n
 
-def get_triplets_batch(k,train_set,unique_train_label,map_train_label_indices,embed):
 
+def get_triplets_batch(k,train_set,unique_train_label,map_train_label_indices,embed):
     while True:
       idxs_a, idxs_p, idxs_n = [], [], []
       for _ in range(k):
