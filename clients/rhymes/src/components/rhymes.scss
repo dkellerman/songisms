@@ -38,6 +38,9 @@ fieldset {
       text-indent: 0;
       font-size: larger;
       margin-bottom: 12px;
+      a {
+        cursor: pointer;
+      }
 
       &:before {
         display: none;

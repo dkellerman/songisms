@@ -86,8 +86,8 @@ class WriterAdmin(CompareVersionAdmin):
 @admin.register(NGram)
 class NGramAdmin(admin.ModelAdmin):
     search_fields = ('text',)
-    list_display = ('text', 'n', 'song_ct', 'total_ct', 'stresses', 'ipa', 'phones',)
-    fields = ('text', 'n', 'song_ct', 'total_ct', 'stresses', 'ipa', 'phones',)
+    list_display = ('text', 'n', 'song_ct', 'total_ct', 'ipa', 'phones', 'mscore',)
+    fields = ('text', 'n', 'song_ct', 'total_ct', 'ipa', 'phones', 'mscore',)
     readonly_fields = ('song_ct', 'total_ct',)
 
     def get_queryset(self, request):

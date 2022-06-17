@@ -103,32 +103,41 @@ def make_ngrams_for_song(song, force_update=False):
         make_ngrams_for_lyrics(song.lyrics, song, force_update=force_update)
 
 
+POS_TO_MSCORE = dict(ADJ=4, NOUN=4, PROPN=4, VERB=4, ADV=2, ADP=2, INTJ=2, NUM=2, X=2, PRON=1)
+
+
 def make_ngrams_for_lyrics(lyrics, song=None, force_update=False):
     if type(lyrics) == str:
         lyrics = [lyrics]
 
     print('creating ngrams...')
+    nlp = load_nlp()
     with transaction.atomic():
-        sn_to_update = []
-        n_to_update = []
+        sn_to_update = set()
+        n_to_update = set()
         for lyric in lyrics:
             ngrams = get_lyric_ngrams(lyric, range(5))
             for key, n in ngrams:
                 ngram, _ = models.NGram.objects.get_or_create(text=key, n=n)
                 if not ngram.phones or force_update:
                     ngram.phones = get_phones(ngram.text, vowels_only=True, include_stresses=False)
-                    # ngram.stresses = get_stresses(ngram.text)
-                    # ngram.ipa = get_ipa(ngram.text)
-                    # ngram.formants = get_formants(ngram.text)
-                    n_to_update.append(ngram)
+                    n_to_update.add(ngram)
+                # if not ngram.ipa or force_update:
+                #     ngram.ipa = get_ipa(ngram.text)
+                #     n_to_update.add(ngram)
+                if not ngram.mscore or force_update:
+                    mscore = [POS_TO_MSCORE.get(tok.pos_, 0) for tok in nlp(key)]
+                    mscore[-1] *= 1.5
+                    ngram.mscore = sum(mscore) / len(mscore)
+                    n_to_update.add(ngram)
                 if song:
                     sn, created = models.SongNGram.objects.get_or_create(ngram=ngram, song=song, defaults=dict(count=1))
                     if not created:
                         sn.count += 1
-                        sn_to_update.append(sn)
+                        sn_to_update.add(sn)
         print('saving', len(n_to_update), 'ngrams...')
-        models.SongNGram.objects.bulk_update(sn_to_update, ['count'])
-        models.NGram.objects.bulk_update(n_to_update, ['phones'])
+        models.SongNGram.objects.bulk_update(list(sn_to_update), ['count'])
+        models.NGram.objects.bulk_update(list(n_to_update), ['phones', 'ipa', 'mscore'])
 
 
 def score_ngrams(force_update=False):

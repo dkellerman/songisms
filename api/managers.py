@@ -54,7 +54,8 @@ class RhymeManager(models.Manager):
                 COUNT(r.song_id) AS frequency,
                 0 AS distance,
                 n.adj_pct AS adj_pct,
-                0 AS ndiff
+                0 AS ndiff,
+                0 AS mscore
             FROM
                 api_ngram n
             INNER JOIN
@@ -82,13 +83,15 @@ class RhymeManager(models.Manager):
                 NULL AS frequency,
                 LEVENSHTEIN(n.phones, %(qphones)s) AS distance,
                 n.adj_pct AS adj_pct,
-                ABS(n - %(qn)s) AS ndiff
+                ABS(n - %(qn)s) AS ndiff,
+                n.mscore as mscore
             FROM
                 api_ngram n
             WHERE
                 NOT (UPPER(n.text) = ANY(%(q)s))
                 AND LEVENSHTEIN(n.phones, %(qphones)s) <= 3
-                AND adj_pct >= 0.0005
+                AND adj_pct >= 0.00005
+                AND n.mscore > 3.5
         ''' if qphones and len(qphones) else ''
 
         with connection.cursor() as cursor:
@@ -110,12 +113,13 @@ class RhymeManager(models.Manager):
                         level NULLS LAST,
                         frequency DESC NULLS LAST,
                         distance,
+                        mscore DESC NULLS LAST,
                         ndiff - (adj_pct * 10000),
                         adj_pct DESC NULLS LAST
                     OFFSET 0
                     LIMIT %(limit)s
                 ;
-            ''', dict(q=all_q, qn=qn, qphones=qphones, limit=self.HARD_LIMIT))
+            ''', dict(q=all_q, qstr=q, qn=qn, qphones=qphones, limit=self.HARD_LIMIT))
 
             columns = [col[0] for col in cursor.description]
             vals = [

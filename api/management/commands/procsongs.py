@@ -53,7 +53,7 @@ class Command(BaseCommand):
                         make_rhymes(song)
 
             if song.lyrics:
-                if process_ngrams and (force_update or not song.ngrams.count()):
+                if process_ngrams:
                     print('\t[NGRAMS]')
                     if not dry_run:
                         make_ngrams_for_song(song, force_update=force_update)
