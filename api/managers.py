@@ -156,9 +156,7 @@ class SongManager(models.Manager):
                 if reverse:
                     field = field[1:]
                 if field == 'has':
-                    excludes[field] = None
-                elif field == 'not':
-                    includes[field] = None
+                    excludes[qstr] = None
                 else:
                     include, exclude = self.filter_map.get(field, (None, None))
                     if include:

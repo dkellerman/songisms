@@ -6,8 +6,8 @@ export default {
 
 <script setup>
 import axios from 'axios';
-import { ref, watchEffect } from 'vue';
-import router from '@/router';
+import { ref, watchEffect, computed } from 'vue';
+import { useRoute } from 'vue-router';
 
 const GET_WRITER = `
     query ($id: Int!) {
@@ -25,9 +25,10 @@ const GET_WRITER = `
     }
   `;
 
-const id = ref(router.currentRoute.value.params.id);
+const route = useRoute();
+const id = computed(() => route.params.id);
+const adminLink = computed(() => `https://songisms.herokuapp.com/admin/api/writer/${id}`);
 const writer = ref();
-const adminLink = `https://songisms.herokuapp.com/admin/api/writer/${id.value}`;
 
 async function fetchWriter() {
   const url = `${process.env.VUE_APP_SISM_API_BASE_URL}/graphql/`;
@@ -66,9 +67,9 @@ watchEffect(() => {
       <label>{{ writer.songs?.length || 'No' }} songs</label>
       <ul v-if="writer.songs" class="none">
         <li v-for="song in writer.songs" :key="song.spotifyId">
-          <router-link :to="`/songs/${song.spotifyId}`">{{ song.title }}</router-link>
+          <router-link :to="{ name: 'SongDetail', params: { id: song.spotifyId } }">{{ song.title }}</router-link>
           &mdash;
-          <span class="artist">{{ song.artists.map(a => a.name).join(', ') }}</span>
+          <span class="artist">{{ song.artists?.map(a => a.name).join(', ') }}</span>
         </li>
       </ul>
     </section>

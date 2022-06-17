@@ -6,18 +6,19 @@ export default {
 
 <script setup>
 import { ref } from 'vue';
-import router from '@/router';
+import { useRouter } from 'vue-router';
 import { useAuth } from '@/stores/auth';
 
 const username = ref('');
 const password = ref('');
 const error = ref('');
 const { login } = useAuth();
+const router = useRouter();
 
 async function doLogin() {
   try {
     await login(username.value, password.value);
-    await router.push('/');
+    await router.push({ name: 'Songs' });
   } catch (e) {
     console.error(e);
     error.value = e.message;

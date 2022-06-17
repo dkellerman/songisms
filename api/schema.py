@@ -1,8 +1,8 @@
 import graphene
-import re
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from graphene_django import DjangoObjectType
+from graphene.types.generic import GenericScalar
 import graphql_jwt
 from graphql_jwt.decorators import login_required
 from .models import Song, Artist, Writer, Tag, Rhyme, NGram, TaggedText
@@ -30,6 +30,7 @@ class SongType(DjangoObjectType):
     youtube_url = graphene.String(source='youtube_url')
     youtube_player = graphene.String(source='youtube_player')
     audio_file_url = graphene.String(source='audio_file_url')
+    metadata = GenericScalar(source='metadata')
 
     class Meta:
         model = Song

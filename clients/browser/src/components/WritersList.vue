@@ -64,7 +64,7 @@ page.value = 1;
 
   <ul class="none">
     <li v-for="writer in result?.items" :key="writer.id">
-      <router-link :to="`/writers/${writer.id}`">{{ writer.name }}</router-link>
+      <router-link :to="{ name: 'WriterDetail', params: { id: writer.id } }">{{ writer.name }}</router-link>
       <small>({{ writer.songCt }})</small>
     </li>
   </ul>

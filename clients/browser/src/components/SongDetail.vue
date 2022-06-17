@@ -6,10 +6,8 @@ export default {
 
 <script setup>
 import axios from 'axios';
-import { ref, computed } from 'vue';
-import router from '@/router';
-import { useSongsStore } from '@/stores/songs';
-import { storeToRefs } from 'pinia';
+import { ref, computed, watchEffect } from 'vue';
+import { useRoute } from 'vue-router';
 
 const GET_SONG = `
     query ($id: String!) {
@@ -24,7 +22,7 @@ const GET_SONG = `
         audioFileUrl
         lyrics
         rhymesRaw
-
+        metadata
         artists {
           name
         }
@@ -36,50 +34,29 @@ const GET_SONG = `
     }
   `;
 
-const id = router.currentRoute.value.params.id;
+const route = useRoute();
 const song = ref();
-const adminLink = computed(() => song.value
-  ? `https://songisms.herokuapp.com/admin/api/song/${song.value.id}`
-  : null);
-const { songsIndex, songs } = storeToRefs(useSongsStore());
-
-function next() {
-  const songsList = songs.value?.length ? songs.value : songsIndex.value;
-  if (!songsList?.length) return;
-
-  const curIdx = songsList.findIndex(s => s.spotifyId === id) ?? 0;
-  const idx = curIdx >= songsList.length - 1 ? 0 : curIdx + 1;
-  router.push({ path: `/songs/${songsList[idx].spotifyId}` });
-}
-
-function random() {
-  const songsList = songsIndex.value;
-  if (!songsList?.length) return;
-  const idx = Math.floor(Math.random() * songsList.length);
-  router.push({ path: `/songs/${songsList[idx].spotifyId}` });
-}
+const adminLink = computed(() => `https://songisms.herokuapp.com/admin/api/song/${route.params.id}`);
+const smLink = computed(() => (song.value ? song.value.metadata.songMeanings?.href : null));
 
 async function fetchSong() {
   const url = `${process.env.VUE_APP_SISM_API_BASE_URL}/graphql/`;
   const resp = await axios.post(url, {
     query: GET_SONG,
-    variables: { id },
+    variables: { id: route.params.id },
   });
   song.value = resp.data.data.song;
   console.log('* song', song.value);
 }
 
-fetchSong();
+watchEffect(() => {
+  fetchSong();
+});
 </script>
 
 <template>
   <nav aria-label="breadcrumbs">
-    <router-link to="/songs">&lt; All Songs</router-link> &nbsp;&mdash;&nbsp;
-    <small>
-      <a :href="adminLink" target="_blank" rel="noreferrer">Admin link</a>
-      &#183; <a @click="next">Next</a>
-      &#183; <a @click="random">Random</a>
-    </small>
+    <router-link :to="{ name: 'Songs' }">&lt; All Songs</router-link>
   </nav>
 
   <section v-if="song">
@@ -101,6 +78,9 @@ fetchSong();
       <dt>Links</dt>
       <dd>
         <ul class="none links">
+          <li v-if="adminLink">
+            <a :href="adminLink">Admin</a>
+          </li>
           <li v-if="song.youtubeUrl">
             <a :href="song.youtubeUrl">Youtube</a>
           </li>
@@ -112,6 +92,9 @@ fetchSong();
           </li>
           <li v-if="song.audioFileUrl">
             <a :href="song.audioFileUrl">Audio</a>
+          </li>
+          <li v-if="smLink">
+            <a :href="smLink">Song Meanings</a>
           </li>
         </ul>
       </dd>

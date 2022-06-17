@@ -32,12 +32,12 @@ if (!songs.value) {
   <h2>Songs</h2>
 
   <input v-model.trim="q" placeholder="Search by name..." />
-  <label v-if="total !== undefined && total == songsIndex.length">{{ total }} songs</label>
-  <label v-if="q && total != songsIndex.length">Matched {{ total }} out of {{ songsIndex.length }} songs</label>
+  <label v-if="total !== undefined && total === songsIndex?.length">{{ total }} songs</label>
+  <label v-if="q && total !== songsIndex?.length">Matched {{ total }} out of {{ songsIndex.length }} songs</label>
 
   <ul class="none" v-if="songs">
     <li v-for="song in songs" :key="song.spotifyId">
-      <router-link :to="`/songs/${song.spotifyId}`">{{ song.title }}</router-link>
+      <router-link :to="{ name: 'SongDetail', params: { id: song.spotifyId } }">{{ song.title }}</router-link>
       &mdash; {{ song.artists.map(a => a.name).join(', ') }}
     </li>
   </ul>

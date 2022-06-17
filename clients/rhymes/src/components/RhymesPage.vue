@@ -9,7 +9,7 @@ import axios from 'axios';
 import { debounce, some } from 'lodash-es';
 import { isMobile } from 'mobile-device-detect';
 import { ref, watch, computed } from 'vue';
-import router from '@/router';
+import { useRoute, useRouter } from 'vue-router';
 
 const PER_PAGE = 100;
 const DEBOUNCE_TIME = isMobile ? 1000 : 500;
@@ -23,9 +23,11 @@ const FETCH_RHYMES = `
     }
   `;
 
-const q = computed(() => router.currentRoute.value.query.q ?? '');
+const route = useRoute();
+const router = useRouter();
+const q = computed(() => route.query.q ?? '');
+const page = computed(() => route.query.page ?? 1);
 const rhymes = ref();
-const page = ref(1);
 const hasNextPage = ref(false);
 const loading = ref(false);
 const abortController = ref();
@@ -115,21 +117,18 @@ function onInput(e) {
   debouncedSearch(e.target.value);
 }
 
-watch(
-  () => router.currentRoute.value.query.q,
-  () => {
-    track('engagement', 'search', router.currentRoute.value.query.q);
-    page.value = 1;
-    search();
-  },
-);
-
-watch(page, () => {
-  track('engagement', 'more', router.currentRoute.value.query.q);
+watch(route.query.q, () => {
+  track('engagement', 'search', route.query.q);
+  router.push({ query: { q: q.value } });
   search();
 });
 
-search();
+watch(route.query.page, () => {
+  track('engagement', 'more', router.currentRoute.value.query.q);
+  const newRoute = { query: { q: q.value } };
+  if (route.query.page > 1) newRoute.query.page = route.query.page;
+  router.push(newRoute);
+});
 </script>
 
 <template>
