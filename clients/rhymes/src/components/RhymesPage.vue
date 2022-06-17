@@ -8,7 +8,7 @@ export default {
 import axios from 'axios';
 import { debounce, some } from 'lodash-es';
 import { isMobile } from 'mobile-device-detect';
-import { ref, watch, computed } from 'vue';
+import {ref, computed, watch} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const PER_PAGE = 50;
@@ -25,8 +25,8 @@ const FETCH_RHYMES = `
 
 const route = useRoute();
 const router = useRouter();
-const q = computed(() => route.query.q ?? '');
-const page = computed(() => route.query.page ?? 1);
+const q = ref(route.query.q ?? '');
+const page = ref(route.query.page ?? 1);
 const rhymes = ref();
 const hasNextPage = ref(false);
 const loading = ref(false);
@@ -51,6 +51,7 @@ const label = computed(() => {
 
 async function fetchRhymes() {
   loading.value = true;
+
   const url = `${process.env.VUE_APP_SISM_API_BASE_URL}/graphql/`;
   abortController.value = new AbortController();
 
@@ -105,30 +106,26 @@ function ct2str(ct, singularWord, pluralWord) {
   return `${ct} ${plWord}`;
 }
 
-async function search() {
+async function search(newQ) {
   abort();
-  return fetchRhymes();
+  q.value = newQ;
 }
 
-const debouncedSearch = debounce(val => router.push({ query: { q: val } }), DEBOUNCE_TIME);
+const debouncedSearch = debounce(search, DEBOUNCE_TIME);
 
 function onInput(e) {
   abort();
   debouncedSearch(e.target.value);
 }
 
-watch(route.query.q, () => {
-  track('engagement', 'search', route.query.q);
-  router.push({ query: { q: q.value } });
-  search();
+watch([q, page], () => {
+  track('engagement', 'more', q.value);
+  const newRoute = { query: { q: q.value } };
+  router.push(newRoute);
+  fetchRhymes();
 });
 
-watch(route.query.page, () => {
-  track('engagement', 'more', router.currentRoute.value.query.q);
-  const newRoute = { query: { q: q.value } };
-  if (route.query.page > 1) newRoute.query.page = route.query.page;
-  router.push(newRoute);
-});
+fetchRhymes();
 </script>
 
 <template>
@@ -143,7 +140,7 @@ watch(route.query.page, () => {
 
     <ul v-if="rhymes && (!loading || page > 1)">
       <li v-for="r of rhymes" :key="r.ngram" :class="`hit ${r.type}`">
-        <router-link :to="{ path: '/', query: { q: r.ngram } }">{{ r.ngram }}</router-link>
+        <a @click="() => { q = r.ngram; page = 1; }">{{ r.ngram }}</a>
         <span v-if="!!r.frequency && r.type === 'rhyme'" class="freq"> ({{ r.frequency }}) </span>
       </li>
     </ul>
