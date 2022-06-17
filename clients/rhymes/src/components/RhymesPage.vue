@@ -11,7 +11,7 @@ import { isMobile } from 'mobile-device-detect';
 import { ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-const PER_PAGE = 100;
+const PER_PAGE = 50;
 const DEBOUNCE_TIME = isMobile ? 1000 : 500;
 const FETCH_RHYMES = `
     query Rhymes($q: String, $offset: Int, $limit: Int) {

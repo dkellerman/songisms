@@ -54,7 +54,7 @@ def get_word_splits(word):
 def tokenize_lyrics(lyrics, stop_words=None, unique=False):
     toks = [
         tok for tok in tokenize_lyric_line(' '.join(lyrics.split('\n')))
-        if tok not in stop_words or []
+        if tok not in (stop_words or [])
     ]
     if unique:
         toks = list(set(toks))
