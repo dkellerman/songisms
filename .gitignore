@@ -6,6 +6,8 @@ __pycache__
 staticfiles
 
 data/*.html
+data/cache
+
 clients/**/dist
 
 scripts/**/*

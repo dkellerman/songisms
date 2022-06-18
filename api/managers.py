@@ -105,7 +105,7 @@ class RhymeManager(models.Manager):
                         frequency,
                         CASE
                             WHEN level = 1 THEN 'rhyme'
-                            WHEN level = 2 THEN 'rhyme-l2'
+                            WHEN level = 2 OR level = 3 THEN 'rhyme-l2'
                             ELSE 'suggestion'
                         END AS type
                     FROM (SELECT DISTINCT ON (ngram) * FROM results ORDER BY ngram, level) uniq_results

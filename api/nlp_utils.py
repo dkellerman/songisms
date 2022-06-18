@@ -10,6 +10,7 @@ from nltk import FreqDist
 from nltk.util import ngrams as nltk_make_ngrams
 from nltk.corpus import brown
 from num2words import num2words
+from datamuse import Datamuse as Datamuse
 from django.db import transaction
 from django.db.models import Sum
 import api.models as models
@@ -17,6 +18,7 @@ import api.models as models
 _syn_data = None
 _common_words = None
 inflector = inflect.engine()
+datamuse_api = Datamuse()
 
 
 def get_common_words():
@@ -138,6 +140,18 @@ def make_ngrams_for_lyrics(lyrics, song=None, force_update=False):
         print('saving', len(n_to_update), 'ngrams...')
         models.SongNGram.objects.bulk_update(list(sn_to_update), ['count'])
         models.NGram.objects.bulk_update(list(n_to_update), ['phones', 'ipa', 'mscore'])
+
+
+def add_datamuse_rhymes(from_ngram):
+    resp = datamuse_api.words(rel_rhy=from_ngram.text, max=50)
+    for item in resp:
+        to_word = item['word']
+        if to_word in get_common_words():
+            models.Rhyme.objects.get_or_create(
+                from_ngram=from_ngram,
+                to_ngram=models.NGram.objects.get_or_create(text=to_word, n=len(to_word.split())),
+                level=1,
+            )
 
 
 def score_ngrams(force_update=False):
