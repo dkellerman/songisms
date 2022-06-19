@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from urllib.parse import urlencode
+from itertools import product
 import requests_cache
 from django.core.management.base import BaseCommand
 from django.db import transaction
@@ -46,8 +47,8 @@ class Command(BaseCommand):
 
         print('extra ngrams')
         extra = []
-        # with open('./data/mine.txt', 'r') as f:
-        #     extra += get_lyric_ngrams(f.read(), range(5))
+        with open('./data/mine.txt', 'r') as f:
+            extra += get_lyric_ngrams(f.read(), range(5))
         with open('./data/idioms.txt', 'r') as f:
             extra += get_lyric_ngrams(f.read(), range(5))
         for text, n in tqdm(extra):
@@ -79,6 +80,38 @@ class Command(BaseCommand):
                     if rkey not in rhymes:
                         rhymes[rkey] = dict(from_ngram=from_ngram, to_ngram=ngrams[to_word], song=None, level=1)
                         rmuse.add(to_word)
+
+        print('indexing rhymes')
+        ridx = dict()
+        for r in tqdm(rhymes.values()):
+            ridx[r['from_ngram']['text']] = list(set([r2['to_ngram']['text'] for r2 in rhymes.values()
+                                                 if r2['from_ngram']['text'] == r['from_ngram']['text']]))
+
+        print('prepping multi rhymes')
+        nmulti = [n['text'] for n in tqdm(ngrams.values())
+                  if (n.get('song_count', 0) > 2)
+                  and (n['n'] in (2, 3,))
+                  and (get_mscore(n['text']) > 3)
+                  and (not is_repeated(n['text']))]
+        print('making multi rhymes')
+        for ngram in tqdm(nmulti):
+            grams = ngram.split()
+            lists = []
+            for gram in grams:
+                rtos = ridx.get(gram, [])
+                lists.append(rtos)
+            combos = [p for p in product(*lists)]
+            for c in combos:
+                val = ' '.join(c)
+                entry = ngrams.get(val)
+                if (entry
+                    and (entry.get('song_count', 0) > 2)
+                    and (get_mscore(val) > 3)
+                    and (not is_repeated(val))
+                ):
+                    rkey = (ngram, val, None)
+                    if rkey not in rhymes:
+                        rhymes[rkey] = dict(from_ngram=ngrams[ngram], to_ngram=ngrams[val], song=None, level=3)
 
         print('l2 rhymes')
         l1_rhymes = list(rhymes.values())
@@ -173,3 +206,6 @@ class Command(BaseCommand):
 
             print('done')
 
+
+def is_repeated(w):
+    return len(set(w.split())) < len(w.split())

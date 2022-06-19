@@ -169,6 +169,7 @@ def get_nlp():
         spacy.cli.download(vocab)
         nlp = spacy.load(vocab)
     nlp.tokenizer = spacy.tokenizer.Tokenizer(nlp.vocab)
+    return nlp
 
 
 @cache
@@ -254,7 +255,7 @@ def get_formants(q, vowels_only=False, include_stresses=False):
 
 @lru_cache(maxsize=500)
 def get_mscore(text):
-    mscore = [POS_TO_MSCORE.get(tok.pos_, 0) for tok in get_nlp(text)]
+    mscore = [POS_TO_MSCORE.get(tok.pos_, 0) for tok in get_nlp()(text)]
     mscore[-1] *= 1.5
     return sum(mscore) / len(mscore)
 

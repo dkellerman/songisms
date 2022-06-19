@@ -42,7 +42,7 @@ const counts = computed(() => ({
 const label = computed(() => {
   return [
     ct2str(counts.value.rhyme, 'rhyme'),
-    counts.value.l2 > 0 && ct2str(counts.value.l2, 'rhyme-of-rhyme', 'rhymes-of-rhymes'),
+    counts.value.l2 > 0 && ct2str(counts.value.l2, 'maybe-rhyme'),
     counts.value.sug > 0 && ct2str(counts.value.sug, 'suggestion'),
   ]
     .filter(Boolean)

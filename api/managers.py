@@ -92,7 +92,7 @@ class RhymeManager(models.Manager):
                 AND adj_pct >= 0.00005
                 AND n.mscore > 4
             GROUP BY ngram, n, level, frequency, distance, adj_pct, ndiff, mscore
-            HAVING COUNT(sn.song_id) > 1
+            HAVING COUNT(sn.song_id) > 2
         ''' if qphones and len(qphones) else ''
 
         with connection.cursor() as cursor:
