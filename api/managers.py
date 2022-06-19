@@ -55,7 +55,8 @@ class RhymeManager(models.Manager):
                 0 AS distance,
                 n.adj_pct AS adj_pct,
                 0 AS ndiff,
-                0 AS mscore
+                0 AS mscore,
+                0 AS song_ct
             FROM
                 api_ngram n
             INNER JOIN
@@ -67,31 +68,31 @@ class RhymeManager(models.Manager):
             WHERE
                 UPPER(n.text) = ANY(%(q)s)
                 AND NOT (UPPER(rto.text) = ANY(%(q)s))
-            GROUP BY
-                ngram,
-                rto.n,
-                level,
-                distance,
-                n.adj_pct
+            GROUP BY ngram, rto.n, level, distance, n.adj_pct, ndiff, n.mscore, song_ct
         '''
 
         suggestions_sql = f'''
             SELECT
                 n.text AS ngram,
                 n.n AS n,
-                NULL AS level,
-                NULL AS frequency,
+                CAST(NULL AS bigint) AS level,
+                CAST(NULL AS bigint) AS frequency,
                 LEVENSHTEIN(n.phones, %(qphones)s) AS distance,
                 n.adj_pct AS adj_pct,
                 ABS(n - %(qn)s) AS ndiff,
-                n.mscore as mscore
+                n.mscore AS mscore,
+                COUNT(sn.song_id) AS song_ct
             FROM
                 api_ngram n
+            FULL OUTER JOIN
+                api_songngram sn ON sn.ngram_id = n.id
             WHERE
                 NOT (UPPER(n.text) = ANY(%(q)s))
                 AND LEVENSHTEIN(n.phones, %(qphones)s) <= 3
                 AND adj_pct >= 0.00005
-                AND n.mscore > 3.5
+                AND n.mscore > 4
+            GROUP BY ngram, n, level, frequency, distance, adj_pct, ndiff, mscore
+            HAVING COUNT(sn.song_id) > 1
         ''' if qphones and len(qphones) else ''
 
         with connection.cursor() as cursor:
@@ -105,7 +106,7 @@ class RhymeManager(models.Manager):
                         frequency,
                         CASE
                             WHEN level = 1 THEN 'rhyme'
-                            WHEN level = 2 OR level = 3 THEN 'rhyme-l2'
+                            WHEN level = 2 THEN 'rhyme-l2'
                             ELSE 'suggestion'
                         END AS type
                     FROM (SELECT DISTINCT ON (ngram) * FROM results ORDER BY ngram, level) uniq_results
@@ -139,6 +140,7 @@ class NGramManager(models.Manager):
 class SongManager(models.Manager):
     filter_map = {
         'lyrics': ('lyrics__icontains', None),
+        'rhymes': ('rhymes_raw__icontains', None),
         'writer': ('writers__name__icontains', None),
         'artist': ('artists__name__icontains', None),
         'tag': ('tags__value__iexact', None),
@@ -156,6 +158,7 @@ class SongManager(models.Manager):
             excludes = {}
             matches = re.findall(r'(~?[^\s]+:)?([^\s]+)', q.lower())
             for field, qstr in matches:
+                qstr = re.sub(r'\+', ' ', qstr)
                 field = (field or 'title:')[:-1]
                 reverse = field[0] == '~'
                 if reverse:

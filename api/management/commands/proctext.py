@@ -22,6 +22,9 @@ _CACHES = dict(
     ipa='./data/cache/ngram_ipa.json',
 )
 
+POS_TO_MSCORE = dict(ADJ=4, NOUN=4, PROPN=4, VERB=4, ADV=2, ADP=2, INTJ=2, NUM=2, X=2, PRON=1)
+
+
 class Command(BaseCommand):
     help = 'Process text'
 
@@ -31,7 +34,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         songs = Song.objects.all()
         ngrams = dict()
-        rhymes = list()
+        rhymes = dict()
         song_ngrams = dict()
         session = requests_cache.CachedSession(_CACHES['datamuse'])
 
@@ -42,6 +45,7 @@ class Command(BaseCommand):
                 texts = get_lyric_ngrams(song.lyrics, range(5))
                 for text, n in texts:
                     ngrams[text] = ngrams.get(text, None) or dict(text=text, n=n)
+                    ngrams[text]['song_count'] = ngrams[text].get('song_count', 0) + 1
                     song_ngram = song_ngrams.get((song.id, text), None)
                     if song_ngram:
                         song_ngram['count'] += 1
@@ -53,12 +57,13 @@ class Command(BaseCommand):
                 for from_text, to_text in rhyme_pairs:
                     ngrams[from_text] = ngrams.get(from_text) or dict(text=from_text, n=len(from_text.split()))
                     ngrams[to_text] = ngrams.get(to_text) or dict(text=to_text, n=len(to_text.split()))
-                    rhymes.append(dict(from_ngram=ngrams[from_text], to_ngram=ngrams[to_text], song=song, level=1))
+                    rhymes[(from_text, to_text, song.id)] = \
+                        dict(from_ngram=ngrams[from_text], to_ngram=ngrams[to_text], song=song, level=1)
 
         print('extra ngrams')
         extra = []
-        with open('./data/mine.txt', 'r') as f:
-            extra += get_lyric_ngrams(f.read(), range(5))
+        # with open('./data/mine.txt', 'r') as f:
+        #     extra += get_lyric_ngrams(f.read(), range(5))
         with open('./data/idioms.txt', 'r') as f:
             extra += get_lyric_ngrams(f.read(), range(5))
         for text, n in tqdm(extra):
@@ -66,6 +71,8 @@ class Command(BaseCommand):
 
         print('datamuse rhymes')
         n1 = [n for n in ngrams.values() if n['n'] == 1]
+        common = get_common_words()
+        rmuse = set()
         for from_ngram in tqdm(n1):
             query = urlencode(dict(rel_rhy=from_ngram['text'], max=50))
             query2 = urlencode(dict(rel_nry=from_ngram['text'], max=50))
@@ -80,15 +87,22 @@ class Command(BaseCommand):
                 print('error retrieving datamuse NRY for', from_ngram['text'])
             for val in vals:
                 to_word = val['word']
-                if val in get_common_words():
-                    ngrams[to_word] = ngrams.get(to_word) or NGram(text=to_word, n=len(to_word.split()))
-                    rhymes.append(dict(from_ngram=from_ngram, to_ngram=ngrams[to_word], song=None, level=1))
+                from_word = from_ngram['text']
+                if to_word in common and from_word in common:
+                    ngrams[to_word] = ngrams.get(to_word) or dict(text=to_word, n=len(to_word.split()))
+                    rkey = (from_ngram['text'], to_word, None)
+                    if rkey not in rhymes:
+                        rhymes[rkey] = dict(from_ngram=from_ngram, to_ngram=ngrams[to_word], song=None, level=1)
+                        rmuse.add(to_word)
+        print('muse', list(rmuse))
 
         print('l2 rhymes')
-        l1_rhymes = list(rhymes)
+        l1_rhymes = list(rhymes.values())
         for l1 in tqdm(l1_rhymes):
             for l2 in [r for r in l1_rhymes if r['from_ngram']['text'] == l1['to_ngram']['text']]:
-                rhymes.append(dict(from_ngram=l1['from_ngram'], to_ngram=l2['to_ngram'], song=None, level=2))
+                rkey = (l1['from_ngram']['text'], l2['to_ngram']['text'], None)
+                if rkey not in rhymes:
+                    rhymes[rkey] = dict(from_ngram=l1['from_ngram'], to_ngram=l2['to_ngram'], song=None, level=2)
 
         # meta
         global _phones, _mscores, _ipa
@@ -118,6 +132,7 @@ class Command(BaseCommand):
             ct = sn['count']
             n_counts[n - 1] = (n_counts[n - 1] or 0) + ct
             ngram['count'] = (sn['ngram'].get('count') or 0) + ct
+            ngrams[sn['ngram']['text']]['count'] = ngram['count']
         word_ct = n_counts[0]
 
         print('score ngrams')
@@ -137,9 +152,8 @@ class Command(BaseCommand):
                 ngram['adj_pct'] = float((ngram.get('count') or 0.0) / word_ct)
 
         print('ngrams', len(ngrams.values()))
-        print('rhymes', len(rhymes))
+        print('rhymes', len(rhymes.values()))
         print('song_ngrams', len(song_ngrams.values()))
-
 
         with transaction.atomic():
             print('deleting')
@@ -148,19 +162,23 @@ class Command(BaseCommand):
             SongNGram.objects.all().delete()
 
             print('prepping ngrams')
-            ngrams = [NGram(**{k: v for k, v in n.items() if k != 'count'})
+            ngrams = [NGram(**{k: v for k, v in n.items() if k not in ['count', 'song_count']})
                       for n in tqdm(ngrams.values())]
-            print('writing ngrams')
+            print('writing ngrams', len(ngrams))
             ngrams = NGram.objects.bulk_create(ngrams)
             ngrams = dict([(n.text, n) for n in ngrams])
 
             print('prepping rhymes')
             rhyme_objs = []
-            for rhyme in tqdm(rhymes):
+            for rhyme in tqdm(rhymes.values()):
                 nfrom = ngrams[rhyme['from_ngram']['text']]
                 nto = ngrams[rhyme['to_ngram']['text']]
-                rhyme_objs.append(Rhyme(from_ngram=nfrom, to_ngram=nto, song=rhyme['song'], level=rhyme['level']))
-            print('writing rhymes')
+                song = rhyme['song']
+                rhyme_objs.append(Rhyme(from_ngram=nfrom, to_ngram=nto, song=song, level=rhyme['level']))
+                revkey = (nto.text, nfrom.text, song.id if song else None)
+                if revkey not in rhymes:
+                    rhyme_objs.append(Rhyme(from_ngram=nto, to_ngram=nfrom, song=song, level=rhyme['level']))
+            print('writing rhymes', len(rhyme_objs))
             Rhyme.objects.bulk_create(rhyme_objs)
 
             print('prepping song_ngrams')
@@ -168,7 +186,7 @@ class Command(BaseCommand):
             for sn in tqdm(song_ngrams.values()):
                 n = ngrams[sn['ngram']['text']]
                 sn_objs.append(SongNGram(song=sn['song'], ngram=n, count=sn['count']))
-            print('creating song_ngrams')
+            print('creating song_ngrams', len(sn_objs))
             SongNGram.objects.bulk_create(sn_objs)
 
             print('done')

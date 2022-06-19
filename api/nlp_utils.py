@@ -5,29 +5,21 @@ import inflect
 import sh
 import eng_to_ipa
 import pronouncing as pron
-from tqdm import tqdm
 from nltk import FreqDist
 from nltk.util import ngrams as nltk_make_ngrams
 from nltk.corpus import brown
 from num2words import num2words
-from datamuse import Datamuse as Datamuse
-from django.db import transaction
-from django.db.models import Sum
-import api.models as models
 
 _syn_data = None
-_common_words = None
+_common_words_flist = None
 inflector = inflect.engine()
-datamuse_api = Datamuse()
 
 
-def get_common_words():
-    global _common_words
-    if _common_words is not None:
-        return _common_words
-    flist = FreqDist(i.lower() for i in brown.words())
-    _common_words = [w[0] for w in flist.most_common()[:1000]]
-    return _common_words
+def get_common_words(n=700):
+    global _common_words_flist
+    if _common_words_flist is None:
+        _common_words_flist = FreqDist(i.lower() for i in brown.words())
+    return dict(_common_words_flist.most_common()[:n])
 
 
 def get_synonyms():
@@ -81,169 +73,12 @@ def tokenize_lyric_line(val):
 
 def get_lyric_ngrams(lyrics, n_range=range(5)):
     ngrams = []
-    text = ' '.join([l for l in lyrics.split('\n') if l.strip()])
-    toks = tokenize_lyric_line(text)
-    for i in n_range:
-        for ngram in nltk_make_ngrams(sequence=toks, n=i+1):
-            ngrams.append((' '.join(ngram), i+1))
+    lines = [tokenize_lyric_line(l.strip()) for l in lyrics.split('\n') if l.strip()]
+    for toks in lines:
+        for i in n_range:
+            for ngram in nltk_make_ngrams(sequence=toks, n=i+1):
+                ngrams.append((' '.join(ngram), i+1))
     return ngrams
-
-
-def make_extra_ngrams(force_update=False):
-    with open('./data/mine.txt', 'r') as f:
-        lines = f.read().split('\n')
-        make_ngrams_for_lyrics(lines, None, force_update=force_update)
-
-    with open('./data/idioms.txt', 'r') as f:
-        lines = [l.strip() for l in f.read().split('\n') if l.strip()]
-        make_ngrams_for_lyrics(lines, None, force_update=force_update)
-
-
-def make_ngrams_for_song(song, force_update=False):
-    with transaction.atomic():
-        models.SongNGram.objects.filter(song=song).delete()
-        make_ngrams_for_lyrics(song.lyrics, song, force_update=force_update)
-
-
-POS_TO_MSCORE = dict(ADJ=4, NOUN=4, PROPN=4, VERB=4, ADV=2, ADP=2, INTJ=2, NUM=2, X=2, PRON=1)
-
-
-def make_ngrams_for_lyrics(lyrics, song=None, force_update=False):
-    if type(lyrics) == str:
-        lyrics = [lyrics]
-
-    print('creating ngrams...')
-    nlp = load_nlp()
-    with transaction.atomic():
-        sn_to_update = set()
-        n_to_update = set()
-        for lyric in lyrics:
-            ngrams = get_lyric_ngrams(lyric, range(5))
-            for key, n in ngrams:
-                ngram, _ = models.NGram.objects.get_or_create(text=key, n=n)
-                if not ngram.phones or force_update:
-                    ngram.phones = get_phones(ngram.text, vowels_only=True, include_stresses=False)
-                    n_to_update.add(ngram)
-                # if not ngram.ipa or force_update:
-                #     ngram.ipa = get_ipa(ngram.text)
-                #     n_to_update.add(ngram)
-                if not ngram.mscore or force_update:
-                    mscore = [POS_TO_MSCORE.get(tok.pos_, 0) for tok in nlp(key)]
-                    mscore[-1] *= 1.5
-                    ngram.mscore = sum(mscore) / len(mscore)
-                    n_to_update.add(ngram)
-                if song:
-                    sn, created = models.SongNGram.objects.get_or_create(ngram=ngram, song=song, defaults=dict(count=1))
-                    if not created:
-                        sn.count += 1
-                        sn_to_update.add(sn)
-        print('saving', len(n_to_update), 'ngrams...')
-        models.SongNGram.objects.bulk_update(list(sn_to_update), ['count'])
-        models.NGram.objects.bulk_update(list(n_to_update), ['phones', 'ipa', 'mscore'])
-
-
-def add_datamuse_rhymes(from_ngram):
-    resp = datamuse_api.words(rel_rhy=from_ngram.text, max=50)
-    for item in resp:
-        to_word = item['word']
-        if to_word in get_common_words():
-            models.Rhyme.objects.get_or_create(
-                from_ngram=from_ngram,
-                to_ngram=models.NGram.objects.get_or_create(text=to_word, n=len(to_word.split())),
-                level=1,
-            )
-
-
-def score_ngrams(force_update=False):
-    ngrams = models.NGram.objects.annotate(
-        ct=Sum('song_ngrams__count'),
-    )
-
-    words = list(ngrams.filter(n=1))
-    word_ct = sum([n.ct or 0 for n in words])
-    by_text = dict([(n.text, n) for n in ngrams])
-    n_counts = [sum([gram.ct or 0 for gram in ngrams if gram.n == n]) for n in range(15)]
-    ngrams = list(ngrams)
-    to_update = [n for n in ngrams if n.pct is None and n.adj_pct is None] if not force_update else ngrams
-
-    print("[SCORING NGRAMS]", len(to_update))
-    for ngram in tqdm(to_update):
-        if not ngram.pct or not ngram.adj_pct or force_update:
-            if ngram.n > 1:
-                subgrams = [by_text[gram] for gram in ngram.text.split() if gram and (gram in by_text)]
-                total_with_same_n = n_counts[ngram.n - 1]
-                ngram_pct = float((ngram.ct or 0.0) / total_with_same_n)
-                chance_pct = 1.0
-                for gram in subgrams:
-                    gram_pct = float((gram.ct or 0.0) / word_ct)
-                    chance_pct *= gram_pct
-                ngram.pct = ngram_pct
-                ngram.adj_pct = ngram_pct - chance_pct
-            else:
-                ngram.pct = float((ngram.ct or 0.0) / word_ct)
-                ngram.adj_pct = float((ngram.ct or 0.0) / word_ct)
-
-    print("updating...")
-    models.NGram.objects.bulk_update(to_update, ['pct', 'adj_pct'])
-
-
-def set_lyrics_ipa(song):
-    lines = song.lyrics.split('\n')
-    ipa = '\n'.join([get_ipa(l, phones=False) for l in lines])
-    song.lyrics_ipa = ipa
-    song.save()
-
-
-def make_rhymes(song):
-    rhymes = get_rhyme_pairs(song.rhymes_raw)
-
-    for text1, text2 in rhymes:
-        n1 = len(text1.split())
-        n2 = len(text2.split())
-        with transaction.atomic():
-            ngram1, _ = models.NGram.objects.get_or_create(text=text1, n=n1)
-            ngram2, _ = models.NGram.objects.get_or_create(text=text2, n=n2)
-            models.Rhyme.objects.get_or_create(
-                from_ngram=ngram1,
-                to_ngram=ngram2,
-                song=song,
-                level=1,
-            )
-            models.Rhyme.objects.get_or_create(
-                from_ngram=ngram2,
-                to_ngram=ngram1,
-                song=song,
-                level=1,
-            )
-
-
-def make_rhymes_l2():
-    l1 = models.Rhyme.objects.distinct('from_ngram', 'to_ngram').filter(level=1)
-    l2 = models.Rhyme.objects.distinct('from_ngram', 'to_ngram').filter(level=2)
-    created = [(r.from_ngram_id, r.to_ngram_id) for r in l2]
-
-    for r1 in tqdm(l1):
-        for r2 in l1.filter(from_ngram_id=r1.to_ngram_id):
-            with transaction.atomic():
-                id1 = r1.from_ngram_id
-                id2 = r2.to_ngram_id
-                if (id1, id2) not in created:
-                    models.Rhyme.objects.create(
-                        from_ngram_id=id1,
-                        to_ngram_id=id2,
-                        song=None,
-                        level=2,
-                    )
-                    created.append((id1, id2))
-
-                if (id2, id1) not in created:
-                    models.Rhyme.objects.create(
-                        from_ngram_id=id2,
-                        to_ngram_id=id1,
-                        song=None,
-                        level=2,
-                    )
-                    created.append((id2, id1))
 
 
 def get_rhyme_pairs(val=''):

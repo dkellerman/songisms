@@ -47,8 +47,14 @@ fieldset {
       }
 
       &.hit {
+        &.rhyme a {
+          opacity: 1.0;
+          font-style: normal;
+        }
+
         &.rhyme-l2 a {
           opacity: 0.6;
+          font-style: normal;
         }
 
         &.suggestion a {
