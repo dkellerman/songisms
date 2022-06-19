@@ -12,7 +12,7 @@ from django.core.cache import cache
 from tqdm import tqdm
 
 
-BATCH_SIZE = 1000
+BATCH_SIZE = 100
 
 class Command(BaseCommand):
     help = 'Process text'
