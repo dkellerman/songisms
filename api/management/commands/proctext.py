@@ -1,28 +1,13 @@
 #!/usr/bin/env python
 
-import json
 from urllib.parse import urlencode
 import requests_cache
-from django.db import transaction
 from django.core.management.base import BaseCommand
+from django.db import transaction
 from api.models import *
 from api.nlp_utils import *
+from api.utils import JSONFileCache
 from tqdm import tqdm
-
-nlp = load_nlp()
-
-_phones = None
-_mscores = None
-_ipa = None
-
-_CACHES = dict(
-    datamuse='data/cache/datamuse_cache',
-    phones='./data/cache/phones.json',
-    mscores='./data/cache/mscores.json',
-    ipa='./data/cache/ngram_ipa.json',
-)
-
-POS_TO_MSCORE = dict(ADJ=4, NOUN=4, PROPN=4, VERB=4, ADV=2, ADP=2, INTJ=2, NUM=2, X=2, PRON=1)
 
 
 class Command(BaseCommand):
@@ -36,7 +21,6 @@ class Command(BaseCommand):
         ngrams = dict()
         rhymes = dict()
         song_ngrams = dict()
-        session = requests_cache.CachedSession(_CACHES['datamuse'])
 
         # lyric ngrams
         print('lyric ngrams')
@@ -70,6 +54,7 @@ class Command(BaseCommand):
             ngrams[text] = ngrams.get(text, None) or dict(text=text, n=n)
 
         print('datamuse rhymes')
+        datamuse_session = requests_cache.CachedSession('data/cache/datamuse_cache')
         n1 = [n for n in ngrams.values() if n['n'] == 1]
         common = get_common_words()
         rmuse = set()
@@ -78,11 +63,11 @@ class Command(BaseCommand):
             query2 = urlencode(dict(rel_nry=from_ngram['text'], max=50))
             vals = []
             try:
-                vals += session.get(f'https://api.datamuse.com/words?{query}').json()
+                vals += datamuse_session.get(f'https://api.datamuse.com/words?{query}').json()
             except:
                 print('error retrieving datamuse RHY for', from_ngram['text'])
             try:
-                vals += session.get(f'https://api.datamuse.com/words?{query2}').json()
+                vals += datamuse_session.get(f'https://api.datamuse.com/words?{query2}').json()
             except:
                 print('error retrieving datamuse NRY for', from_ngram['text'])
             for val in vals:
@@ -94,7 +79,6 @@ class Command(BaseCommand):
                     if rkey not in rhymes:
                         rhymes[rkey] = dict(from_ngram=from_ngram, to_ngram=ngrams[to_word], song=None, level=1)
                         rmuse.add(to_word)
-        print('muse', list(rmuse))
 
         print('l2 rhymes')
         l1_rhymes = list(rhymes.values())
@@ -104,26 +88,24 @@ class Command(BaseCommand):
                 if rkey not in rhymes:
                     rhymes[rkey] = dict(from_ngram=l1['from_ngram'], to_ngram=l2['to_ngram'], song=None, level=2)
 
-        # meta
-        global _phones, _mscores, _ipa
-
         print('ngram phones')
+        phones_cache = JSONFileCache('./data/cache/phones.json', lambda key:
+                                     get_phones(key, vowels_only=True, include_stresses=False))
         for ngram in tqdm(ngrams.values()):
-            ngram['phones'] = get_phones_for_text(ngram['text'])
-        with open(_CACHES['phones'], 'w') as f:
-            f.write(json.dumps(_phones))
+            ngram['phones'] = phones_cache.get(ngram['text'])
+        phones_cache.save()
 
         print('ngram mscore')
+        mscores_cache = JSONFileCache('./data/cache/mscores.json', lambda key: get_mscore(key))
         for ngram in tqdm(ngrams.values()):
-            ngram['mscore'] = get_mscore(ngram['text'])
-        with open(_CACHES['mscores'], 'w') as f:
-            f.write(json.dumps(_mscores))
+            ngram['mscore'] = mscores_cache.get(ngram['text'])
+        mscores_cache.save()
 
         # print('ngram ipa')
+        # ipa_cache = JSONFileCache('./data/cache/ngram_ipa.json', lambda key: get_ipa(key))
         # for ngram in tqdm(ngrams.values()):
-        #     ngram['ipa'] = get_ngram_ipa(ngram['text'])
-        # with open(_CACHES['ipa'], 'w') as f:
-        #     f.write(json.dumps(_ipa))
+        #     ngram['ipa'] = ipa_cache.get(ngram['text'])
+        # ipa_cache.save()
 
         print('index ngram counts')
         n_counts = [0 for _ in range(15)]
@@ -191,52 +173,3 @@ class Command(BaseCommand):
 
             print('done')
 
-
-def get_mscore(text):
-    global _mscores
-    if _mscores is None:
-        try:
-            with open(_CACHES['mscores'], 'r') as f:
-                _mscores = json.loads(f.read())
-        except:
-            _mscores = {}
-    mscore = _mscores.get(text, None)
-    if mscore:
-        return mscore
-    mscore = [POS_TO_MSCORE.get(tok.pos_, 0) for tok in nlp(text)]
-    mscore[-1] *= 1.5
-    mscore = sum(mscore) / len(mscore)
-    _mscores[text] = mscore
-    return mscore
-
-
-def get_phones_for_text(text):
-    global _phones
-    if _phones is None:
-        try:
-            with open(_CACHES['phones'], 'r') as f:
-                _phones = json.loads(f.read())
-        except:
-            _phones = {}
-    phones = _phones.get(text, None)
-    if phones:
-        return phones
-    phones = get_phones(text, vowels_only=True, include_stresses=False)
-    _phones[text] = phones
-    return phones
-
-
-def get_ngram_ipa(text):
-    global _ipa
-    if _ipa is None:
-        try:
-            with open(_CACHES['ipa'], 'r') as f:
-                _ipa = json.loads(f.read())
-        except:
-            _ipa = {}
-    ipa = _ipa.get(text, None)
-    if ipa:
-        return ipa
-    ipa = get_ipa(text)
-    _ipa[text] = ipa
-    return ipa

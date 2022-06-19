@@ -5,35 +5,31 @@ import inflect
 import sh
 import eng_to_ipa
 import pronouncing as pron
+from functools import cache, lru_cache
 from nltk import FreqDist
 from nltk.util import ngrams as nltk_make_ngrams
 from nltk.corpus import brown
 from num2words import num2words
 
-_syn_data = None
-_common_words_flist = None
 inflector = inflect.engine()
 
 
+@cache
 def get_common_words(n=700):
-    global _common_words_flist
-    if _common_words_flist is None:
-        _common_words_flist = FreqDist(i.lower() for i in brown.words())
-    return dict(_common_words_flist.most_common()[:n])
+    fd = FreqDist(i.lower() for i in brown.words())
+    return dict(fd.most_common()[:n])
 
 
+@cache
 def get_synonyms():
-    global _syn_data
-    if _syn_data is not None:
-        return _syn_data
     with open('./data/synonyms.txt', 'r') as syn_file:
-        _syn_data = [
+        return [
             [l.strip() for l in line.split(';')]
             for line in syn_file.readlines()
         ]
-    return _syn_data
 
 
+@lru_cache(maxsize=500)
 def get_word_splits(word):
     splits = set()
     common = get_common_words()
@@ -93,6 +89,7 @@ def get_rhyme_pairs(val=''):
     return list(set(pairs))
 
 
+@lru_cache(maxsize=500)
 def make_synonyms(gram):
     all_syns = set()
 
@@ -156,33 +153,36 @@ def make_synonyms(gram):
     return [syn for syn in all_syns if syn != gram]
 
 
+@lru_cache(maxsize=500)
 def phones_for_word(w):
     w = re.sub(r'in\'', 'ing', w)
     val = pron.phones_for_word(w)
     return val[0] if len(val) else ''
 
 
-def load_nlp():
+@cache
+def get_nlp():
     vocab = 'en_core_web_sm'
     try:
         nlp = spacy.load(vocab)
     except:
         spacy.cli.download(vocab)
         nlp = spacy.load(vocab)
-
     nlp.tokenizer = spacy.tokenizer.Tokenizer(nlp.vocab)
-    return nlp
 
 
+@cache
 def pstresses(w):
     val = pron.stresses(w)
     return val[0] if len(val) else ''
 
 
+@lru_cache(maxsize=500)
 def get_stresses(q):
     return ' '.join([pstresses(w) for w in q.split()])
 
 
+@lru_cache(maxsize=500)
 def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True):
     if try_syns == True:
         try_syns = make_synonyms(q)
@@ -209,9 +209,7 @@ def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True):
     return phones or ''
 
 
-GRUUT_CACHE = {}
-
-
+@lru_cache(maxsize=500)
 def get_ipa(txt, phones=False, include_stresses=True):
     txt = txt.strip()
     txt = re.sub(r'-', ' ', txt)
@@ -226,19 +224,17 @@ def get_ipa(txt, phones=False, include_stresses=True):
         return ''
 
     if phones:
-        if ipa in GRUUT_CACHE:
-            return GRUUT_CACHE[ipa]
         cmd = sh.python('-m',  'gruut_ipa', 'phones', ipa)
         cmd.wait()
         ipa_out = str(cmd)[:-1]
         if not include_stresses:
             ipa_out = re.sub(r'[\ˈˌ]', '', ipa_out)
-        GRUUT_CACHE[ipa] = ipa_out
         return ipa_out
 
     return ipa
 
 
+@lru_cache(maxsize=500)
 def get_formants(q, vowels_only=False, include_stresses=False):
     phones = get_ipa(q, phones=True).split()
     formants = []
@@ -255,6 +251,15 @@ def get_formants(q, vowels_only=False, include_stresses=False):
 
     return formants
 
+
+@lru_cache(maxsize=500)
+def get_mscore(text):
+    mscore = [POS_TO_MSCORE.get(tok.pos_, 0) for tok in get_nlp(text)]
+    mscore[-1] *= 1.5
+    return sum(mscore) / len(mscore)
+
+
+POS_TO_MSCORE = dict(ADJ=4, NOUN=4, PROPN=4, VERB=4, ADV=2, ADP=2, INTJ=2, NUM=2, X=2, PRON=1)
 
 VOWELS = [u'i', u'y', u'e', u'ø', u'ɛ', u'œ', u'a', u'ɶ', u'ɑ', u'ɒ', u'ɔ',
           u'ʌ', u'ɤ', u'o', u'ɯ', u'u', u'ɪ', u'ʊ', u'ə', u'æ']
