@@ -7,7 +7,7 @@ import requests
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from api.models import *
-from api.nlp_utils import get_lyric_ngrams, get_rhyme_pairs, get_common_words, get_mscore
+from api.nlp_utils import get_lyric_ngrams, get_rhyme_pairs, get_common_words, get_mscore, get_ipa
 from django.core.cache import cache
 from tqdm import tqdm
 
@@ -16,7 +16,8 @@ class Command(BaseCommand):
     help = 'Process text'
 
     def add_arguments(self, parser):
-        parser.add_argument('--reset-cache', '-c', action=argparse.BooleanOptionalAction)
+        parser.add_argument('--caches', '-c', action=argparse.BooleanOptionalAction)
+        parser.add_argument('--dry-run', '-D', action=argparse.BooleanOptionalAction)
 
     def handle(self, *args, **options):
         songs = Song.objects.all()
@@ -63,6 +64,7 @@ class Command(BaseCommand):
 
         for from_ngram in tqdm(n1):
             vals = datamuse_cache.get(from_ngram['text'], fetch_datamuse_rhymes)
+            print(vals)
             for val in vals:
                 to_word = val['word']
                 from_word = from_ngram['text']
@@ -162,6 +164,9 @@ class Command(BaseCommand):
         print('rhymes', len(rhymes.values()))
         print('song_ngrams', len(song_ngrams.values()))
 
+        if options['dry_run']:
+            return
+
         with transaction.atomic():
             print('deleting')
             Rhyme.objects.all().delete()
@@ -196,7 +201,7 @@ class Command(BaseCommand):
             print('creating song_ngrams', len(sn_objs))
             SongNGram.objects.bulk_create(sn_objs)
 
-            if options['reset_cache']:
+            if options['caches']:
                 reset_caches()
 
             print('done')
