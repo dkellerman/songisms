@@ -1,7 +1,7 @@
 import os
 import time
 import pafy
-import ffmpeg
+# import ffmpeg
 import json
 import base64
 import firebase_admin
@@ -70,19 +70,19 @@ def fetch_audio(song, convert=False):
     else:
         print('webm file exists')
 
-    if convert:
-        fname_mp3 = f'{yt_id}.mp3'
-        tmpfile_mp3 = f'/tmp/{fname_mp3}'
-        if not os.path.exists(tmpfile_mp3):
-            print('convert to mp3...')
-            ffmpeg.input(tmpfile).output(tmpfile_mp3, ac=1, audio_bitrate='128k').run()
-        else:
-            print('mp3 exists')
-        fname_upload = fname_mp3
-        tmpfile_upload = tmpfile_mp3
-    else:
-        fname_upload = fname
-        tmpfile_upload = tmpfile
+    # if convert:
+    #     fname_mp3 = f'{yt_id}.mp3'
+    #     tmpfile_mp3 = f'/tmp/{fname_mp3}'
+    #     if not os.path.exists(tmpfile_mp3):
+    #         print('convert to mp3...')
+    #         ffmpeg.input(tmpfile).output(tmpfile_mp3, ac=1, audio_bitrate='128k').run()
+    #     else:
+    #         print('mp3 exists')
+    #     fname_upload = fname_mp3
+    #     tmpfile_upload = tmpfile_mp3
+    # else:
+    fname_upload = fname
+    tmpfile_upload = tmpfile
 
     if os.path.exists(tmpfile_upload):
         print('uploading audio', tmpfile_upload)
