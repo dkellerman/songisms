@@ -29,8 +29,6 @@ export const useRhymesStore = defineStore('rhymes', {
     rhymes: [],
     suggestions: [],
     hasNextPage: false,
-    curQuery: '',
-    curPage: 1,
     loading: false,
   }),
   actions: {
@@ -77,8 +75,6 @@ export const useRhymesStore = defineStore('rhymes', {
       if (page > 1) newRhymes = [...(this.rhymes ?? []), ...newRhymes];
 
       this.rhymes = newRhymes;
-      this.curQuery = q;
-      this.curPage = page;
       this.hasNextPage = newRhymes?.length === page * PER_PAGE && newRhymes.length < 200;
       this.loading = false;
     },
@@ -87,7 +83,7 @@ export const useRhymesStore = defineStore('rhymes', {
       try {
         this.abortController?.abort();
       } catch (e) {
-        console.log('search canceled');
+        console.error(e);
       }
     },
   },

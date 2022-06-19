@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import { debounce } from 'lodash-es';
-import { ref, computed, watch } from 'vue';
+import {ref, computed, watch, watchEffect} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useRhymesStore } from '@/store';
@@ -17,8 +17,8 @@ const route = useRoute();
 const router = useRouter();
 const q = ref(route.query.q ?? '');
 const page = ref(route.query.page ?? 1);
-const searchInput = ref(null);
 const outputEl = ref();
+const searchInput = ref();
 const { rhymes, hasNextPage, suggestions, loading } = storeToRefs(useRhymesStore());
 const { fetchRhymes, fetchSuggestions, abort } = useRhymesStore();
 const debouncedFetchSuggestions = debounce(fetchSuggestions, SUGGEST_DEBOUNCE);
@@ -39,14 +39,16 @@ const label = computed(() => {
     .join(', ');
 });
 
-async function search(newQ) {
-  abort?.();
-  q.value = newQ;
-}
+watchEffect(() => {
+  if (searchInput.value) searchInput.value.selectItem(route.query.q ?? '');
+});
 
 watch([q, page], () => {
+  abort?.();
   track('engagement', page.value === 1 ? 'search' : 'more', q.value);
-  router.push({ query: { q: q.value } });
+  const query = {};
+  if (q.value) query.q = q.value;
+  router.push({ query });
   fetchRhymes(q.value, page.value);
 });
 
@@ -58,17 +60,30 @@ watch(
   },
 );
 
+function onSelectItem(val) {
+  q.value = val;
+  q.page = 1;
+}
+
 function onEnter(e) {
   q.value = (e.target.value ?? '').trim();
 }
 
 function onClickSearch(e) {
-  q.value = searchInput.value;
+  q.value = searchInput.value.$data.input;
 }
 
 function onInput(e) {
-  searchInput.value = e.input;
-  debouncedFetchSuggestions(e.input);
+  if (e.input.trim()) debouncedFetchSuggestions(e.input);
+}
+
+function onLink(val) {
+  q.value = val;
+  page.value = 1;
+}
+
+function onNextPage() {
+  page.value++;
 }
 
 function track(category, action, label) {
@@ -93,12 +108,13 @@ fetchRhymes();
 <template>
   <fieldset>
     <vue3-simple-typeahead
+      ref="searchInput"
       placeholder="Find rhymes in songs..."
-      @onInput="onInput"
-      @selectItem="e => search(e)"
-      @keyup.enter="onEnter"
       :items="suggestions"
       :min-input-length="1"
+      @onInput="onInput"
+      @selectItem="onSelectItem"
+      @keyup.enter="onEnter"
     >
       <template #list-item-text="slot">
         <span v-html="slot.boldMatchText(slot.itemProjection(slot.item))"></span>
@@ -114,20 +130,13 @@ fetchRhymes();
 
     <ul v-if="rhymes && (!loading || page > 1)">
       <li v-for="r of rhymes" :key="r.ngram" :class="`hit ${r.type}`">
-        <a
-          @click="
-            () => {
-              q = r.ngram;
-              page = 1;
-            }
-          "
-          >{{ r.ngram }}</a
+        <a @click="() => onLink(r.ngram)">{{ r.ngram }}</a
         >
         <span v-if="!!r.frequency && r.type === 'rhyme'" class="freq"> ({{ r.frequency }}) </span>
       </li>
     </ul>
 
-    <button v-if="!loading && hasNextPage" class="more" @click="page++">More...</button>
+    <button v-if="!loading && hasNextPage" class="more" @click="onNextPage">More...</button>
   </section>
 </template>
 
