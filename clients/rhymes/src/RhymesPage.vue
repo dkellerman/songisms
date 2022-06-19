@@ -145,9 +145,7 @@ fetchRhymes();
 
 input[type='text'] {
   width: 100%;
-  &::-webkit-search-cancel-button {
-    -webkit-appearance: searchfield-cancel-button;
-  }
+  border-radius: 0;
 }
 </style>
 

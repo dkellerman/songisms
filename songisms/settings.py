@@ -175,12 +175,10 @@ REVERSION_COMPARE_IGNORE_NOT_REGISTERED=False
 redis_url = os.environ.get('SISM_REDIS_URL', os.environ.get('REDIS_URL'))
 CACHES = {
     'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
         'LOCATION': redis_url,
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient'
-        },
         'KEY_PREFIX': 'sism',
+        'TIMEOUT': None,
     }
 }
 
