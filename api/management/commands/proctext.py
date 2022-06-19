@@ -47,8 +47,8 @@ class Command(BaseCommand):
 
         print('extra ngrams')
         extra = []
-        with open('./data/mine.txt', 'r') as f:
-            extra += get_lyric_ngrams(f.read(), range(5))
+        # with open('./data/mine.txt', 'r') as f:
+        #     extra += get_lyric_ngrams(f.read(), range(5))
         with open('./data/idioms.txt', 'r') as f:
             extra += get_lyric_ngrams(f.read(), range(5))
         for text, n in tqdm(extra):

@@ -68,7 +68,7 @@ class RhymeType(graphene.ObjectType):
 class NGramType(DjangoObjectType):
     class Meta:
         model = NGram
-        fields = ['text', ]
+        fields = ['text', 'n']
 
 
 class TagType(DjangoObjectType):
@@ -113,6 +113,7 @@ class Query(graphene.ObjectType):
                            q=graphene.String(required=False),
                            limit=graphene.Int(required=False),
                            offset=graphene.Int(required=False))
+    rhymes_suggest = graphene.List(NGramType, q=graphene.String(required=False))
     ngrams = graphene.Field(NGramsPaginatedType,
                             page=graphene.Int(required=False),
                             q=graphene.String(required=False),
@@ -174,6 +175,10 @@ class Query(graphene.ObjectType):
     @staticmethod
     def resolve_rhymes(root, info, q=None, offset=0, limit=50):
         return Rhyme.objects.query(q, offset, limit)
+
+    @staticmethod
+    def resolve_rhymes_suggest(root, info, q=None):
+        return NGram.objects.suggest(q=q)
 
     @staticmethod
     def resolve_ngrams(root, info, q, tags, page=1, ordering=None):

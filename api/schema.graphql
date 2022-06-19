@@ -22,8 +22,6 @@ scalar DateTime
 
 scalar GenericScalar
 
-scalar JSONString
-
 type Mutation {
   tokenAuth(username: String!, password: String!): ObtainJSONWebToken
   verifyToken(token: String): Verify
@@ -32,6 +30,7 @@ type Mutation {
 
 type NGramType {
   text: String!
+  n: Int!
 }
 
 type NGramsPaginatedType {
@@ -60,6 +59,7 @@ type Query {
   writers(page: Int, q: String, ordering: [String]): WritersPaginatedType
   writer(id: Int!): WriterType
   rhymes(q: String, limit: Int, offset: Int): [RhymeType]
+  rhymesSuggest(q: String): [NGramType]
   ngrams(page: Int, q: String, tags: [String], ordering: [String]): NGramsPaginatedType
   tagsByCategory(category: String!): [TagType]
 }
@@ -95,7 +95,7 @@ type SongType {
   jaxstaId: String
   youtubeId: String
   audioFile: String
-  metadata: JSONString
+  metadata: GenericScalar
   created: DateTime!
   updated: DateTime
   taggedTexts: [TaggedTextType!]!

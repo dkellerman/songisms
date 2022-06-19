@@ -14,8 +14,10 @@
     "core-js": "^3.8.3",
     "lodash-es": "^4.17.21",
     "mobile-device-detect": "^0.4.3",
+    "pinia": "^2.0.14",
     "vue": "^3.2.13",
-    "vue-router": "^4.0.15"
+    "vue-router": "^4.0.15",
+    "vue3-simple-typeahead": "^1.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

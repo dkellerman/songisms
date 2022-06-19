@@ -6,13 +6,13 @@ export default {
 
 <script setup>
 import axios from 'axios';
-import { debounce, some } from 'lodash-es';
+import { some, debounce } from 'lodash-es';
 import { isMobile } from 'mobile-device-detect';
 import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const PER_PAGE = 50;
-const DEBOUNCE_TIME = isMobile ? 1000 : 500;
+const SUGGEST_DEBOUNCE = 100;
 const FETCH_RHYMES = `
     query Rhymes($q: String, $offset: Int, $limit: Int) {
       rhymes(q: $q, offset: $offset, limit: $limit) {
@@ -22,12 +22,21 @@ const FETCH_RHYMES = `
       }
     }
   `;
+const FETCH_SUGGESTIONS = `
+    query Suggestions($q: String) {
+      rhymesSuggest(q: $q) {
+        text
+      }
+    }
+  `;
 
 const route = useRoute();
 const router = useRouter();
 const q = ref(route.query.q ?? '');
 const page = ref(route.query.page ?? 1);
 const rhymes = ref();
+const searchInput = ref(null);
+const suggestions = ref([]);
 const hasNextPage = ref(false);
 const loading = ref(false);
 const abortController = ref();
@@ -82,11 +91,24 @@ async function fetchRhymes() {
   loading.value = false;
 }
 
+async function fetchSuggestions(val) {
+  const url = `${process.env.VUE_APP_SISM_API_BASE_URL}/graphql/`;
+  const resp = await axios.post(url, {
+    query: FETCH_SUGGESTIONS,
+    variables: { q: val },
+  });
+  let data = resp.data.data.rhymesSuggest;
+  console.log('*suggest', data);
+  suggestions.value = data.map(item => item.text);
+}
+
+const debouncedFetchSuggestions = debounce(fetchSuggestions, SUGGEST_DEBOUNCE);
+
 function abort() {
   try {
     abortController.value?.abort();
   } catch (e) {
-    console.error(e);
+    console.log('search canceled');
   }
 }
 
@@ -111,13 +133,6 @@ async function search(newQ) {
   q.value = newQ;
 }
 
-const debouncedSearch = debounce(search, DEBOUNCE_TIME);
-
-function onInput(e) {
-  abort();
-  debouncedSearch(e.target.value);
-}
-
 watch([q, page], () => {
   track('engagement', 'more', q.value);
   router.push({ query: { q: q.value } });
@@ -129,12 +144,36 @@ watch(() => [route.query.q, route.query.page], () => {
   page.value = route.query.page ?? 1;
 });
 
+function onEnter(e) {
+  q.value = (e.target.value ?? '').trim();
+}
+
+function onClickSearch(e) {
+  q.value = searchInput.value;
+}
+
+function onInput(e) {
+  searchInput.value = e.input;
+  debouncedFetchSuggestions(e.input);
+}
+
 fetchRhymes();
 </script>
 
 <template>
   <fieldset>
-    <input type="text" :value="q" @input="onInput" placeholder="Find rhymes in songs..." />
+    <vue3-simple-typeahead
+      placeholder="Find rhymes in songs..."
+      @onInput="onInput"
+      @selectItem="(e) => search(e)"
+      @keyup.enter="onEnter"
+      :items="suggestions"
+    >
+      <template #list-item-text="slot">
+        <span v-html="slot.boldMatchText(slot.itemProjection(slot.item))"></span>
+      </template>
+    </vue3-simple-typeahead>
+    <button @click.prevent="onClickSearch"><i class="fa fa-search" /></button>
   </fieldset>
 
   <section class="output" ref="outputEl">
@@ -153,25 +192,33 @@ fetchRhymes();
   </section>
 </template>
 
+<style lang="scss">
+  input[type='text'].simple-typeahead-input {
+    border-radius: 0;
+    width: 100%;
+    &::-webkit-search-cancel-button {
+      -webkit-appearance: searchfield-cancel-button;
+    }
+  }
+</style>
+
 <style scoped lang="scss">
   fieldset {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
     align-items: center;
-    width: 100%;
     margin: 20px 0 12px 0;
     padding-right: 5px;
-    gap: 20px;
 
-    input[type='text'] {
-      border-radius: 0;
-      width: 90vw;
-      min-width: 180px;
-      max-width: 600px;
+    width: 80vw;
+    min-width: 180px;
+    max-width: 600px;
 
-      &::-webkit-search-cancel-button {
-        -webkit-appearance: searchfield-cancel-button;
-      }
+    button {
+      padding: 12px;
+      margin: 0;
+      background: #eee;
+      border: 1px dotted #aaa;
     }
   }
 
