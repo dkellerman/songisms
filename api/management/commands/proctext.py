@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import gc
 from urllib.parse import urlencode
 from itertools import product
 import requests
@@ -12,16 +13,19 @@ from django.core.cache import cache
 from tqdm import tqdm
 
 
-BATCH_SIZE = 100
-
 class Command(BaseCommand):
     help = 'Process text'
 
     def add_arguments(self, parser):
         parser.add_argument('--caches', '-c', action=argparse.BooleanOptionalAction)
         parser.add_argument('--dry-run', '-D', action=argparse.BooleanOptionalAction)
+        parser.add_argument('--batch-size', '-b', type=int, default=1000)
 
     def handle(self, *args, **options):
+        batch_size, dry_run, do_caches = [options[k] for k in ('batch_size', 'dry_run', 'caches')]
+        dry_run = options['dry_run']
+        do_caches = options['caches']
+
         songs = Song.objects.all()
         ngrams = dict()
         rhymes = dict()
@@ -162,7 +166,7 @@ class Command(BaseCommand):
         print('rhymes', len(rhymes.values()))
         print('song_ngrams', len(song_ngrams.values()))
 
-        if options['dry_run']:
+        if dry_run:
             return
 
         print('saving db caches')
@@ -170,6 +174,9 @@ class Command(BaseCommand):
         phones_cache.save()
         mscores_cache.save()
         ipa_cache.save()
+
+        del datamuse_cache, phones_cache, mscores_cache, ipa_cache, songs
+        gc.collect()
 
         with transaction.atomic():
             print('deleting')
@@ -181,7 +188,7 @@ class Command(BaseCommand):
             ngrams = [NGram(**{k: v for k, v in n.items() if k not in ['count', 'song_count']})
                       for n in tqdm(ngrams.values())]
             print('writing ngrams', len(ngrams))
-            ngrams = NGram.objects.bulk_create(ngrams, batch_size=BATCH_SIZE)
+            ngrams = NGram.objects.bulk_create(ngrams, batch_size=batch_size)
             ngrams = dict([(n.text, n) for n in ngrams])
 
             print('prepping rhymes')
@@ -195,7 +202,9 @@ class Command(BaseCommand):
                 if revkey not in rhymes:
                     rhyme_objs.append(Rhyme(from_ngram=nto, to_ngram=nfrom, song=song, level=rhyme['level']))
             print('writing rhymes', len(rhyme_objs))
-            Rhyme.objects.bulk_create(rhyme_objs, batch_size=BATCH_SIZE)
+            Rhyme.objects.bulk_create(rhyme_objs, batch_size=batch_size)
+            del rhyme_objs, ngrams
+            gc.collect()
 
             print('prepping song_ngrams')
             sn_objs = []
@@ -203,9 +212,9 @@ class Command(BaseCommand):
                 n = ngrams[sn['ngram']['text']]
                 sn_objs.append(SongNGram(song=sn['song'], ngram=n, count=sn['count']))
             print('creating song_ngrams', len(sn_objs))
-            SongNGram.objects.bulk_create(sn_objs, batch_size=BATCH_SIZE)
+            SongNGram.objects.bulk_create(sn_objs, batch_size=batch_size)
 
-            if options['caches']:
+            if do_caches:
                 reset_caches()
 
             print('done')
