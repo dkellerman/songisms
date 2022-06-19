@@ -136,7 +136,7 @@ class NGramManager(models.Manager):
     def get_by_natural_key(self, text):
         return self.get(text=text)
 
-    def suggest(self, q):
+    def suggest(self, q, ct=20):
         if not q:
             return []
 
@@ -148,7 +148,7 @@ class NGramManager(models.Manager):
             # qn = len(q).split()
             qs = NGram.objects.filter(text__istartswith=q)
             qs = qs.annotate(rhyme_ct=models.Count('rhymes')).filter(rhyme_ct__gt=0)
-            qs = qs.order_by('-rhyme_ct')[:20]
+            qs = qs.order_by('-rhyme_ct')[:ct]
             cache.set(cache_key, qs)
         return qs
 

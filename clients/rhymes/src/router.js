@@ -4,7 +4,7 @@ const routes = [
   {
     path: '/',
     name: 'RhymesPage',
-    component: () => import(/* webpackChunkName: "rhymes" */ './components/RhymesPage.vue'),
+    component: () => import(/* webpackChunkName: "rhymes" */ './RhymesPage.vue'),
   },
 ];
 

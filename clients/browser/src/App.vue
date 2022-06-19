@@ -10,7 +10,7 @@ import { useAuth } from '@/stores/auth';
 import { useSongsStore } from '@/stores/songs';
 import { storeToRefs } from 'pinia';
 import { watchEffect } from 'vue';
-import SongLinks from "@/components/SongLinks";
+import SongLinks from '@/components/SongLinks';
 
 const { isLoggedIn } = storeToRefs(useAuth());
 const { logout } = useAuth();
