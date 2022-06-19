@@ -172,11 +172,12 @@ ADD_REVERSION_ADMIN=True
 REVERSION_COMPARE_FOREIGN_OBJECTS_AS_ID=False
 REVERSION_COMPARE_IGNORE_NOT_REGISTERED=False
 
-redis_url = os.environ.get('SISM_REDIS_URL', os.environ.get('REDIS_URL'))
+REDIS_URL = os.environ.get('SISM_REDIS_URL', os.environ.get('REDIS_URL'))
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': redis_url,
+        'LOCATION': REDIS_URL,
         'KEY_PREFIX': 'sism',
         'TIMEOUT': None,
     }

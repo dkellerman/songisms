@@ -1,8 +1,12 @@
+import os
+import json
+import shutil
 import reversion
 from django.db import transaction
 from django.db.models import Count
 from django.contrib.postgres.fields import ArrayField
 from django.utils.safestring import mark_safe
+from django.conf import settings
 from .cloud_utils import get_storage_blob
 from .managers import *
 
@@ -256,6 +260,54 @@ class Song(models.Model):
                 )[0]
             )[0] for tag, text in tagged_texts
         ])
+
+
+class Cache(models.Model):
+    key = models.CharField(max_length=500, unique=True)
+    metadata = models.JSONField(blank=True, null=True)
+    version = models.PositiveIntegerField(default=1)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.key} [v{self.version}]'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if settings.DEBUG:
+            self.dump_file()
+
+    def get(self, key, getter, save=False):
+        if key in (self.metadata or {}):
+            return self.metadata[key]
+        self.metadata = self.metadata or {}
+        self.metadata[key] = getter(key)
+        if save:
+            self.save()
+        return self.metadata[key]
+
+    def clear(self, save=True):
+        self.metadata = None
+        if save:
+            self.save()
+
+    def load_file(self, path=None):
+        path = path or self.default_file
+        with open(path, 'r') as f:
+            self.metadata = json.loads(f.read())
+            self.save()
+        return self.metadata
+
+    def dump_file(self, path=None):
+        path = path or self.default_file
+        if os.path.exists(path):
+            shutil.copyfile(path, f'{path}.bak')
+        with open(path, 'w') as f:
+            f.write(json.dumps(self.metadata))
+
+    @property
+    def default_file(self):
+        return f'./data/cache/{self.key}.json'
 
 
 def prune():

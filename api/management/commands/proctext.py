@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 
+import argparse
 from urllib.parse import urlencode
 from itertools import product
-import requests_cache
+import requests
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from api.models import *
-from api.nlp_utils import *
-from api.utils import JSONFileCache
+from api.nlp_utils import get_lyric_ngrams, get_rhyme_pairs, get_common_words, get_mscore
+from django.core.cache import cache
 from tqdm import tqdm
 
 
@@ -15,7 +16,7 @@ class Command(BaseCommand):
     help = 'Process text'
 
     def add_arguments(self, parser):
-        pass
+        parser.add_argument('--reset-cache', '-c', action=argparse.BooleanOptionalAction)
 
     def handle(self, *args, **options):
         songs = Song.objects.all()
@@ -55,22 +56,13 @@ class Command(BaseCommand):
             ngrams[text] = ngrams.get(text, None) or dict(text=text, n=n)
 
         print('datamuse rhymes')
-        datamuse_session = requests_cache.CachedSession('data/cache/datamuse_cache')
         n1 = [n for n in ngrams.values() if n['n'] == 1]
         common = get_common_words()
         rmuse = set()
+        datamuse_cache, _ = Cache.objects.get_or_create(key='datamuse')
+
         for from_ngram in tqdm(n1):
-            query = urlencode(dict(rel_rhy=from_ngram['text'], max=50))
-            query2 = urlencode(dict(rel_nry=from_ngram['text'], max=50))
-            vals = []
-            try:
-                vals += datamuse_session.get(f'https://api.datamuse.com/words?{query}').json()
-            except:
-                print('error retrieving datamuse RHY for', from_ngram['text'])
-            try:
-                vals += datamuse_session.get(f'https://api.datamuse.com/words?{query2}').json()
-            except:
-                print('error retrieving datamuse NRY for', from_ngram['text'])
+            vals = datamuse_cache.get(from_ngram['text'], fetch_datamuse_rhymes)
             for val in vals:
                 to_word = val['word']
                 from_word = from_ngram['text']
@@ -80,6 +72,7 @@ class Command(BaseCommand):
                     if rkey not in rhymes:
                         rhymes[rkey] = dict(from_ngram=from_ngram, to_ngram=ngrams[to_word], song=None, level=1)
                         rmuse.add(to_word)
+        datamuse_cache.save()
 
         print('indexing rhymes')
         ridx = dict()
@@ -122,23 +115,22 @@ class Command(BaseCommand):
                     rhymes[rkey] = dict(from_ngram=l1['from_ngram'], to_ngram=l2['to_ngram'], song=None, level=2)
 
         print('ngram phones')
-        phones_cache = JSONFileCache('./data/cache/phones.json', lambda key:
-                                     get_phones(key, vowels_only=True, include_stresses=False))
+        phones_cache, _ = Cache.objects.get_or_create(key='ngram_phones')
         for ngram in tqdm(ngrams.values()):
-            ngram['phones'] = phones_cache.get(ngram['text'])
+            ngram['phones'] = phones_cache.get(ngram['text'], phones_getter)
         phones_cache.save()
 
-        print('ngram mscore')
-        mscores_cache = JSONFileCache('./data/cache/mscores.json', lambda key: get_mscore(key))
+        print('ngram mscores')
+        mscores_cache, _ = Cache.objects.get_or_create(key='ngram_mscores')
         for ngram in tqdm(ngrams.values()):
-            ngram['mscore'] = mscores_cache.get(ngram['text'])
+            ngram['mscore'] = mscores_cache.get(ngram['text'], get_mscore)
         mscores_cache.save()
 
-        # print('ngram ipa')
-        # ipa_cache = JSONFileCache('./data/cache/ngram_ipa.json', lambda key: get_ipa(key))
-        # for ngram in tqdm(ngrams.values()):
-        #     ngram['ipa'] = ipa_cache.get(ngram['text'])
-        # ipa_cache.save()
+        print('ngram ipa')
+        ipa_cache, _ = Cache.objects.get_or_create(key='ngram_ipa')
+        for ngram in tqdm(ngrams.values()):
+            ngram['ipa'] = ipa_cache.get(ngram['text'], get_ipa)
+        ipa_cache.save()
 
         print('index ngram counts')
         n_counts = [0 for _ in range(15)]
@@ -204,7 +196,59 @@ class Command(BaseCommand):
             print('creating song_ngrams', len(sn_objs))
             SongNGram.objects.bulk_create(sn_objs)
 
+            if options['reset_cache']:
+                reset_caches()
+
             print('done')
+
+
+def reset_caches():
+    print('clearing caches')
+    cc = cache._cache.get_client()
+    keys = cc.keys('sism:*:suggest_*') + \
+           cc.keys('sism:*:query_*') + \
+           cc.keys('sism:*:top_*')
+    for key in keys:
+        key = str(key).split(':')[-1][:-1]
+        cache.delete(key)
+
+    topn = 200
+    page_size = 50
+    qsize = 200
+    sug_size = 50
+
+    print('populating top rhymes cache')
+    Rhyme.objects.HARD_LIMIT = topn
+    top = []
+    for pg in tqdm(range(0, int(topn / page_size))):
+        top += Rhyme.objects.top_rhymes(limit=page_size, offset=pg*page_size)
+
+    print('populating queries cache')
+    for ngram in tqdm(top):
+        val = ngram['ngram']
+        Rhyme.objects.query(q=val, limit=qsize)
+        for i in range(0, len(val) + 1):
+            qsug = val[:i]
+            NGram.objects.suggest(qsug, sug_size)
+
+
+def phones_getter(key):
+    return get_phones(key, vowels_only=True, include_stresses=False)
+
+
+def fetch_datamuse_rhymes(key):
+    query = urlencode(dict(rel_rhy=key, max=50))
+    query2 = urlencode(dict(rel_nry=key, max=50))
+    vals = []
+    try:
+        vals += requests.get(f'https://api.datamuse.com/words?{query}').json()
+    except:
+        print('error retrieving datamuse RHY for', key)
+    try:
+        vals += requests.get(f'https://api.datamuse.com/words?{query2}').json()
+    except:
+        print('error retrieving datamuse NRY for', key)
+    return vals
 
 
 def is_repeated(w):
