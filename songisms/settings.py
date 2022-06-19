@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-import os, json, base64
+import os
+import json
+import base64
 from google.oauth2 import service_account
 from pathlib import Path
 import django_on_heroku
@@ -169,5 +171,17 @@ GS_CREDENTIALS = service_account.Credentials.from_service_account_info(key)
 ADD_REVERSION_ADMIN=True
 REVERSION_COMPARE_FOREIGN_OBJECTS_AS_ID=False
 REVERSION_COMPARE_IGNORE_NOT_REGISTERED=False
+
+redis_url = os.environ.get('SISM_REDIS_URL', os.environ.get('REDIS_URL'))
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': redis_url,
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient'
+        },
+        'KEY_PREFIX': 'sism',
+    }
+}
 
 django_on_heroku.settings(locals())
