@@ -203,7 +203,7 @@ class Command(BaseCommand):
                     rhyme_objs.append(Rhyme(from_ngram=nto, to_ngram=nfrom, song=song, level=rhyme['level']))
             print('writing rhymes', len(rhyme_objs))
             Rhyme.objects.bulk_create(rhyme_objs, batch_size=batch_size)
-            del rhyme_objs, ngrams
+            del rhyme_objs
             gc.collect()
 
             print('prepping song_ngrams')
