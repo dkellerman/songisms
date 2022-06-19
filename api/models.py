@@ -59,7 +59,6 @@ class Tag(models.Model):
         unique_together = [('category', 'value')]
 
 
-@reversion.register()
 class TaggedText(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name='texts')
     text = models.TextField(db_index=True)
@@ -71,7 +70,6 @@ class TaggedText(models.Model):
         return f'{self.song.title} [{self.tag.label}] (len={len(self.text)})'
 
 
-@reversion.register()
 class NGram(models.Model):
     text = models.CharField(max_length=500, unique=True)
     n = models.PositiveIntegerField(db_index=True)
@@ -96,7 +94,6 @@ class NGram(models.Model):
         return (self.text,)
 
 
-@reversion.register()
 class Rhyme(models.Model):
     from_ngram = models.ForeignKey(NGram, on_delete=models.CASCADE, related_name='rhymed_from')
     to_ngram = models.ForeignKey(NGram, on_delete=models.CASCADE, related_name='rhymed_to')
@@ -113,7 +110,6 @@ class Rhyme(models.Model):
         return f'{self.from_ngram.text} => {self.to_ngram.text} [L{self.level}]'
 
 
-@reversion.register()
 class SongNGram(models.Model):
     ngram = models.ForeignKey('NGram', on_delete=models.CASCADE, related_name='song_ngrams')
     song = models.ForeignKey('Song', on_delete=models.CASCADE, related_name='song_ngrams')
