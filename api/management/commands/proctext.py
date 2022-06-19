@@ -82,10 +82,11 @@ class Command(BaseCommand):
                                                  if r2['from_ngram']['text'] == r['from_ngram']['text']]))
 
         print('prepping multi rhymes')
+        mscores_cache, _ = Cache.objects.get_or_create(key='ngram_mscores')
         nmulti = [n['text'] for n in tqdm(ngrams.values())
                   if (n.get('song_count', 0) > 2)
                   and (n['n'] in (2, 3,))
-                  and (get_mscore(n['text']) > 3)
+                  and (mscores_cache.get(n['text'], get_mscore) > 3)
                   and (not is_repeated(n['text']))]
         print('making multi rhymes')
         for ngram in tqdm(nmulti):
@@ -122,7 +123,6 @@ class Command(BaseCommand):
         phones_cache.save()
 
         print('ngram mscores')
-        mscores_cache, _ = Cache.objects.get_or_create(key='ngram_mscores')
         for ngram in tqdm(ngrams.values()):
             ngram['mscore'] = mscores_cache.get(ngram['text'], get_mscore)
         mscores_cache.save()
