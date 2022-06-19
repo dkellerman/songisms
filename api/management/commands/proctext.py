@@ -64,7 +64,6 @@ class Command(BaseCommand):
 
         for from_ngram in tqdm(n1):
             vals = datamuse_cache.get(from_ngram['text'], fetch_datamuse_rhymes)
-            print(vals)
             for val in vals:
                 to_word = val['word']
                 from_word = from_ngram['text']
