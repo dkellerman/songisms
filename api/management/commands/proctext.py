@@ -12,6 +12,8 @@ from django.core.cache import cache
 from tqdm import tqdm
 
 
+BATCH_SIZE = 1000
+
 class Command(BaseCommand):
     help = 'Process text'
 
@@ -24,6 +26,10 @@ class Command(BaseCommand):
         ngrams = dict()
         rhymes = dict()
         song_ngrams = dict()
+
+        phones_cache, _ = Cache.objects.get_or_create(key='ngram_phones')
+        datamuse_cache, _ = Cache.objects.get_or_create(key='datamuse')
+        mscores_cache, _ = Cache.objects.get_or_create(key='ngram_mscores')
 
         # lyric ngrams
         print('lyric ngrams')
@@ -60,7 +66,6 @@ class Command(BaseCommand):
         n1 = [n for n in ngrams.values() if n['n'] == 1]
         common = get_common_words()
         rmuse = set()
-        datamuse_cache, _ = Cache.objects.get_or_create(key='datamuse')
 
         for from_ngram in tqdm(n1):
             vals = datamuse_cache.get(from_ngram['text'], fetch_datamuse_rhymes)
@@ -73,7 +78,6 @@ class Command(BaseCommand):
                     if rkey not in rhymes:
                         rhymes[rkey] = dict(from_ngram=from_ngram, to_ngram=ngrams[to_word], song=None, level=1)
                         rmuse.add(to_word)
-        datamuse_cache.save()
 
         print('indexing rhymes')
         ridx = dict()
@@ -82,7 +86,6 @@ class Command(BaseCommand):
                                                  if r2['from_ngram']['text'] == r['from_ngram']['text']]))
 
         print('prepping multi rhymes')
-        mscores_cache, _ = Cache.objects.get_or_create(key='ngram_mscores')
         nmulti = [n['text'] for n in tqdm(ngrams.values())
                   if (n.get('song_count', 0) > 2)
                   and (n['n'] in (2, 3,))
@@ -117,21 +120,17 @@ class Command(BaseCommand):
                     rhymes[rkey] = dict(from_ngram=l1['from_ngram'], to_ngram=l2['to_ngram'], song=None, level=2)
 
         print('ngram phones')
-        phones_cache, _ = Cache.objects.get_or_create(key='ngram_phones')
         for ngram in tqdm(ngrams.values()):
             ngram['phones'] = phones_cache.get(ngram['text'], phones_getter)
-        phones_cache.save()
 
         print('ngram mscores')
         for ngram in tqdm(ngrams.values()):
             ngram['mscore'] = mscores_cache.get(ngram['text'], get_mscore)
-        mscores_cache.save()
 
         print('ngram ipa')
         ipa_cache, _ = Cache.objects.get_or_create(key='ngram_ipa')
         for ngram in tqdm(ngrams.values()):
             ngram['ipa'] = ipa_cache.get(ngram['text'], get_ipa)
-        ipa_cache.save()
 
         print('index ngram counts')
         n_counts = [0 for _ in range(15)]
@@ -166,6 +165,12 @@ class Command(BaseCommand):
         if options['dry_run']:
             return
 
+        print('saving db caches')
+        datamuse_cache.save()
+        phones_cache.save()
+        mscores_cache.save()
+        ipa_cache.save()
+
         with transaction.atomic():
             print('deleting')
             Rhyme.objects.all().delete()
@@ -176,7 +181,7 @@ class Command(BaseCommand):
             ngrams = [NGram(**{k: v for k, v in n.items() if k not in ['count', 'song_count']})
                       for n in tqdm(ngrams.values())]
             print('writing ngrams', len(ngrams))
-            ngrams = NGram.objects.bulk_create(ngrams)
+            ngrams = NGram.objects.bulk_create(ngrams, batch_size=BATCH_SIZE)
             ngrams = dict([(n.text, n) for n in ngrams])
 
             print('prepping rhymes')
@@ -190,7 +195,7 @@ class Command(BaseCommand):
                 if revkey not in rhymes:
                     rhyme_objs.append(Rhyme(from_ngram=nto, to_ngram=nfrom, song=song, level=rhyme['level']))
             print('writing rhymes', len(rhyme_objs))
-            Rhyme.objects.bulk_create(rhyme_objs)
+            Rhyme.objects.bulk_create(rhyme_objs, batch_size=BATCH_SIZE)
 
             print('prepping song_ngrams')
             sn_objs = []
@@ -198,7 +203,7 @@ class Command(BaseCommand):
                 n = ngrams[sn['ngram']['text']]
                 sn_objs.append(SongNGram(song=sn['song'], ngram=n, count=sn['count']))
             print('creating song_ngrams', len(sn_objs))
-            SongNGram.objects.bulk_create(sn_objs)
+            SongNGram.objects.bulk_create(sn_objs, batch_size=BATCH_SIZE)
 
             if options['caches']:
                 reset_caches()
