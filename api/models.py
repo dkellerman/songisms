@@ -6,7 +6,6 @@ from django.db import transaction
 from django.db.models import Count
 from django.contrib.postgres.fields import ArrayField
 from django.utils.safestring import mark_safe
-from django.conf import settings
 from .cloud_utils import get_storage_blob
 from .managers import *
 
@@ -274,7 +273,7 @@ class Cache(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        if settings.DEBUG:
+        if not os.environ.get('DYNO'):  # dev :/
             self.dump_file()
 
     def get(self, key, getter, save=False):
