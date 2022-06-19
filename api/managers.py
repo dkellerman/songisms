@@ -42,7 +42,7 @@ class RhymeManager(models.Manager):
 
         q = ' '.join(tokenize_lyric_line(q))
         syns = make_synonyms(q)
-        qphones = get_phones(q, vowels_only=True, include_stresses=False, try_syns=syns)
+        qphones = get_phones(q, vowels_only=True, include_stresses=False, try_syns=tuple(syns))
         qn = len(q.split())
         all_q = [q.upper()] + [s.upper() for s in syns]
 

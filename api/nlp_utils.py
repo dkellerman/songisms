@@ -188,7 +188,7 @@ def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True):
         try_syns = make_synonyms(q)
     phones = None
 
-    for tok in [q] + (try_syns or []):
+    for tok in [q] + list(try_syns or []):
         words = tok.split()
         word_phones = [phones_for_word(w) for w in words]
         word_phones = [p for p in word_phones if p]

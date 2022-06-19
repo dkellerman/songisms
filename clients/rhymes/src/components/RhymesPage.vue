@@ -124,6 +124,11 @@ watch([q, page], () => {
   fetchRhymes();
 });
 
+watch(() => [route.query.q, route.query.page], () => {
+  q.value = route.query.q ?? '';
+  page.value = route.query.page ?? 1;
+});
+
 fetchRhymes();
 </script>
 
@@ -149,5 +154,101 @@ fetchRhymes();
 </template>
 
 <style scoped lang="scss">
-@import './rhymes.scss';
+  fieldset {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    width: 100%;
+    margin: 20px 0 12px 0;
+    padding-right: 5px;
+    gap: 20px;
+
+    input[type='text'] {
+      border-radius: 0;
+      width: 90vw;
+      min-width: 180px;
+      max-width: 600px;
+
+      &::-webkit-search-cancel-button {
+        -webkit-appearance: searchfield-cancel-button;
+      }
+    }
+  }
+
+  .output {
+    label {
+      font-size: 18px;
+    }
+
+    ul {
+      --gap: 20;
+      margin-top: 30px;
+      list-style: none;
+      padding-left: 0;
+      display: flex;
+      flex-flow: row wrap;
+      max-width: 768px;
+      gap: var(--gap)px;
+
+      li {
+        text-indent: 0;
+        font-size: larger;
+        margin-bottom: 12px;
+        a {
+          cursor: pointer;
+        }
+
+        &:before {
+          display: none;
+        }
+
+        &.hit {
+          &.rhyme a {
+            opacity: 1.0;
+            font-style: normal;
+          }
+
+          &.rhyme-l2 a {
+            opacity: 0.6;
+            font-style: normal;
+          }
+
+          &.suggestion a {
+            opacity: 0.6;
+            font-style: italic;
+            overflow: visible;
+            padding: 3px 3px 3px 0;
+          }
+
+          .freq {
+            font-size: medium;
+            color: #666;
+          }
+        }
+      }
+    }
+  }
+
+  @function colWidth($defaultCols) {
+    @return calc(
+      (100% - (var(--gap) * var(--cols, #{$defaultCols - 1}) * 1px)) /
+      var(--cols, #{$defaultCols})
+    );
+  }
+
+  @media screen and (max-width: 374px) {
+    ul li {
+      width: colWidth(1);
+    }
+  }
+  @media screen and (min-width: 375px) and (max-width: 479px) {
+    ul li {
+      width: colWidth(2);
+    }
+  }
+  @media screen and (min-width: 480px) {
+    ul li {
+      width: colWidth(3);
+    }
+  }
 </style>
