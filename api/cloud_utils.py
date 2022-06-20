@@ -1,26 +1,17 @@
 import os
 import time
 import pafy
-# import ffmpeg
 import json
 import base64
-import firebase_admin
-from firebase_admin import firestore, credentials
 from django.core.files import File
 from django.conf import settings
 from google.cloud.storage import Client as SClient
 from google.oauth2 import service_account
 
 key = json.loads(base64.b64decode(os.environ['SISM_GOOGLE_CREDENTIALS']))
-firebase_credentials = credentials.Certificate(key)
-firebase_app = firebase_admin.initialize_app(firebase_credentials, {'projectId': 'songisms'})
 storage_credentials = service_account.Credentials.from_service_account_info(key)
 sclient = SClient(credentials=storage_credentials)
 bucket = sclient.bucket(settings.GS_BUCKET_NAME)
-
-
-def get_firestore():
-    return firestore.client()
 
 
 def get_cloud_storage():
@@ -70,19 +61,20 @@ def fetch_audio(song, convert=False):
     else:
         print('webm file exists')
 
-    # if convert:
-    #     fname_mp3 = f'{yt_id}.mp3'
-    #     tmpfile_mp3 = f'/tmp/{fname_mp3}'
-    #     if not os.path.exists(tmpfile_mp3):
-    #         print('convert to mp3...')
-    #         ffmpeg.input(tmpfile).output(tmpfile_mp3, ac=1, audio_bitrate='128k').run()
-    #     else:
-    #         print('mp3 exists')
-    #     fname_upload = fname_mp3
-    #     tmpfile_upload = tmpfile_mp3
-    # else:
-    fname_upload = fname
-    tmpfile_upload = tmpfile
+    if convert:
+        import ffmpeg
+        fname_mp3 = f'{yt_id}.mp3'
+        tmpfile_mp3 = f'/tmp/{fname_mp3}'
+        if not os.path.exists(tmpfile_mp3):
+            print('convert to mp3...')
+            ffmpeg.input(tmpfile).output(tmpfile_mp3, ac=1, audio_bitrate='128k').run()
+        else:
+            print('mp3 exists')
+        fname_upload = fname_mp3
+        tmpfile_upload = tmpfile_mp3
+    else:
+        fname_upload = fname
+        tmpfile_upload = tmpfile
 
     if os.path.exists(tmpfile_upload):
         print('uploading audio', tmpfile_upload)
@@ -101,4 +93,3 @@ def fetch_audio(song, convert=False):
         print("problem removing temp files", tmpfile, tmpfile_mp3)
 
     print("done")
-

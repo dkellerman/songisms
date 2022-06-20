@@ -259,15 +259,22 @@ class Song(models.Model):
 
 
 class Cache(models.Model):
-    key = models.CharField(max_length=500, unique=True)
+    key = models.CharField(max_length=500)
+    version = models.PositiveIntegerField(default=1)
     data = models.JSONField(blank=True, null=True)
     file = models.FileField(upload_to='data/cache', blank=True, null=True)
-    version = models.PositiveIntegerField(default=1)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
+    objects = CacheManager()
+
+    class Meta:
+        unique_together = [('key', 'version',)]
 
     def __str__(self):
         return f'{self.key} [v{self.version}]'
+
+    def natural_key(self):
+        return self.key, self.version
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

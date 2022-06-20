@@ -145,7 +145,6 @@ class NGramManager(models.Manager):
         qs = cache.get(cache_key)
         if not qs:
             from api.models import NGram
-            # qn = len(q).split()
             qs = NGram.objects.filter(text__istartswith=q)
             qs = qs.annotate(rhyme_ct=models.Count('rhymes')).filter(rhyme_ct__gt=0)
             qs = qs.order_by('-rhyme_ct')[:ct]
@@ -210,7 +209,6 @@ class WriterManager(models.Manager):
             ordering = ordering or ['-song_ct']
         return writers.order_by(*ordering)
 
-
     def get_by_natural_key(self, name):
         return self.get(name=name)
 
@@ -218,3 +216,8 @@ class WriterManager(models.Manager):
 class TagManager(models.Manager):
     def get_by_natural_key(self, category, value):
         return self.get(category=category, value=value)
+
+
+class CacheManager(models.Manager):
+    def get_by_natural_key(self, key, version):
+        return self.get(key=key, version=version)
