@@ -316,3 +316,15 @@ PHONE_TO_FORMANTS = {
 
     # ??? u'a': [],
 }
+
+
+@cache
+def get_idioms():
+    with open('./data/idioms.txt', 'r') as f:
+        return f.read()
+
+
+@cache
+def get_mine():
+    with open('./data/mine.txt', 'r') as f:
+        return f.read()
