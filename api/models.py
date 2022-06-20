@@ -1,6 +1,6 @@
 import reversion
 from django.db import transaction
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.contrib.postgres.fields import ArrayField
 from django.utils.safestring import mark_safe
 from .cloud_utils import get_storage_blob
@@ -18,7 +18,7 @@ class Artist(models.Model):
         return f'{self.name}'
 
     def natural_key(self):
-        return (self.name,)
+        return self.name,
 
 
 @reversion.register()
@@ -33,7 +33,7 @@ class Writer(models.Model):
         return f'{self.name}'
 
     def natural_key(self):
-        return (self.name,)
+        return self.name,
 
 
 @reversion.register()
@@ -53,7 +53,7 @@ class Tag(models.Model):
         return f'{self.label} [{self.category}]'
 
     def natural_key(self):
-        return (self.category, self.value)
+        return self.category, self.value
 
     class Meta:
         unique_together = [('category', 'value')]
@@ -91,7 +91,7 @@ class NGram(models.Model):
         return f'{self.text}'
 
     def natural_key(self):
-        return (self.text,)
+        return self.text,
 
 
 class Rhyme(models.Model):
@@ -150,14 +150,15 @@ class Song(models.Model):
         return f'{self.title}'
 
     def natural_key(self):
-        return (self.spotify_id,)
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+        return self.spotify_id,
 
     @property
     def audio_file_path(self):
         return f'data/audio/{self.spotify_id}.webm'
+
+    @property
+    def audio_file_url(self):
+        return self.audio_file.url if self.audio_file else None
 
     def audio_blob(self):
         return get_storage_blob(self.audio_file_path)
@@ -176,10 +177,6 @@ class Song(models.Model):
     @property
     def spotify_url(self):
         return f'https://open.spotify.com/track/{self.spotify_id}' if self.spotify_id else None
-
-    @property
-    def audio_file_url(self):
-        return self.audio_file.url if self.audio_file else None
 
     @property
     def spotify_player(self):
@@ -207,40 +204,43 @@ class Song(models.Model):
 
     def set_artists(self, names=[]):
         if type(names) == str:
-            names = names.split(';')
+            names = [n.strip() for n in names.split(';')]
+        names = [n.strip() for n in names]
 
         with transaction.atomic():
             new_artists = [
-                Artist.objects.get_or_create(name=name.strip())[0]
-                for name in (names or [])
+                Artist.objects.get_or_create(name=name)[0]
+                for name in names
             ]
             self.artists.set(new_artists)
 
     def set_writers(self, names=[]):
         if type(names) == str:
             names = names.split(';')
+        names = [n.strip() for n in names]
 
         with transaction.atomic():
             new_writers = [
-                Writer.objects.get_or_create(name=name.strip())[0]
-                for name in (names or [])
+                Writer.objects.get_or_create(Q(name=name) | Q(alt_names__contains=name))[0]
+                for name in names
             ]
             self.writers.set(new_writers)
 
     def set_song_tags(self, tags=[]):
         if type(tags) == str:
             tags = tags.split(';')
+        tags = [t.strip() for t in tags]
 
         with transaction.atomic():
             self.tags.set([
                 Tag.objects.get_or_create(
                     value=tag,
-                    defaults=dict(label=tag, category='song'
-                                  ))[0]
-                for tag in (tags or [])
+                    defaults=dict(label=tag, category='song')
+                )[0]
+                for tag in tags
             ])
 
-    def set_snippet_tags(self, tags={}):  # {tag: {'content': text}}
+    def set_snippet_tags(self, tags={}):  # {tag: {'content': 'text'}}
         tagged_texts = set()
         for tag, values in (tags or {}).items():
             for value in values:
