@@ -1,6 +1,3 @@
-import os
-import json
-import shutil
 import reversion
 from django.db import transaction
 from django.db.models import Count
@@ -274,8 +271,6 @@ class Cache(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        if not os.environ.get('DYNO'):  # dev :/
-            self.dump_file()
 
     def get(self, key, getter, save=False):
         if key in (self.metadata or {}):
@@ -290,24 +285,6 @@ class Cache(models.Model):
         self.metadata = None
         if save:
             self.save()
-
-    def load_file(self, path=None):
-        path = path or self.default_file
-        with open(path, 'r') as f:
-            self.metadata = json.loads(f.read())
-            self.save()
-        return self.metadata
-
-    def dump_file(self, path=None):
-        path = path or self.default_file
-        if os.path.exists(path):
-            shutil.copyfile(path, f'{path}.bak')
-        with open(path, 'w') as f:
-            f.write(json.dumps(self.metadata))
-
-    @property
-    def default_file(self):
-        return f'./data/cache/{self.key}.json'
 
 
 def prune():
