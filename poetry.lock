@@ -315,6 +315,14 @@ diff-match-patch = "*"
 django-reversion = "*"
 
 [[package]]
+name = "django-smuggler"
+version = "1.0.4"
+description = "Pluggable application for Django that helps you to import/export fixtures via the administration interface"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "django-storages"
 version = "1.12.3"
 description = "Support for many storage backends in Django"
@@ -1481,7 +1489,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "3.9.13"
-content-hash = "9117face286f0d55206b04832136910d88927e60179211d5ee4cb9000695ef76"
+content-hash = "12f500c041b4413bb23a3a1e60a76232208e7ee1b90693a125760ba7f733916e"
 
 [metadata.files]
 aniso8601 = [
@@ -1630,6 +1638,10 @@ django-reversion = [
 django-reversion-compare = [
     {file = "django-reversion-compare-0.15.0.tar.gz", hash = "sha256:ed0264a2852d9d867023f1874948b8234dad9c2d2fa22ea18cfd5f28f304d7a0"},
     {file = "django_reversion_compare-0.15.0-py3-none-any.whl", hash = "sha256:d6f37b106aec287ae17a076bb7db1184ab02ab1898f0e8693f2779fbdaf71697"},
+]
+django-smuggler = [
+    {file = "django-smuggler-1.0.4.tar.gz", hash = "sha256:e53b02bdc48c94012950d5fa4e4b30bc4259e62fc986d22b9d571de1a45dcc80"},
+    {file = "django_smuggler-1.0.4-py2.py3-none-any.whl", hash = "sha256:49db0724d8b8ffb84e93581f12d363d4113f1b9ef07c74c1cdd63f8752397b8c"},
 ]
 django-storages = [
     {file = "django-storages-1.12.3.tar.gz", hash = "sha256:a475edb2f0f04c4f7e548919a751ecd50117270833956ed5bd585c0575d2a5e7"},

@@ -51,8 +51,9 @@ INSTALLED_APPS = [
     'django_json_widget',
     'graphene_django',
     'corsheaders',
-    # 'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
     'api.apps.ApiConfig',
+    'smuggler',
 ]
 
 MIDDLEWARE = [
@@ -182,5 +183,7 @@ CACHES = {
         'TIMEOUT': None,
     }
 }
+
+SMUGGLER_FIXTURE_DIR = BASE_DIR / 'data' / 'fixtures'
 
 django_on_heroku.settings(locals())
