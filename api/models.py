@@ -263,7 +263,8 @@ class Song(models.Model):
 
 class Cache(models.Model):
     key = models.CharField(max_length=500, unique=True)
-    metadata = models.JSONField(blank=True, null=True)
+    data = models.JSONField(blank=True, null=True)
+    file = models.FileField(upload_to='data/cache', blank=True, null=True)
     version = models.PositiveIntegerField(default=1)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
