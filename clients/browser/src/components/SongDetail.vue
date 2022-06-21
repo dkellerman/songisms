@@ -36,7 +36,7 @@ const GET_SONG = `
 
 const route = useRoute();
 const song = ref();
-const adminLink = computed(() => `https://songisms.herokuapp.com/admin/api/song/${route.params.id}/change`);
+const adminLink = computed(() => `https://songisms.herokuapp.com/admin/api/song/${song.value?.id}/change`);
 const smLink = computed(() => (song.value ? song.value.metadata.songMeanings?.href : null));
 
 async function fetchSong() {
