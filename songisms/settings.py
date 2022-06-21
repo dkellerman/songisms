@@ -161,7 +161,11 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = not is_prod
-CORS_ALLOW_CREDENTIALS = not is_prod
+CORS_ALLOWED_ORIGINS = [
+    'https://rhymes.vercel.app',
+    'https://www.rhymium.com',
+]
+CORS_ALLOW_CREDENTIALS = True
 
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 GS_BUCKET_NAME = 'songisms.appspot.com'
