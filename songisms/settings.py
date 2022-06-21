@@ -27,8 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ['SISM_DJANGO_SECRET_KEY']
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+is_prod = bool(os.environ.get('DYNO'))
+
+DEBUG = not is_prod
 
 ALLOWED_HOSTS = []
 
@@ -159,8 +160,8 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = not is_prod
+CORS_ALLOW_CREDENTIALS = not is_prod
 
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 GS_BUCKET_NAME = 'songisms.appspot.com'
@@ -169,9 +170,9 @@ GS_BUCKET_NAME = 'songisms.appspot.com'
 key = json.loads(base64.b64decode(os.environ['SISM_GOOGLE_CREDENTIALS']))
 GS_CREDENTIALS = service_account.Credentials.from_service_account_info(key)
 
-ADD_REVERSION_ADMIN=True
-REVERSION_COMPARE_FOREIGN_OBJECTS_AS_ID=False
-REVERSION_COMPARE_IGNORE_NOT_REGISTERED=False
+ADD_REVERSION_ADMIN = True
+REVERSION_COMPARE_FOREIGN_OBJECTS_AS_ID = False
+REVERSION_COMPARE_IGNORE_NOT_REGISTERED = False
 
 REDIS_URL = os.environ.get('SISM_REDIS_URL', os.environ.get('REDIS_URL'))
 
