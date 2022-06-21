@@ -1,3 +1,4 @@
+from urllib.parse import quote_plus
 from django.contrib import admin
 from django.db.models import JSONField, Sum
 from django_json_widget.widgets import JSONEditorWidget
@@ -69,7 +70,11 @@ class SongAdmin(CompareVersionAdmin):
     jaxsta_link.short_description = 'Jaxsta Link'
 
     def youtube_link(self, obj):
-        return mark_safe(f'<a href={obj.youtube_url} target="__blank">{obj.youtube_id}</a>')
+        if obj.youtube_id:
+            return mark_safe(f'<a href={obj.youtube_url} target="__blank">{obj.youtube_id}</a>')
+        else:
+            q = quote_plus(f'{obj.title} {obj.artists.all()[0].name} official audio')
+            return mark_safe(f'<a href="https://youtube.com/results?search_query={q}" target="_blank">Search</a>')
     youtube_link.short_description = 'Youtube Link'
 
 
@@ -141,6 +146,7 @@ class TagAdmin(CompareVersionAdmin):
 @admin.register(Cache)
 class CacheAdmin(admin.ModelAdmin):
     change_list_template = 'smuggler/change_list.html'
+    list_display = ('key', 'version', 'updated')
     formfield_overrides = {
         JSONField: {'widget': JSONEditorWidget}
     }
