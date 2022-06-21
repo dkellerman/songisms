@@ -147,6 +147,7 @@ class NGramManager(models.Manager):
             from api.models import NGram
             qs = NGram.objects.filter(text__istartswith=q)
             qs = qs.annotate(rhyme_ct=models.Count('rhymes')).filter(rhyme_ct__gt=0)
+            qs = qs.exclude(q)
             qs = qs.order_by('-rhyme_ct')[:ct]
             cache.set(cache_key, qs)
         return qs

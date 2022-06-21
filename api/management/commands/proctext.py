@@ -18,6 +18,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--caches', '-c', action=argparse.BooleanOptionalAction)
+        parser.add_argument('--caches-only', '-C', action=argparse.BooleanOptionalAction)
         parser.add_argument('--dry-run', '-D', action=argparse.BooleanOptionalAction)
         parser.add_argument('--batch-size', '-b', type=int, default=1000)
 
@@ -25,6 +26,10 @@ class Command(BaseCommand):
         batch_size, dry_run, do_caches = [options[k] for k in ('batch_size', 'dry_run', 'caches')]
         dry_run = options['dry_run']
         do_caches = options['caches']
+
+        if options['caches_only']:
+            reset_caches()
+            return
 
         songs = Song.objects.all()
         ngrams = dict()
