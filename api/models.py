@@ -50,7 +50,7 @@ class Tag(models.Model):
     objects = TagManager()
 
     def __str__(self):
-        return f'{self.label} [{self.category}]'
+        return f'{self.label}'
 
     def natural_key(self):
         return self.category, self.value
