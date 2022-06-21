@@ -1,3 +1,4 @@
+import time
 from django.apps import AppConfig
 
 
@@ -6,4 +7,8 @@ class ApiConfig(AppConfig):
     name = 'api'
 
     def ready(self):
-        pass
+        from api.models import Rhyme, NGram
+        now = str(time.time())
+        Rhyme.objects.top_rhymes()
+        Rhyme.objects.query(q=f'startup {now}')
+        NGram.objects.suggest(q=f'startup {now}')
