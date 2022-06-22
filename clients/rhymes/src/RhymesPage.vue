@@ -40,7 +40,9 @@ const label = computed(() => {
 });
 
 watchEffect(() => {
-  if (searchInput.value) searchInput.value.selectItem(route.query.q ?? '');
+  if (searchInput.value) {
+    searchInput.value.selectItem(route.query.q ?? '');
+  }
 });
 
 watch([q, page], () => {
@@ -74,6 +76,7 @@ function onClickSearch(e) {
 }
 
 function onInput(e) {
+  searchInput.value.$data.currentSelectionIndex = -1;
   if (e.input.trim()) debouncedFetchSuggestions(e.input);
 }
 
