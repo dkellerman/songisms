@@ -23,7 +23,7 @@ with open('./data/rhymes.txt', 'w') as f:
   f.write('\n'.join(lines))
 
 
-rhymes = list(Rhyme.objects.all().prefetch_related('to_ngram', 'from_ngram'))
+rhymes = list(Rhyme.objects.filter(level=1).prefetch_related('to_ngram', 'from_ngram'))
 random.shuffle(rhymes)
 lines = set()
 i = 0
@@ -33,9 +33,8 @@ while len(lines) < 2000:
     anchor = r.from_ngram.text
     positive = r.to_ngram.text
     negative = rhymes[random.randint(0, len(rhymes))].to_ngram.text
-    if anchor != positive:
-        lines.add((anchor, positive, '1'))
-        lines.add((anchor, negative, '0'))
+    if anchor != negative:
+        lines.add((anchor, positive, negative))
 
 with open('./data/rhymes_train.txt', 'w') as f:
-    f.write('\n'.join([';'.join(l) for l in lines]))
+    f.write('\n'.join(';'.join(l) for l in lines))

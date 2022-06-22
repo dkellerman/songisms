@@ -5,52 +5,20 @@ export default {
 </script>
 
 <script setup>
-import axios from 'axios';
-import { ref, computed, watchEffect } from 'vue';
+import { computed, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
-
-const GET_SONG = `
-    query ($id: String!) {
-      song(spotifyId: $id) {
-        id
-        title
-        spotifyId
-        spotifyPlayer
-        spotifyUrl
-        jaxstaUrl
-        youtubeUrl
-        audioFileUrl
-        lyrics
-        rhymesRaw
-        metadata
-        artists {
-          name
-        }
-        writers {
-          id
-          name
-        }
-      }
-    }
-  `;
+import { storeToRefs } from 'pinia';
+import { useSongsStore } from '@/stores/songs';
 
 const route = useRoute();
-const song = ref();
+const spotifyId = computed(() => route.params.id);
+const { song } = storeToRefs(useSongsStore());
+const { fetchSong } = useSongsStore();
 const adminLink = computed(() => `https://songisms.herokuapp.com/admin/api/song/${song.value?.id}/change`);
 const smLink = computed(() => (song.value ? song.value.metadata.songMeanings?.href : null));
 
-async function fetchSong() {
-  const url = `${process.env.VUE_APP_SISM_API_BASE_URL}/graphql/`;
-  const resp = await axios.post(url, {
-    query: GET_SONG,
-    variables: { id: route.params.id },
-  });
-  song.value = resp.data.data.song;
-  console.log('* song', song.value);
-}
-
 watchEffect(() => {
-  fetchSong();
+  if (spotifyId.value) fetchSong(spotifyId.value);
 });
 </script>
 

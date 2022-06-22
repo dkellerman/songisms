@@ -1,6 +1,4 @@
 import graphene
-import json
-import os
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
@@ -33,25 +31,3 @@ def GraphenePaginatedType(id, T):
         has_prev=graphene.Boolean(),
         q=graphene.String(),
     ))
-
-
-class JSONFileCache:
-    def __init__(self, path, getter):
-        self.path = path
-        self.getter = getter
-        if os.path.exists(path):
-            with open(path, 'r') as f:
-                self.data = json.loads(f.read())
-        else:
-            self.data = {}
-
-    def save(self):
-        with open(self.path, 'w') as f:
-            f.write(json.dumps(self.data))
-
-    def get(self, key):
-        if key in self.data:
-            return self.data[key]
-        val = self.getter(key)
-        self.data[key] = val
-        return val

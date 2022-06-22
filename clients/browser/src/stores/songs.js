@@ -28,12 +28,38 @@ const LIST_SONGS = `
   }
 `;
 
+const GET_SONG = `
+  query ($id: String!) {
+    song(spotifyId: $id) {
+      id
+      title
+      spotifyId
+      spotifyPlayer
+      spotifyUrl
+      jaxstaUrl
+      youtubeUrl
+      audioFileUrl
+      lyrics
+      rhymesRaw
+      metadata
+      artists {
+        name
+      }
+      writers {
+        id
+        name
+      }
+    }
+  }
+`;
+
 const url = `${process.env.VUE_APP_SISM_API_BASE_URL}/graphql/`;
 
 export const useSongsStore = defineStore('songs', {
   state: () => ({
     songsIndex: undefined,
     songs: undefined,
+    song: undefined,
     total: undefined,
     hasNext: undefined,
     curQuery: undefined,
@@ -73,6 +99,19 @@ export const useSongsStore = defineStore('songs', {
       }
       this.curQuery = q;
       this.curPage = page;
+    },
+
+    async fetchSong(spotifyId) {
+      const resp = await axios.post(url, {
+        query: GET_SONG,
+        variables: { id: spotifyId },
+      });
+      if (resp.data.errors) {
+        console.error('Fetch song errors', resp.data.errors);
+        throw new Error(resp.data.errors[0].message);
+      }
+      console.log('* song', resp.data.data.song);
+      this.song = resp.data.data.song;
     },
 
     getNextSong(curSongId) {

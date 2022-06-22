@@ -172,15 +172,13 @@ def get_nlp():
     return nlp
 
 
-@cache
-def pstresses(w):
-    val = pron.stresses(w)
-    return val[0] if len(val) else ''
-
-
 @lru_cache(maxsize=500)
 def get_stresses(q):
-    return ' '.join([pstresses(w) for w in q.split()])
+    stresses = []
+    for word in q.split():
+        s = pron.stresses(word)
+        stresses.append(s[0] if len(s) else '')
+    return ' '.join(stresses)
 
 
 @lru_cache(maxsize=500)
@@ -220,7 +218,6 @@ def get_ipa(txt, phones=False, include_stresses=True):
 
     # line = eng_to_ipa.ipa_list(txt)
     # line = ' '.join([ '|'.join(toks) for toks in line ])
-
     if '*' in ipa:
         return ''
 
@@ -260,7 +257,7 @@ def get_mscore(text):
     return sum(mscore) / len(mscore)
 
 
-POS_TO_MSCORE = dict(ADJ=4, NOUN=4, PROPN=4, VERB=4, ADV=2, ADP=2, INTJ=2, NUM=2, X=2, PRON=1)
+POS_TO_MSCORE = dict(ADJ=4, NOUN=4, VERB=4, PROPN=3, ADV=2, ADP=2, INTJ=2, NUM=2, X=2, PRON=1)
 
 VOWELS = [u'i', u'y', u'e', u'ø', u'ɛ', u'œ', u'a', u'ɶ', u'ɑ', u'ɒ', u'ɔ',
           u'ʌ', u'ɤ', u'o', u'ɯ', u'u', u'ɪ', u'ʊ', u'ə', u'æ']

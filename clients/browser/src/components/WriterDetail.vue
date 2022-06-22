@@ -10,24 +10,24 @@ import { ref, watchEffect, computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 const GET_WRITER = `
-    query ($id: Int!) {
-      writer(id: $id) {
-        name
-        altNames
-        songs {
-          spotifyId
-          title
-          artists {
-            name
-          }
+  query ($id: Int!) {
+    writer(id: $id) {
+      name
+      altNames
+      songs {
+        spotifyId
+        title
+        artists {
+          name
         }
       }
     }
-  `;
+  }
+`;
 
 const route = useRoute();
 const id = computed(() => route.params.id);
-const adminLink = computed(() => `https://songisms.herokuapp.com/admin/api/writer/${id}`);
+const adminLink = computed(() => `https://songisms.herokuapp.com/admin/api/writer/${id.value}`);
 const writer = ref();
 
 async function fetchWriter() {
