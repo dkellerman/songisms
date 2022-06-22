@@ -41,7 +41,7 @@ const label = computed(() => {
 
 watchEffect(() => {
   if (searchInput.value) {
-    searchInput.value.selectItem(route.query.q ?? '');
+    searchInput.value.$data.input = route.query.q ?? '';
   }
 });
 
