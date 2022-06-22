@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import { debounce } from 'lodash-es';
-import {ref, computed, watch, watchEffect} from 'vue';
+import { ref, computed, watch, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useRhymesStore } from '@/store';
@@ -86,6 +86,11 @@ function onNextPage() {
   page.value++;
 }
 
+function onFocus(e) {
+  window.oncontextmenu = () => false;
+  document.getElementById(searchInput.value.$data.inputId).select();
+}
+
 function track(category, action, label) {
   if (window.gtag) {
     window.gtag('event', action, {
@@ -115,6 +120,7 @@ fetchRhymes();
       @onInput="onInput"
       @selectItem="onSelectItem"
       @keyup.enter="onEnter"
+      @onFocus="onFocus"
     >
       <template #list-item-text="slot">
         <span v-html="slot.boldMatchText(slot.itemProjection(slot.item))"></span>
@@ -130,8 +136,7 @@ fetchRhymes();
 
     <ul v-if="rhymes && (!loading || page > 1)">
       <li v-for="r of rhymes" :key="r.ngram" :class="`hit ${r.type}`">
-        <a @click="() => onLink(r.ngram)">{{ r.ngram }}</a
-        >
+        <a @click="() => onLink(r.ngram)">{{ r.ngram }}</a>
         <span v-if="!!r.frequency && r.type === 'rhyme'" class="freq"> ({{ r.frequency }}) </span>
       </li>
     </ul>
