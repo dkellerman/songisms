@@ -89,7 +89,7 @@ class RhymeManager(models.Manager):
             WHERE
                 NOT (UPPER(n.text) = ANY(%(q)s))
                 AND n.phones IS NOT NULL
-                AND CUBE(%(qphones)s) <-> CUBE(n.phones) <= 1.5
+                AND CUBE(%(qphones)s) <-> CUBE(n.phones) <= 2.5
                 AND adj_pct >= 0.00005
                 AND n.mscore > 4
             GROUP BY ngram, n, level, frequency, distance, adj_pct, ndiff, mscore
