@@ -75,7 +75,7 @@ class NGram(models.Model):
     n = models.PositiveIntegerField(db_index=True)
     rhymes = models.ManyToManyField('self', through='Rhyme')
     ipa = models.CharField(max_length=500, blank=True, null=True)
-    phones = models.CharField(max_length=500, blank=True, null=True, db_index=True)
+    phones = ArrayField(ArrayField(models.FloatField()), null=True, blank=True, db_index=True)
     mscore = models.FloatField(blank=True, null=True, db_index=True)
     pct = models.FloatField(blank=True, null=True, db_index=True)
     adj_pct = models.FloatField(blank=True, null=True, db_index=True)

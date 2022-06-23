@@ -42,7 +42,7 @@ class RhymeManager(models.Manager):
 
         q = ' '.join(tokenize_lyric_line(q))
         syns = make_synonyms(q)
-        qphones = get_phones(q, vowels_only=True, include_stresses=False, try_syns=tuple(syns))
+        qphones = get_phones(q, vowels_only=True, include_stresses=False, try_syns=tuple(syns), pad_to=10) or None
         qn = len(q.split())
         all_q = [q.upper()] + [s.upper() for s in syns]
 
@@ -77,7 +77,7 @@ class RhymeManager(models.Manager):
                 n.n AS n,
                 CAST(NULL AS bigint) AS level,
                 CAST(NULL AS bigint) AS frequency,
-                LEVENSHTEIN(n.phones, %(qphones)s) AS distance,
+                CUBE(%(qphones)s) <-> CUBE(n.phones) AS distance,
                 n.adj_pct AS adj_pct,
                 ABS(n - %(qn)s) AS ndiff,
                 n.mscore AS mscore,
@@ -88,7 +88,8 @@ class RhymeManager(models.Manager):
                 api_songngram sn ON sn.ngram_id = n.id
             WHERE
                 NOT (UPPER(n.text) = ANY(%(q)s))
-                AND LEVENSHTEIN(n.phones, %(qphones)s) <= 3
+                AND n.phones IS NOT NULL
+                AND CUBE(%(qphones)s) <-> CUBE(n.phones) <= 1.5
                 AND adj_pct >= 0.00005
                 AND n.mscore > 4
             GROUP BY ngram, n, level, frequency, distance, adj_pct, ndiff, mscore

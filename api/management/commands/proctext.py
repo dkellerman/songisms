@@ -123,7 +123,7 @@ class Command(BaseCommand):
                     rhymes[rkey] = dict(from_ngram=l1['from_ngram'], to_ngram=l2['to_ngram'], song=None, level=2)
 
         for ngram in tqdm(ngrams.values(), desc='ngram phones'):
-            ngram['phones'] = phones_cache.get(ngram['text'], phones_getter)
+            ngram['phones'] = phones_cache.get(ngram['text'], phones_getter) or None
 
         for ngram in tqdm(ngrams.values(), desc='ngram mscores'):
             ngram['mscore'] = mscores_cache.get(ngram['text'], get_mscore)
@@ -241,7 +241,7 @@ def reset_caches():
 
 
 def phones_getter(key):
-    return get_phones(key, vowels_only=True, include_stresses=False)
+    return get_phones(key, vowels_only=True, include_stresses=False, pad_to=10)
 
 
 def fetch_datamuse_rhymes(key):

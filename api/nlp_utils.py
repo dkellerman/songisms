@@ -182,7 +182,7 @@ def get_stresses(q):
 
 
 @lru_cache(maxsize=500)
-def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True):
+def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True, pad_to=None):
     if try_syns == True:
         try_syns = make_synonyms(q)
     phones = None
@@ -193,10 +193,7 @@ def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True):
         word_phones = [p for p in word_phones if p]
         if len(word_phones) != len(words):
             continue
-
         phones = ' '.join(word_phones)
-        if vowels_only:
-            phones = re.sub(r'[A-Z]+\b', '', phones)
         if not include_stresses:
             phones = re.sub(r'[\d]+', '', phones)
 
@@ -204,6 +201,12 @@ def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True):
         phones = phones.strip()
         if phones:
             break
+
+    if phones and vowels_only:
+        phones = [VOWEL_PHONES[p] for p in phones.split(' ') if p in VOWEL_PHONES]
+        if pad_to:
+            while len(phones) < pad_to:
+                phones.append([0.0, 0.0])
 
     return phones or ''
 
@@ -261,6 +264,24 @@ POS_TO_MSCORE = dict(ADJ=4, NOUN=4, VERB=4, PROPN=3, ADV=2, ADP=2, INTJ=2, NUM=2
 
 VOWELS = [u'i', u'y', u'e', u'ø', u'ɛ', u'œ', u'a', u'ɶ', u'ɑ', u'ɒ', u'ɔ',
           u'ʌ', u'ɤ', u'o', u'ɯ', u'u', u'ɪ', u'ʊ', u'ə', u'æ']
+
+VOWEL_PHONES = dict(
+    AA=[3.0, 4.0],
+    AE=[1.0, 3.5],
+    AO=[3.0, 3.0],
+    AW=[1.0, 3.0],
+    AH=[2.0, 2.5],
+    OY=[3.0, 3.0],
+    UH=[3.5, 1.5],
+    ER=[2.0, 2.5],
+    OW=[3.0, 2.5],
+    EH=[1.0, 3.0],
+    IH=[1.5, 1.5],
+    EY=[1.0, 2.0],
+    IY=[1.0, 1.0],
+    AY=[2.0, 3.5],
+    UW=[3.0, 1.0],
+)
 
 PHONE_TO_FORMANTS = {
     u'i': [240, 2400, 2160, 0],
