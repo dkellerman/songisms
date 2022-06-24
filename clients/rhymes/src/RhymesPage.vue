@@ -69,6 +69,7 @@ function onSelectItem(val) {
 
 function onEnter(e) {
   q.value = (e.target.value ?? '').trim();
+  searchInput.value.selectItem(q.value);
 }
 
 function onClickSearch(e) {
