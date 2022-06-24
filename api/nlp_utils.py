@@ -206,7 +206,7 @@ def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True, pad_
         phones = [VOWEL_PHONES[p] for p in phones.split(' ') if p in VOWEL_PHONES]
         if pad_to:
             while len(phones) < pad_to:
-                phones.append([0.0, 0.0])
+                phones.append([2.0, 2.5])
 
     return phones or ''
 
