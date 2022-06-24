@@ -203,10 +203,10 @@ def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True, pad_
             break
 
     if phones and vowels_only:
-        phones = [VOWEL_PHONES[p] for p in phones.split(' ') if p in VOWEL_PHONES]
+        phones = [PHONE_PLACEMENT[p] for p in phones.split(' ') if p in PHONE_PLACEMENT]
         if pad_to:
             while len(phones) < pad_to:
-                phones.append([2.0, 2.5])
+                phones.append(AVERAGE_PHONE_PLACEMENT)
 
     return phones or ''
 
@@ -265,7 +265,7 @@ POS_TO_MSCORE = dict(ADJ=4, NOUN=4, VERB=4, PROPN=3, ADV=2, ADP=2, INTJ=2, NUM=2
 VOWELS = [u'i', u'y', u'e', u'ø', u'ɛ', u'œ', u'a', u'ɶ', u'ɑ', u'ɒ', u'ɔ',
           u'ʌ', u'ɤ', u'o', u'ɯ', u'u', u'ɪ', u'ʊ', u'ə', u'æ']
 
-VOWEL_PHONES = dict(
+PHONE_PLACEMENT = dict(
     AA=[3.0, 4.0],
     AE=[1.0, 3.5],
     AO=[3.0, 3.0],
@@ -282,6 +282,8 @@ VOWEL_PHONES = dict(
     AY=[2.0, 3.5],
     UW=[3.0, 1.0],
 )
+
+AVERAGE_PHONE_PLACEMENT = [2.0, 2.5]
 
 PHONE_TO_FORMANTS = {
     u'i': [240, 2400, 2160, 0],
