@@ -1,6 +1,7 @@
 import re
 from django.db import models, connection
 from django.core.cache import cache
+from django.conf import settings
 from .nlp_utils import make_synonyms, get_phones, tokenize_lyric_line
 
 
@@ -36,9 +37,11 @@ class RhymeManager(models.Manager):
         limit = limit or 50
         qkey = re.sub(' ', '_', q)
         cache_key = f'query_{qkey}'
-        vals = cache.get(cache_key)
-        if vals:
-            return vals[offset:min(self.HARD_LIMIT, offset+limit)]
+
+        if settings.USE_QUERY_CACHE:
+            vals = cache.get(cache_key)
+            if vals:
+                return vals[offset:min(self.HARD_LIMIT, offset+limit)]
 
         q = ' '.join(tokenize_lyric_line(q))
         syns = make_synonyms(q)
@@ -128,7 +131,8 @@ class RhymeManager(models.Manager):
                 dict(zip(columns, row))
                 for row in cursor.fetchall()
             ]
-            cache.set(cache_key, vals)
+            if settings.USE_QUERY_CACHE:
+                cache.set(cache_key, vals)
             vals = vals[offset:min(self.HARD_LIMIT, offset+limit)]
             return vals
 

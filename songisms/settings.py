@@ -191,4 +191,6 @@ CACHES = {
 
 SMUGGLER_FIXTURE_DIR = BASE_DIR / 'data' / 'fixtures'
 
+USE_QUERY_CACHE = is_prod
+
 django_on_heroku.settings(locals())
