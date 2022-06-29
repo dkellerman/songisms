@@ -158,11 +158,8 @@ class LineAdmin(admin.ModelAdmin):
 
 
 @admin.register(Attachment)
-class AttachmentAdmin(admin.ModelAdmin):
-    class SecondConfigInline(admin.StackedInline):
-        model = SecondConfig
-        ct_fk_field = "config_object_id"
-        ct_field = "config_content_type"
+class AttachmentAdmin(CompareVersionAdmin):
+    pass
 
 
 def check(val):
