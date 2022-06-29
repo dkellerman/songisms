@@ -62,7 +62,7 @@ class RhymeManager(BaseManager):
                 r.level AS level,
                 COUNT(r.song_id) AS frequency,
                 0 AS phones_distance,
-                0 AS stresses_distance,
+                CUBE(%(qstresses)s) <-> CUBE(n.stresses) AS stresses_distance,
                 n.adj_pct AS adj_pct,
                 0 AS ndiff,
                 0 AS mscore,

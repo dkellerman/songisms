@@ -143,7 +143,11 @@ class SongNGram(models.Model):
 
 
 def attachment_upload_path(instance, filename):
-    return f'data/{instance.object_id}/{instance.label}'
+    if type(instance.content_object) == Song:
+        key = instance.content_object.spotify_id
+    else:
+        key = str(instance.object_id)
+    return f'data/{instance.content_type.model.lower()}/{key}/{instance.attachment_type}'
 
 
 @reversion.register()
@@ -158,7 +162,7 @@ class Attachment(models.Model):
         unique_together = [['content_type', 'object_id', 'attachment_type', 'file']]
 
     def __str__(self):
-        return f'Attachment [{self.attachment_type}] for {self.content_object}'
+        return f'{self.attachment_type} ({self.content_object})'
 
     def natural_key(self):
         return self.content_type.id, self.object_id, self.attachment_type, self.file.name

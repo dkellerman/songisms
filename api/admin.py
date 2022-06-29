@@ -1,10 +1,15 @@
 from urllib.parse import quote_plus
 from django.contrib import admin
 from django.db.models import JSONField, Sum
+from django.contrib.contenttypes.admin import GenericTabularInline
 from django_json_widget.widgets import JSONEditorWidget
 from django.forms import Textarea
 from reversion_compare.admin import CompareVersionAdmin
 from .models import *
+
+
+class AttachmentInline(GenericTabularInline):
+    model = Attachment
 
 
 @admin.register(Song)
@@ -19,6 +24,7 @@ class SongAdmin(CompareVersionAdmin):
     readonly_fields = ('spotify_player', 'jaxsta_link', 'youtube_link', 'rhymes',)
     list_filter = ('tags',)
     autocomplete_fields = ('artists', 'tags', 'writers',)
+    inlines = [AttachmentInline]
     formfield_overrides = {
         JSONField: {'widget': JSONEditorWidget}
     }
