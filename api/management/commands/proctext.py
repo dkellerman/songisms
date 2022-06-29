@@ -8,7 +8,7 @@ import requests
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from api.models import *
-from api.nlp_utils import get_lyric_ngrams, get_rhyme_pairs, get_common_words, get_mscore, get_ipa
+from api.nlp_utils import get_lyric_ngrams, get_rhyme_pairs, get_common_words, get_mscore, get_ipa, get_stresses
 from django.core.cache import cache
 from tqdm import tqdm
 
@@ -32,6 +32,7 @@ class Command(BaseCommand):
             return
 
         songs = Song.objects.all()
+        lines = dict()
         ngrams = dict()
         rhymes = dict()
         song_ngrams = dict()
@@ -40,9 +41,15 @@ class Command(BaseCommand):
         datamuse_cache, _ = Cache.objects.get_or_create(key='datamuse')
         mscores_cache, _ = Cache.objects.get_or_create(key='ngram_mscores')
 
-        # lyric ngrams
         for idx, song in enumerate(tqdm(songs, desc='lyric ngrams')):
             if song.lyrics:
+                # lyric lines
+                for line in song.lyrics.split('\n'):
+                    if line.strip():
+                        text = ' '.join(tokenize_lyric_line(line.strip()))
+                        lines[text] = dict(text=text)
+
+                # lyric ngrams
                 texts = get_lyric_ngrams(song.lyrics, range(5))
                 for text, n in texts:
                     ngrams[text] = ngrams.get(text, None) or dict(text=text, n=n)
@@ -62,8 +69,6 @@ class Command(BaseCommand):
                         dict(from_ngram=ngrams[from_text], to_ngram=ngrams[to_text], song=song, level=1)
 
         extra = []
-        # with open('./data/mine.txt', 'r') as f:
-        #     extra += get_lyric_ngrams(f.read(), range(5))
         with open('./data/idioms.txt', 'r') as f:
             extra += get_lyric_ngrams(f.read(), range(5))
         for text, n in tqdm(extra, desc='extra ngrams'):
@@ -124,6 +129,8 @@ class Command(BaseCommand):
 
         for ngram in tqdm(ngrams.values(), desc='ngram phones'):
             ngram['phones'] = phones_cache.get(ngram['text'], phones_getter) or None
+        for line in tqdm(lines.values(), desc='line phones'):
+            line['phones'] = phones_cache.get(line['text'], phones_getter) or None
 
         for ngram in tqdm(ngrams.values(), desc='ngram mscores'):
             ngram['mscore'] = mscores_cache.get(ngram['text'], get_mscore)
@@ -131,6 +138,14 @@ class Command(BaseCommand):
         ipa_cache, _ = Cache.objects.get_or_create(key='ngram_ipa')
         for ngram in tqdm(ngrams.values(), desc='ngram ipa'):
             ngram['ipa'] = ipa_cache.get(ngram['text'], get_ipa)
+        for line in tqdm(lines.values(), desc='line ipa'):
+            line['ipa'] = ipa_cache.get(line['text'], get_ipa)
+
+        stresses_cache, _ = Cache.objects.get_or_create(key='ngram_stresses')
+        for ngram in tqdm(ngrams.values(), desc='ngram stresses'):
+            ngram['stresses'] = stresses_cache.get(ngram['text'], get_stresses)
+        for line in tqdm(lines.values(), desc='line stresses'):
+            line['stresses'] = stresses_cache.get(line['text'], get_stresses)
 
         n_counts = [0 for _ in range(15)]
         for sn in tqdm(song_ngrams.values(), desc='index ngram counts'):
@@ -158,18 +173,15 @@ class Command(BaseCommand):
 
         print('ngrams', len(ngrams.values()))
         print('rhymes', len(rhymes.values()))
+        print('lines', len(lines.values()))
         print('song_ngrams', len(song_ngrams.values()))
 
         if dry_run:
             return
 
-        print('saving db caches')
-        datamuse_cache.save()
-        phones_cache.save()
-        mscores_cache.save()
-        ipa_cache.save()
-
-        del datamuse_cache, phones_cache, mscores_cache, ipa_cache, songs
+        for c in tqdm([datamuse_cache, phones_cache, mscores_cache, ipa_cache, stresses_cache], desc='saving db caches'):
+            c.save()
+            del c
         gc.collect()
 
         with transaction.atomic():
@@ -177,6 +189,13 @@ class Command(BaseCommand):
             Rhyme.objects.all().delete()
             NGram.objects.all().delete()
             SongNGram.objects.all().delete()
+            Line.objects.all().delete()
+
+            lines = [Line(**line) for line in tqdm(lines.values(), desc='prepping lines')]
+            print('writing lines', len(lines))
+            Line.objects.bulk_create(lines, batch_size=batch_size)
+            del lines
+            gc.collect()
 
             ngrams = [NGram(**{k: v for k, v in n.items() if k not in ['count', 'song_count']})
                       for n in tqdm(ngrams.values(), desc='prepping ngrams')]

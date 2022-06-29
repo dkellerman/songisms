@@ -38,6 +38,7 @@ requests-cache = "^0.9.4"
 hiredis = "^2.0.0"
 redis = "^4.3.3"
 django-smuggler = "^1.0.4"
+django-pandas = "^0.6.6"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

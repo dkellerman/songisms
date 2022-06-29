@@ -8,7 +8,10 @@ class ApiConfig(AppConfig):
 
     def ready(self):
         from api.models import Rhyme, NGram
-        now = str(int(time.time()))
-        Rhyme.objects.top_rhymes()
-        Rhyme.objects.query(q=f'startup {now}')
-        NGram.objects.suggest(q=f'startup {now}')
+        try:
+            now = str(int(time.time()))
+            Rhyme.objects.top_rhymes()
+            Rhyme.objects.query(q=f'startup {now}')
+            NGram.objects.suggest(q=f'startup {now}')
+        except:
+            pass

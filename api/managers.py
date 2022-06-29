@@ -2,10 +2,15 @@ import re
 from django.db import models, connection
 from django.core.cache import cache
 from django.conf import settings
-from .nlp_utils import make_synonyms, get_phones, tokenize_lyric_line
+from django_pandas.managers import DataFrameManager
+from .nlp_utils import make_synonyms, get_phones, tokenize_lyric_line, get_stresses
 
 
-class RhymeManager(models.Manager):
+class BaseManager(DataFrameManager):
+    pass
+
+
+class RhymeManager(BaseManager):
     HARD_LIMIT = 200
 
     def top_rhymes(self, offset=0, limit=50):
@@ -46,6 +51,7 @@ class RhymeManager(models.Manager):
         q = ' '.join(tokenize_lyric_line(q))
         syns = make_synonyms(q)
         qphones = get_phones(q, vowels_only=True, include_stresses=False, try_syns=tuple(syns), pad_to=10) or None
+        qstresses = get_stresses(q)
         qn = len(q.split())
         all_q = [q.upper()] + [s.upper() for s in syns]
 
@@ -55,7 +61,8 @@ class RhymeManager(models.Manager):
                 rto.n AS n,
                 r.level AS level,
                 COUNT(r.song_id) AS frequency,
-                0 AS distance,
+                0 AS phones_distance,
+                0 AS stresses_distance,
                 n.adj_pct AS adj_pct,
                 0 AS ndiff,
                 0 AS mscore,
@@ -71,7 +78,7 @@ class RhymeManager(models.Manager):
             WHERE
                 UPPER(n.text) = ANY(%(q)s)
                 AND NOT (UPPER(rto.text) = ANY(%(q)s))
-            GROUP BY ngram, rto.n, level, distance, n.adj_pct, ndiff, n.mscore, song_ct
+            GROUP BY ngram, rto.n, level, phones_distance, stresses_distance, n.adj_pct, ndiff, n.mscore, song_ct
         '''
 
         suggestions_sql = f'''
@@ -80,7 +87,8 @@ class RhymeManager(models.Manager):
                 n.n AS n,
                 CAST(NULL AS bigint) AS level,
                 CAST(NULL AS bigint) AS frequency,
-                CUBE(%(qphones)s) <-> CUBE(n.phones) AS distance,
+                CUBE(%(qphones)s) <-> CUBE(n.phones) AS phones_distance,
+                CUBE(%(qstresses)s) <-> CUBE(n.stresses) AS stresses_distance,
                 n.adj_pct AS adj_pct,
                 ABS(n - %(qn)s) AS ndiff,
                 n.mscore AS mscore,
@@ -95,7 +103,7 @@ class RhymeManager(models.Manager):
                 AND CUBE(%(qphones)s) <-> CUBE(n.phones) <= 2.5
                 AND adj_pct >= 0.00005
                 AND n.mscore > 4
-            GROUP BY ngram, n, level, frequency, distance, adj_pct, ndiff, mscore
+            GROUP BY ngram, n, level, frequency, phones_distance, stresses_distance, adj_pct, ndiff, mscore
             HAVING COUNT(sn.song_id) > 2
         ''' if qphones and len(qphones) else ''
 
@@ -117,14 +125,15 @@ class RhymeManager(models.Manager):
                     ORDER BY
                         level NULLS LAST,
                         frequency DESC NULLS LAST,
-                        distance,
+                        phones_distance,
+                        stresses_distance,
                         mscore DESC NULLS LAST,
                         ndiff - (adj_pct * 10000),
                         adj_pct DESC NULLS LAST
                     OFFSET 0
                     LIMIT %(limit)s
                 ;
-            ''', dict(q=all_q, qstr=q, qn=qn, qphones=qphones, limit=self.HARD_LIMIT))
+            ''', dict(q=all_q, qstr=q, qn=qn, qphones=qphones, qstresses=qstresses, limit=self.HARD_LIMIT))
 
             columns = [col[0] for col in cursor.description]
             vals = [
@@ -134,10 +143,16 @@ class RhymeManager(models.Manager):
             if settings.USE_QUERY_CACHE:
                 cache.set(cache_key, vals)
             vals = vals[offset:min(self.HARD_LIMIT, offset+limit)]
+
             return vals
 
 
-class NGramManager(models.Manager):
+class LineManager(BaseManager):
+    def get_by_natural_key(self, text):
+        return self.get(text=text)
+
+
+class NGramManager(BaseManager):
     def get_by_natural_key(self, text):
         return self.get(text=text)
 
@@ -157,7 +172,7 @@ class NGramManager(models.Manager):
         return qs
 
 
-class SongManager(models.Manager):
+class SongManager(BaseManager):
     filter_map = {
         'lyrics': ('lyrics__icontains', None),
         'rhymes': ('rhymes_raw__icontains', None),
@@ -197,12 +212,12 @@ class SongManager(models.Manager):
         return songs
 
 
-class ArtistManager(models.Manager):
+class ArtistManager(BaseManager):
     def get_by_natural_key(self, name):
         return self.get(name=name)
 
 
-class WriterManager(models.Manager):
+class WriterManager(BaseManager):
     def query(self, q=None, ordering=None):
         writers = self.prefetch_related('songs').annotate(
             song_ct=models.Count('songs', distinct=True),
@@ -218,11 +233,11 @@ class WriterManager(models.Manager):
         return self.get(name=name)
 
 
-class TagManager(models.Manager):
+class TagManager(BaseManager):
     def get_by_natural_key(self, category, value):
         return self.get(category=category, value=value)
 
 
-class CacheManager(models.Manager):
+class CacheManager(BaseManager):
     def get_by_natural_key(self, key, version):
         return self.get(key=key, version=version)

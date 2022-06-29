@@ -176,9 +176,13 @@ def get_nlp():
 def get_stresses(q):
     stresses = []
     for word in q.split():
-        s = pron.stresses(word)
-        stresses.append(s[0] if len(s) else '')
-    return ' '.join(stresses)
+        p = phones_for_word(word)
+        if p:
+            s = pron.stresses(p)
+            stresses.append(s if len(s) else '1')
+        else:
+            stresses.append('1')
+    return [int(s) for s in (''.join(stresses))]
 
 
 @lru_cache(maxsize=500)

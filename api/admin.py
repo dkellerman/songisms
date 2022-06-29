@@ -152,5 +152,18 @@ class CacheAdmin(admin.ModelAdmin):
     }
 
 
+@admin.register(Line)
+class LineAdmin(admin.ModelAdmin):
+    search_fields = ('text',)
+
+
+@admin.register(Attachment)
+class AttachmentAdmin(admin.ModelAdmin):
+    class SecondConfigInline(admin.StackedInline):
+        model = SecondConfig
+        ct_fk_field = "config_object_id"
+        ct_field = "config_content_type"
+
+
 def check(val):
     return '√' if bool(val) else 'X'

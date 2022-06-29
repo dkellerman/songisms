@@ -2,6 +2,8 @@ import reversion
 from django.db import transaction
 from django.db.models import Count, Q
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.utils.safestring import mark_safe
 from .cloud_utils import get_storage_blob
 from .managers import *
@@ -70,12 +72,29 @@ class TaggedText(models.Model):
         return f'{self.song.title} [{self.tag.label}] (len={len(self.text)})'
 
 
+class Line(models.Model):
+    text = models.CharField(max_length=500, unique=True)
+    ipa = models.CharField(max_length=500, blank=True, null=True)
+    phones = ArrayField(ArrayField(models.FloatField()), null=True, blank=True, db_index=True)
+    stresses = ArrayField(models.IntegerField(), null=True, blank=True, db_index=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True, blank=True, null=True)
+    objects = LineManager()
+
+    def __str__(self):
+        return f'{self.text}'
+
+    def natural_key(self):
+        return self.text,
+
+
 class NGram(models.Model):
     text = models.CharField(max_length=500, unique=True)
     n = models.PositiveIntegerField(db_index=True)
     rhymes = models.ManyToManyField('self', through='Rhyme')
     ipa = models.CharField(max_length=500, blank=True, null=True)
     phones = ArrayField(ArrayField(models.FloatField()), null=True, blank=True, db_index=True)
+    stresses = ArrayField(models.IntegerField(), null=True, blank=True, db_index=True)
     mscore = models.FloatField(blank=True, null=True, db_index=True)
     pct = models.FloatField(blank=True, null=True, db_index=True)
     adj_pct = models.FloatField(blank=True, null=True, db_index=True)
@@ -123,6 +142,28 @@ class SongNGram(models.Model):
         return f'{self.ngram.text} [{self.count}x IN {self.song.title}]'
 
 
+def attachment_upload_path(instance, filename):
+    return f'data/{instance.object_id}/{instance.label}'
+
+
+@reversion.register()
+class Attachment(models.Model):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    attachment_type = models.SlugField()
+    file = models.FileField(upload_to=attachment_upload_path, blank=True, null=True)
+
+    class Meta:
+        unique_together = [['content_type', 'object_id', 'attachment_type', 'file']]
+
+    def __str__(self):
+        return f'Attachment [{self.attachment_type}] for {self.content_object}'
+
+    def natural_key(self):
+        return self.content_type.id, self.object_id, self.attachment_type, self.file.name
+
+
 @reversion.register()
 class Song(models.Model):
     title = models.CharField(max_length=300, db_index=True)
@@ -142,9 +183,6 @@ class Song(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = SongManager()
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
 
     def __str__(self):
         return f'{self.title}'
