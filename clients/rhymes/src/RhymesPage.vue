@@ -106,7 +106,7 @@ function track(category, action, label) {
 
 function ct2str(ct, singularWord, pluralWord) {
   const plWord = pluralWord ?? `${singularWord}s`;
-  if (ct === 0) return `No ${plWord}`;
+  if (ct === 0) return `No ${plWord} found`;
   if (ct === 1) return `1 ${singularWord}`;
   return `${ct} ${plWord}`;
 }
