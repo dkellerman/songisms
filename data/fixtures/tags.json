@@ -1,7 +1,6 @@
 [
 {
   "model": "api.tag",
-  "pk": 1,
   "fields": {
     "value": "2010s",
     "label": "2010s",
@@ -12,7 +11,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 2,
   "fields": {
     "value": "country",
     "label": "country",
@@ -23,7 +21,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 3,
   "fields": {
     "value": "70s",
     "label": "70s",
@@ -34,7 +31,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 4,
   "fields": {
     "value": "rock",
     "label": "rock",
@@ -45,7 +41,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 5,
   "fields": {
     "value": "pop",
     "label": "pop",
@@ -56,7 +51,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 6,
   "fields": {
     "value": "chorus",
     "label": "chorus",
@@ -67,7 +61,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 7,
   "fields": {
     "value": "2000s",
     "label": "2000s",
@@ -78,7 +71,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 8,
   "fields": {
     "value": "verse",
     "label": "verse",
@@ -89,7 +81,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 9,
   "fields": {
     "value": "90s",
     "label": "90s",
@@ -100,7 +91,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 10,
   "fields": {
     "value": "2020s",
     "label": "2020s",
@@ -111,7 +101,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 11,
   "fields": {
     "value": "60s",
     "label": "60s",
@@ -122,7 +111,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 12,
   "fields": {
     "value": "soul",
     "label": "soul",
@@ -133,7 +121,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 13,
   "fields": {
     "value": "80s",
     "label": "80s",
@@ -144,7 +131,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 14,
   "fields": {
     "value": "hip hop",
     "label": "hip hop",
@@ -155,7 +141,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 15,
   "fields": {
     "value": "50s",
     "label": "50s",
@@ -166,7 +151,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 16,
   "fields": {
     "value": "folk",
     "label": "folk",
@@ -177,7 +161,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 17,
   "fields": {
     "value": "R&B",
     "label": "R&B",
@@ -188,7 +171,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 18,
   "fields": {
     "value": "prechorus",
     "label": "prechorus",
@@ -199,7 +181,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 19,
   "fields": {
     "value": "idiom",
     "label": "idiom",
@@ -210,7 +191,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 20,
   "fields": {
     "value": "motown",
     "label": "motown",
@@ -221,7 +201,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 21,
   "fields": {
     "value": "AABA",
     "label": "AABA",
@@ -232,7 +211,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 22,
   "fields": {
     "value": "rhyme.2",
     "label": "rhyme.2",
@@ -243,7 +221,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 23,
   "fields": {
     "value": "rhyme.1",
     "label": "rhyme.1",
@@ -254,7 +231,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 24,
   "fields": {
     "value": "bridge",
     "label": "bridge",
@@ -265,7 +241,6 @@
 },
 {
   "model": "api.tag",
-  "pk": 25,
   "fields": {
     "value": "jazz",
     "label": "jazz",

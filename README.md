@@ -12,6 +12,7 @@
 ## Local database setup
 * Postgresql DB/user name: `songisms`
 * `CREATE EXTENSION fuzzystrmatch`
+* `CREATE EXTENSION cube`
 * `./manage.py migrate`
 * pull data from prod? `heroku pg:pull ...`
 * `./manage.py createinitialrevisions`

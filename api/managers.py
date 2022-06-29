@@ -16,8 +16,9 @@ class RhymeManager(BaseManager):
     def top_rhymes(self, offset=0, limit=50):
         offset = offset or 0
         limit = limit or 50
-        cache_key = f'top_rhymes_{offset}_{offset+limit}'
-        qs = cache.get(cache_key)
+        cache_key = f'top_rhymes_{offset}_{offset + limit}'
+        qs = cache.get(cache_key) if settings.USE_QUERY_CACHE else None
+
         if not qs:
             from api.models import NGram
             qs = NGram.objects.annotate(
@@ -30,7 +31,8 @@ class RhymeManager(BaseManager):
              .values('ngram', 'frequency', 'type')
 
             qs = qs[offset:min(self.HARD_LIMIT, offset+limit)]
-            cache.set(cache_key, qs)
+            if settings.USE_QUERY_CACHE:
+                cache.set(cache_key, qs)
 
         return qs
 
@@ -162,7 +164,7 @@ class NGramManager(BaseManager):
 
         qkey = re.sub(' ', '_', q)
         cache_key = f'suggest_{qkey}'
-        qs = cache.get(cache_key)
+        qs = cache.get(cache_key) if settings.USE_QUERY_CACHE else None
         if not qs:
             from api.models import NGram
             qs = NGram.objects.filter(text__istartswith=q)

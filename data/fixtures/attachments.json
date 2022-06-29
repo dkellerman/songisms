@@ -1,0 +1,26 @@
+[
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 416,
+    "attachment_type": "vocals",
+    "file": "data/song/5Wj1rJnCLpMHdLaxsFtJLs/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 422,
+    "attachment_type": "vocals",
+    "file": "data/song/0lnxrQAd9ZxbhBBe7d8FO8/vocals"
+  }
+}
+]
