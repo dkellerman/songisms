@@ -8,7 +8,7 @@ import requests
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from api.models import *
-from api.nlp_utils import get_lyric_ngrams, get_rhyme_pairs, get_common_words, get_mscore, get_ipa, get_stresses
+from api.utils.text import get_lyric_ngrams, get_rhyme_pairs, get_common_words, get_mscore, get_ipa, get_stresses
 from django.core.cache import cache
 from tqdm import tqdm
 

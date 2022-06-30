@@ -3,7 +3,7 @@
 import multiprocessing as mp
 from django.core.management.base import BaseCommand
 from api.models import *
-from api.cloud_utils import fetch_audio
+from api.utils.cloud import fetch_audio
 
 
 class Command(BaseCommand):

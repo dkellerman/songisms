@@ -6,7 +6,7 @@ from graphene.types.generic import GenericScalar
 import graphql_jwt
 from graphql_jwt.decorators import login_required
 from .models import Song, Artist, Writer, Tag, Rhyme, NGram, TaggedText, Attachment
-from .utils import get_paginator, GraphenePaginatedType
+from .utils.gql import get_paginator, GraphenePaginatedType
 
 DEFAULT_PAGE_SIZE = 20
 

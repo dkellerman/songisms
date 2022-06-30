@@ -2,7 +2,7 @@
 
 import sys
 import gensim.models
-from api.nlp_utils import *
+from api.utils.text import *
 from pprint import pprint
 from api.models import Song
 

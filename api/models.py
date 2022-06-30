@@ -5,7 +5,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.utils.safestring import mark_safe
-from .cloud_utils import get_storage_blob
+from .utils.cloud import get_storage_blob
 from .managers import *
 
 

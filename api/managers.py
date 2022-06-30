@@ -4,7 +4,7 @@ from django.db import models, connection
 from django.core.cache import cache
 from django.conf import settings
 from django_pandas.managers import DataFrameManager
-from .nlp_utils import make_synonyms, get_phones, tokenize_lyric_line, get_stresses
+from .utils.text import make_synonyms, get_phones, tokenize_lyric_line, get_stresses
 
 
 class BaseManager(DataFrameManager):
