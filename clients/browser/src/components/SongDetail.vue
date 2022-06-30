@@ -1,6 +1,11 @@
 <script>
+import LyricsComponent from "@/components/LyricsComponent";
+
 export default {
   name: 'SongDetail',
+  components: [
+    LyricsComponent,
+  ],
 };
 </script>
 
@@ -9,6 +14,7 @@ import { computed, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useSongsStore } from '@/stores/songs';
+import Lyrics from "@/components/LyricsComponent";
 
 const route = useRoute();
 const spotifyId = computed(() => route.params.id);
@@ -68,7 +74,8 @@ watchEffect(() => {
       </dd>
 
       <dt>Lyrics</dt>
-      <dd v-html="song.lyrics?.replace(/\n/g, '<br>')"></dd>
+      <dd><LyricsComponent :lyrics="song.lyrics" /></dd>
+
 
       <dt>Rhymes</dt>
       <dd v-html="song.rhymesRaw?.replace(/\n/g, '<br>').replace(/;/g, ' / ')"></dd>
