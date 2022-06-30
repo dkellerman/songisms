@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 import json
 import base64
+import dj_database_url
 from google.oauth2 import service_account
 from pathlib import Path
 import django_on_heroku
@@ -94,13 +95,15 @@ WSGI_APPLICATION = 'songisms.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 # django-on-heroku replaces this with DATABASE_URL in production
+SISM_DATABASE_URL = os.environ.get('SISM_DATABASE_URL', None)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'songisms',
         'USER': 'songisms',
         'PASSWORD': os.environ['SISM_DB_PASSWORD'],
-    }
+    } if not SISM_DATABASE_URL else dj_database_url.parse(SISM_DATABASE_URL, conn_max_age=600),
 }
 
 # Password validation
