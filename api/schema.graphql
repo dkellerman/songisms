@@ -85,12 +85,11 @@ type SongType {
   title: String!
   spotifyId: String!
   id: ID!
+  isNew: Boolean!
   artists: [ArtistType!]!
   writers: [WriterType!]!
   tags: [TagType!]!
   lyrics: String
-  lyricsRaw: String
-  lyricsIpa: String
   rhymesRaw: String
   jaxstaId: String
   youtubeId: String

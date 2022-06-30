@@ -10,6 +10,7 @@ from .utils import get_paginator, GraphenePaginatedType
 
 DEFAULT_PAGE_SIZE = 20
 
+# dump: `./manage.py graphql_schema --schema api.schema.schema --out api/schema.graphql`
 
 class UserType(DjangoObjectType):
     class Meta:
@@ -35,11 +36,10 @@ class SongType(DjangoObjectType):
     class Meta:
         model = Song
         fields = ['title', 'artists', 'writers', 'tags', 'spotify_id', 'lyrics',
-                  'lyrics_raw', 'lyrics_ipa', 'jaxsta_id', 'rhymes',
-                  'youtube_id', 'audio_file', 'metadata', 'tagged_texts',
-                  'created', 'updated', 'spotify_url', 'jaxsta_url', 'youtube_url',
-                  'spotify_player', 'youtube_player', 'audio_file_url',
-                  'rhymes_raw', 'id']
+                  'is_new', 'jaxsta_id', 'rhymes', 'youtube_id', 'audio_file',
+                  'metadata', 'tagged_texts', 'created', 'updated', 'spotify_url',
+                  'jaxsta_url', 'youtube_url', 'spotify_player', 'youtube_player',
+                  'audio_file_url', 'rhymes_raw', 'id']
 
 
 class ArtistType(DjangoObjectType):

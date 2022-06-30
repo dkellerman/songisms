@@ -9,7 +9,7 @@ from api.models import Song
 
 def train():
     docs = []
-    for song in Song.objects.exclude(lyrics=None):
+    for song in Song.objects.exclude(lyrics=None).exclude(is_new=True):
         lines = song.lyrics.split('\n')
         doc = set()
         for line in lines:

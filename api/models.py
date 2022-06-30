@@ -170,13 +170,12 @@ class Attachment(models.Model):
 
 @reversion.register()
 class Song(models.Model):
+    is_new = models.BooleanField(default=True)
     title = models.CharField(max_length=300, db_index=True)
     artists = models.ManyToManyField(Artist, related_name='songs', blank=True)
     writers = models.ManyToManyField(Writer, related_name='songs', blank=True)
     tags = models.ManyToManyField(Tag, related_name='songs', blank=True)
     lyrics = models.TextField(blank=True, null=True)
-    lyrics_raw = models.TextField(blank=True, null=True)
-    lyrics_ipa = models.TextField(blank=True, null=True)
     ngrams = models.ManyToManyField(NGram, through='SongNGram', blank=True, related_name='songs')
     rhymes_raw = models.TextField(blank=True, null=True)
     spotify_id = models.SlugField()

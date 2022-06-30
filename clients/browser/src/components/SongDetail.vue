@@ -28,7 +28,7 @@ watchEffect(() => {
   </nav>
 
   <section v-if="song">
-    <h2>{{ song.title }}</h2>
+    <h2>{{ song.title }} {{ song.isNew ? '[New]' : ''}}</h2>
     <div v-html="song.spotifyPlayer" />
 
     <dl>

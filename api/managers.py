@@ -182,6 +182,7 @@ class SongManager(BaseManager):
         'artist': ('artists__name__icontains', None),
         'tag': ('tags__value__iexact', None),
         'title': ('title__icontains', None),
+        'is_new': ('is_new', None),
     }
 
     def get_by_natural_key(self, spotify_id):
@@ -200,6 +201,9 @@ class SongManager(BaseManager):
                 reverse = field[0] == '~'
                 if reverse:
                     field = field[1:]
+                if field == 'is':
+                    field = f'is_{qstr}'
+                    qstr = True
                 if field == 'has':
                     excludes[qstr] = None
                 else:

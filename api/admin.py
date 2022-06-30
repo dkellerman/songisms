@@ -14,15 +14,14 @@ class AttachmentInline(GenericTabularInline):
 
 @admin.register(Song)
 class SongAdmin(CompareVersionAdmin):
-    fields = ('title', 'spotify_id', 'spotify_player', 'artists',
-              'writers', 'tags', 'lyrics', 'rhymes_raw',
-              'lyrics_raw', 'lyrics_ipa', 'jaxsta_id', 'jaxsta_link',
+    fields = ('is_new', 'title', 'spotify_id', 'spotify_player', 'artists',
+              'writers', 'tags', 'lyrics', 'rhymes_raw', 'jaxsta_id', 'jaxsta_link',
               'youtube_id', 'youtube_link', 'audio_file', 'metadata',)
     search_fields = ('title', 'spotify_id', 'lyrics',)
-    list_display = ('title', 'artists_display', 'spotify_link', 'has_lyrics',
-                    'has_audio', 'has_metadata', 'has_ipa', 'has_jaxsta_id',)
+    list_display = ('title', 'artists_display', 'spotify_link', 'is_new_check', 'has_lyrics',
+                    'has_audio', 'has_metadata', 'has_jaxsta_id',)
     readonly_fields = ('spotify_player', 'jaxsta_link', 'youtube_link', 'rhymes',)
-    list_filter = ('tags',)
+    list_filter = ('is_new', 'tags',)
     autocomplete_fields = ('artists', 'tags', 'writers',)
     inlines = [AttachmentInline]
     formfield_overrides = {
@@ -43,6 +42,10 @@ class SongAdmin(CompareVersionAdmin):
         return ', '.join([a.name for a in obj.artists.all()])
     artists_display.short_description = 'Artists'
 
+    def is_new_check(self, obj):
+        return check(obj.is_new)
+    is_new_check.short_description = 'New'
+
     def has_audio(self, obj):
         return check(obj.audio_file)
     has_audio.short_description = 'Aud'
@@ -54,10 +57,6 @@ class SongAdmin(CompareVersionAdmin):
     def has_lyrics(self, obj):
         return check(obj.lyrics)
     has_lyrics.short_description = 'Lyr'
-
-    def has_ipa(self, obj):
-        return check(obj.lyrics_ipa)
-    has_ipa.short_description = 'IPA'
 
     def has_jaxsta_id(self, obj):
         return '-' if obj.jaxsta_id == '-' else check(obj.jaxsta_id)

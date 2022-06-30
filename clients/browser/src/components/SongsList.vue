@@ -36,7 +36,7 @@ if (!songs.value) {
   <label v-if="q && total !== songsIndex?.length">Matched {{ total }} out of {{ songsIndex.length }} songs</label>
 
   <ul class="none" v-if="songs">
-    <li v-for="song in songs" :key="song.spotifyId">
+    <li v-for="song in songs" :key="song.spotifyId" :class="song.isNew ? 'new' : ''">
       <router-link :to="{ name: 'SongDetail', params: { id: song.spotifyId } }">{{ song.title }}</router-link>
       &mdash; {{ song.artists.map(a => a.name).join(', ') }}
     </li>
@@ -61,6 +61,10 @@ li {
   margin-bottom: 10px;
   a {
     margin-right: 5px;
+  }
+  &.new {
+    font-style: italic;
+    opacity: .6;
   }
 }
 </style>

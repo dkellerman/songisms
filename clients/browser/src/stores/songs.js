@@ -18,6 +18,7 @@ const LIST_SONGS = `
       page
       hasNext
       items {
+        isNew
         title
         artists {
           name
@@ -32,6 +33,7 @@ const GET_SONG = `
   query ($id: String!) {
     song(spotifyId: $id) {
       id
+      isNew
       title
       spotifyId
       spotifyPlayer
