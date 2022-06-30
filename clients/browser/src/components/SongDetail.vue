@@ -14,7 +14,6 @@ import { computed, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useSongsStore } from '@/stores/songs';
-import Lyrics from "@/components/LyricsComponent";
 
 const route = useRoute();
 const spotifyId = computed(() => route.params.id);
@@ -22,6 +21,13 @@ const { song } = storeToRefs(useSongsStore());
 const { fetchSong } = useSongsStore();
 const adminLink = computed(() => `https://songisms.herokuapp.com/admin/api/song/${song.value?.id}/change`);
 const smLink = computed(() => (song.value ? song.value.metadata.songMeanings?.href : null));
+const attachments = computed(() => {
+  const map = {};
+  for (const a of (song.value?.attachments || [])) {
+    map[a.attachmentType] = a.url;
+  }
+  return map;
+});
 
 watchEffect(() => {
   if (spotifyId.value) fetchSong(spotifyId.value);
@@ -58,14 +64,17 @@ watchEffect(() => {
           <li v-if="song.youtubeUrl">
             <a :href="song.youtubeUrl">Youtube</a>
           </li>
+          <li v-if="song.audioFileUrl">
+            <a :href="song.audioFileUrl">Audio</a>
+          </li>
+          <li v-if="attachments.vocals">
+            <a :href="attachments.vocals">Vocals</a>
+          </li>
           <li v-if="song.jaxstaUrl">
             <a :href="song.jaxstaUrl">Jaxsta</a>
           </li>
           <li v-if="song.spotifyUrl">
             <a :href="song.spotifyUrl">Spotify</a>
-          </li>
-          <li v-if="song.audioFileUrl">
-            <a :href="song.audioFileUrl">Audio</a>
           </li>
           <li v-if="smLink">
             <a :href="smLink">Song Meanings</a>
@@ -73,9 +82,18 @@ watchEffect(() => {
         </ul>
       </dd>
 
+      <dt>Audio / Vox</dt>
+      <dd>
+        <audio controls v-if="song.audioFileUrl">
+          <source :src="song.audioFileUrl" />
+        </audio>&nbsp;
+        <audio controls v-if="attachments.vocals">
+          <source :src="attachments.vocals" />
+        </audio>
+      </dd>
+
       <dt>Lyrics</dt>
       <dd><LyricsComponent :lyrics="song.lyrics" /></dd>
-
 
       <dt>Rhymes</dt>
       <dd v-html="song.rhymesRaw?.replace(/\n/g, '<br>').replace(/;/g, ' / ')"></dd>

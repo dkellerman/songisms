@@ -18,6 +18,11 @@ type ArtistsPaginatedType {
   q: String
 }
 
+type AttachmentType {
+  attachmentType: String!
+  url: String
+}
+
 scalar DateTime
 
 scalar GenericScalar
@@ -104,6 +109,7 @@ type SongType {
   youtubeUrl: String
   youtubePlayer: String
   audioFileUrl: String
+  attachments: [AttachmentType]
 }
 
 type SongsPaginatedType {

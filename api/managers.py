@@ -1,4 +1,5 @@
 import re
+from django.contrib.contenttypes.models import ContentTypeManager
 from django.db import models, connection
 from django.core.cache import cache
 from django.conf import settings
@@ -247,3 +248,7 @@ class TagManager(BaseManager):
 class CacheManager(BaseManager):
     def get_by_natural_key(self, key, version):
         return self.get(key=key, version=version)
+
+
+class AttachmentManager(ContentTypeManager):
+    pass

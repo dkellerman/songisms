@@ -2,7 +2,7 @@ import reversion
 from django.db import transaction
 from django.db.models import Count, Q
 from django.contrib.postgres.fields import ArrayField
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.utils.safestring import mark_safe
 from .cloud_utils import get_storage_blob
@@ -157,6 +157,7 @@ class Attachment(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
     attachment_type = models.SlugField()
     file = models.FileField(upload_to=attachment_upload_path, blank=True, null=True)
+    objects = AttachmentManager()
 
     class Meta:
         unique_together = [['content_type', 'object_id', 'attachment_type', 'file']]
@@ -185,6 +186,7 @@ class Song(models.Model):
     metadata = models.JSONField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
+    attachments = GenericRelation(Attachment)
     objects = SongManager()
 
     def __str__(self):
@@ -206,6 +208,9 @@ class Song(models.Model):
 
     def audio_file_exists(self):
         return self.audio_blob().exists()
+
+    def get_attachment(self, t):
+        return self.attachments.filter(attachment_type=t).first()
 
     @property
     def jaxsta_url(self):

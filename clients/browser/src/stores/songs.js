@@ -51,6 +51,10 @@ const GET_SONG = `
         id
         name
       }
+      attachments {
+        attachmentType
+        url
+      }
     }
   }
 `;

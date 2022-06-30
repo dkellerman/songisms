@@ -5,12 +5,13 @@ from graphene_django import DjangoObjectType
 from graphene.types.generic import GenericScalar
 import graphql_jwt
 from graphql_jwt.decorators import login_required
-from .models import Song, Artist, Writer, Tag, Rhyme, NGram, TaggedText
+from .models import Song, Artist, Writer, Tag, Rhyme, NGram, TaggedText, Attachment
 from .utils import get_paginator, GraphenePaginatedType
 
 DEFAULT_PAGE_SIZE = 20
 
 # dump: `./manage.py graphql_schema --schema api.schema.schema --out api/schema.graphql`
+
 
 class UserType(DjangoObjectType):
     class Meta:
@@ -24,6 +25,17 @@ class SongIndexType(DjangoObjectType):
         fields = ['title', 'spotify_id']
 
 
+class AttachmentType(DjangoObjectType):
+    url = graphene.String()
+
+    class Meta:
+        model = Attachment
+        fields = ['attachment_type', 'url']
+
+    def resolve_url(self, info):
+        return self.file.url
+
+
 class SongType(DjangoObjectType):
     spotify_url = graphene.String(source='spotify_url')
     spotify_player = graphene.String(source='spotify_player')
@@ -32,6 +44,7 @@ class SongType(DjangoObjectType):
     youtube_player = graphene.String(source='youtube_player')
     audio_file_url = graphene.String(source='audio_file_url')
     metadata = GenericScalar(source='metadata')
+    attachments = graphene.List(AttachmentType)
 
     class Meta:
         model = Song
@@ -39,7 +52,10 @@ class SongType(DjangoObjectType):
                   'is_new', 'jaxsta_id', 'rhymes', 'youtube_id', 'audio_file',
                   'metadata', 'tagged_texts', 'created', 'updated', 'spotify_url',
                   'jaxsta_url', 'youtube_url', 'spotify_player', 'youtube_player',
-                  'audio_file_url', 'rhymes_raw', 'id']
+                  'audio_file_url', 'rhymes_raw', 'id', 'attachments']
+
+    def resolve_attachments(self, info):
+        return self.attachments.all()
 
 
 class ArtistType(DjangoObjectType):
