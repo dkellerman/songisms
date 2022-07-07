@@ -186,7 +186,7 @@ def get_stresses(q):
 
 
 @lru_cache(maxsize=500)
-def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True, pad_to=None):
+def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True, allow_missing=False):
     if try_syns == True:
         try_syns = make_synonyms(q)
     phones = None
@@ -196,17 +196,26 @@ def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True, pad_
         word_phones = [phones_for_word(w) for w in words]
         word_phones = [p for p in word_phones if p]
         if len(word_phones) != len(words):
-            continue
+            if not allow_missing:
+                continue
         phones = ' '.join(word_phones)
         if not include_stresses:
             phones = re.sub(r'[\d]+', '', phones)
+        if vowels_only:
+            phones = ' '.join([p for p in phones.split() if p in PHONE_PLACEMENT])
 
         phones = re.sub(r'\s+', ' ', phones)
         phones = phones.strip()
         if phones:
             break
 
-    if phones and vowels_only:
+    return phones or ''
+
+
+@lru_cache(maxsize=500)
+def get_vowel_vectors(q, try_syns=True, pad_to=None):
+    phones = get_phones(q, try_syns=try_syns, vowels_only=True, include_stresses=False)
+    if phones:
         phones = [PHONE_PLACEMENT[p] for p in phones.split(' ') if p in PHONE_PLACEMENT]
         if pad_to:
             while len(phones) < pad_to:

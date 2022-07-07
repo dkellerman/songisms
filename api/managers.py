@@ -1,10 +1,11 @@
 import re
 from django.contrib.contenttypes.models import ContentTypeManager
 from django.db import models, connection
+from django.db.models import Q
 from django.core.cache import cache
 from django.conf import settings
 from django_pandas.managers import DataFrameManager
-from .utils.text import make_synonyms, get_phones, tokenize_lyric_line, get_stresses
+from .utils.text import make_synonyms, get_vowel_vectors, tokenize_lyric_line, get_stresses
 
 
 class BaseManager(DataFrameManager):
@@ -53,7 +54,7 @@ class RhymeManager(BaseManager):
 
         q = ' '.join(tokenize_lyric_line(q))
         syns = make_synonyms(q)
-        qphones = get_phones(q, vowels_only=True, include_stresses=False, try_syns=tuple(syns), pad_to=10) or None
+        qphones = get_vowel_vectors(q, try_syns=tuple(syns), pad_to=10) or None
         qstresses = get_stresses(q)
         qn = len(q.split())
         all_q = [q.upper()] + [s.upper() for s in syns]
@@ -217,6 +218,25 @@ class SongManager(BaseManager):
                 includes, excludes = excludes, includes
             songs = songs.filter(**includes).exclude(**excludes)
         return songs
+
+    def with_words(self, *words, syns=True, or_=True, pct=False):
+        words = set(words)
+        if syns:
+            for word in list(words):
+                for syn in make_synonyms(word):
+                    words.add(syn)
+
+        qs = self.exclude(is_new=True)
+        total = qs.count() if pct else 0
+
+        q = Q()
+        for word in list(words):
+            cond = Q(lyrics__iregex=r"\y{0}\y".format(word))
+            q = q | cond if or_ else q & cond
+        qs = qs.filter(q)
+        if pct:
+            return qs.count() / total
+        return qs
 
 
 class ArtistManager(BaseManager):

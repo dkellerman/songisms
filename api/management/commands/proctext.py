@@ -260,7 +260,7 @@ def reset_caches():
 
 
 def phones_getter(key):
-    return get_phones(key, vowels_only=True, include_stresses=False, pad_to=10)
+    return get_vowel_vectors(key, pad_to=10)
 
 
 def fetch_datamuse_rhymes(key):
