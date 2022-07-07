@@ -1,6 +1,7 @@
 import graphene
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
+from django.db.models.functions import Lower
 from graphene_django import DjangoObjectType
 from graphene.types.generic import GenericScalar
 import graphql_jwt
@@ -145,11 +146,11 @@ class Query(graphene.ObjectType):
     @staticmethod
     @login_required
     def resolve_songs_index(root, info):
-        return Song.objects.all().order_by('title')
+        return Song.objects.all().order_by(Lower('title'))
 
     @staticmethod
     @login_required
-    def resolve_songs(root, info, q=None, page=1, ordering=('title',)):
+    def resolve_songs(root, info, q=None, page=1, ordering=(Lower('title'),)):
         songs = Song.objects.query(q).order_by(*ordering)
         return get_paginator(songs, DEFAULT_PAGE_SIZE, page, SongsPaginatedType, q=q)
 

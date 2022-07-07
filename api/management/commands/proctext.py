@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 
 import argparse
+import itertools
 import gc
 from urllib.parse import urlencode
 from itertools import product
 import requests
 from django.core.management.base import BaseCommand
 from django.db import transaction
+from nltk import FreqDist
+
 from api.models import *
 from api.utils.text import get_lyric_ngrams, get_rhyme_pairs, get_common_words, get_mscore, get_ipa, get_stresses
 from django.core.cache import cache
@@ -31,7 +34,7 @@ class Command(BaseCommand):
             reset_caches()
             return
 
-        songs = Song.objects.all()
+        songs = Song.objects.filter(is_new=False).exclude(lyrics=None)
         lines = dict()
         ngrams = dict()
         rhymes = dict()
@@ -42,23 +45,24 @@ class Command(BaseCommand):
         mscores_cache, _ = Cache.objects.get_or_create(key='ngram_mscores')
 
         for idx, song in enumerate(tqdm(songs, desc='lyric ngrams')):
-            if song.lyrics:
-                # lyric lines
-                for line in song.lyrics.split('\n'):
-                    if line.strip():
-                        text = ' '.join(tokenize_lyric_line(line.strip()))
-                        lines[text] = dict(text=text)
+            # lyric lines
+            for line in song.lyrics.split('\n'):
+                if line.strip():
+                    text = ' '.join(tokenize_lyric_line(line.strip()))
+                    lines[text] = dict(text=text)
 
-                # lyric ngrams
-                texts = get_lyric_ngrams(song.lyrics, range(5))
-                for text, n in texts:
-                    ngrams[text] = ngrams.get(text, None) or dict(text=text, n=n)
-                    ngrams[text]['song_count'] = ngrams[text].get('song_count', 0) + 1
-                    song_ngram = song_ngrams.get((song.id, text), None)
-                    if song_ngram:
-                        song_ngram['count'] += 1
-                    else:
-                        song_ngrams[(song.id, text)] = dict(ngram=ngrams[text], song=song, count=1)
+            # lyric ngrams
+            texts = get_lyric_ngrams(song.lyrics, range(5))
+            for text, n in texts:
+                ngrams[text] = ngrams.get(text, None) or dict(text=text, n=n)
+                song_ngram = song_ngrams.get((song.id, text), None)
+                if song_ngram:
+                    song_ngram['count'] += 1
+                else:
+                    song_ngrams[(song.id, text)] = dict(ngram=ngrams[text], song=song, count=1)
+
+            for text, _ in list(set(texts)):
+                ngrams[text]['song_count'] = ngrams[text].get('song_count', 0) + 1
 
             if song.rhymes_raw:
                 rhyme_pairs = get_rhyme_pairs(song.rhymes_raw)
@@ -156,7 +160,9 @@ class Command(BaseCommand):
             ngrams[sn['ngram']['text']]['count'] = ngram['count']
         word_ct = n_counts[0]
 
-        for ngram in tqdm(ngrams.values(), desc='score ngrams'):
+        song_ct = songs.count()
+        title_ngrams = FreqDist(itertools.chain(*[n[0] for n in [get_lyric_ngrams(s.title) for s in songs]]))
+        for ngram in tqdm(ngrams.values(), desc='ngrams pct'):
             if ngram['n'] > 1:
                 subgrams = [ngrams[gram] for gram in ngram['text'].split() if gram and (gram in ngrams)]
                 total_with_same_n = n_counts[ngram['n'] - 1]
@@ -170,6 +176,8 @@ class Command(BaseCommand):
             else:
                 ngram['pct'] = float((ngram.get('count') or 0.0) / word_ct)
                 ngram['adj_pct'] = float((ngram.get('count') or 0.0) / word_ct)
+            ngram['title_pct'] = title_ngrams.freq(ngram['text'])
+            ngram['song_pct'] = ngram.get('song_count', 0) / song_ct
 
         print('ngrams', len(ngrams.values()))
         print('rhymes', len(rhymes.values()))
@@ -182,6 +190,7 @@ class Command(BaseCommand):
         for c in tqdm([datamuse_cache, phones_cache, mscores_cache, ipa_cache, stresses_cache], desc='saving db caches'):
             c.save()
             del c
+        del title_ngrams
         gc.collect()
 
         with transaction.atomic():

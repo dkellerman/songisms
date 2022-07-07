@@ -68,6 +68,8 @@ class RhymeManager(BaseManager):
                 0 AS phones_distance,
                 CUBE(%(qstresses)s) <-> CUBE(n.stresses) AS stresses_distance,
                 n.adj_pct AS adj_pct,
+                n.song_pct AS song_pct,
+                n.title_pct AS title_pct,
                 0 AS ndiff,
                 0 AS mscore,
                 0 AS song_ct
@@ -82,7 +84,8 @@ class RhymeManager(BaseManager):
             WHERE
                 UPPER(n.text) = ANY(%(q)s)
                 AND NOT (UPPER(rto.text) = ANY(%(q)s))
-            GROUP BY ngram, rto.n, level, phones_distance, stresses_distance, n.adj_pct, ndiff, n.mscore, song_ct
+            GROUP BY ngram, rto.n, level, phones_distance, stresses_distance, n.adj_pct,
+                     n.song_pct, n.title_pct, ndiff, n.mscore, song_ct
         '''
 
         suggestions_sql = f'''
@@ -94,6 +97,8 @@ class RhymeManager(BaseManager):
                 CUBE(%(qphones)s) <-> CUBE(n.phones) AS phones_distance,
                 CUBE(%(qstresses)s) <-> CUBE(n.stresses) AS stresses_distance,
                 n.adj_pct AS adj_pct,
+                n.song_pct AS song_pct,
+                n.title_pct AS title_pct,
                 ABS(n - %(qn)s) AS ndiff,
                 n.mscore AS mscore,
                 COUNT(sn.song_id) AS song_ct
@@ -107,7 +112,8 @@ class RhymeManager(BaseManager):
                 AND CUBE(%(qphones)s) <-> CUBE(n.phones) <= 2.5
                 AND adj_pct >= 0.00005
                 AND n.mscore > 4
-            GROUP BY ngram, n, level, frequency, phones_distance, stresses_distance, adj_pct, ndiff, mscore
+            GROUP BY ngram, n, level, frequency, phones_distance, stresses_distance, adj_pct,
+                     song_pct, title_pct, ndiff, mscore
             HAVING COUNT(sn.song_id) > 2
         ''' if qphones and len(qphones) else ''
 
@@ -131,9 +137,11 @@ class RhymeManager(BaseManager):
                         frequency DESC NULLS LAST,
                         phones_distance,
                         stresses_distance,
+                        title_pct DESC NULLS LAST,
                         mscore DESC NULLS LAST,
                         ndiff - (adj_pct * 10000),
-                        adj_pct DESC NULLS LAST
+                        adj_pct DESC NULLS LAST,
+                        song_pct DESC NULLS LAST
                     OFFSET 0
                     LIMIT %(limit)s
                 ;
@@ -191,12 +199,13 @@ class SongManager(BaseManager):
         return self.get(spotify_id=spotify_id)
 
     def query(self, q=None):
-        songs = self.prefetch_related('artists', 'tags')
+        songs = self.by_popularity().prefetch_related('artists', 'tags')
 
         if q:
             includes = {}
             excludes = {}
             matches = re.findall(r'(~?[^\s]+:)?([^\s]+)', q.lower())
+            order_by = None
             for field, qstr in matches:
                 qstr = re.sub(r'\+', ' ', qstr)
                 field = (field or 'title:')[:-1]
@@ -208,18 +217,23 @@ class SongManager(BaseManager):
                     qstr = True
                 if field == 'has':
                     excludes[qstr] = None
+                elif field == 'sort':
+                    order_by = qstr
                 else:
                     include, exclude = self.filter_map.get(field, (None, None))
                     if include:
                         includes[include] = qstr
                     if exclude:
                         excludes[exclude] = qstr
-            if reverse:
-                includes, excludes = excludes, includes
-            songs = songs.filter(**includes).exclude(**excludes)
+                if reverse:
+                    includes, excludes = excludes, includes
+                songs = songs.filter(**includes).exclude(**excludes)
+            if order_by:
+                songs = songs.order_by(order_by)
+
         return songs
 
-    def with_words(self, *words, syns=True, or_=True, pct=False):
+    def with_words(self, *words, syns=True, or_=True, pct=False, title_only=False):
         words = set(words)
         if syns:
             for word in list(words):
@@ -231,12 +245,17 @@ class SongManager(BaseManager):
 
         q = Q()
         for word in list(words):
-            cond = Q(lyrics__iregex=r"\y{0}\y".format(word))
+            cond = Q(title__iregex=r"\y{0}\y".format(word))
+            if not title_only:
+                cond = cond | Q(lyrics__iregex=r"\y{0}\y".format(word))
             q = q | cond if or_ else q & cond
         qs = qs.filter(q)
         if pct:
             return qs.count() / total
         return qs
+
+    def by_popularity(self):
+        return self.annotate(popularity=models.F('metadata__spotify__track__popularity')).order_by('-popularity')
 
 
 class ArtistManager(BaseManager):

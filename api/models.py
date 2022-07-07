@@ -98,6 +98,8 @@ class NGram(models.Model):
     mscore = models.FloatField(blank=True, null=True, db_index=True)
     pct = models.FloatField(blank=True, null=True, db_index=True)
     adj_pct = models.FloatField(blank=True, null=True, db_index=True)
+    song_pct = models.FloatField(blank=True, null=True, db_index=True)
+    title_pct = models.FloatField(blank=True, null=True, db_index=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = NGramManager()

@@ -111,7 +111,7 @@ function ct2str(ct, singularWord, pluralWord) {
   return `${ct} ${plWord}`;
 }
 
-fetchRhymes();
+fetchRhymes(q.value, page.value);
 </script>
 
 <template>
