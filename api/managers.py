@@ -72,7 +72,7 @@ class RhymeManager(BaseManager):
                 n.title_pct AS title_pct,
                 0 AS ndiff,
                 0 AS mscore,
-                0 AS song_ct
+                n.song_count AS song_count
             FROM
                 api_ngram n
             INNER JOIN
@@ -85,7 +85,7 @@ class RhymeManager(BaseManager):
                 UPPER(n.text) = ANY(%(q)s)
                 AND NOT (UPPER(rto.text) = ANY(%(q)s))
             GROUP BY ngram, rto.n, level, phones_distance, stresses_distance, n.adj_pct,
-                     n.song_pct, n.title_pct, ndiff, n.mscore, song_ct
+                     n.song_pct, n.title_pct, ndiff, n.mscore, n.song_count
         '''
 
         suggestions_sql = f'''
@@ -101,20 +101,18 @@ class RhymeManager(BaseManager):
                 n.title_pct AS title_pct,
                 ABS(n - %(qn)s) AS ndiff,
                 n.mscore AS mscore,
-                COUNT(sn.song_id) AS song_ct
+                n.song_count AS song_count
             FROM
                 api_ngram n
-            FULL OUTER JOIN
-                api_songngram sn ON sn.ngram_id = n.id
             WHERE
                 NOT (UPPER(n.text) = ANY(%(q)s))
                 AND n.phones IS NOT NULL
                 AND CUBE(%(qphones)s) <-> CUBE(n.phones) <= 2.5
                 AND adj_pct >= 0.00005
                 AND n.mscore > 4
+                AND n.song_count > 2
             GROUP BY ngram, n, level, frequency, phones_distance, stresses_distance, adj_pct,
-                     song_pct, title_pct, ndiff, mscore
-            HAVING COUNT(sn.song_id) > 2
+                     song_pct, title_pct, ndiff, mscore, song_count
         ''' if qphones and len(qphones) else ''
 
         with connection.cursor() as cursor:
@@ -137,10 +135,10 @@ class RhymeManager(BaseManager):
                         frequency DESC NULLS LAST,
                         phones_distance,
                         stresses_distance,
-                        title_pct DESC NULLS LAST,
                         mscore DESC NULLS LAST,
                         ndiff - (adj_pct * 10000),
                         adj_pct DESC NULLS LAST,
+                        title_pct DESC NULLS LAST,
                         song_pct DESC NULLS LAST
                     OFFSET 0
                     LIMIT %(limit)s

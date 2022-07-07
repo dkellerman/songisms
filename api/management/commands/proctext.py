@@ -206,7 +206,7 @@ class Command(BaseCommand):
             del lines
             gc.collect()
 
-            ngrams = [NGram(**{k: v for k, v in n.items() if k not in ['count', 'song_count']})
+            ngrams = [NGram(**{k: v for k, v in n.items()})
                       for n in tqdm(ngrams.values(), desc='prepping ngrams')]
             print('writing ngrams', len(ngrams))
             ngrams = NGram.objects.bulk_create(ngrams, batch_size=batch_size)

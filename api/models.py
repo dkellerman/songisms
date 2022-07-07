@@ -96,6 +96,8 @@ class NGram(models.Model):
     phones = ArrayField(ArrayField(models.FloatField()), null=True, blank=True, db_index=True)
     stresses = ArrayField(models.IntegerField(), null=True, blank=True, db_index=True)
     mscore = models.FloatField(blank=True, null=True, db_index=True)
+    count = models.PositiveIntegerField(blank=True, null=True, db_index=True)
+    song_count = models.PositiveIntegerField(blank=True, null=True, db_index=True)
     pct = models.FloatField(blank=True, null=True, db_index=True)
     adj_pct = models.FloatField(blank=True, null=True, db_index=True)
     song_pct = models.FloatField(blank=True, null=True, db_index=True)
