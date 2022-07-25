@@ -85,7 +85,8 @@ class RhymeType(graphene.ObjectType):
 class NGramType(DjangoObjectType):
     class Meta:
         model = NGram
-        fields = ['text', 'n']
+        fields = ['text', 'n', 'pct', 'adj_pct', 'count', 'song_count',
+                  'song_pct', 'title_pct', 'mscore', ]
 
 
 class TagType(DjangoObjectType):
@@ -198,8 +199,11 @@ class Query(graphene.ObjectType):
         return NGram.objects.suggest(q=q, ct=ct)
 
     @staticmethod
-    def resolve_ngrams(root, info, q, tags, page=1, ordering=None):
-        ngrams = NGram.objects.by_query(q)
+    def resolve_ngrams(root, info, q=None, tags=None, page=1, ordering=None):
+        if q:
+            ngrams = NGram.objects.by_query(q)
+        else:
+            ngrams = NGram.objects.top()
         if ordering:
             ngrams = ngrams.order_by(*ordering)
         return get_paginator(ngrams, DEFAULT_PAGE_SIZE, page, NGramsPaginatedType, q=q)

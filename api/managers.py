@@ -1,7 +1,7 @@
 import re
 from django.contrib.contenttypes.models import ContentTypeManager
 from django.db import models, connection
-from django.db.models import Q
+from django.db.models import Q, F
 from django.core.cache import cache
 from django.conf import settings
 from django_pandas.managers import DataFrameManager
@@ -180,6 +180,15 @@ class NGramManager(BaseManager):
             qs = qs.order_by('-rhyme_ct')[:ct]
             cache.set(cache_key, qs)
         return qs
+
+    def by_query(self, q):
+        from api.models import NGram
+        qs = NGram.objects.filter(text__istartswith=q).order_by(F('song_count').desc(nulls_last=True))
+        return qs
+
+    def top(self):
+        from api.models import NGram
+        return NGram.objects.all().order_by(F('song_count').desc(nulls_last=True))
 
 
 class SongManager(BaseManager):

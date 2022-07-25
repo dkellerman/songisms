@@ -38,3 +38,4 @@ while len(lines) < 2000:
 
 with open('./data/rhymes_train.txt', 'w') as f:
     f.write('\n'.join(';'.join(l) for l in lines))
+

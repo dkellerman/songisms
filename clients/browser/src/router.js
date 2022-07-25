@@ -40,6 +40,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "song" */ './components/SongDetail.vue'),
     beforeEnter: [requireLogin],
   },
+  {
+    path: '/ngrams',
+    name: 'NGrams',
+    component: () => import(/* webpackChunkName: "song" */ './components/NGrams.vue'),
+  },
 ];
 
 const router = createRouter({

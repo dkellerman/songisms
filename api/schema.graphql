@@ -36,6 +36,13 @@ type Mutation {
 type NGramType {
   text: String!
   n: Int!
+  mscore: Float
+  count: Int
+  songCount: Int
+  pct: Float
+  adjPct: Float
+  songPct: Float
+  titlePct: Float
 }
 
 type NGramsPaginatedType {
