@@ -167,7 +167,7 @@ class Attachment(models.Model):
         unique_together = [['content_type', 'object_id', 'attachment_type', 'file']]
 
     def __str__(self):
-        return f'{self.attachment_type} ({self.content_object})'
+        return f'{self.content_object} [{self.attachment_type}]'
 
     def natural_key(self):
         return self.content_type.id, self.object_id, self.attachment_type, self.file.name

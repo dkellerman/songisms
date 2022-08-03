@@ -101,7 +101,7 @@ def queue_stems(song):
     resp = requests.post('https://developer.moises.ai/api/media', json={
         'inputUrl': song.audio_file_url,
         'operations': [
-            dict(type='STEMS', mode='vocals-accompaniment')  # vocals-drums-bass-background_vocals-other
+            dict(type='STEMS', mode='vocals-drums-bass-background_vocals-other')
         ]
     }, headers={
         'Authorization': f'{settings.MOISES_API_KEY}',
