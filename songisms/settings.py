@@ -196,4 +196,6 @@ SMUGGLER_FIXTURE_DIR = BASE_DIR / 'data' / 'fixtures'
 
 USE_QUERY_CACHE = is_prod
 
+MOISES_API_KEY = 'aabb8d1b-c4a3-4a1f-8ca3-93d395142ef5'
+
 django_on_heroku.settings(locals())

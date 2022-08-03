@@ -3,6 +3,8 @@ import time
 import pafy
 import json
 import base64
+import requests
+import shutil
 from django.core.files import File
 from django.conf import settings
 from google.cloud.storage import Client as SClient
@@ -93,3 +95,76 @@ def fetch_audio(song, convert=False):
         print("problem removing temp files", tmpfile, tmpfile_mp3)
 
     print("done")
+
+
+def queue_stems(song):
+    resp = requests.post('https://developer.moises.ai/api/media', json={
+        'inputUrl': song.audio_file_url,
+        'operations': [
+            dict(type='STEMS', mode='vocals-accompaniment')  # vocals-drums-bass-background_vocals-other
+        ]
+    }, headers={
+        'Authorization': f'{settings.MOISES_API_KEY}',
+        'Content-Type': 'application/json; charset=utf-8'
+    })
+    if resp.ok:
+        data = resp.json()
+        id = data['id']
+        print(song.spotify_id, song.title, id)
+    else:
+        print('error', resp.text)
+        return None
+    return id
+
+
+def fetch_stems_by_id(song, id):
+    resp2 = requests.get(f'https://developer.moises.ai/api/media/{id}', headers={
+        'Authorization': f'{settings.MOISES_API_KEY}'
+    })
+    if resp2.ok:
+        data2 = resp2.json()
+        op = data2['operations'][0]
+        if op['status'] == 'COMPLETED':
+            attachments = []
+            for key, url in op['result']['files'].items():
+                if key.endswith('HighRes'):
+                    continue
+                ext = url.split('.')[-1]
+                fname = f'{song.spotify_id}.{key}.{ext}'
+                fpath = f'/tmp/{fname}'
+                if os.path.exists(fpath):
+                    os.remove(fpath)
+
+                print('\t=> fetching', key, url, '=>', fpath)
+                fresp = requests.get(url, stream=True)
+                with open(fpath, 'wb') as tmpfile:
+                    shutil.copyfileobj(fresp.raw, tmpfile)
+                from api.models import Attachment
+                a = Attachment(content_object=song, attachment_type=key)
+                with open(fpath, 'rb') as f:
+                    a.file.save(fname, File(f))
+                os.remove(fpath)
+                attachments.append(a)
+        else:
+            print('[pending]')
+            return None
+        return attachments
+    else:
+        raise Exception(f'fetch stems failed {resp2.text}')
+
+
+def fetch_stems(song):
+    id = queue_stems(song)
+    attachments = None
+
+    while True:
+        attachments = fetch_stems_by_id(song, id)
+        if not attachments:
+            time.sleep(30)
+        else:
+            break
+
+    for a in attachments:
+        print(a.attachment_type, a.file.url)
+
+    return attachments
