@@ -1,8 +1,8 @@
 from urllib.parse import quote_plus
 from django.contrib import admin
 from django.db.models import JSONField, Sum
-from django.contrib.contenttypes.admin import GenericTabularInline
 # from django_json_widget.widgets import JSONEditorWidget
+from django.contrib.contenttypes.admin import GenericTabularInline
 from django.forms import Textarea
 from reversion_compare.admin import CompareVersionAdmin
 from .models import *

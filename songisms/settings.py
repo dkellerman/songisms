@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'reversion',
     'reversion_compare',
-    'django_json_widget',
     'graphene_django',
     'corsheaders',
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
