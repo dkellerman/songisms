@@ -2,7 +2,7 @@ from urllib.parse import quote_plus
 from django.contrib import admin
 from django.db.models import JSONField, Sum
 from django.contrib.contenttypes.admin import GenericTabularInline
-from django_json_widget.widgets import JSONEditorWidget
+# from django_json_widget.widgets import JSONEditorWidget
 from django.forms import Textarea
 from reversion_compare.admin import CompareVersionAdmin
 from .models import *
@@ -24,9 +24,9 @@ class SongAdmin(CompareVersionAdmin):
     list_filter = ('is_new', 'tags',)
     autocomplete_fields = ('artists', 'tags', 'writers',)
     inlines = [AttachmentInline]
-    formfield_overrides = {
-        JSONField: {'widget': JSONEditorWidget}
-    }
+    # formfield_overrides = {
+    #     JSONField: {'widget': JSONEditorWidget}
+    # }
     change_list_template = 'smuggler/change_list.html'
 
     def queryset(self, request, queryset):
@@ -152,9 +152,9 @@ class TagAdmin(CompareVersionAdmin):
 class CacheAdmin(admin.ModelAdmin):
     change_list_template = 'smuggler/change_list.html'
     list_display = ('key', 'version', 'updated')
-    formfield_overrides = {
-        JSONField: {'widget': JSONEditorWidget}
-    }
+    # formfield_overrides = {
+    #     JSONField: {'widget': JSONEditorWidget}
+    # }
 
 
 @admin.register(Line)

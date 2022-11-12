@@ -255,24 +255,6 @@ graphene-django = ">=2.0.0"
 PyJWT = ">=2,<3"
 
 [[package]]
-name = "django-json-widget"
-version = "1.1.1"
-description = ""
-category = "main"
-optional = false
-python-versions = "*"
-develop = false
-
-[package.dependencies]
-future = "*"
-
-[package.source]
-type = "git"
-url = "https://github.com/dkellerman/django-json-widget"
-reference = "master"
-resolved_reference = "f2a1f10f33e3e8d6fa1486f195c7b397fa8de563"
-
-[[package]]
 name = "django-on-heroku"
 version = "1.1.2"
 description = "This package simplifies running a Django app on Heroku platform."
@@ -378,14 +360,6 @@ python-versions = ">=3.7"
 
 [package.extras]
 test = ["pytest (>=6)"]
-
-[[package]]
-name = "future"
-version = "0.18.2"
-description = "Clean single-source support for Python 3 and 2"
-category = "main"
-optional = false
-python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "gensim"
@@ -1384,7 +1358,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "3.9.13"
-content-hash = "4dda924c79425548476a80184bff246c8923e99832c1dffde39d449fa856a190"
+content-hash = "e55248658e3b6d2db44d148fde0a3ebc6547e6bdea5795855e0b31c3c337ab56"
 
 [metadata.files]
 aniso8601 = []
@@ -1411,7 +1385,6 @@ django = []
 django-cors-headers = []
 django-debug-toolbar = []
 django-graphql-jwt = []
-django-json-widget = []
 django-on-heroku = []
 django-pandas = []
 django-reversion = []
@@ -1421,7 +1394,6 @@ django-storages = []
 docopt = []
 eng-to-ipa = []
 exceptiongroup = []
-future = []
 gensim = []
 google-api-core = []
 google-auth = []
