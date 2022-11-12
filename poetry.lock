@@ -270,7 +270,7 @@ future = "*"
 type = "git"
 url = "https://github.com/dkellerman/django-json-widget"
 reference = "master"
-resolved_reference = "1945e934e557cfb78b91105b59092450e17e0bb2"
+resolved_reference = "f2a1f10f33e3e8d6fa1486f195c7b397fa8de563"
 
 [[package]]
 name = "django-on-heroku"
