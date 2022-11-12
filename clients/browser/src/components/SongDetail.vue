@@ -12,7 +12,7 @@ export default {
 </script>
 
 <script setup>
-import { computed, watchEffect } from 'vue';
+import { computed, watchEffect, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useSongsStore } from '@/stores/songs';
@@ -30,6 +30,8 @@ const attachments = computed(() => {
   }
   return map;
 });
+
+const showLRC = ref(false);
 
 watchEffect(() => {
   if (spotifyId.value) fetchSong(spotifyId.value);
@@ -94,11 +96,15 @@ watchEffect(() => {
         </audio>
       </dd>
 
-      <dt>Lyrics</dt>
-      <dd><LyricsComponent :lyrics="song.lyrics" /></dd>
-
-      <dt>LRC</dt>
-      <dd><LRCComponent :lyrics="song.lyrics" :audio="song.audioFileUrl" /></dd>
+      <dt>
+        Lyrics
+        <button v-if="!showLRC" @click="showLRC = true" class="lrc compact">Show LRC</button>
+        <button v-if="showLRC" @click="showLRC = false" class="lrc compact">Show plain lyrics</button>
+      </dt>
+      <dd>
+        <LRCComponent v-if="showLRC" :lyrics="song.lyrics" :audio="song.audioFileUrl" />
+        <LyricsComponent v-if="!showLRC" :lyrics="song.lyrics" />
+      </dd>
 
       <dt>Rhymes</dt>
       <dd v-html="song.rhymesRaw?.replace(/\n/g, '<br>').replace(/;/g, ' / ')"></dd>
@@ -127,7 +133,11 @@ section {
       font-weight: bold;
       background: #eee;
       margin-bottom: 10px;
-      padding: 5px 5px 3px 5px;
+      padding: 7px 5px 3px 5px;
+      button {
+        margin-left: 20px;
+        padding: 3px;
+      }
     }
 
     dd {

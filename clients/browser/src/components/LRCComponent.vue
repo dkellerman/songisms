@@ -13,6 +13,17 @@ const lrc = ref(lines.value.map(l => [l, null, null]));
 const lrcIndex = ref(0);
 const lrcPos = ref(1);
 
+const rawLRC = computed(() => {
+  const all = [];
+  for (const [line, start, end] of lrc.value) {
+    if (start || end)
+      all.push(`[${start || ''}-${end || ''}] ${line.trim()}`);
+    else
+      all.push(line.trim());
+  }
+  return all.join('\n');
+});
+
 function onLRCUp() {
   if (lrcIndex.value > 0) {
     do {
@@ -55,29 +66,55 @@ window.addEventListener('keyup', e => {
 </script>
 
 <template>
+  <div class="actions">
+    <button @click="onLRCUp">Up (,)</button>
+    <button @click="onLRCDown">Down (.)</button>
+    <button @click="onMark">Mark (m)</button>
+    <button @click="onUnmark">Unmark (M)</button>
+  </div>
   <table>
     <tbody>
       <tr :id="`l${index}`" v-for="([line, start, end], index) in lrc" :key="index">
-        <td v-if="start">[{{start}}]</td>
-        <td v-if="!line.trim()">&nbsp;</td>
-        <td v-else v-html="line" :class="lrcIndex === index ? 'curline' : ''" />
-        <td v-if="end">[{{end}}]</td>
+        <td v-if="!line.trim()" colspan="2">&nbsp;</td>
+        <td v-if="line.trim()" class="stamp" contenteditable="true">
+          <span v-if="line.trim() && (start || end)">[{{start}}-{{end}}]</span>
+        </td>
+        <td v-if="line.trim()" v-html="line" :class="lrcIndex === index ? 'curline line' : 'line'" />
       </tr>
     </tbody>
   </table>
+  <strong>Raw LRC</strong>
+  <textarea v-model="rawLRC" rows="10" />
 </template>
 
 <style scoped lang="scss">
+  .actions {
+    margin: 20px 0;
+    button {
+      padding: 3px;
+      margin-right: 5px;
+    }
+  }
   td {
     padding: 0;
     border: 0;
     margin: 0;
+    &.stamp {
+      white-space: nowrap;
+      min-width: 100px;
+      font-size: smaller;
+      background: #eee;
+      text-align: center;
+    }
+    &.curline {
+      font-weight: bold;
+      background: beige;
+    }
   }
   br {
     height: 20px;
   }
-  .curline {
-    font-weight: bold;
-    background: beige;
+  textarea {
+    width: 100%;
   }
 </style>
