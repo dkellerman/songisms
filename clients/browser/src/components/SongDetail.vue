@@ -1,10 +1,12 @@
 <script>
 import LyricsComponent from "@/components/LyricsComponent";
+import LRCComponent from "@/components/LRCComponent";
 
 export default {
   name: 'SongDetail',
   components: [
     LyricsComponent,
+    LRCComponent,
   ],
 };
 </script>
@@ -94,6 +96,9 @@ watchEffect(() => {
 
       <dt>Lyrics</dt>
       <dd><LyricsComponent :lyrics="song.lyrics" /></dd>
+
+      <dt>LRC</dt>
+      <dd><LRCComponent :lyrics="song.lyrics" :audio="song.audioFileUrl" /></dd>
 
       <dt>Rhymes</dt>
       <dd v-html="song.rhymesRaw?.replace(/\n/g, '<br>').replace(/;/g, ' / ')"></dd>

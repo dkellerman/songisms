@@ -60,7 +60,7 @@ page.value = 1;
   <h2>Writers</h2>
 
   <input v-model.trim="q" placeholder="Search by name..." />
-  <label v-if="result?.total">{{ result.total }} writers found</label>
+  <label v-if="result?.total">{{ result.total.toLocaleString() }} writers found</label>
 
   <ul class="none">
     <li v-for="writer in result?.items" :key="writer.id">

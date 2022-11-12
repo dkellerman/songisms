@@ -26,7 +26,7 @@ const GET_WRITER = `
 `;
 
 const route = useRoute();
-const id = computed(() => route.params.id);
+const id = computed(() => parseInt(route.params.id || -1, 10));
 const adminLink = computed(() => `https://songisms.herokuapp.com/admin/api/writer/${id.value}`);
 const writer = ref();
 

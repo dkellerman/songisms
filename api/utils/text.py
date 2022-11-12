@@ -1,11 +1,11 @@
 import re
 import string
-import spacy
 import inflect
 import sh
 import eng_to_ipa
+import spacy
 import pronouncing as pron
-from functools import cache, lru_cache
+from functools import lru_cache
 from nltk import FreqDist
 from nltk.util import ngrams as nltk_make_ngrams
 from nltk.corpus import brown
@@ -14,13 +14,13 @@ from num2words import num2words
 inflector = inflect.engine()
 
 
-@cache
+@lru_cache(maxsize=None)
 def get_common_words(n=700):
     fd = FreqDist(i.lower() for i in brown.words())
     return dict(fd.most_common()[:n])
 
 
-@cache
+@lru_cache(maxsize=None)
 def get_synonyms():
     with open('./data/synonyms.txt', 'r') as syn_file:
         return [
@@ -160,7 +160,7 @@ def phones_for_word(w):
     return val[0] if len(val) else ''
 
 
-@cache
+@lru_cache(maxsize=None)
 def get_nlp():
     vocab = 'en_core_web_sm'
     try:
@@ -351,13 +351,13 @@ PHONE_TO_FORMANTS = {
 }
 
 
-@cache
+@lru_cache(maxsize=None)
 def get_idioms():
     with open('./data/idioms.txt', 'r') as f:
         return f.read()
 
 
-@cache
+@lru_cache(maxsize=None)
 def get_mine():
     with open('./data/mine.txt', 'r') as f:
         return f.read()

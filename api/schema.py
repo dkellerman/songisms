@@ -67,6 +67,7 @@ class ArtistType(DjangoObjectType):
 
 class WriterType(DjangoObjectType):
     song_ct = graphene.Int()
+    alt_names = graphene.List(graphene.String)
 
     class Meta:
         model = Writer

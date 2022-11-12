@@ -32,7 +32,7 @@ if (!ngrams.value) {
   <h2>NGrams</h2>
 
   <input v-model.trim="q" placeholder="Search ngrams..." />
-  <label v-if="total !== undefined">{{ total }} ngrams</label>
+  <label v-if="total !== undefined">{{ total.toLocaleString() }} ngrams</label>
 
   <ul class="none" v-if="ngrams">
     <li v-for="ngram in ngrams" :key="ngram.text">

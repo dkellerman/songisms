@@ -118,6 +118,7 @@ def queue_stems(song):
 
 
 def fetch_stems_by_id(song, id):
+    from api.models import Attachment
     resp2 = requests.get(f'https://developer.moises.ai/api/media/{id}', headers={
         'Authorization': f'{settings.MOISES_API_KEY}'
     })
@@ -127,8 +128,9 @@ def fetch_stems_by_id(song, id):
         if op['status'] == 'COMPLETED':
             attachments = []
             for key, url in op['result']['files'].items():
-                if key.endswith('HighRes'):
+                if key.endswith('HighRes') or Attachment.objects.filter(object_id=song.pk, attachment_type=key).exists():
                     continue
+
                 ext = url.split('.')[-1]
                 fname = f'{song.spotify_id}.{key}.{ext}'
                 fpath = f'/tmp/{fname}'
@@ -139,14 +141,14 @@ def fetch_stems_by_id(song, id):
                 fresp = requests.get(url, stream=True)
                 with open(fpath, 'wb') as tmpfile:
                     shutil.copyfileobj(fresp.raw, tmpfile)
-                from api.models import Attachment
+
                 a = Attachment(content_object=song, attachment_type=key)
                 with open(fpath, 'rb') as f:
                     a.file.save(fname, File(f))
                 os.remove(fpath)
                 attachments.append(a)
         else:
-            print('[pending]')
+            print('[PENDING]', id, song.title)
             return None
         return attachments
     else:

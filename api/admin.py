@@ -164,10 +164,9 @@ class LineAdmin(admin.ModelAdmin):
 
 @admin.register(Attachment)
 class AttachmentAdmin(CompareVersionAdmin):
-    search_fields = ('content_object',)
     list_display = ('content_object', 'attachment_type',)
     list_filter = ('attachment_type',)
-    ordering = ('object_id', 'attachment_type',)
+
 
 def check(val):
     return '√' if bool(val) else 'X'

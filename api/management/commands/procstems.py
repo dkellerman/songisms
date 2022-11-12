@@ -18,7 +18,9 @@ class Command(BaseCommand):
         song_ct = songs.count()
 
         for idx, song in enumerate(songs):
-            print(f'\n ===> {idx + 1} of {song_ct}', song.pk, song.title)
+            print(f'\n ===> {idx + 1} of {song_ct}', song.pk, song.title, song.audio_file)
+            for a in song.attachments.all():
+                print('\t', a.attachment_type, a.file)
 
             if len(song.attachments.filter(attachment_type='vocals')) == 0 and song.audio_file:
                 queue.append(song)
@@ -27,11 +29,12 @@ class Command(BaseCommand):
             print("Fetching stems", len(queue))
             mp.set_start_method('fork')
             with mp.Pool(mp.cpu_count()) as p:
-                p.map(fetch_wrapper, queue[0:100])
+                p.map(fetch_wrapper, queue[10:100])
 
 
 def fetch_wrapper(song):
     try:
+        print("==> Fetching stems", song.pk, song.title)
         return fetch_stems(song)
-    except:
-        print("Error fetching stems", song.pk, song.title)
+    except Exception as err:
+        print("Error fetching stems", err, song.pk, song.title)

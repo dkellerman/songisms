@@ -13,7 +13,7 @@ django-on-heroku = "^1.1.2"
 django-storages = {extras = ["google"], version = "^1.12.3"}
 nltk = "^3.7"
 spacy = "^3.3.0"
-graphene-django = "^2.15.0"
+graphene-django = "^3.0.0"
 django-graphql-jwt = "^0.3.4"
 django-cors-headers = "^3.12.0"
 tqdm = "^4.64.0"
@@ -23,12 +23,12 @@ django-json-widget = {git = "https://github.com/dkellerman/django-json-widget"}
 django-debug-toolbar = "^3.4.0"
 eng-to-ipa = "^0.0.2"
 pronouncing = "^0.2.0"
-inflect = "^5.6.0"
+inflect = "^6.0.2"
 pafy = "^0.5.5"
 youtube_dl = "2020.12.2"
 sh = "^1.14.2"
 gruut-ipa = "^0.13.0"
-autopep8 = "^1.6.0"
+autopep8 = "^2.0.0"
 gensim = "^4.2.0"
 scikit-learn = "^1.1.1"
 num2words = "^0.5.10"
@@ -39,10 +39,9 @@ hiredis = "^2.0.0"
 redis = "^4.3.3"
 django-smuggler = "^1.0.4"
 django-pandas = "^0.6.6"
-keras = "^2.9.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
+pytest = "^7.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
