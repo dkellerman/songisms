@@ -1,3 +1,9 @@
+# Songisms
+
+* Song lyric database
+* Rhymes search client (rhymes.vercel.app)
+* Song browser/admin (songsisms.vercel.app)
+
 ## Folders
 * `api` - django app for db/admin/graphql, deployed to heroku @ songisms.herokuapp.com
 * `clients` - client apps
