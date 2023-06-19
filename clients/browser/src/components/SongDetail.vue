@@ -23,6 +23,8 @@ const { song } = storeToRefs(useSongsStore());
 const { fetchSong } = useSongsStore();
 const adminLink = computed(() => `https://songisms.herokuapp.com/admin/api/song/${song.value?.id}/change`);
 const smLink = computed(() => (song.value ? song.value.metadata.songMeanings?.href : null));
+const audio = ref();
+
 const attachments = computed(() => {
   const map = {};
   for (const a of (song.value?.attachments || [])) {
@@ -88,7 +90,7 @@ watchEffect(() => {
 
       <dt>Audio / Vox</dt>
       <dd>
-        <audio controls v-if="song.audioFileUrl">
+        <audio ref="audio" controls v-if="song.audioFileUrl">
           <source :src="song.audioFileUrl" />
         </audio>&nbsp;
         <audio controls v-if="attachments.vocals">
@@ -102,7 +104,7 @@ watchEffect(() => {
         <button v-if="showLRC" @click="showLRC = false" class="lrc compact">Show plain lyrics</button>
       </dt>
       <dd>
-        <LRCComponent v-if="showLRC" :lyrics="song.lyrics" :audio="song.audioFileUrl" />
+        <LRCComponent v-if="showLRC" :lyrics="song.lyrics" :audio="audio" />
         <LyricsComponent v-if="!showLRC" :lyrics="song.lyrics" />
       </dd>
 

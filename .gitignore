@@ -4,6 +4,7 @@
 .ipython
 __pycache__
 staticfiles
+TODO.md
 
 data/*.html
 data/cache
