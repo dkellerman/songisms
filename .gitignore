@@ -8,6 +8,9 @@ TODO.md
 
 data/*.html
 data/cache
+data/fixtures/songs.json
+data/lyrics.w2v
+data/mine.txt
 
 clients/**/dist
 
