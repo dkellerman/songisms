@@ -5,6 +5,7 @@ import sh
 import eng_to_ipa
 import spacy
 import pronouncing as pron
+from homophones import homophones as hom
 from functools import lru_cache
 from nltk import FreqDist
 from nltk.util import ngrams as nltk_make_ngrams
@@ -82,6 +83,11 @@ def get_rhyme_pairs(val=''):
     pairs = []
     for line in lines:
         grams = line.split(';')
+        homs = []
+        for gram in grams:
+            homs += make_homonyms(gram)
+        grams += homs
+        grams = list(set(grams))
         pairs += [
             tuple(sorted((a.strip().lower(), b.strip().lower(),)))
             for idx, a in enumerate(grams) for b in grams[idx + 1:]
@@ -158,6 +164,28 @@ def phones_for_word(w):
     w = re.sub(r'in\'', 'ing', w)
     val = pron.phones_for_word(w)
     return val[0] if len(val) else ''
+
+
+@lru_cache(maxsize=500)
+def make_homonyms(w, ignore_stress=True, multi=True):
+    w = re.sub(r'in\'', 'ing', w)
+    all_words = list(hom.Words_from_cmudict_string(hom.ENTIRE_CMUDICT))
+    words = list(hom.Word.from_string(w, all_words))
+    results = []
+    common = brown.words()
+    for word in words:
+        for h in hom.homophones(word, all_words, ignore_stress=ignore_stress):
+            if h.word.lower() != w and h.word.lower() in common:
+                results.append(h.word.lower())
+        if multi:
+            for h in hom.dihomophones(word, all_words, ignore_stress=ignore_stress):
+                if all([x.word.lower() in common for x in h]):
+                    results.append(' '.join([x.word.lower() for x in h]))
+            for h in hom.trihomophones(word, all_words, ignore_stress=ignore_stress):
+                if all([x.word.lower() in common for x in h]):
+                    results.append(' '.join([x.word.lower() for x in h]))
+
+    return [r for r in results if '(' not in r]
 
 
 @lru_cache(maxsize=None)
@@ -361,3 +389,4 @@ def get_idioms():
 def get_mine():
     with open('./data/mine.txt', 'r') as f:
         return f.read()
+
