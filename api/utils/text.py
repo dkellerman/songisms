@@ -5,7 +5,7 @@ import sh
 import eng_to_ipa
 import spacy
 import pronouncing as pron
-from homophones import homophones as hom
+import json
 from functools import lru_cache
 from nltk import FreqDist
 from nltk.util import ngrams as nltk_make_ngrams
@@ -28,6 +28,12 @@ def get_synonyms():
             [l.strip() for l in line.split(';')]
             for line in syn_file.readlines()
         ]
+
+
+@lru_cache(maxsize=None)
+def get_sim_sounds():
+    with open('./data/simsounds.json', 'r') as f:
+        return json.load(f)
 
 
 @lru_cache(maxsize=500)
@@ -83,11 +89,6 @@ def get_rhyme_pairs(val=''):
     pairs = []
     for line in lines:
         grams = line.split(';')
-        homs = []
-        for gram in grams:
-            homs += make_homonyms(gram)
-        grams += homs
-        grams = list(set(grams))
         pairs += [
             tuple(sorted((a.strip().lower(), b.strip().lower(),)))
             for idx, a in enumerate(grams) for b in grams[idx + 1:]
@@ -151,6 +152,10 @@ def make_synonyms(gram):
         for syn in syns:
             all_syns.add(re.sub(r'\b%s\b' % word, syn, str(gram)))
 
+        for sim in get_sim_sounds().get(word, []):
+            if sim.lower() not in all_syns:
+                all_syns.add(sim.lower())
+
     if ' ' in gram:
         compound = re.sub(' ', '', gram)
         if compound in get_common_words():
@@ -167,7 +172,10 @@ def phones_for_word(w):
 
 
 @lru_cache(maxsize=500)
-def make_homonyms(w, ignore_stress=True, multi=True):
+def make_homophones(w, ignore_stress=True, multi=True):
+    # currently needs to be installed via `pip install homophones``
+    from homophones import homophones as hom
+
     w = re.sub(r'in\'', 'ing', w)
     all_words = list(hom.Words_from_cmudict_string(hom.ENTIRE_CMUDICT))
     words = list(hom.Word.from_string(w, all_words))
