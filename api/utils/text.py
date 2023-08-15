@@ -165,9 +165,12 @@ def make_synonyms(gram):
 
 
 @lru_cache(maxsize=500)
-def phones_for_word(w):
+def phones_for_word(w, tail_only=False):
     w = re.sub(r'in\'', 'ing', w)
-    val = pron.phones_for_word(w)
+    if tail_only:
+        val = pron.rhyming_part(w)
+    else:
+        val = pron.phones_for_word(w)
     return val[0] if len(val) else ''
 
 
@@ -222,14 +225,14 @@ def get_stresses(q):
 
 
 @lru_cache(maxsize=500)
-def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True, allow_missing=False):
+def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True, allow_missing=False, tails_only=False):
     if try_syns == True:
         try_syns = make_synonyms(q)
     phones = None
 
     for tok in [q] + list(try_syns or []):
         words = tok.split()
-        word_phones = [phones_for_word(w) for w in words]
+        word_phones = [phones_for_word(w, tail_only=tails_only) for w in words]
         word_phones = [p for p in word_phones if p]
         if len(word_phones) != len(words):
             if not allow_missing:
@@ -249,8 +252,8 @@ def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True, allo
 
 
 @lru_cache(maxsize=500)
-def get_vowel_vectors(q, try_syns=True, pad_to=None):
-    phones = get_phones(q, try_syns=try_syns, vowels_only=True, include_stresses=False)
+def get_vowel_vectors(q, try_syns=True, pad_to=None, tails_only=False):
+    phones = get_phones(q, try_syns=try_syns, vowels_only=True, include_stresses=False, tails_only=tails_only)
     if phones:
         phones = [PHONE_PLACEMENT[p] for p in phones.split(' ') if p in PHONE_PLACEMENT]
         if pad_to:

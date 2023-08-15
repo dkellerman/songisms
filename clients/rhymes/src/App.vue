@@ -6,7 +6,7 @@ export default {
 
 <template>
   <nav>
-    <h1><router-link to="/">Rhymium</router-link></h1>
+    <h1><router-link to="/">Song Rhymes</router-link></h1>
     <div class="links">
       <a href="https://bipium.com">Metronome</a>
     </div>

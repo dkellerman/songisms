@@ -11,6 +11,8 @@ data/cache
 data/fixtures/songs.json
 data/lyrics.w2v
 data/mine.txt
+data/temperature.csv
+data/rhymes_model.torch
 
 clients/**/dist
 

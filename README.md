@@ -8,7 +8,7 @@
 * `api` - django app for db/admin/graphql, deployed to heroku @ songisms.herokuapp.com
 * `clients` - client apps
   * `browser` - api browser (VueJS), deployed to vercel @ songisms.vercel.app
-  * `rhymes` - rhymium app (VueJS), deployed to vercel @ rhymes.vercel.app
+  * `rhymes` - song rhymes app (VueJS), deployed to vercel @ rhymes.vercel.app
 * `data` - misc data
 * `scripts` - misc scripts
 * `songisms` - django project settings
