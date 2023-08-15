@@ -55,8 +55,8 @@ class RhymeManager(BaseManager):
         q = ' '.join(tokenize_lyric_line(q))
         syns = make_synonyms(q)
         qphones = get_vowel_vectors(q, try_syns=tuple(syns), pad_to=10) or None
-        # if qphones and len(qphones):
-        #     qphones += get_vowel_vectors(q, try_syns=False, pad_to=10, tails_only=True)
+        if qphones and len(qphones):
+            qphones += get_vowel_vectors(q, try_syns=False, pad_to=10, tails_only=True)
 
         qstresses = get_stresses(q)
         qn = len(q.split())
