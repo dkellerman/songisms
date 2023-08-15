@@ -13,6 +13,7 @@ data/lyrics.w2v
 data/mine.txt
 data/temperature.csv
 data/rhymes_model.torch
+data/eng_latn_us_broad.tsv
 
 clients/**/dist
 
