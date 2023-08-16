@@ -4,6 +4,7 @@ import random
 from tqdm import tqdm
 from api.models import *
 
+# output all rhyme groups to a file
 lines = set()
 for s in tqdm(Song.objects.all()):
   if s.rhymes_raw:
@@ -23,6 +24,7 @@ with open('./data/rhymes.txt', 'w') as f:
   f.write('\n'.join(lines))
 
 
+# output siamese neural net training data triples
 rhymes = list(Rhyme.objects.filter(level=1).prefetch_related('to_ngram', 'from_ngram'))
 random.shuffle(rhymes)
 lines = set()
