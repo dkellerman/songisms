@@ -6,14 +6,14 @@ __pycache__
 staticfiles
 TODO.md
 
-data/*.html
-data/cache
-data/fixtures/songs.json
-data/lyrics.w2v
-data/mine.txt
-data/temperature.csv
-data/rhymes_model.torch
-data/eng_latn_us_broad.tsv
+data/*
+data/fixtures/*
+!data/fixtures/songs.json
+!data/rhymes.txt
+!data/rhymes_train.txt
+!data/simsounds.json
+!data/synonyms.txt
+!data/eng_latn_us_broad.tsv
 
 clients/**/dist
 

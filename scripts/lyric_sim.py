@@ -16,7 +16,7 @@ def train():
             for tok in tokenize_lyric_line(line):
                 doc.add(tok)
         docs.append(list(doc))
-
+    print(docs)
     model = gensim.models.Word2Vec(docs)
     model.save('./data/lyrics.w2v')
 
@@ -28,10 +28,8 @@ def sim(q):
 
 if __name__ == '__main__':
     args = sys.argv[3:]
-    if len(args):
-        if args[0] == 'train':
-            train()
-        else:
-            sim(args[0])
+    if len(args) == 0:
+        print("Training...")
+        train()
     else:
-        print("specify text or 'train'")
+        sim(args[0])
