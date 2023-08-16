@@ -52,6 +52,6 @@ if __name__ == "__main__":
 
     qtemps, avg_temp = get_temperature(queries, 50)
     output = [ '__AVG__, %s' % str(avg_temp)] + \
-             [ ','.join([ str(v) for v in x ]) for x in qtemps ]
+             [ ', '.join([ str(v) for v in x ]) for x in qtemps ]
 
     print('\n'.join(output))
