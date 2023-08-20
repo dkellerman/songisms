@@ -194,7 +194,7 @@ CACHES = {
 
 SMUGGLER_FIXTURE_DIR = BASE_DIR / 'data' / 'fixtures'
 
-USE_QUERY_CACHE = False  # is_prod
+USE_QUERY_CACHE = is_prod
 
 MOISES_API_KEY = '969ed887-49ca-44ee-a210-59c4743ab1f8'
 
