@@ -300,4 +300,5 @@ class CacheManager(BaseManager):
 
 
 class AttachmentManager(ContentTypeManager):
-    pass
+    def get_by_natural_key(self, content_type_id, object_id, attachment_type, file_name):
+        return self.get(content_type__id=content_type_id, object_id=object_id, attachment_type=attachment_type, file=file_name)

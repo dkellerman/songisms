@@ -37,6 +37,8 @@ class Command(BaseCommand):
                         print("[NO SONGMEANINGS METADATA]", song.spotify_id, song.title)
                     if not song.metadata.get('youtube'):
                         print("[NO YOUTUBE METADATA]", song.spotify_id, song.title)
+                    if not song.metadata.get('ipa'):
+                        print("[NO IPA METADATA]", song.spotify_id, song.title)
             if check_rhymes:
                 if not song.rhymes_raw.strip():
                     print("[NO RHYMES]", song.spotify_id, song.title)

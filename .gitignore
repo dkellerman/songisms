@@ -21,7 +21,6 @@ scripts/**/*
 !scripts/load_data.py
 !scripts/lyric_sim.py
 !scripts/output_rhymes.py
-!scripts/gpt_temperature.py
 
 # dependencies
 node_modules
