@@ -2178,9 +2178,9 @@
 {
   "model": "api.artist",
   "fields": {
-    "name": "Boyz Ii Men",
+    "name": "Boyz II Men",
     "created": "2022-05-28T00:19:10.612Z",
-    "updated": "2022-05-28T00:19:10.612Z"
+    "updated": "2023-08-20T02:27:59.212Z"
   }
 },
 {
@@ -2354,9 +2354,9 @@
 {
   "model": "api.artist",
   "fields": {
-    "name": "Ac/dc",
+    "name": "AC/DC",
     "created": "2022-05-28T00:19:23.647Z",
-    "updated": "2022-05-28T00:19:23.647Z"
+    "updated": "2023-08-20T02:27:37.475Z"
   }
 },
 {

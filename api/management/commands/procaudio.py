@@ -10,30 +10,19 @@ class Command(BaseCommand):
     help = 'Process audio'
 
     def add_arguments(self, parser):
-        pass
+        parser.add_argument('--id', '-i', type=str, default=None)
 
     def handle(self, *args, **options):
         songs = Song.objects.all()
+        if options['id']:
+            songs = songs.filter(spotify_id__in=options['id'].split(','))
+
         audio_queue = []
-        song_ct = songs.count()
 
         for idx, song in enumerate(songs):
-            print(f'\n ===> {idx + 1} of {song_ct}', song.pk, song.title)
-            if song.youtube_id:
-                if song.audio_file_exists():
-                    if not song.audio_file:
-                        print('\t[LINK AUDIO]', song.spotify_id, song.audio_file_path)
-                        song.audio_file = song.audio_file_path
-                        song.save()
-                else:
-                    if not song.audio_file:
-                        print('\t[QUEUEING AUDIO]', song.pk, song.spotify_id, song.audio_file_path)
-                        audio_queue.append(song)
-            else:
-                if song.audio_file:
-                    print('\t[UNLINKING AUDIO]', song.spotify_id, song.audio_file_path)
-                    song.audio_file = None
-                    song.save()
+            if song.youtube_id and not song.audio_file:
+                print('\t[QUEUEING AUDIO]', song.pk, song.spotify_id, song.audio_file_path)
+                audio_queue.append(song)
 
         print("=> Queued:", len(audio_queue))
         if len(audio_queue):

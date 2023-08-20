@@ -56,6 +56,7 @@ def fetch_audio(song, convert=False):
     audio = video.getbestaudio()
     fname = f'{song.spotify_id}.{audio.extension}'
     tmpfile = f'/tmp/{fname}'
+    tmpfile_mp3 = None
 
     if not os.path.exists(tmpfile):
         print('download', tmpfile)
@@ -87,9 +88,9 @@ def fetch_audio(song, convert=False):
         print('missing upload file', tmpfile_upload)
 
     try:
-        if os.path.exists(tmpfile):
+        if tmpfile and os.path.exists(tmpfile):
             os.remove(tmpfile)
-        if os.path.exists(tmpfile_mp3):
+        if tmpfile_mp3 and os.path.exists(tmpfile_mp3):
             os.remove(tmpfile_mp3)
     except:
         print("problem removing temp files", tmpfile, tmpfile_mp3)
@@ -98,11 +99,12 @@ def fetch_audio(song, convert=False):
 
 
 def queue_stems(song):
-    resp = requests.post('https://developer.moises.ai/api/media', json={
-        'inputUrl': song.audio_file_url,
-        'operations': [
-            dict(type='STEMS', mode='vocals-drums-bass-background_vocals-other')
-        ]
+    resp = requests.post('https://developer-api.moises.ai/api/job', json={
+        'name': f'Stem {song.spotify_id}',
+        'workflow': 'moises/stems-vocals-accompaniment',
+        'params': {
+            'inputUrl': song.audio_file_url,
+        }
     }, headers={
         'Authorization': f'{settings.MOISES_API_KEY}',
         'Content-Type': 'application/json; charset=utf-8'
@@ -119,20 +121,18 @@ def queue_stems(song):
 
 def fetch_stems_by_id(song, id):
     from api.models import Attachment
-    resp2 = requests.get(f'https://developer.moises.ai/api/media/{id}', headers={
+    resp = requests.get(f'https://developer-api.moises.ai/api/job/{id}', headers={
         'Authorization': f'{settings.MOISES_API_KEY}'
     })
-    if resp2.ok:
-        data2 = resp2.json()
-        op = data2['operations'][0]
-        if op['status'] == 'COMPLETED':
+    if resp.ok:
+        data = resp.json()
+        if data['status'] == 'SUCCEEDED':
             attachments = []
-            for key, url in op['result']['files'].items():
+            for key, url in data['result'].items():
                 if key.endswith('HighRes') or Attachment.objects.filter(object_id=song.pk, attachment_type=key).exists():
                     continue
 
-                ext = url.split('.')[-1]
-                fname = f'{song.spotify_id}.{key}.{ext}'
+                fname = f'{song.spotify_id}.{key}.wav'
                 fpath = f'/tmp/{fname}'
                 if os.path.exists(fpath):
                     os.remove(fpath)
@@ -147,12 +147,18 @@ def fetch_stems_by_id(song, id):
                     a.file.save(fname, File(f))
                 os.remove(fpath)
                 attachments.append(a)
+
+            return attachments
+
+        elif data['status'] == 'FAILED':
+            print('[FAILED]', id, song.title)
+            return True
+
         else:
             print('[PENDING]', id, song.title)
             return None
-        return attachments
     else:
-        raise Exception(f'fetch stems failed {resp2.text}')
+        raise Exception(f'fetch stems failed {resp.text}')
 
 
 def fetch_stems(song):
@@ -162,11 +168,14 @@ def fetch_stems(song):
     while True:
         attachments = fetch_stems_by_id(song, id)
         if not attachments:
-            time.sleep(30)
+            time.sleep(20)
         else:
             break
 
-    for a in attachments:
-        print(a.attachment_type, a.file.url)
+    if attachments is True:
+        print("[FAILED]", song.id, song.spotify_id, song.title)
+    else:
+        for a in attachments or []:
+            print("[FINISHED]", a.attachment_type, a.file.url)
 
     return attachments

@@ -18694,5 +18694,2513 @@
     "attachment_type": "backing_vocals",
     "file": "data/song/3THXntC8T110BDg3X8OaOf/backing_vocals"
   }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 54,
+    "attachment_type": "vocals",
+    "file": "data/song/2HHtWyy5CgaQbC7XSoOb0e/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 54,
+    "attachment_type": "accompaniment",
+    "file": "data/song/2HHtWyy5CgaQbC7XSoOb0e/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 5,
+    "attachment_type": "vocals",
+    "file": "data/song/08wJ1B9yu9sPeoRa5fbpr3/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 5,
+    "attachment_type": "accompaniment",
+    "file": "data/song/08wJ1B9yu9sPeoRa5fbpr3/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 74,
+    "attachment_type": "vocals",
+    "file": "data/song/3PfIrDoz19wz7qK7tYeu62/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 302,
+    "attachment_type": "vocals",
+    "file": "data/song/1uRKT2LRANv4baowBWHfDS/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 302,
+    "attachment_type": "accompaniment",
+    "file": "data/song/1uRKT2LRANv4baowBWHfDS/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 74,
+    "attachment_type": "accompaniment",
+    "file": "data/song/3PfIrDoz19wz7qK7tYeu62/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 68,
+    "attachment_type": "vocals",
+    "file": "data/song/2sE61ZmvYH8wiOx5jygkHH/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 257,
+    "attachment_type": "vocals",
+    "file": "data/song/6IZIEhCq9crPjl2jGUvELS/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 39,
+    "attachment_type": "vocals",
+    "file": "data/song/0HEmnAUT8PHznIAAmVXqFJ/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 68,
+    "attachment_type": "accompaniment",
+    "file": "data/song/2sE61ZmvYH8wiOx5jygkHH/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 39,
+    "attachment_type": "accompaniment",
+    "file": "data/song/0HEmnAUT8PHznIAAmVXqFJ/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 257,
+    "attachment_type": "accompaniment",
+    "file": "data/song/6IZIEhCq9crPjl2jGUvELS/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 366,
+    "attachment_type": "vocals",
+    "file": "data/song/5LxvwujISqiB8vpRYv887S/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 9,
+    "attachment_type": "vocals",
+    "file": "data/song/0OWZFobGSIW9GrSlQ9C5pc/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 178,
+    "attachment_type": "vocals",
+    "file": "data/song/2zM4fnNl68d5yuLmaBHRRa/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 19,
+    "attachment_type": "vocals",
+    "file": "data/song/0pGXe7umwkcCm01Ipoxp0U/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 250,
+    "attachment_type": "vocals",
+    "file": "data/song/69uJi5QsBtqlYkGURTBli8/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 19,
+    "attachment_type": "accompaniment",
+    "file": "data/song/0pGXe7umwkcCm01Ipoxp0U/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 115,
+    "attachment_type": "vocals",
+    "file": "data/song/5CQ30WqJwcep0pYcV4AMNc/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 115,
+    "attachment_type": "accompaniment",
+    "file": "data/song/5CQ30WqJwcep0pYcV4AMNc/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 338,
+    "attachment_type": "vocals",
+    "file": "data/song/4c4jJJoaiY21t2TyRZgdWS/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 27,
+    "attachment_type": "vocals",
+    "file": "data/song/62PaSfnXSMyLshYJrlTuL3/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 338,
+    "attachment_type": "accompaniment",
+    "file": "data/song/4c4jJJoaiY21t2TyRZgdWS/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 27,
+    "attachment_type": "accompaniment",
+    "file": "data/song/62PaSfnXSMyLshYJrlTuL3/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 156,
+    "attachment_type": "vocals",
+    "file": "data/song/6v3KW9xbzN5yKLt9YKDYA2/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 156,
+    "attachment_type": "accompaniment",
+    "file": "data/song/6v3KW9xbzN5yKLt9YKDYA2/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 234,
+    "attachment_type": "vocals",
+    "file": "data/song/3lh3iiiJeiBXHSZw6u0kh6/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 150,
+    "attachment_type": "vocals",
+    "file": "data/song/6RtPijgfPKROxEzTHNRiDp/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 234,
+    "attachment_type": "accompaniment",
+    "file": "data/song/3lh3iiiJeiBXHSZw6u0kh6/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 217,
+    "attachment_type": "vocals",
+    "file": "data/song/2qWKpYIleSvBT6aUMXoia5/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 150,
+    "attachment_type": "accompaniment",
+    "file": "data/song/6RtPijgfPKROxEzTHNRiDp/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 127,
+    "attachment_type": "vocals",
+    "file": "data/song/5aAx2yezTd8zXrkmtKl66Z/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 203,
+    "attachment_type": "vocals",
+    "file": "data/song/1sxUaLi0G2vB7dl4ogtCxH/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 242,
+    "attachment_type": "vocals",
+    "file": "data/song/5xLyTbCFONUGUuG0LtUxjn/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 217,
+    "attachment_type": "accompaniment",
+    "file": "data/song/2qWKpYIleSvBT6aUMXoia5/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 127,
+    "attachment_type": "accompaniment",
+    "file": "data/song/5aAx2yezTd8zXrkmtKl66Z/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 203,
+    "attachment_type": "accompaniment",
+    "file": "data/song/1sxUaLi0G2vB7dl4ogtCxH/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 242,
+    "attachment_type": "accompaniment",
+    "file": "data/song/5xLyTbCFONUGUuG0LtUxjn/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 71,
+    "attachment_type": "vocals",
+    "file": "data/song/31AOj9sFz2gM0O3hMARRBx/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 71,
+    "attachment_type": "accompaniment",
+    "file": "data/song/31AOj9sFz2gM0O3hMARRBx/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 64,
+    "attachment_type": "vocals",
+    "file": "data/song/2b8fOow8UzyDFAE27YhOZM/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 177,
+    "attachment_type": "vocals",
+    "file": "data/song/7zVCrzzEJU7u24sbJPXA5W/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 73,
+    "attachment_type": "vocals",
+    "file": "data/song/3CRDbSIZ4r5MsZ0YwxuEkn/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 254,
+    "attachment_type": "vocals",
+    "file": "data/song/3haZcHm3HydDVxm3je3Zmg/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 272,
+    "attachment_type": "vocals",
+    "file": "data/song/4wTChU0tU44TAMC0xcQizi/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 28,
+    "attachment_type": "vocals",
+    "file": "data/song/1EzrEOXmMH3G43AXT1y7pA/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 246,
+    "attachment_type": "vocals",
+    "file": "data/song/6dfhF1BDGmhM69fnCb6wSC/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 141,
+    "attachment_type": "vocals",
+    "file": "data/song/63T7DJ1AFDD6Bn8VzG6JE8/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 46,
+    "attachment_type": "vocals",
+    "file": "data/song/1soxUgYIZb1qx1c7o1Lc7z/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 255,
+    "attachment_type": "vocals",
+    "file": "data/song/5bcTCxgc7xVfSaMV3RuVke/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 246,
+    "attachment_type": "accompaniment",
+    "file": "data/song/6dfhF1BDGmhM69fnCb6wSC/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 141,
+    "attachment_type": "accompaniment",
+    "file": "data/song/63T7DJ1AFDD6Bn8VzG6JE8/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 255,
+    "attachment_type": "accompaniment",
+    "file": "data/song/5bcTCxgc7xVfSaMV3RuVke/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 310,
+    "attachment_type": "vocals",
+    "file": "data/song/6WHzRPYYEoyFwiHn4iPZTj/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 310,
+    "attachment_type": "accompaniment",
+    "file": "data/song/6WHzRPYYEoyFwiHn4iPZTj/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 6,
+    "attachment_type": "vocals",
+    "file": "data/song/09IStsImFySgyp0pIQdqAc/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 69,
+    "attachment_type": "vocals",
+    "file": "data/song/2wqXQjOmQ9KoBm9Ssgt4Fo/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 6,
+    "attachment_type": "accompaniment",
+    "file": "data/song/09IStsImFySgyp0pIQdqAc/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 69,
+    "attachment_type": "accompaniment",
+    "file": "data/song/2wqXQjOmQ9KoBm9Ssgt4Fo/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 12,
+    "attachment_type": "vocals",
+    "file": "data/song/0VjIjW4GlUZAMYd2vXMi3b/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 35,
+    "attachment_type": "vocals",
+    "file": "data/song/1NtIMM4N0cFa1dNzN15chl/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 170,
+    "attachment_type": "vocals",
+    "file": "data/song/7oGZAicScQt96OAW4AruYy/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 169,
+    "attachment_type": "vocals",
+    "file": "data/song/7gvd8xj4QgPqbQSsn5pV7d/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 349,
+    "attachment_type": "vocals",
+    "file": "data/song/7aEtlGHoiPAfRB084NiDmx/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 170,
+    "attachment_type": "accompaniment",
+    "file": "data/song/7oGZAicScQt96OAW4AruYy/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 169,
+    "attachment_type": "accompaniment",
+    "file": "data/song/7gvd8xj4QgPqbQSsn5pV7d/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 349,
+    "attachment_type": "accompaniment",
+    "file": "data/song/7aEtlGHoiPAfRB084NiDmx/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 12,
+    "attachment_type": "accompaniment",
+    "file": "data/song/0VjIjW4GlUZAMYd2vXMi3b/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 35,
+    "attachment_type": "accompaniment",
+    "file": "data/song/1NtIMM4N0cFa1dNzN15chl/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 372,
+    "attachment_type": "vocals",
+    "file": "data/song/3X7uFMzJrEE0sxn62qd8Ch/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 372,
+    "attachment_type": "accompaniment",
+    "file": "data/song/3X7uFMzJrEE0sxn62qd8Ch/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 70,
+    "attachment_type": "vocals",
+    "file": "data/song/2wrJq5XKLnmhRXHIAf9xBa/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 70,
+    "attachment_type": "accompaniment",
+    "file": "data/song/2wrJq5XKLnmhRXHIAf9xBa/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 96,
+    "attachment_type": "vocals",
+    "file": "data/song/4VywXu6umkIQ2OS0m1I79y/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 96,
+    "attachment_type": "accompaniment",
+    "file": "data/song/4VywXu6umkIQ2OS0m1I79y/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 112,
+    "attachment_type": "vocals",
+    "file": "data/song/575wNG8uXiF5jjaSdWqdxZ/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 120,
+    "attachment_type": "vocals",
+    "file": "data/song/5HCyWlXZPP0y6Gqq8TgA20/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 112,
+    "attachment_type": "accompaniment",
+    "file": "data/song/575wNG8uXiF5jjaSdWqdxZ/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 118,
+    "attachment_type": "vocals",
+    "file": "data/song/5Fhe63YOMZsGdB3CgCDuBi/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 256,
+    "attachment_type": "vocals",
+    "file": "data/song/6LahUh0U4umx6hDFfVWlGi/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 123,
+    "attachment_type": "vocals",
+    "file": "data/song/5VGlqQANWDKJFl0MBG3sg2/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 166,
+    "attachment_type": "vocals",
+    "file": "data/song/7e89621JPkKaeDSTQ3avtg/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 120,
+    "attachment_type": "accompaniment",
+    "file": "data/song/5HCyWlXZPP0y6Gqq8TgA20/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 118,
+    "attachment_type": "accompaniment",
+    "file": "data/song/5Fhe63YOMZsGdB3CgCDuBi/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 256,
+    "attachment_type": "accompaniment",
+    "file": "data/song/6LahUh0U4umx6hDFfVWlGi/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 123,
+    "attachment_type": "accompaniment",
+    "file": "data/song/5VGlqQANWDKJFl0MBG3sg2/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 166,
+    "attachment_type": "accompaniment",
+    "file": "data/song/7e89621JPkKaeDSTQ3avtg/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 400,
+    "attachment_type": "vocals",
+    "file": "data/song/0t7fVeEJxO2Xi4H2K5Svc9/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 49,
+    "attachment_type": "vocals",
+    "file": "data/song/1vBpwxsLVwaR4evBIaFmqD/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 400,
+    "attachment_type": "accompaniment",
+    "file": "data/song/0t7fVeEJxO2Xi4H2K5Svc9/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 49,
+    "attachment_type": "accompaniment",
+    "file": "data/song/1vBpwxsLVwaR4evBIaFmqD/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 149,
+    "attachment_type": "vocals",
+    "file": "data/song/7hDVYcQq6MxkdJGweuCtl9/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 186,
+    "attachment_type": "vocals",
+    "file": "data/song/751gBcu62kORDelX7FV0mM/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 149,
+    "attachment_type": "accompaniment",
+    "file": "data/song/7hDVYcQq6MxkdJGweuCtl9/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 186,
+    "attachment_type": "accompaniment",
+    "file": "data/song/751gBcu62kORDelX7FV0mM/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 188,
+    "attachment_type": "vocals",
+    "file": "data/song/6I9VzXrHxO9rA9A5euc8Ak/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 280,
+    "attachment_type": "vocals",
+    "file": "data/song/1Je1IMUlBXcx1Fz0WE7oPT/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 268,
+    "attachment_type": "vocals",
+    "file": "data/song/0cTwMCvozZBj8jCq6o27nk/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 188,
+    "attachment_type": "accompaniment",
+    "file": "data/song/6I9VzXrHxO9rA9A5euc8Ak/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 280,
+    "attachment_type": "accompaniment",
+    "file": "data/song/1Je1IMUlBXcx1Fz0WE7oPT/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 268,
+    "attachment_type": "accompaniment",
+    "file": "data/song/0cTwMCvozZBj8jCq6o27nk/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 76,
+    "attachment_type": "vocals",
+    "file": "data/song/5imShWWzwqfAJ9gXFpGAQh/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 282,
+    "attachment_type": "vocals",
+    "file": "data/song/3ZpQiJ78LKINrW9SQTgbXd/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 269,
+    "attachment_type": "vocals",
+    "file": "data/song/2DnJjbjNTV9Nd5NOa1KGba/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 148,
+    "attachment_type": "vocals",
+    "file": "data/song/6V50MyHPGhEmwYu0Wdyf0t/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 76,
+    "attachment_type": "accompaniment",
+    "file": "data/song/5imShWWzwqfAJ9gXFpGAQh/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 269,
+    "attachment_type": "accompaniment",
+    "file": "data/song/2DnJjbjNTV9Nd5NOa1KGba/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 282,
+    "attachment_type": "accompaniment",
+    "file": "data/song/3ZpQiJ78LKINrW9SQTgbXd/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 148,
+    "attachment_type": "accompaniment",
+    "file": "data/song/6V50MyHPGhEmwYu0Wdyf0t/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 154,
+    "attachment_type": "vocals",
+    "file": "data/song/6cr6UDpkjEaMQ80OjWqEBQ/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 154,
+    "attachment_type": "accompaniment",
+    "file": "data/song/6cr6UDpkjEaMQ80OjWqEBQ/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 75,
+    "attachment_type": "vocals",
+    "file": "data/song/3YRCqOhFifThpSRFJ1VWFM/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 75,
+    "attachment_type": "accompaniment",
+    "file": "data/song/3YRCqOhFifThpSRFJ1VWFM/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 83,
+    "attachment_type": "vocals",
+    "file": "data/song/3rmo8F54jFF8OgYsqTxm5d/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 160,
+    "attachment_type": "vocals",
+    "file": "data/song/72C018NKRl8NZcX7drcwiS/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 231,
+    "attachment_type": "vocals",
+    "file": "data/song/4TQeNHx85xcP9YRkvJC6K1/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 160,
+    "attachment_type": "accompaniment",
+    "file": "data/song/72C018NKRl8NZcX7drcwiS/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 362,
+    "attachment_type": "vocals",
+    "file": "data/song/305WCRhhS10XUcH6AEwZk6/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 231,
+    "attachment_type": "accompaniment",
+    "file": "data/song/4TQeNHx85xcP9YRkvJC6K1/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 362,
+    "attachment_type": "accompaniment",
+    "file": "data/song/305WCRhhS10XUcH6AEwZk6/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 385,
+    "attachment_type": "vocals",
+    "file": "data/song/1VdZ0vKfR5jneCmWIUAMxK/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 83,
+    "attachment_type": "accompaniment",
+    "file": "data/song/3rmo8F54jFF8OgYsqTxm5d/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 111,
+    "attachment_type": "vocals",
+    "file": "data/song/55ccxeuwJuxZF8MHsJqOzh/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 58,
+    "attachment_type": "vocals",
+    "file": "data/song/2R4GzWIHMWTQfAtZX74l8i/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 317,
+    "attachment_type": "vocals",
+    "file": "data/song/7N3PAbqfTjSEU1edb2tY8j/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 93,
+    "attachment_type": "vocals",
+    "file": "data/song/4Pn0JlCUusD2QHjADuOzuV/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 111,
+    "attachment_type": "accompaniment",
+    "file": "data/song/55ccxeuwJuxZF8MHsJqOzh/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 58,
+    "attachment_type": "accompaniment",
+    "file": "data/song/2R4GzWIHMWTQfAtZX74l8i/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 317,
+    "attachment_type": "accompaniment",
+    "file": "data/song/7N3PAbqfTjSEU1edb2tY8j/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 385,
+    "attachment_type": "accompaniment",
+    "file": "data/song/1VdZ0vKfR5jneCmWIUAMxK/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 93,
+    "attachment_type": "accompaniment",
+    "file": "data/song/4Pn0JlCUusD2QHjADuOzuV/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 20,
+    "attachment_type": "vocals",
+    "file": "data/song/0tgVpDi06FyKpA1z0VMD4v/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 20,
+    "attachment_type": "accompaniment",
+    "file": "data/song/0tgVpDi06FyKpA1z0VMD4v/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 24,
+    "attachment_type": "vocals",
+    "file": "data/song/11qh54D0PKkBwelpDxxiEU/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 24,
+    "attachment_type": "accompaniment",
+    "file": "data/song/11qh54D0PKkBwelpDxxiEU/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 77,
+    "attachment_type": "vocals",
+    "file": "data/song/3ZozFqJJlDBNIm4xqxn2ZD/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 77,
+    "attachment_type": "accompaniment",
+    "file": "data/song/3ZozFqJJlDBNIm4xqxn2ZD/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 66,
+    "attachment_type": "vocals",
+    "file": "data/song/2mXsZsJBThTaJXbNcg5QD4/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 25,
+    "attachment_type": "vocals",
+    "file": "data/song/143YESFOZqxVGrKEWisbid/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 66,
+    "attachment_type": "accompaniment",
+    "file": "data/song/2mXsZsJBThTaJXbNcg5QD4/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 15,
+    "attachment_type": "vocals",
+    "file": "data/song/0gWcJrbC41WK5qsKowO0tz/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 82,
+    "attachment_type": "vocals",
+    "file": "data/song/3pzjHKrQSvXGHQ98dx18HI/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 294,
+    "attachment_type": "vocals",
+    "file": "data/song/5zA8vzDGqPl2AzZkEYQGKh/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 25,
+    "attachment_type": "accompaniment",
+    "file": "data/song/143YESFOZqxVGrKEWisbid/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 15,
+    "attachment_type": "accompaniment",
+    "file": "data/song/0gWcJrbC41WK5qsKowO0tz/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 82,
+    "attachment_type": "accompaniment",
+    "file": "data/song/3pzjHKrQSvXGHQ98dx18HI/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 175,
+    "attachment_type": "vocals",
+    "file": "data/song/7wCmS9TTVUcIhRalDYFgPy/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 294,
+    "attachment_type": "accompaniment",
+    "file": "data/song/5zA8vzDGqPl2AzZkEYQGKh/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 3,
+    "attachment_type": "vocals",
+    "file": "data/song/05ZACkzW8YbRq3eFgIfSNB/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 181,
+    "attachment_type": "vocals",
+    "file": "data/song/7snQQk1zcKl8gZ92AnueZW/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 175,
+    "attachment_type": "accompaniment",
+    "file": "data/song/7wCmS9TTVUcIhRalDYFgPy/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 3,
+    "attachment_type": "accompaniment",
+    "file": "data/song/05ZACkzW8YbRq3eFgIfSNB/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 181,
+    "attachment_type": "accompaniment",
+    "file": "data/song/7snQQk1zcKl8gZ92AnueZW/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 206,
+    "attachment_type": "vocals",
+    "file": "data/song/3gsCAGsWr6pUm1Vy7CPPob/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 206,
+    "attachment_type": "accompaniment",
+    "file": "data/song/3gsCAGsWr6pUm1Vy7CPPob/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 47,
+    "attachment_type": "vocals",
+    "file": "data/song/1t2hJFgJyUPD2crOafMUEk/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 47,
+    "attachment_type": "accompaniment",
+    "file": "data/song/1t2hJFgJyUPD2crOafMUEk/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 398,
+    "attachment_type": "vocals",
+    "file": "data/song/3UDmHZcBTQp8Iu8droNtUl/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 408,
+    "attachment_type": "vocals",
+    "file": "data/song/2iuZJX9X9P0GKaE93xcPjk/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 224,
+    "attachment_type": "vocals",
+    "file": "data/song/0ROwoz82DIW4tOzkxYnSjf/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 21,
+    "attachment_type": "vocals",
+    "file": "data/song/0zK0C1rgdcZTVHtUCh2FPW/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 413,
+    "attachment_type": "vocals",
+    "file": "data/song/2aBxt229cbLDOvtL7Xbb9x/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 224,
+    "attachment_type": "accompaniment",
+    "file": "data/song/0ROwoz82DIW4tOzkxYnSjf/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 21,
+    "attachment_type": "accompaniment",
+    "file": "data/song/0zK0C1rgdcZTVHtUCh2FPW/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 408,
+    "attachment_type": "accompaniment",
+    "file": "data/song/2iuZJX9X9P0GKaE93xcPjk/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 398,
+    "attachment_type": "accompaniment",
+    "file": "data/song/3UDmHZcBTQp8Iu8droNtUl/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 413,
+    "attachment_type": "accompaniment",
+    "file": "data/song/2aBxt229cbLDOvtL7Xbb9x/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 140,
+    "attachment_type": "vocals",
+    "file": "data/song/5zdmJbDAUu4ki6495fdNui/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 383,
+    "attachment_type": "vocals",
+    "file": "data/song/2MWOqewf5j0qf2b6S5J6cS/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 26,
+    "attachment_type": "vocals",
+    "file": "data/song/359krpyCKcFF8SFvqWES9L/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 140,
+    "attachment_type": "accompaniment",
+    "file": "data/song/5zdmJbDAUu4ki6495fdNui/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 383,
+    "attachment_type": "accompaniment",
+    "file": "data/song/2MWOqewf5j0qf2b6S5J6cS/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 26,
+    "attachment_type": "accompaniment",
+    "file": "data/song/359krpyCKcFF8SFvqWES9L/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 152,
+    "attachment_type": "vocals",
+    "file": "data/song/6aPc6SSWgTsiXrrUpJCPlj/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 138,
+    "attachment_type": "vocals",
+    "file": "data/song/5u1n1kITHCxxp8twBcZxWy/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 80,
+    "attachment_type": "vocals",
+    "file": "data/song/5vpDsiVqiZLRwKAzQO708k/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 138,
+    "attachment_type": "accompaniment",
+    "file": "data/song/5u1n1kITHCxxp8twBcZxWy/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 43,
+    "attachment_type": "vocals",
+    "file": "data/song/1mqydO6xMtyTPa8yo1SdVr/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 152,
+    "attachment_type": "accompaniment",
+    "file": "data/song/6aPc6SSWgTsiXrrUpJCPlj/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 80,
+    "attachment_type": "accompaniment",
+    "file": "data/song/5vpDsiVqiZLRwKAzQO708k/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 43,
+    "attachment_type": "accompaniment",
+    "file": "data/song/1mqydO6xMtyTPa8yo1SdVr/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 158,
+    "attachment_type": "vocals",
+    "file": "data/song/6xHI9KjUjYT0FPtGO8Mxa1/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 286,
+    "attachment_type": "vocals",
+    "file": "data/song/7ny2ATvjtKszCpLpfsGnVQ/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 48,
+    "attachment_type": "vocals",
+    "file": "data/song/6DCZcSspjsKoFjzjrWoCdn/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 41,
+    "attachment_type": "vocals",
+    "file": "data/song/1dFLowBW25EaL2OC7eKEa2/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 41,
+    "attachment_type": "accompaniment",
+    "file": "data/song/1dFLowBW25EaL2OC7eKEa2/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 18,
+    "attachment_type": "vocals",
+    "file": "data/song/0i5el041vd6nxrGEU8QRxy/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 48,
+    "attachment_type": "accompaniment",
+    "file": "data/song/6DCZcSspjsKoFjzjrWoCdn/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 23,
+    "attachment_type": "vocals",
+    "file": "data/song/11bD1JtSjlIgKgZG2134DZ/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 158,
+    "attachment_type": "accompaniment",
+    "file": "data/song/6xHI9KjUjYT0FPtGO8Mxa1/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 18,
+    "attachment_type": "accompaniment",
+    "file": "data/song/0i5el041vd6nxrGEU8QRxy/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 104,
+    "attachment_type": "vocals",
+    "file": "data/song/4py4vP5mtTjbqnrLyxtIly/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 105,
+    "attachment_type": "vocals",
+    "file": "data/song/4u26EevCNXMhlvE1xFBJwX/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 23,
+    "attachment_type": "accompaniment",
+    "file": "data/song/11bD1JtSjlIgKgZG2134DZ/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 104,
+    "attachment_type": "accompaniment",
+    "file": "data/song/4py4vP5mtTjbqnrLyxtIly/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 105,
+    "attachment_type": "accompaniment",
+    "file": "data/song/4u26EevCNXMhlvE1xFBJwX/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 139,
+    "attachment_type": "vocals",
+    "file": "data/song/5yEPktRqvIhko5QFF3aBhQ/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 139,
+    "attachment_type": "accompaniment",
+    "file": "data/song/5yEPktRqvIhko5QFF3aBhQ/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 286,
+    "attachment_type": "accompaniment",
+    "file": "data/song/7ny2ATvjtKszCpLpfsGnVQ/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 248,
+    "attachment_type": "vocals",
+    "file": "data/song/2gdaXqkDdzYmiTy8MPmZN5/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 65,
+    "attachment_type": "vocals",
+    "file": "data/song/2m1hi0nfMR9vdGC8UcrnwU/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 307,
+    "attachment_type": "vocals",
+    "file": "data/song/7EsjkelQuoUlJXEw7SeVV4/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 40,
+    "attachment_type": "vocals",
+    "file": "data/song/1cktZnxiONH0hR6Q3DKy8h/vocals"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 65,
+    "attachment_type": "accompaniment",
+    "file": "data/song/2m1hi0nfMR9vdGC8UcrnwU/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 248,
+    "attachment_type": "accompaniment",
+    "file": "data/song/2gdaXqkDdzYmiTy8MPmZN5/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 40,
+    "attachment_type": "accompaniment",
+    "file": "data/song/1cktZnxiONH0hR6Q3DKy8h/accompaniment"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 307,
+    "attachment_type": "accompaniment",
+    "file": "data/song/7EsjkelQuoUlJXEw7SeVV4/accompaniment"
+  }
 }
 ]

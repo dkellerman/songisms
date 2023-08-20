@@ -47,7 +47,7 @@ if __name__ == "__main__":
     queries = [
         "in it", "saturday", "let me know", "love story", "one and the same", "use me",
         "a lot", "lovingly", "99 problems", "one more", "shadow", "empty", "corner",
-        "feel good", "roll it up", "semblance"
+        "feel good", "roll it up", "makin'"
     ]
 
     qtemps, avg_temp = get_temperature(queries, 50)

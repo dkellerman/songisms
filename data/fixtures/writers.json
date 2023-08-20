@@ -7508,10 +7508,10 @@
 {
   "model": "api.writer",
   "fields": {
-    "name": "Oscar Hammerstein Ii",
+    "name": "Oscar Hammerstein II",
     "alt_names": "[]",
     "created": "2022-05-28T00:19:22.651Z",
-    "updated": "2022-05-28T00:19:22.651Z"
+    "updated": "2023-08-20T02:30:45.139Z"
   }
 },
 {
@@ -7535,10 +7535,10 @@
 {
   "model": "api.writer",
   "fields": {
-    "name": "Angus Mckinnon Young",
+    "name": "Angus McKinnon Young",
     "alt_names": "[]",
     "created": "2022-05-28T00:19:23.651Z",
-    "updated": "2022-05-28T00:19:23.651Z"
+    "updated": "2023-08-20T02:30:08.138Z"
   }
 },
 {
