@@ -9,6 +9,7 @@ TODO.md
 data/*
 data/fixtures/*
 !data/fixtures/songs.json
+!data/fixtures/attachments.json
 !data/rhymes.txt
 !data/rhymes_train.txt
 !data/simsounds.json
