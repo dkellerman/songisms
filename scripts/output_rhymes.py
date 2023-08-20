@@ -34,7 +34,7 @@ while len(lines) < 2000:
     r = rhymes[i]
     anchor = r.from_ngram.text
     positive = r.to_ngram.text
-    negative = rhymes[random.randint(0, len(rhymes))].to_ngram.text
+    negative = rhymes[random.randint(0, len(rhymes) - 1)].to_ngram.text
     if anchor != negative:
         lines.add((anchor, positive, negative))
 
