@@ -98,10 +98,15 @@ def fetch_audio(song, convert=False):
     print("done")
 
 
-def queue_stems(song):
+MOISES_WORKFLOWS = {
+    'stems': 'moises/stems-vocals-accompaniment',
+    'transcript': 'sism2',
+}
+
+def queue_workflow(workflow_id, song):
     resp = requests.post('https://developer-api.moises.ai/api/job', json={
-        'name': f'Stem {song.spotify_id}',
-        'workflow': 'moises/stems-vocals-accompaniment',
+        'name': f'Workflow {workflow_id} for {song.spotify_id}',
+        'workflow': MOISES_WORKFLOWS[workflow_id],
         'params': {
             'inputUrl': song.audio_file_url,
         }
@@ -119,7 +124,7 @@ def queue_stems(song):
     return id
 
 
-def fetch_stems_by_id(song, id):
+def fetch_workflow_by_id(song, id):
     from api.models import Attachment
     resp = requests.get(f'https://developer-api.moises.ai/api/job/{id}', headers={
         'Authorization': f'{settings.MOISES_API_KEY}'
@@ -129,7 +134,7 @@ def fetch_stems_by_id(song, id):
         if data['status'] == 'SUCCEEDED':
             attachments = []
             for key, url in data['result'].items():
-                if key.endswith('HighRes') or Attachment.objects.filter(object_id=song.pk, attachment_type=key).exists():
+                if Attachment.objects.filter(object_id=song.pk, attachment_type=key).exists():
                     continue
 
                 fname = f'{song.spotify_id}.{key}.wav'
@@ -158,15 +163,15 @@ def fetch_stems_by_id(song, id):
             print('[PENDING]', id, song.title)
             return None
     else:
-        raise Exception(f'fetch stems failed {resp.text}')
+        raise Exception(f'fetch workflow failed {resp.text}')
 
 
-def fetch_stems(song):
-    id = queue_stems(song)
+def fetch_workflow(workflow_id, song):
+    id = queue_workflow(workflow_id, song)
     attachments = None
 
     while True:
-        attachments = fetch_stems_by_id(song, id)
+        attachments = fetch_workflow_by_id(song, id)
         if not attachments:
             time.sleep(20)
         else:

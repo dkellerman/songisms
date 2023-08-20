@@ -21202,5 +21202,1385 @@
     "attachment_type": "accompaniment",
     "file": "data/song/7EsjkelQuoUlJXEw7SeVV4/accompaniment"
   }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 157,
+    "attachment_type": "transcript_line",
+    "file": "data/song/6wycnu8FWXsj68ig7BEot9/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 157,
+    "attachment_type": "transcript_word",
+    "file": "data/song/6wycnu8FWXsj68ig7BEot9/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 72,
+    "attachment_type": "transcript_line",
+    "file": "data/song/3420nZEhm99I1bLc6Yx4XH/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 72,
+    "attachment_type": "transcript_word",
+    "file": "data/song/3420nZEhm99I1bLc6Yx4XH/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 103,
+    "attachment_type": "transcript_line",
+    "file": "data/song/4oS1UEAjl1Fs2nCpOAbp9Q/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 271,
+    "attachment_type": "transcript_line",
+    "file": "data/song/6sLxk7xOHjgwq3J67n65UP/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 279,
+    "attachment_type": "transcript_line",
+    "file": "data/song/0dOg1ySSI7NkpAe89Zo0b9/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 318,
+    "attachment_type": "transcript_line",
+    "file": "data/song/2hKdd3qO7cWr2Jo0Bcs0MA/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 271,
+    "attachment_type": "transcript_word",
+    "file": "data/song/6sLxk7xOHjgwq3J67n65UP/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 103,
+    "attachment_type": "transcript_word",
+    "file": "data/song/4oS1UEAjl1Fs2nCpOAbp9Q/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 279,
+    "attachment_type": "transcript_word",
+    "file": "data/song/0dOg1ySSI7NkpAe89Zo0b9/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 318,
+    "attachment_type": "transcript_word",
+    "file": "data/song/2hKdd3qO7cWr2Jo0Bcs0MA/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 90,
+    "attachment_type": "transcript_line",
+    "file": "data/song/4wCmqSrbyCgxEXROQE6vtV/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 61,
+    "attachment_type": "transcript_line",
+    "file": "data/song/2WKLUgklz0VDX5bKTZ3eYD/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 310,
+    "attachment_type": "transcript_line",
+    "file": "data/song/6WHzRPYYEoyFwiHn4iPZTj/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 90,
+    "attachment_type": "transcript_word",
+    "file": "data/song/4wCmqSrbyCgxEXROQE6vtV/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 310,
+    "attachment_type": "transcript_word",
+    "file": "data/song/6WHzRPYYEoyFwiHn4iPZTj/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 61,
+    "attachment_type": "transcript_word",
+    "file": "data/song/2WKLUgklz0VDX5bKTZ3eYD/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 37,
+    "attachment_type": "transcript_line",
+    "file": "data/song/1TP0hha5wan1xwKjGcNSCv/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 37,
+    "attachment_type": "transcript_word",
+    "file": "data/song/1TP0hha5wan1xwKjGcNSCv/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 134,
+    "attachment_type": "transcript_line",
+    "file": "data/song/5nujrmhLynf4yMoMtj8AQF/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 134,
+    "attachment_type": "transcript_word",
+    "file": "data/song/5nujrmhLynf4yMoMtj8AQF/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 9,
+    "attachment_type": "transcript_line",
+    "file": "data/song/0OWZFobGSIW9GrSlQ9C5pc/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 9,
+    "attachment_type": "transcript_word",
+    "file": "data/song/0OWZFobGSIW9GrSlQ9C5pc/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 19,
+    "attachment_type": "transcript_line",
+    "file": "data/song/0pGXe7umwkcCm01Ipoxp0U/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 19,
+    "attachment_type": "transcript_word",
+    "file": "data/song/0pGXe7umwkcCm01Ipoxp0U/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 320,
+    "attachment_type": "transcript_line",
+    "file": "data/song/0hKRSZhUGEhKU6aNSPBACZ/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 337,
+    "attachment_type": "transcript_line",
+    "file": "data/song/2A69wys3S9uiPSmn6UZWJn/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 102,
+    "attachment_type": "transcript_line",
+    "file": "data/song/4iJyoBOLtHqaGxP12qzhQI/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 230,
+    "attachment_type": "transcript_line",
+    "file": "data/song/3N4DI1vuTSX1tz7fa2NQZw/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 185,
+    "attachment_type": "transcript_line",
+    "file": "data/song/7qB5mBa997C6ddiCgmsfU4/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 334,
+    "attachment_type": "transcript_line",
+    "file": "data/song/0ikz6tENMONtK6qGkOrU3c/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 129,
+    "attachment_type": "transcript_line",
+    "file": "data/song/5ehN5A3B3lDwmFCYO63Wk6/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 320,
+    "attachment_type": "transcript_word",
+    "file": "data/song/0hKRSZhUGEhKU6aNSPBACZ/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 337,
+    "attachment_type": "transcript_word",
+    "file": "data/song/2A69wys3S9uiPSmn6UZWJn/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 102,
+    "attachment_type": "transcript_word",
+    "file": "data/song/4iJyoBOLtHqaGxP12qzhQI/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 230,
+    "attachment_type": "transcript_word",
+    "file": "data/song/3N4DI1vuTSX1tz7fa2NQZw/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 185,
+    "attachment_type": "transcript_word",
+    "file": "data/song/7qB5mBa997C6ddiCgmsfU4/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 334,
+    "attachment_type": "transcript_word",
+    "file": "data/song/0ikz6tENMONtK6qGkOrU3c/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 129,
+    "attachment_type": "transcript_word",
+    "file": "data/song/5ehN5A3B3lDwmFCYO63Wk6/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 339,
+    "attachment_type": "transcript_line",
+    "file": "data/song/51H2y6YrNNXcy3dfc3qSbA/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 34,
+    "attachment_type": "transcript_line",
+    "file": "data/song/609qKv3KPAbdtp0LQH2buA/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 339,
+    "attachment_type": "transcript_word",
+    "file": "data/song/51H2y6YrNNXcy3dfc3qSbA/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 34,
+    "attachment_type": "transcript_word",
+    "file": "data/song/609qKv3KPAbdtp0LQH2buA/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 16,
+    "attachment_type": "transcript_line",
+    "file": "data/song/7IsVQNBju6hpgwfC4NkhRm/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 340,
+    "attachment_type": "transcript_line",
+    "file": "data/song/1pjATX7sbd6Y4jMVqIvzHk/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 16,
+    "attachment_type": "transcript_word",
+    "file": "data/song/7IsVQNBju6hpgwfC4NkhRm/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 340,
+    "attachment_type": "transcript_word",
+    "file": "data/song/1pjATX7sbd6Y4jMVqIvzHk/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 228,
+    "attachment_type": "transcript_line",
+    "file": "data/song/32OlwWuMpZ6b0aN2RZOeMS/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 228,
+    "attachment_type": "transcript_word",
+    "file": "data/song/32OlwWuMpZ6b0aN2RZOeMS/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 27,
+    "attachment_type": "transcript_line",
+    "file": "data/song/62PaSfnXSMyLshYJrlTuL3/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 44,
+    "attachment_type": "transcript_line",
+    "file": "data/song/1nVLAEzhBXMJLR5zAl90Nl/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 354,
+    "attachment_type": "transcript_line",
+    "file": "data/song/3l2hbXdvmaH3tUd3qWLKgm/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 27,
+    "attachment_type": "transcript_word",
+    "file": "data/song/62PaSfnXSMyLshYJrlTuL3/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 345,
+    "attachment_type": "transcript_line",
+    "file": "data/song/6R6ib5FgDYlG0rPA9c5DVv/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 44,
+    "attachment_type": "transcript_word",
+    "file": "data/song/1nVLAEzhBXMJLR5zAl90Nl/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 354,
+    "attachment_type": "transcript_word",
+    "file": "data/song/3l2hbXdvmaH3tUd3qWLKgm/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 345,
+    "attachment_type": "transcript_word",
+    "file": "data/song/6R6ib5FgDYlG0rPA9c5DVv/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 255,
+    "attachment_type": "transcript_line",
+    "file": "data/song/5bcTCxgc7xVfSaMV3RuVke/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 344,
+    "attachment_type": "transcript_line",
+    "file": "data/song/7yMiX7n9SBvadzox8T5jzT/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 255,
+    "attachment_type": "transcript_word",
+    "file": "data/song/5bcTCxgc7xVfSaMV3RuVke/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 344,
+    "attachment_type": "transcript_word",
+    "file": "data/song/7yMiX7n9SBvadzox8T5jzT/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 392,
+    "attachment_type": "transcript_line",
+    "file": "data/song/6CpoJirnfsYZ9QT4Y1tzsA/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 67,
+    "attachment_type": "transcript_line",
+    "file": "data/song/7HKxTNVlkHsfMLhigmhC0I/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 405,
+    "attachment_type": "transcript_line",
+    "file": "data/song/6IBpFG2LU2udYofIuROp3w/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 74,
+    "attachment_type": "transcript_line",
+    "file": "data/song/3PfIrDoz19wz7qK7tYeu62/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 392,
+    "attachment_type": "transcript_word",
+    "file": "data/song/6CpoJirnfsYZ9QT4Y1tzsA/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 67,
+    "attachment_type": "transcript_word",
+    "file": "data/song/7HKxTNVlkHsfMLhigmhC0I/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 402,
+    "attachment_type": "transcript_line",
+    "file": "data/song/0qOnSQQF0yzuPWsXrQ9paz/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 54,
+    "attachment_type": "transcript_line",
+    "file": "data/song/2HHtWyy5CgaQbC7XSoOb0e/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 364,
+    "attachment_type": "transcript_line",
+    "file": "data/song/0KAiuUOrLTIkzkpfpn9jb9/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 39,
+    "attachment_type": "transcript_line",
+    "file": "data/song/0HEmnAUT8PHznIAAmVXqFJ/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 384,
+    "attachment_type": "transcript_line",
+    "file": "data/song/4yeaLecWINnWGpO5BOd4Mn/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 402,
+    "attachment_type": "transcript_word",
+    "file": "data/song/0qOnSQQF0yzuPWsXrQ9paz/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 54,
+    "attachment_type": "transcript_word",
+    "file": "data/song/2HHtWyy5CgaQbC7XSoOb0e/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 364,
+    "attachment_type": "transcript_word",
+    "file": "data/song/0KAiuUOrLTIkzkpfpn9jb9/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 39,
+    "attachment_type": "transcript_word",
+    "file": "data/song/0HEmnAUT8PHznIAAmVXqFJ/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 384,
+    "attachment_type": "transcript_word",
+    "file": "data/song/4yeaLecWINnWGpO5BOd4Mn/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 376,
+    "attachment_type": "transcript_line",
+    "file": "data/song/3L7RtEcu1Hw3OXrpnthngx/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 376,
+    "attachment_type": "transcript_word",
+    "file": "data/song/3L7RtEcu1Hw3OXrpnthngx/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 78,
+    "attachment_type": "transcript_line",
+    "file": "data/song/3b7CDTKB0SRTmQ6ytYi5vZ/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 84,
+    "attachment_type": "transcript_line",
+    "file": "data/song/42fw0rxRO2xbesF6mJfd4Y/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 78,
+    "attachment_type": "transcript_word",
+    "file": "data/song/3b7CDTKB0SRTmQ6ytYi5vZ/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 81,
+    "attachment_type": "transcript_line",
+    "file": "data/song/3pkzJjJXfdDjhpXx639MIH/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 84,
+    "attachment_type": "transcript_word",
+    "file": "data/song/42fw0rxRO2xbesF6mJfd4Y/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 81,
+    "attachment_type": "transcript_word",
+    "file": "data/song/3pkzJjJXfdDjhpXx639MIH/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 86,
+    "attachment_type": "transcript_line",
+    "file": "data/song/4CLPNURPcKztF9RRdcWLGP/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 40,
+    "attachment_type": "transcript_line",
+    "file": "data/song/1cktZnxiONH0hR6Q3DKy8h/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 86,
+    "attachment_type": "transcript_word",
+    "file": "data/song/4CLPNURPcKztF9RRdcWLGP/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 40,
+    "attachment_type": "transcript_word",
+    "file": "data/song/1cktZnxiONH0hR6Q3DKy8h/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 89,
+    "attachment_type": "transcript_line",
+    "file": "data/song/1JO1xLtVc8mWhIoE3YaCL0/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 89,
+    "attachment_type": "transcript_word",
+    "file": "data/song/1JO1xLtVc8mWhIoE3YaCL0/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 97,
+    "attachment_type": "transcript_line",
+    "file": "data/song/4YKAOXyqkKZ5gOZR0AmVMN/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 409,
+    "attachment_type": "transcript_line",
+    "file": "data/song/1P9523tBg56NRc78lX2i4l/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 97,
+    "attachment_type": "transcript_word",
+    "file": "data/song/4YKAOXyqkKZ5gOZR0AmVMN/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 409,
+    "attachment_type": "transcript_word",
+    "file": "data/song/1P9523tBg56NRc78lX2i4l/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 68,
+    "attachment_type": "transcript_line",
+    "file": "data/song/2sE61ZmvYH8wiOx5jygkHH/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 99,
+    "attachment_type": "transcript_line",
+    "file": "data/song/4ckQIgBy1gVeevf7UAereE/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 68,
+    "attachment_type": "transcript_word",
+    "file": "data/song/2sE61ZmvYH8wiOx5jygkHH/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 99,
+    "attachment_type": "transcript_word",
+    "file": "data/song/4ckQIgBy1gVeevf7UAereE/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 110,
+    "attachment_type": "transcript_line",
+    "file": "data/song/54flyrjcdnQdco7300avMJ/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 110,
+    "attachment_type": "transcript_word",
+    "file": "data/song/54flyrjcdnQdco7300avMJ/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 106,
+    "attachment_type": "transcript_line",
+    "file": "data/song/4vB5JbUveDx7UKGoIqOH2w/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 74,
+    "attachment_type": "transcript_word",
+    "file": "data/song/3PfIrDoz19wz7qK7tYeu62/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 176,
+    "attachment_type": "transcript_line",
+    "file": "data/song/7yIDuoUFaiQaIZsYgLCysF/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 117,
+    "attachment_type": "transcript_line",
+    "file": "data/song/5F5lmpwXkxAJtvZqEguTRo/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 405,
+    "attachment_type": "transcript_word",
+    "file": "data/song/6IBpFG2LU2udYofIuROp3w/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 100,
+    "attachment_type": "transcript_line",
+    "file": "data/song/4wBls5EkreWBeADdiavNp6/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 100,
+    "attachment_type": "transcript_word",
+    "file": "data/song/4wBls5EkreWBeADdiavNp6/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 115,
+    "attachment_type": "transcript_line",
+    "file": "data/song/5CQ30WqJwcep0pYcV4AMNc/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 8,
+    "attachment_type": "transcript_line",
+    "file": "data/song/0LAfANg75hYiV1IAEP3vY6/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 115,
+    "attachment_type": "transcript_word",
+    "file": "data/song/5CQ30WqJwcep0pYcV4AMNc/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 8,
+    "attachment_type": "transcript_word",
+    "file": "data/song/0LAfANg75hYiV1IAEP3vY6/transcript_word"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 80,
+    "attachment_type": "transcript_line",
+    "file": "data/song/5vpDsiVqiZLRwKAzQO708k/transcript_line"
+  }
+},
+{
+  "model": "api.attachment",
+  "fields": {
+    "content_type": [
+      "api",
+      "song"
+    ],
+    "object_id": 80,
+    "attachment_type": "transcript_word",
+    "file": "data/song/5vpDsiVqiZLRwKAzQO708k/transcript_word"
+  }
 }
 ]

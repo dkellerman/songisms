@@ -17,16 +17,26 @@ class Command(BaseCommand):
         parser.add_argument('--rhymes', '-r', action=argparse.BooleanOptionalAction)
         parser.add_argument('--style', '-S', action=argparse.BooleanOptionalAction)
         parser.add_argument('--metadata', '-m', action=argparse.BooleanOptionalAction)
+        parser.add_argument('--transcripts', '-t', action=argparse.BooleanOptionalAction)
 
     def handle(self, *args, **options):
         songs = Song.objects.all()
         check_new, check_audio, check_stems, check_lyrics, check_writers, check_rhymes, \
-        check_style, check_metadata = \
+        check_style, check_metadata, check_transcript = \
             [options[k] for k in ('new', 'audio', 'stems', 'lyrics', 'writers', \
-                                  'rhymes', 'style', 'metadata')]
+                                  'rhymes', 'style', 'metadata', 'transcripts')]
 
         for idx, song in enumerate(songs):
-            # print(f'\n ===> {idx + 1} of {song_ct}', song.pk, song.spotify_id, song.title)
+            if check_transcript:
+                l = song.attachments.filter(attachment_type='transcript_line').exists()
+                w = song.attachments.filter(attachment_type='transcript_word').exists()
+                if not l and not w:
+                    print("[NO TRANSCRIPTS]", song.spotify_id, song.title)
+                else:
+                    if not l:
+                        print("[NO TRANSCRIPT BY LINE]", song.spotify_id, song.title)
+                    if not w:
+                        print("[NO TRANSCRIPT BY WORD]", song.spotify_id, song.title)
             if check_metadata:
                 if not song.metadata:
                     print("[NO METADATA]", song.spotify_id, song.title)

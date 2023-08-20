@@ -7,7 +7,7 @@ from api.utils.cloud import fetch_workflow
 
 
 class Command(BaseCommand):
-    help = 'Process stems'
+    help = 'Process transcripts'
 
     def add_arguments(self, parser):
         parser.add_argument('--id', '-i', type=str, default=None)
@@ -21,12 +21,14 @@ class Command(BaseCommand):
         queue = []
 
         for idx, song in enumerate(songs):
-            if len(song.attachments.filter(attachment_type='vocals')) == 0 and song.audio_file:
+            if len(song.attachments.filter(attachment_type='transcript_line')) == 0 or \
+               len(song.attachments.filter(attachment_type='transcript_word')) == 0 \
+               and song.audio_file:
                 queue.append(song)
 
-        print("Stem queue size (TOTAL):", len(queue))
+        print("Transcript queue size (TOTAL):", len(queue))
         if len(queue):
-            print("Fetching stems", min(len(queue), limit or 0))
+            print("Fetching transcripts", min(len(queue), limit or 0))
             mp.set_start_method('fork')
             with mp.Pool(mp.cpu_count()) as p:
                 q = queue[0:limit] if limit else queue
@@ -35,7 +37,7 @@ class Command(BaseCommand):
 
 def fetch_wrapper(song):
     try:
-        print("==> Fetching stems", song.pk, song.title)
-        return fetch_workflow('stems', song)
+        print("==> Fetching transcript", song.pk, song.title)
+        return fetch_workflow('transcript', song)
     except Exception as err:
-        print("Error fetching stems", err, song.pk, song.title)
+        print("Error fetching transcript", err, song.pk, song.title)

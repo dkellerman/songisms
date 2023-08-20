@@ -4,14 +4,16 @@ import multiprocessing as mp
 from django.core.management.base import BaseCommand
 from api.models import *
 from api.utils.cloud import fetch_workflow
+from api.utils.gpt import gpt_fetch_ipa
 
 
 class Command(BaseCommand):
-    help = 'Process stems'
+    help = 'Process IPA'
 
     def add_arguments(self, parser):
         parser.add_argument('--id', '-i', type=str, default=None)
         parser.add_argument('--limit', '-l', type=int, default=10)
+
 
     def handle(self, *args, **options):
         songs = Song.objects.all()
@@ -21,12 +23,12 @@ class Command(BaseCommand):
         queue = []
 
         for idx, song in enumerate(songs):
-            if len(song.attachments.filter(attachment_type='vocals')) == 0 and song.audio_file:
+            if not song.metadata or not song.metadata.get('ipa'):
                 queue.append(song)
 
-        print("Stem queue size (TOTAL):", len(queue))
+        print("Queue size (TOTAL):", len(queue))
         if len(queue):
-            print("Fetching stems", min(len(queue), limit or 0))
+            print("Fetching", min(len(queue), limit or 0))
             mp.set_start_method('fork')
             with mp.Pool(mp.cpu_count()) as p:
                 q = queue[0:limit] if limit else queue
@@ -35,7 +37,8 @@ class Command(BaseCommand):
 
 def fetch_wrapper(song):
     try:
-        print("==> Fetching stems", song.pk, song.title)
-        return fetch_workflow('stems', song)
+        print("==> Fetching IPA", song.pk, song.title)
+        return gpt_fetch_ipa(song.lyrics)
     except Exception as err:
-        print("Error fetching stems", err, song.pk, song.title)
+        print("Error fetching IPA", err, song.pk, song.title)
+
