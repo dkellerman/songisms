@@ -10,7 +10,7 @@ data/*
 data/fixtures/*
 !data/rhymes.txt
 !data/simsounds.json
-!data/related.txt
+!data/variants.txt
 !data/fixtures/artists.json
 !data/fixtures/writers.json
 

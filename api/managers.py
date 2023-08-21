@@ -5,7 +5,7 @@ from django.db.models import Q, F
 from django.core.cache import cache
 from django.conf import settings
 from django_pandas.managers import DataFrameManager
-from .utils.text import make_related, get_vowel_vectors, tokenize_lyric_line, get_stresses
+from .utils.text import make_variants, get_vowel_vectors, tokenize_lyric_line, get_stresses
 
 
 class BaseManager(DataFrameManager):
@@ -53,14 +53,14 @@ class RhymeManager(BaseManager):
                 return vals[offset:min(self.HARD_LIMIT, offset+limit)]
 
         q = ' '.join(tokenize_lyric_line(q))
-        related = make_related(q)
-        qphones = get_vowel_vectors(q, try_related=tuple(related), pad_to=10) or None
+        variants = make_variants(q)
+        qphones = get_vowel_vectors(q, try_variants=tuple(variants), pad_to=10) or None
         if qphones and len(qphones):
-            qphones += get_vowel_vectors(q, try_related=False, pad_to=10, tails_only=True)
+            qphones += get_vowel_vectors(q, try_variants=False, pad_to=10, tails_only=True)
 
         qstresses = get_stresses(q)
         qn = len(q.split())
-        all_q = [q.upper()] + [s.upper() for s in related]
+        all_q = [q.upper()] + [s.upper() for s in variants]
 
         rhymes_sql = f'''
             SELECT DISTINCT ON (ngram)
@@ -243,11 +243,11 @@ class SongManager(BaseManager):
 
         return songs
 
-    def with_words(self, *words, related=True, or_=True, pct=False, title_only=False):
+    def with_words(self, *words, variants=True, or_=True, pct=False, title_only=False):
         words = set(words)
-        if related:
+        if variants:
             for word in list(words):
-                for syn in make_related(word):
+                for syn in make_variants(word):
                     words.add(syn)
 
         qs = self.exclude(is_new=True)

@@ -22,8 +22,8 @@ def get_common_words(n=700):
 
 
 @lru_cache(maxsize=None)
-def get_related():
-    with open('./data/related.txt', 'r') as syn_file:
+def get_variants():
+    with open('./data/variants.txt', 'r') as syn_file:
         return [
             [l.strip() for l in line.split(';')]
             for line in syn_file.readlines()
@@ -97,35 +97,35 @@ def get_rhyme_pairs(val=''):
 
 
 @lru_cache(maxsize=500)
-def make_related(gram):
-    all_related = set()
+def make_variants(gram):
+    all_variants = set()
 
     words = gram.split()
     for idx, word in enumerate(words):
-        related = set()
+        variants = set()
 
         if len(word) >= 5:
             if word.endswith('in\''):
-                related.add(re.sub(r"'$", "g", word))
-                related.add(word[:-1])
+                variants.add(re.sub(r"'$", "g", word))
+                variants.add(word[:-1])
             elif word.endswith('ing'):
-                related.add(re.sub(r'g$', '\'', word))
-                related.add(word[:-1])
+                variants.add(re.sub(r'g$', '\'', word))
+                variants.add(word[:-1])
             elif word.endswith('in'):
-                related.add(word + 'g')
-                related.add(word + "'")
+                variants.add(word + 'g')
+                variants.add(word + "'")
 
         if word.startswith('a-'):
-            related.add(word[2:])
-            related.add('a' + word[2:])
+            variants.add(word[2:])
+            variants.add('a' + word[2:])
 
         if word.endswith("'ve") and len(word) > 3:
             if word[-4] == 'd':
-                related.add(word[:-3] + 'a')
-            related.add(word[:-3] + ' have')
+                variants.add(word[:-3] + 'a')
+            variants.add(word[:-3] + ' have')
 
         try:
-            related.add(num2words(word))
+            variants.add(num2words(word))
         except:
             pass
 
@@ -134,34 +134,34 @@ def make_related(gram):
         simple_sing = word[:-1]
 
         if simple_plural == inflector.plural(word):
-            related.add(simple_plural)
+            variants.add(simple_plural)
         elif simple_sing == inflector.singular_noun(word):
-            related.add(simple_sing)
+            variants.add(simple_sing)
 
         match_w = word.lower().strip()
-        matches = [line for line in get_related() if match_w in line]
+        matches = [line for line in get_variants() if match_w in line]
         for line in matches:
             for l in line:
                 tok = l.lower().strip()
                 if tok != match_w:
-                    related.add(tok)
+                    variants.add(tok)
 
         for splitw in get_word_splits(word):
-            related.add(splitw)
+            variants.add(splitw)
 
-        for syn in related:
-            all_related.add(re.sub(r'\b%s\b' % word, syn, str(gram)))
+        for syn in variants:
+            all_variants.add(re.sub(r'\b%s\b' % word, syn, str(gram)))
 
         for sim in get_sim_sounds().get(word, []):
-            if sim.lower() not in all_related:
-                all_related.add(sim.lower())
+            if sim.lower() not in all_variants:
+                all_variants.add(sim.lower())
 
     if ' ' in gram:
         compound = re.sub(' ', '', gram)
         if compound in get_common_words():
-            all_related.add(compound)
+            all_variants.add(compound)
 
-    return [syn for syn in all_related if syn != gram]
+    return [syn for syn in all_variants if syn != gram]
 
 
 @lru_cache(maxsize=500)
@@ -225,12 +225,12 @@ def get_stresses(q):
 
 
 @lru_cache(maxsize=500)
-def get_phones(q, vowels_only=False, include_stresses=False, try_related=True, allow_missing=False, tails_only=False):
-    if try_related == True:
-        try_related = make_related(q)
+def get_phones(q, vowels_only=False, include_stresses=False, try_variants=True, allow_missing=False, tails_only=False):
+    if try_variants == True:
+        try_variants = make_variants(q)
     phones = None
 
-    for tok in [q] + list(try_related or []):
+    for tok in [q] + list(try_variants or []):
         words = tok.split()
         word_phones = [phones_for_word(w, tail_only=tails_only) for w in words]
         word_phones = [p for p in word_phones if p]
@@ -252,8 +252,8 @@ def get_phones(q, vowels_only=False, include_stresses=False, try_related=True, a
 
 
 @lru_cache(maxsize=500)
-def get_vowel_vectors(q, try_related=True, pad_to=None, tails_only=False):
-    phones = get_phones(q, try_related=try_related, vowels_only=True, include_stresses=False, tails_only=tails_only)
+def get_vowel_vectors(q, try_variants=True, pad_to=None, tails_only=False):
+    phones = get_phones(q, try_variants=try_variants, vowels_only=True, include_stresses=False, tails_only=tails_only)
     if phones:
         phones = [PHONE_PLACEMENT[p] for p in phones.split(' ') if p in PHONE_PLACEMENT]
         if pad_to:
