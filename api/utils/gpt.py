@@ -16,10 +16,12 @@ def gpt_json_query(system_message, user_message, model="gpt-3.5-turbo", verbose=
                 "role": "user",
                 "content": user_message,
             }
-        ]
+        ],
     )
 
     status_code = response["choices"][0]["finish_reason"]
+    print("HI", status_code)
+
     assert status_code == "stop", f"The status code was {status_code}."
     content = response["choices"][0]["message"]["content"]
 
