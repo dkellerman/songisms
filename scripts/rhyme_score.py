@@ -4,6 +4,8 @@ import sys
 import re
 import g2p
 import eng_to_ipa
+import json
+from scipy.spatial import distance
 from tqdm import tqdm
 from functools import lru_cache
 from api.models import *
@@ -48,7 +50,8 @@ def get_g2p_word(w):
 
 def get_ipa_features(ipa_letter):
     global ftable
-    return ftable.fts(ipa_letter)
+    f = ftable.fts(ipa_letter)
+    return f
 
 
 def is_vowel(ipa_letter):
@@ -78,6 +81,7 @@ def align_ipa(ipa1, ipa2):
 
 
 def proc_text(text):
+    text = text.lower().strip()
     ipa = get_ipa_words(text)
     text = ' '.join(ipa)
     tail = get_stress_tail(text)
@@ -85,24 +89,60 @@ def proc_text(text):
     return remove_stresses(val)
 
 
+def score_rhyme(text1, text2):
+    ipa1 = proc_text(text1)
+    ipa2 = proc_text(text2)
+    seq1, seq2, _, _ = align_ipa(ipa1, ipa2)
+    f1, f2 = [], []
+    for idx, c in enumerate(seq1):
+        if c == '-' or seq2[idx] == '-' or c == '' or seq2[idx] == '':
+            f1 += [0.0]
+            f2 += [0.0]
+        else:
+            ft1 = get_ipa_features(c)
+            ft2 = get_ipa_features(seq2[idx])
+            if ft1 or ft2 is None:
+                f1 += [0.0]
+                f2 += [0.0]
+            else:
+                f1 += [ float(f) for f in ft1.numeric() ]
+                f2 += [ float(f) for f in ft2.numeric() ]
+    score = distance.cosine(f1, f2)
+    return score
+
+
 if __name__ == '__main__':
     args = sys.argv[3:]
+
     if len(args) == 1:
-        print("IPA", proc_text(args[0]))
+        if args[0] == 'check':
+            bad = []
+            ngrams = NGram.objects.filter(n=1)
+            for n in tqdm(ngrams):
+                ipa = get_ipa_words(n.text)
+                if any([ not w.strip() or w == "'" or '*' in w for w in ipa ]):
+                    bad.append(n.text)
+            print(json.dumps(bad, indent=2))
+
+        else:
+            # print("IPA", proc_text(args[0]))
+            vals = []
+            for n in tqdm(NGram.objects.all()):
+                s = score_rhyme(args[0], n.text)
+                vals.append((s, n.text))
+            vals = sorted(vals, key=lambda x: x[0])
+            print(vals[:50])
 
     elif len(args) == 2:
-        ipa1 = proc_text(args[0])
-        ipa2 = proc_text(args[1])
-        seq1, seq2, score, _ = align_ipa(ipa1, ipa2)
-        print(seq1)
-        print(seq2)
-        print(score)
+        s = score_rhyme(args[0], args[1])
+        print(s)
 
     else:
         for r in tqdm(Rhyme.objects.all()):
             scores = []
-            r1 = proc_text(r.from_ngram.text)
-            r2 = proc_text(r.to_ngram.text)
-            seq1, seq2, score, _ = align_ipa(r1, r2)
-            scores.append(score)
-        print(sum(scores) / len(scores))
+            r1, r2 = r.from_ngram.text, r.to_ngram.text
+            s = score_rhyme(r1, r2)
+            scores.append(s)
+            print('*', r1, r2, s)
+        print('\n\n====== AVG:', sum(scores) / len(scores))
+

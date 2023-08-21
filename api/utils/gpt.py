@@ -20,7 +20,6 @@ def gpt_json_query(system_message, user_message, model="gpt-3.5-turbo", verbose=
     )
 
     status_code = response["choices"][0]["finish_reason"]
-    print("HI", status_code)
 
     assert status_code == "stop", f"The status code was {status_code}."
     content = response["choices"][0]["message"]["content"]
@@ -28,7 +27,12 @@ def gpt_json_query(system_message, user_message, model="gpt-3.5-turbo", verbose=
     if verbose:
         print(content)
 
-    output = json.loads(content)
+    try:
+        output = json.loads(content)
+    except Exception as e:
+        print("Error parsing JSON", content)
+        raise e
+
     return output
 
 
