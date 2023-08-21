@@ -22,8 +22,8 @@ def get_common_words(n=700):
 
 
 @lru_cache(maxsize=None)
-def get_synonyms():
-    with open('./data/synonyms.txt', 'r') as syn_file:
+def get_related():
+    with open('./data/related.txt', 'r') as syn_file:
         return [
             [l.strip() for l in line.split(';')]
             for line in syn_file.readlines()
@@ -97,35 +97,35 @@ def get_rhyme_pairs(val=''):
 
 
 @lru_cache(maxsize=500)
-def make_synonyms(gram):
-    all_syns = set()
+def make_related(gram):
+    all_related = set()
 
     words = gram.split()
     for idx, word in enumerate(words):
-        syns = set()
+        related = set()
 
         if len(word) >= 5:
             if word.endswith('in\''):
-                syns.add(re.sub(r"'$", "g", word))
-                syns.add(word[:-1])
+                related.add(re.sub(r"'$", "g", word))
+                related.add(word[:-1])
             elif word.endswith('ing'):
-                syns.add(re.sub(r'g$', '\'', word))
-                syns.add(word[:-1])
+                related.add(re.sub(r'g$', '\'', word))
+                related.add(word[:-1])
             elif word.endswith('in'):
-                syns.add(word + 'g')
-                syns.add(word + "'")
+                related.add(word + 'g')
+                related.add(word + "'")
 
         if word.startswith('a-'):
-            syns.add(word[2:])
-            syns.add('a' + word[2:])
+            related.add(word[2:])
+            related.add('a' + word[2:])
 
         if word.endswith("'ve") and len(word) > 3:
             if word[-4] == 'd':
-                syns.add(word[:-3] + 'a')
-            syns.add(word[:-3] + ' have')
+                related.add(word[:-3] + 'a')
+            related.add(word[:-3] + ' have')
 
         try:
-            syns.add(num2words(word))
+            related.add(num2words(word))
         except:
             pass
 
@@ -134,34 +134,34 @@ def make_synonyms(gram):
         simple_sing = word[:-1]
 
         if simple_plural == inflector.plural(word):
-            syns.add(simple_plural)
+            related.add(simple_plural)
         elif simple_sing == inflector.singular_noun(word):
-            syns.add(simple_sing)
+            related.add(simple_sing)
 
         match_w = word.lower().strip()
-        matches = [line for line in get_synonyms() if match_w in line]
+        matches = [line for line in get_related() if match_w in line]
         for line in matches:
             for l in line:
                 tok = l.lower().strip()
                 if tok != match_w:
-                    syns.add(tok)
+                    related.add(tok)
 
         for splitw in get_word_splits(word):
-            syns.add(splitw)
+            related.add(splitw)
 
-        for syn in syns:
-            all_syns.add(re.sub(r'\b%s\b' % word, syn, str(gram)))
+        for syn in related:
+            all_related.add(re.sub(r'\b%s\b' % word, syn, str(gram)))
 
         for sim in get_sim_sounds().get(word, []):
-            if sim.lower() not in all_syns:
-                all_syns.add(sim.lower())
+            if sim.lower() not in all_related:
+                all_related.add(sim.lower())
 
     if ' ' in gram:
         compound = re.sub(' ', '', gram)
         if compound in get_common_words():
-            all_syns.add(compound)
+            all_related.add(compound)
 
-    return [syn for syn in all_syns if syn != gram]
+    return [syn for syn in all_related if syn != gram]
 
 
 @lru_cache(maxsize=500)
@@ -225,12 +225,12 @@ def get_stresses(q):
 
 
 @lru_cache(maxsize=500)
-def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True, allow_missing=False, tails_only=False):
-    if try_syns == True:
-        try_syns = make_synonyms(q)
+def get_phones(q, vowels_only=False, include_stresses=False, try_related=True, allow_missing=False, tails_only=False):
+    if try_related == True:
+        try_related = make_related(q)
     phones = None
 
-    for tok in [q] + list(try_syns or []):
+    for tok in [q] + list(try_related or []):
         words = tok.split()
         word_phones = [phones_for_word(w, tail_only=tails_only) for w in words]
         word_phones = [p for p in word_phones if p]
@@ -252,8 +252,8 @@ def get_phones(q, vowels_only=False, include_stresses=False, try_syns=True, allo
 
 
 @lru_cache(maxsize=500)
-def get_vowel_vectors(q, try_syns=True, pad_to=None, tails_only=False):
-    phones = get_phones(q, try_syns=try_syns, vowels_only=True, include_stresses=False, tails_only=tails_only)
+def get_vowel_vectors(q, try_related=True, pad_to=None, tails_only=False):
+    phones = get_phones(q, try_related=try_related, vowels_only=True, include_stresses=False, tails_only=tails_only)
     if phones:
         phones = [PHONE_PLACEMENT[p] for p in phones.split(' ') if p in PHONE_PLACEMENT]
         if pad_to:

@@ -15,18 +15,27 @@ from minineedle import needle, core
 ftable = featuretable.FeatureTable()
 transducer = g2p.make_g2p('eng', 'eng-ipa')
 
+@lru_cache(maxsize=None)
+@property
+def custom_ipa():
+    vals = {}
+    with open('./data/custom_ipa.txt', 'r') as f:
+        lines = f.readlines()
+        lines = [ l.strip().split('\t') for l in lines ]
+        vals = { l[0]: ''.join(l[1].split(' ')) for l in lines }
+    return vals
+
 
 @lru_cache(maxsize=None)
 def get_ipa_words(text):
     global transducer
     words = eng_to_ipa.convert(text).split()
-    ipa = [
-        w if '*' not in w
-        # TOOD: custom lookup as well?
-        else get_g2p_word(w.replace('*', ''))
-        for w in words
-    ]
-    ipa = [ fix_ipa_word(w) for w in ipa ]
+    ipa = []
+    for w in words:
+        if '*' in w or not w.strip():
+            w = w.replace('*', '').strip()
+            w = custom_ipa[w] or get_g2p_word(w)
+        ipa.append(fix_ipa_word(w))
     return ipa
 
 
