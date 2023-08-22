@@ -134,10 +134,7 @@ def fetch_workflow_by_id(song, id):
         if data['status'] == 'SUCCEEDED':
             attachments = []
             for key, url in data['result'].items():
-                if Attachment.objects.filter(object_id=song.pk, attachment_type=key).exists():
-                    continue
-
-                fname = f'{song.spotify_id}.{key}.wav'
+                fname = f'{song.spotify_id}__{key}'
                 fpath = f'/tmp/{fname}'
                 if os.path.exists(fpath):
                     os.remove(fpath)
@@ -147,6 +144,9 @@ def fetch_workflow_by_id(song, id):
                 with open(fpath, 'wb') as tmpfile:
                     shutil.copyfileobj(fresp.raw, tmpfile)
 
+                a = song.get_attachment(key)
+                if a:
+                    a.delete()
                 a = Attachment(content_object=song, attachment_type=key)
                 with open(fpath, 'rb') as f:
                     a.file.save(fname, File(f))
