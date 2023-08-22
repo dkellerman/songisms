@@ -11,6 +11,7 @@ data/fixtures/*
 !data/rhymes.txt
 !data/simsounds.json
 !data/variants.txt
+!data/ipa_gpt.json
 !data/fixtures/artists.json
 !data/fixtures/writers.json
 
