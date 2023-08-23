@@ -5,6 +5,9 @@ import openai
 def gpt_json_query(system_message, user_message, model="gpt-3.5-turbo", verbose=False):
     '''Generic GPT to json query'''
 
+    if verbose:
+        print(user_message)
+
     response = openai.ChatCompletion.create(
         model=model,
         messages=[
@@ -20,6 +23,8 @@ def gpt_json_query(system_message, user_message, model="gpt-3.5-turbo", verbose=
     )
 
     status_code = response["choices"][0]["finish_reason"]
+    if verbose:
+        print(status_code)
 
     assert status_code == "stop", f"The status code was {status_code}."
     content = response["choices"][0]["message"]["content"]
@@ -53,7 +58,7 @@ def gpt_fetch_ipa(text):
             %s
             ```
         """ % text,
-        model="gpt-4",
+        model="gpt-3.5-turbo-16k-0613",
         verbose=False
     )
 

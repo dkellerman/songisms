@@ -105,13 +105,13 @@ def get_stress_tail(phrase):
 
 
 def align_vals(val1, val2):
-    a = needle.NeedlemanWunsch(val1, val2)
-    a.gap_character = '_'
-    a.align()
-    fmt = core.AlignmentFormat.list if type(val1) == list else core.AlignmentFormat.str
-    a1, a2 = a.get_aligned_sequences(fmt)
-    score = a.get_score()
-    return a1, a2, score, a
+    aligner = needle.NeedlemanWunsch(val1, val2)
+    aligner.gap_character = '_'
+    aligner.align()
+    fmt = core.AlignmentFormat.list
+    aligned_val1, aligned_val2 = aligner.get_aligned_sequences(fmt)
+    score = aligner.get_score()
+    return aligned_val1, aligned_val2, score, aligner
 
 
 def proc_text(text):

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import os
+import argparse
 import multiprocessing as mp
 from django.core.management.base import BaseCommand
 from api.models import *
@@ -12,6 +14,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--id', '-i', type=str, default=None)
         parser.add_argument('--limit', '-l', type=int, default=10)
+        parser.add_argument('--force-fetch', '-F', action=argparse.BooleanOptionalAction)
 
 
     def handle(self, *args, **options):
@@ -22,7 +25,7 @@ class Command(BaseCommand):
         queue = []
 
         for idx, song in enumerate(songs):
-            if not song.metadata or not song.metadata.get('ipa'):
+            if not song.metadata or not song.metadata.get('ipa') or options['force_fetch']:
                 queue.append(song)
 
         print("Queue size (TOTAL):", len(queue))
