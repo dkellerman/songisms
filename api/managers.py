@@ -54,7 +54,7 @@ class RhymeManager(BaseManager):
             if vals:
                 return vals[offset:min(self.HARD_LIMIT, offset+limit)]
 
-        q = ' '.join(normalize_lyric(q))
+        q = normalize_lyric(q)
         n = len(q.split())
         variants = make_variants(q)
         vec = get_vowel_vector(q) or None
@@ -73,7 +73,7 @@ class RhymeManager(BaseManager):
                 n.adj_pct AS adj_pct,
                 n.song_pct AS song_pct,
                 n.title_pct AS title_pct,
-                0 AS ndiff,
+                ABS(rto.n - %(n)s) AS ndiff,
                 0 AS mscore,
                 n.song_count AS song_count
             FROM
@@ -137,7 +137,7 @@ class RhymeManager(BaseManager):
                         level NULLS LAST,
                         frequency DESC NULLS LAST,
                         vec_distance,
-                        -- stresses_distance,
+                        stresses_distance,
                         mscore DESC NULLS LAST,
                         ndiff - (adj_pct * 10000),
                         adj_pct DESC NULLS LAST,

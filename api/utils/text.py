@@ -208,7 +208,7 @@ def make_variants(gram):
             words.append(compound)
 
     variants = []
-    for word in words:
+    for word in words[-1:]:
         if len(word) >= 5:
             if word.endswith('in\''):
                 variants.append(re.sub(r"'$", "g", word))
@@ -260,9 +260,8 @@ def make_variants(gram):
         variants += [ss.lower() for ss in get_sim_sounds().get(var, [])]
 
     variants = set(variants)
+    print('---', list(variants))
     return [var for var in variants if var != gram]
-
-    # ??? for var in variants: variants.add(re.sub(r'\b%s\b' % word, var, str(gram)))
 
 
 @lru_cache(maxsize=500)
