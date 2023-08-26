@@ -30,6 +30,7 @@ const searchInput = ref();
 const { rhymes, hasNextPage, suggestions, loading } = storeToRefs(useRhymesStore());
 const { fetchRhymes, fetchSuggestions, abort } = useRhymesStore();
 const debouncedFetchSuggestions = debounce(fetchSuggestions, SUGGEST_DEBOUNCE);
+const showListenTip = ref(false);
 
 const counts = computed(() => ({
   rhyme: rhymes.value?.filter(r => r.type === 'rhyme').length || 0,
@@ -38,6 +39,9 @@ const counts = computed(() => ({
 }));
 
 const label = computed(() => {
+  if (showListenTip.value)
+    return 'Say words to search. Try also: "stop listening" and "clear search"';
+
   return [
     ct2str(counts.value.rhyme, 'rhyme'),
     counts.value.l2 > 0 && ct2str(counts.value.l2, 'maybe', 'maybe'),
@@ -78,6 +82,7 @@ function onSpeechResult() {
   console.log('[R]', speech.isFinal.value ? '[F]' : '[-]', val);
 
   if (speech.isFinal) {
+    showListenTip.value = false;
     if (!val) return;
     if (val === 'stop listening') {
       speech.toggle();
@@ -171,7 +176,10 @@ fetchRhymes(q.value, page.value);
       </template>
     </vue3-simple-typeahead>
     <button @click.prevent="onClickSearch"><i class="fa fa-search" /></button>
-    <button v-if="listenSupported" @click.prevent="() => speech.toggle()" :class="{ listen: true, 'is-listening': isListening }">
+    <button v-if="listenSupported" @click.prevent="() => {
+      speech.toggle();
+      showListenTip = isListening;
+    }" :class="{ listen: true, 'is-listening': isListening }">
       <i :class="{ fa: true, 'fa-lg': true, 'fa-microphone': !isListening, 'fa-stop': isListening }" />
     </button>
   </fieldset>
