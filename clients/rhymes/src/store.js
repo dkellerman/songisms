@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { defineStore } from 'pinia';
 
-const PER_PAGE = 200;
+const PER_PAGE = 150;
 const SUGGESTION_COUNT = 20;
 
 const FETCH_RHYMES = `
