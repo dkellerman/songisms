@@ -111,6 +111,10 @@ function ct2str(ct, singularWord, pluralWord) {
   return `${ct} ${plWord}`;
 }
 
+function formatNgram(ngram) {
+  return ngram?.replace(/\bi\b/g, 'I');
+}
+
 fetchRhymes(q.value, page.value);
 </script>
 
@@ -140,7 +144,7 @@ fetchRhymes(q.value, page.value);
 
     <ul v-if="rhymes && (!loading || page > 1)">
       <li v-for="r of rhymes" :key="r.ngram" :class="`hit ${r.type}`">
-        <a @click="() => onLink(r.ngram)">{{ r.ngram }}</a>
+        <a @click="() => onLink(r.ngram)">{{ formatNgram(r.ngram) }}</a>
         <span v-if="!!r.frequency && r.type === 'rhyme'" class="freq"> ({{ r.frequency }}) </span>
       </li>
     </ul>
