@@ -2,7 +2,7 @@
 
 import sys
 import gensim.models
-from api.utils.text import *
+from api.utils.text import tokenize_lyric
 from pprint import pprint
 from api.models import Song
 
@@ -13,10 +13,10 @@ def train():
         lines = song.lyrics.split('\n')
         doc = set()
         for line in lines:
-            for tok in tokenize_lyric_line(line):
+            for tok in tokenize_lyric(line):
                 doc.add(tok)
         docs.append(list(doc))
-    print(docs)
+
     model = gensim.models.Word2Vec(docs)
     model.save('./data/lyrics.w2v')
 

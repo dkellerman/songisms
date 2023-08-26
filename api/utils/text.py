@@ -1,17 +1,23 @@
 import re
-import string
-import inflect
-import sh
+import g2p
 import eng_to_ipa
-import spacy
-import pronouncing as pron
+import string
 import json
+import inflect
+import spacy
+from scipy.spatial import distance
 from functools import lru_cache
+from panphon import featuretable
+from minineedle import needle, core
+import pronouncing as pron
 from nltk import FreqDist
 from nltk.util import ngrams as nltk_make_ngrams
 from nltk.corpus import brown
 from num2words import num2words
 
+
+ftable = featuretable.FeatureTable()
+transducer = g2p.make_g2p('eng', 'eng-ipa')
 inflector = inflect.engine()
 
 
@@ -21,8 +27,9 @@ def get_common_words(n=700):
     return dict(fd.most_common()[:n])
 
 
+
 @lru_cache(maxsize=None)
-def get_variants():
+def get_custom_variants():
     with open('./data/variants.txt', 'r') as syn_file:
         return [
             [l.strip() for l in line.split(';')]
@@ -33,33 +40,17 @@ def get_variants():
 @lru_cache(maxsize=None)
 def get_sim_sounds():
     with open('./data/simsounds.json', 'r') as f:
+        return json.loads(f.read())
+
+
+@lru_cache(maxsize=None)
+def get_gpt_ipa():
+    with open('./data/ipa_gpt.json', 'r') as f:
         return json.load(f)
 
 
-@lru_cache(maxsize=500)
-def get_word_splits(word):
-    splits = set()
-    common = get_common_words(1000)
-    for sp in range(1, len(word)):
-        w1 = word[:sp]
-        w2 = word[sp:]
-        if w1 in common and w2 in common:
-            splits.add(' '.join([w1, w2]))
-    return list(splits)
-
-
-def tokenize_lyrics(lyrics, stop_words=None, unique=False):
-    toks = [
-        tok for tok in tokenize_lyric_line(' '.join(lyrics.split('\n')))
-        if tok not in (stop_words or [])
-    ]
-    if unique:
-        toks = list(set(toks))
-    return toks
-
-
-def tokenize_lyric_line(val):
-    val = val.lower()
+def tokenize_lyric(val):
+    val = val.lower().strip()
     val = re.sub(r'[\,\"]', '', val)
     val = re.sub(r'[\,\"]', '', val)
     val = re.sub(r'\)', '', val)
@@ -74,26 +65,138 @@ def tokenize_lyric_line(val):
     return toks
 
 
-def get_lyric_ngrams(lyrics, n_range=range(5)):
-    ngrams = []
-    lines = [tokenize_lyric_line(l.strip()) for l in lyrics.split('\n') if l.strip()]
-    for toks in lines:
-        for i in n_range:
-            for ngram in nltk_make_ngrams(sequence=toks, n=i+1):
-                ngrams.append((' '.join(ngram), i+1))
-    return ngrams
+def normalize_lyric(val):
+    return ' '.join(tokenize_lyric(val))
 
 
-def get_rhyme_pairs(val=''):
-    lines = val.strip().split('\n')
-    pairs = []
-    for line in lines:
-        grams = line.split(';')
-        pairs += [
-            tuple(sorted((a.strip().lower(), b.strip().lower(),)))
-            for idx, a in enumerate(grams) for b in grams[idx + 1:]
-        ]
-    return list(set(pairs))
+def normalize_ipa(ipa):
+    ipa = ipa.strip().replace("ː", "")
+    return remove_non_lyric_punctuation(ipa)
+
+
+def get_ipa_words(text):
+    global transducer
+    words = eng_to_ipa.convert(text).split()
+    gpt_ipa = get_gpt_ipa()
+    ipa = []
+    for w in words:
+        if '*' in w or not w.strip():
+            w = w.replace('*', '').strip()
+            w = gpt_ipa.get(w, get_g2p_word(w))
+        ipa.append(fix_ipa_word(w))
+    return ipa
+
+
+def get_ipa_text(text):
+    return ' '.join(get_ipa_words(text))
+
+
+def fix_ipa_word(w):
+    if w is None:
+        return ''
+    w = re.sub(r"'ɛs$", "s", w)
+    w = re.sub(r"'", "", w)
+    return w.strip()
+
+
+def remove_stresses(text):
+    return re.sub(r'\ˈ|\ˌ', '', text)
+
+
+def remove_punctuation(text):
+    return ''.join([t for t in text if t not in string.punctuation])
+
+
+def remove_non_lyric_punctuation(text):
+    return ''.join([t for t in text if t not in r"""!"#$%&()*+,./:;<=>?@[\]^_`{|}~"""])
+
+
+def get_g2p_word(w):
+    if w[-1] == "'":
+        return re.sub(r'ŋ$', 'n', transducer(w[:-1] + 'g').output_string)
+    return transducer(w).output_string
+
+
+def get_ipa_features(ipa_letter):
+    global ftable
+    f = ftable.fts(ipa_letter)
+    return f
+
+
+def is_vowel(ipa_letter):
+    return ipa_letter in IPA_VOWELS
+
+
+def get_stress_tail(phrase):
+    if not phrase.strip():
+        return ''
+    stress_index = phrase.find("ˈ") + 1
+    while not is_vowel(phrase[stress_index]):
+        stress_index += 1
+        if stress_index > len(phrase) - 1:
+            return phrase[stress_index - 1:]
+    return phrase[stress_index:]
+
+
+def align_vals(val1, val2):
+    aligner = needle.NeedlemanWunsch(val1, val2)
+    aligner.gap_character = '_'
+    aligner.align()
+    fmt = core.AlignmentFormat.str if type(val1) == str else core.AlignmentFormat.list
+    aligned_val1, aligned_val2 = aligner.get_aligned_sequences(fmt)
+    score = aligner.get_score()
+    return aligned_val1, aligned_val2, score, aligner
+
+
+def get_ipa_tail(text, stresses=False):
+    text = text.lower().strip()
+    ipa = get_ipa_words(text)
+    text = ' '.join(ipa)
+    tail = get_stress_tail(text)
+    val = ''.join(tail.split(' '))
+    if not stresses:
+        val = remove_stresses(val)
+    return val
+
+
+@lru_cache(maxsize=500)
+def get_vowel_vector(text):
+    global ftable
+    ipa = get_ipa_tail(text)
+    vec = []
+    for c in ipa:
+        if is_vowel(c):
+            ft = ftable.word_array([
+                'syl', 'son', 'cons', 'voi', 'long',
+                'round', 'back', 'lo', 'hi', 'tense'
+            ], c).tolist() or ([0] * 10)
+            vec += ft
+    if len(vec) > 100:
+        vec = vec[-99:]
+    return vec
+
+
+def score_rhyme(text1, text2):
+    ipa1 = get_ipa_tail(text1)
+    ipa2 = get_ipa_tail(text2)
+    seq1, seq2, _, _ = align_vals(ipa1, ipa2)
+    f1, f2 = [], []
+    for idx, c in enumerate(seq1):
+        if c == '-' or seq2[idx] == '-' or c == '' or seq2[idx] == '':
+            f1 += [0.0]
+            f2 += [0.0]
+        else:
+            ft1 = get_ipa_features(c)
+            ft2 = get_ipa_features(seq2[idx])
+            if ft1 or ft2 is None:
+                f1 += [0.0]
+                f2 += [0.0]
+            else:
+                f1 += [ float(f) for f in ft1.numeric() ]
+                f2 += [ float(f) for f in ft2.numeric() ]
+    score = distance.cosine(f1, f2)
+    return score
+
 
 
 @lru_cache(maxsize=500)
@@ -142,7 +245,7 @@ def make_variants(gram):
             variants.append(simple_sing)
 
         match_w = word.lower().strip()
-        matches = [line for line in get_variants() if match_w in line]
+        matches = [line for line in get_custom_variants() if match_w in line]
         for line in matches:
             for l in line:
                 tok = l.lower().strip()
@@ -164,13 +267,37 @@ def make_variants(gram):
 
 
 @lru_cache(maxsize=500)
-def phones_for_word(w, tail_only=False):
-    w = re.sub(r'in\'', 'ing', w)
-    if tail_only:
-        val = pron.rhyming_part(w)
-    else:
-        val = pron.phones_for_word(w)
-    return val[0] if len(val) else ''
+def get_word_splits(word):
+    splits = set()
+    common = get_common_words(1000)
+    for sp in range(1, len(word)):
+        w1 = word[:sp]
+        w2 = word[sp:]
+        if w1 in common and w2 in common:
+            splits.add(' '.join([w1, w2]))
+    return list(splits)
+
+
+def get_lyric_ngrams(lyrics, n_range=range(5)):
+    ngrams = []
+    lines = [tokenize_lyric(l.strip()) for l in lyrics.split('\n') if l.strip()]
+    for toks in lines:
+        for i in n_range:
+            for ngram in nltk_make_ngrams(sequence=toks, n=i+1):
+                ngrams.append((' '.join(ngram), i+1))
+    return ngrams
+
+
+def get_rhyme_pairs(val=''):
+    lines = val.strip().split('\n')
+    pairs = []
+    for line in lines:
+        grams = line.split(';')
+        pairs += [
+            tuple(sorted((a.strip().lower(), b.strip().lower(),)))
+            for idx, a in enumerate(grams) for b in grams[idx + 1:]
+        ]
+    return list(set(pairs))
 
 
 @lru_cache(maxsize=500)
@@ -214,7 +341,9 @@ def get_nlp():
 def get_stresses(q):
     stresses = []
     for word in q.split():
-        p = phones_for_word(word)
+        word = re.sub(r'in\'', 'ing', word)
+        p = pron.phones_for_word(word)
+        p = p[0] if len(p) else ''
         if p:
             s = pron.stresses(p)
             stresses.append(s if len(s) else '0')
@@ -224,78 +353,15 @@ def get_stresses(q):
 
 
 @lru_cache(maxsize=500)
-def get_phones(q, vowels_only=False, include_stresses=False, try_variants=True, allow_missing=False, tails_only=False):
-    if try_variants == True:
-        try_variants = make_variants(q)
-    phones = None
-
-    for tok in [q] + list(try_variants or []):
-        words = tok.split()
-        word_phones = [phones_for_word(w, tail_only=tails_only) for w in words]
-        word_phones = [p for p in word_phones if p]
-        if len(word_phones) != len(words):
-            if not allow_missing:
-                continue
-        phones = ' '.join(word_phones)
-        if not include_stresses:
-            phones = re.sub(r'[\d]+', '', phones)
-        if vowels_only:
-            phones = ' '.join([p for p in phones.split() if p in PHONE_PLACEMENT])
-
-        phones = re.sub(r'\s+', ' ', phones)
-        phones = phones.strip()
-        if phones:
-            break
-
-    return phones or ''
-
-
-@lru_cache(maxsize=500)
-def get_vowel_vectors(q, try_variants=True, pad_to=None, tails_only=False):
-    phones = get_phones(q, try_variants=try_variants, vowels_only=True, include_stresses=False, tails_only=tails_only)
-    if phones:
-        phones = [PHONE_PLACEMENT[p] for p in phones.split(' ') if p in PHONE_PLACEMENT]
-        if pad_to:
-            while len(phones) < pad_to:
-                phones.append(AVERAGE_PHONE_PLACEMENT)
-
-    return phones or ''
-
-
-@lru_cache(maxsize=500)
-def get_ipa(txt, phones=False, include_stresses=True):
-    txt = txt.strip()
-    txt = re.sub(r'-', ' ', txt)
-    txt = re.sub(r'in\'', 'ing', txt)
-
-    ipa = eng_to_ipa.convert(txt)
-
-    # line = eng_to_ipa.ipa_list(txt)
-    # line = ' '.join([ '|'.join(toks) for toks in line ])
-    if '*' in ipa:
-        return ''
-
-    if phones:
-        cmd = sh.python('-m',  'gruut_ipa', 'phones', ipa)
-        cmd.wait()
-        ipa_out = str(cmd)[:-1]
-        if not include_stresses:
-            ipa_out = re.sub(r'[\ˈˌ]', '', ipa_out)
-        return ipa_out
-
-    return ipa
-
-
-@lru_cache(maxsize=500)
 def get_formants(q, vowels_only=False, include_stresses=False):
-    phones = get_ipa(q, phones=True).split()
+    ipa = get_ipa_text(q).split()
     formants = []
 
-    for phone in phones:
+    for ch in ipa:
         if not include_stresses:
-            phone = re.sub(r'[\ˈˌ]', '', phone)
-        if phone in VOWELS or not vowels_only:
-            f = PHONE_TO_FORMANTS.get(phone, [0, 0, 0, 0])
+            ch = re.sub(r'[\ˈˌ]', '', ch)
+        if ch in IPA_VOWELS or not vowels_only:
+            f = PHONE_TO_FORMANTS.get(ch, [0, 0, 0, 0])
             formants.append(f)
 
     if len([f for f in formants if f != [0, 0, 0, 0]]) < (len(formants) / 2):
@@ -312,29 +378,6 @@ def get_mscore(text):
 
 
 POS_TO_MSCORE = dict(ADJ=4, NOUN=4, VERB=4, PROPN=3, ADV=2, ADP=2, INTJ=2, NUM=2, X=2, PRON=1)
-
-VOWELS = [u'i', u'y', u'e', u'ø', u'ɛ', u'œ', u'a', u'ɶ', u'ɑ', u'ɒ', u'ɔ',
-          u'ʌ', u'ɤ', u'o', u'ɯ', u'u', u'ɪ', u'ʊ', u'ə', u'æ']
-
-PHONE_PLACEMENT = dict(
-    AA=[3.0, 4.0],
-    AE=[1.0, 3.5],
-    AO=[3.0, 3.0],
-    AW=[1.0, 3.0],
-    AH=[2.0, 2.5],
-    OY=[3.0, 3.0],
-    UH=[3.5, 1.5],
-    ER=[2.0, 2.5],
-    OW=[3.0, 2.5],
-    EH=[1.0, 3.0],
-    IH=[1.5, 1.5],
-    EY=[1.0, 2.0],
-    IY=[1.0, 1.0],
-    AY=[2.0, 3.5],
-    UW=[3.0, 1.0],
-)
-
-AVERAGE_PHONE_PLACEMENT = [2.0, 2.5]
 
 PHONE_TO_FORMANTS = {
     u'i': [240, 2400, 2160, 0],
@@ -400,3 +443,6 @@ def get_mine():
     with open('./data/mine.txt', 'r') as f:
         return f.read()
 
+
+IPA_VOWELS = [u'i', u'y', u'e', u'ø', u'ɛ', u'œ', u'a', u'ɶ', u'ɑ', u'ɒ', u'ɔ',
+              u'ʌ', u'ɤ', u'o', u'ɯ', u'u', u'ɪ', u'ʊ', u'ə', u'æ']

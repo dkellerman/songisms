@@ -4,7 +4,7 @@ import sys
 import json
 from tqdm import tqdm
 from api.models import *
-from api.utils.text2 import *
+from api.utils.text import get_ipa_words, proc_text, score_rhyme
 
 
 if __name__ == '__main__':

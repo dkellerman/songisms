@@ -4,7 +4,7 @@ import sys
 import json
 from tqdm import tqdm
 from api.models import *
-from api.utils.text2 import *
+from api.utils.text import normalize_ipa, get_ipa_words, align_vals, remove_stresses
 
 
 if __name__ == '__main__':

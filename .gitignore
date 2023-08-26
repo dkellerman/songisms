@@ -8,7 +8,7 @@ TODO.md
 
 data/*
 data/fixtures/*
-!data/rhymes.txt
+!data/rhymes.json
 !data/simsounds.json
 !data/variants.txt
 !data/ipa_gpt.json

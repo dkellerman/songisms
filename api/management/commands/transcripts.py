@@ -6,7 +6,7 @@ import multiprocessing as mp
 from django.core.management.base import BaseCommand
 from api.models import Song
 from api.utils.cloud import fetch_workflow
-from api.utils.text2 import *
+from api.utils.text import normalize_lyric, tokenize_lyric, align_vals
 
 
 class Command(BaseCommand):

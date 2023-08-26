@@ -5,8 +5,7 @@ from django.db.models import Q, F
 from django.core.cache import cache
 from django.conf import settings
 from django_pandas.managers import DataFrameManager
-from .utils.text import make_variants, tokenize_lyric_line, get_stresses
-from .utils.text2 import get_vowel_vector
+from .utils.text import make_variants, get_stresses, get_vowel_vector, normalize_lyric
 
 
 class BaseManager(DataFrameManager):
@@ -55,7 +54,7 @@ class RhymeManager(BaseManager):
             if vals:
                 return vals[offset:min(self.HARD_LIMIT, offset+limit)]
 
-        q = ' '.join(tokenize_lyric_line(q))
+        q = ' '.join(normalize_lyric(q))
         n = len(q.split())
         variants = make_variants(q)
         vec = get_vowel_vector(q) or None

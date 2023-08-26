@@ -1,8 +1,8 @@
 import torch
-import torch.nn
+from torch import nn
 import torch.nn.functional as F
 
-class TripletLoss(torch.nn.Module):
+class TripletLoss(nn.Module):
     def __init__(self, margin=1.0):
         super(TripletLoss, self).__init__()
         self.margin = margin
@@ -14,19 +14,19 @@ class TripletLoss(torch.nn.Module):
         return losses.mean()
 
 
-class SiameseTripletNetwork(torch.nn.Module):
+class SiameseTripletNetwork(nn.Module):
     def __init__(self):
         super(SiameseTripletNetwork, self).__init__()
 
-        self.conv1 = torch.nn.Conv2d(1, 32, 5)  # chnl-in, out, krnl
-        self.conv2 = torch.nn.Conv2d(32, 64, 5)
-        self.fc1 = torch.nn.Linear(1024, 512)   # [64*4*4, x]
-        self.fc2 = torch.nn.Linear(512, 256)
-        self.fc3 = torch.nn.Linear(256, 2)     # n values
-        self.pool1 = torch.nn.MaxPool2d(2, stride=2) # kernel, stride
-        self.pool2 = torch.nn.MaxPool2d(2, stride=2)
-        self.drop1 = torch.nn.Dropout(0.25)
-        self.drop2 = torch.nn.Dropout(0.50)
+        self.conv1 = nn.Conv2d(1, 32, 5)  # chnl-in, out, krnl
+        self.conv2 = nn.Conv2d(32, 64, 5)
+        self.fc1 = nn.Linear(1024, 512)   # [64*4*4, x]
+        self.fc2 = nn.Linear(512, 256)
+        self.fc3 = nn.Linear(256, 2)     # n values
+        self.pool1 = nn.MaxPool2d(2, stride=2) # kernel, stride
+        self.pool2 = nn.MaxPool2d(2, stride=2)
+        self.drop1 = nn.Dropout(0.25)
+        self.drop2 = nn.Dropout(0.50)
 
     def forward_once(self, x):
         # convolution phase                 # x is [bs, 1, 28, 28]
