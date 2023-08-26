@@ -332,14 +332,17 @@ class Cache(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-    def get(self, key, getter, save=False):
+    def get(self, key, getter=None, save=False):
         if key in (self.data or {}):
             return self.data[key]
         self.data = self.data or {}
-        self.data[key] = getter(key)
-        if save:
-            self.save()
-        return self.data[key]
+        if getter:
+            self.data[key] = getter(key)
+            if save:
+                self.save()
+            return self.data[key]
+        else:
+            return None
 
     def clear(self, save=True):
         self.data = None

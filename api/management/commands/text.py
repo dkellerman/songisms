@@ -12,6 +12,7 @@ from nltk import FreqDist
 
 from api.models import *
 from api.utils.text import get_lyric_ngrams, get_rhyme_pairs, get_common_words, get_mscore, get_ipa, get_stresses
+from api.utils.text2 import get_ipa_text, get_vowel_vector
 from django.core.cache import cache
 from tqdm import tqdm
 
@@ -40,7 +41,7 @@ class Command(BaseCommand):
         rhymes = dict()
         song_ngrams = dict()
 
-        phones_cache, _ = Cache.objects.get_or_create(key='ngram_phones')
+        vector_cache, _ = Cache.objects.get_or_create(key='ngram_vector')
         datamuse_cache, _ = Cache.objects.get_or_create(key='datamuse')
         mscores_cache, _ = Cache.objects.get_or_create(key='ngram_mscores')
 
@@ -131,19 +132,19 @@ class Command(BaseCommand):
                 if rkey not in rhymes:
                     rhymes[rkey] = dict(from_ngram=l1['from_ngram'], to_ngram=l2['to_ngram'], song=None, level=2)
 
-        for ngram in tqdm(ngrams.values(), desc='ngram phones'):
-            ngram['phones'] = phones_cache.get(ngram['text'], phones_getter) or None
-        for line in tqdm(lines.values(), desc='line phones'):
-            line['phones'] = phones_cache.get(line['text'], phones_getter) or None
+        for ngram in tqdm(ngrams.values(), desc='ngram vectors'):
+            ngram['phones'] = vector_cache.get(ngram['text'], vector_getter) or None
+        for line in tqdm(lines.values(), desc='line vectors'):
+            line['phones'] = vector_cache.get(line['text'], vector_getter) or None
 
         for ngram in tqdm(ngrams.values(), desc='ngram mscores'):
             ngram['mscore'] = mscores_cache.get(ngram['text'], get_mscore)
 
         ipa_cache, _ = Cache.objects.get_or_create(key='ngram_ipa')
         for ngram in tqdm(ngrams.values(), desc='ngram ipa'):
-            ngram['ipa'] = ipa_cache.get(ngram['text'], get_ipa)
+            ngram['ipa'] = ipa_cache.get(ngram['text'], get_ipa_text)
         for line in tqdm(lines.values(), desc='line ipa'):
-            line['ipa'] = ipa_cache.get(line['text'], get_ipa)
+            line['ipa'] = ipa_cache.get(line['text'], get_ipa_text)
 
         stresses_cache, _ = Cache.objects.get_or_create(key='ngram_stresses')
         for ngram in tqdm(ngrams.values(), desc='ngram stresses'):
@@ -187,7 +188,7 @@ class Command(BaseCommand):
         if dry_run:
             return
 
-        for c in tqdm([datamuse_cache, phones_cache, mscores_cache, ipa_cache, stresses_cache], desc='saving db caches'):
+        for c in tqdm([datamuse_cache, vector_cache, mscores_cache, ipa_cache, stresses_cache], desc='saving db caches'):
             c.save()
             del c
         del title_ngrams
@@ -268,8 +269,8 @@ def reset_caches():
             NGram.objects.suggest(qsug, sug_size)
 
 
-def phones_getter(key):
-    return get_vowel_vectors(key, pad_to=10)
+def vector_getter(key):
+    return get_vowel_vector(key)
 
 
 def fetch_datamuse_rhymes(key):

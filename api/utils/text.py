@@ -39,7 +39,7 @@ def get_sim_sounds():
 @lru_cache(maxsize=500)
 def get_word_splits(word):
     splits = set()
-    common = get_common_words()
+    common = get_common_words(1000)
     for sp in range(1, len(word)):
         w1 = word[:sp]
         w2 = word[sp:]
@@ -98,34 +98,37 @@ def get_rhyme_pairs(val=''):
 
 @lru_cache(maxsize=500)
 def make_variants(gram):
-    all_variants = set()
-
     words = gram.split()
-    for idx, word in enumerate(words):
-        variants = set()
 
+    if ' ' in gram:
+        compound = re.sub(' ', '', gram)
+        if compound in get_common_words():
+            words.append(compound)
+
+    variants = []
+    for word in words:
         if len(word) >= 5:
             if word.endswith('in\''):
-                variants.add(re.sub(r"'$", "g", word))
-                variants.add(word[:-1])
+                variants.append(re.sub(r"'$", "g", word))
+                variants.append(word[:-1])
             elif word.endswith('ing'):
-                variants.add(re.sub(r'g$', '\'', word))
-                variants.add(word[:-1])
+                variants.append(re.sub(r'g$', '\'', word))
+                variants.append(word[:-1])
             elif word.endswith('in'):
-                variants.add(word + 'g')
-                variants.add(word + "'")
+                variants.append(word + 'g')
+                variants.append(word + "'")
 
         if word.startswith('a-'):
-            variants.add(word[2:])
-            variants.add('a' + word[2:])
+            variants.append(word[2:])
+            variants.append('a' + word[2:])
 
         if word.endswith("'ve") and len(word) > 3:
             if word[-4] == 'd':
-                variants.add(word[:-3] + 'a')
-            variants.add(word[:-3] + ' have')
+                variants.append(word[:-3] + 'a')
+            variants.append(word[:-3] + ' have')
 
         try:
-            variants.add(num2words(word))
+            variants.append(num2words(word))
         except:
             pass
 
@@ -134,9 +137,9 @@ def make_variants(gram):
         simple_sing = word[:-1]
 
         if simple_plural == inflector.plural(word):
-            variants.add(simple_plural)
+            variants.append(simple_plural)
         elif simple_sing == inflector.singular_noun(word):
-            variants.add(simple_sing)
+            variants.append(simple_sing)
 
         match_w = word.lower().strip()
         matches = [line for line in get_variants() if match_w in line]
@@ -144,24 +147,20 @@ def make_variants(gram):
             for l in line:
                 tok = l.lower().strip()
                 if tok != match_w:
-                    variants.add(tok)
+                    variants.append(tok)
 
-        for splitw in get_word_splits(word):
-            variants.add(splitw)
+    variants = list(set(variants))
 
-        for syn in variants:
-            all_variants.add(re.sub(r'\b%s\b' % word, syn, str(gram)))
+    for var in [gram] + variants:
+        rhymes = pron.rhymes(var)
+        variants += [r for r in rhymes if r in get_common_words()]
+        variants += get_word_splits(var)
+        variants += [ss.lower() for ss in get_sim_sounds().get(var, [])]
 
-        for sim in get_sim_sounds().get(word, []):
-            if sim.lower() not in all_variants:
-                all_variants.add(sim.lower())
+    variants = set(variants)
+    return [var for var in variants if var != gram]
 
-    if ' ' in gram:
-        compound = re.sub(' ', '', gram)
-        if compound in get_common_words():
-            all_variants.add(compound)
-
-    return [syn for syn in all_variants if syn != gram]
+    # ??? for var in variants: variants.add(re.sub(r'\b%s\b' % word, var, str(gram)))
 
 
 @lru_cache(maxsize=500)
@@ -218,7 +217,7 @@ def get_stresses(q):
         p = phones_for_word(word)
         if p:
             s = pron.stresses(p)
-            stresses.append(s if len(s) else '1')
+            stresses.append(s if len(s) else '0')
         else:
             stresses.append('1')
     return [int(s) for s in (''.join(stresses))]

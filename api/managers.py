@@ -5,7 +5,8 @@ from django.db.models import Q, F
 from django.core.cache import cache
 from django.conf import settings
 from django_pandas.managers import DataFrameManager
-from .utils.text import make_variants, get_vowel_vectors, tokenize_lyric_line, get_stresses
+from .utils.text import make_variants, tokenize_lyric_line, get_stresses
+from .utils.text2 import get_vowel_vector
 
 
 class BaseManager(DataFrameManager):
@@ -14,6 +15,7 @@ class BaseManager(DataFrameManager):
 
 class RhymeManager(BaseManager):
     HARD_LIMIT = 200
+    USE_SUGGESTIONS = True
 
     def top_rhymes(self, offset=0, limit=50):
         offset = offset or 0
@@ -38,6 +40,7 @@ class RhymeManager(BaseManager):
 
         return qs
 
+
     def query(self, q, offset=0, limit=50):
         if not q:
             return self.top_rhymes(offset, limit)
@@ -53,13 +56,10 @@ class RhymeManager(BaseManager):
                 return vals[offset:min(self.HARD_LIMIT, offset+limit)]
 
         q = ' '.join(tokenize_lyric_line(q))
+        n = len(q.split())
         variants = make_variants(q)
-        qphones = get_vowel_vectors(q, try_variants=tuple(variants), pad_to=10) or None
-        if qphones and len(qphones):
-            qphones += get_vowel_vectors(q, try_variants=False, pad_to=10, tails_only=True)
-
-        qstresses = get_stresses(q)
-        qn = len(q.split())
+        vec = get_vowel_vector(q) or None
+        stresses = get_stresses(q)
         all_q = [q.upper()] + [s.upper() for s in variants]
 
         rhymes_sql = f'''
@@ -68,8 +68,9 @@ class RhymeManager(BaseManager):
                 rto.n AS n,
                 r.level AS level,
                 COUNT(r.song_id) AS frequency,
-                0 AS phones_distance,
-                CUBE(%(qstresses)s) <-> CUBE(n.stresses) AS stresses_distance,
+                0 AS vec_distance,
+                {f'CUBE(%(stresses)s) <-> CUBE(n.stresses) AS stresses_distance' if len(stresses)
+                 else '0 AS stresses_distance'},
                 n.adj_pct AS adj_pct,
                 n.song_pct AS song_pct,
                 n.title_pct AS title_pct,
@@ -87,8 +88,8 @@ class RhymeManager(BaseManager):
             WHERE
                 UPPER(n.text) = ANY(%(q)s)
                 AND NOT (UPPER(rto.text) = ANY(%(q)s))
-            GROUP BY ngram, rto.n, level, phones_distance, stresses_distance, n.adj_pct,
-                     n.song_pct, n.title_pct, ndiff, n.mscore, n.song_count
+            GROUP BY ngram, rto.n, level, vec_distance, stresses_distance,
+                     n.adj_pct, n.song_pct, n.title_pct, ndiff, n.mscore, n.song_count
         '''
 
         suggestions_sql = f'''
@@ -97,12 +98,12 @@ class RhymeManager(BaseManager):
                 n.n AS n,
                 CAST(NULL AS bigint) AS level,
                 CAST(NULL AS bigint) AS frequency,
-                CUBE(%(qphones)s) <-> CUBE(n.phones) AS phones_distance,
-                CUBE(%(qstresses)s) <-> CUBE(n.stresses) AS stresses_distance,
+                CUBE(%(vec)s) <-> CUBE(n.phones) AS vec_distance,
+                CUBE(%(stresses)s) <-> CUBE(n.stresses) AS stresses_distance,
                 n.adj_pct AS adj_pct,
                 n.song_pct AS song_pct,
                 n.title_pct AS title_pct,
-                ABS(n - %(qn)s) AS ndiff,
+                ABS(n - %(n)s) AS ndiff,
                 n.mscore AS mscore,
                 n.song_count AS song_count
             FROM
@@ -110,13 +111,13 @@ class RhymeManager(BaseManager):
             WHERE
                 NOT (UPPER(n.text) = ANY(%(q)s))
                 AND n.phones IS NOT NULL
-                AND CUBE(%(qphones)s) <-> CUBE(n.phones) <= 2.5
+                AND CUBE(%(vec)s) <-> CUBE(n.phones) <= 2.5
                 AND adj_pct >= 0.00005
                 AND n.mscore > 4
                 AND n.song_count > 2
-            GROUP BY ngram, n, level, frequency, phones_distance, stresses_distance, adj_pct,
-                     song_pct, title_pct, ndiff, mscore, song_count
-        ''' if qphones and len(qphones) else ''
+            GROUP BY ngram, n, level, frequency, vec_distance, stresses_distance,
+                     adj_pct, song_pct, title_pct, ndiff, mscore, song_count
+        ''' if self.USE_SUGGESTIONS and vec and len(vec) and stresses and len(stresses) else ''
 
         with connection.cursor() as cursor:
             cursor.execute(f'''
@@ -136,8 +137,8 @@ class RhymeManager(BaseManager):
                     ORDER BY
                         level NULLS LAST,
                         frequency DESC NULLS LAST,
-                        phones_distance,
-                        stresses_distance,
+                        vec_distance,
+                        -- stresses_distance,
                         mscore DESC NULLS LAST,
                         ndiff - (adj_pct * 10000),
                         adj_pct DESC NULLS LAST,
@@ -146,7 +147,7 @@ class RhymeManager(BaseManager):
                     OFFSET 0
                     LIMIT %(limit)s
                 ;
-            ''', dict(q=all_q, qstr=q, qn=qn, qphones=qphones, qstresses=qstresses, limit=self.HARD_LIMIT))
+            ''', dict(q=all_q, qstr=q, n=n, vec=vec, stresses=stresses, limit=self.HARD_LIMIT))
 
             columns = [col[0] for col in cursor.description]
             vals = [

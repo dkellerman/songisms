@@ -57,6 +57,10 @@ def get_ipa_words(text):
     return ipa
 
 
+def get_ipa_text(text):
+    return ' '.join(get_ipa_words(text))
+
+
 def fix_ipa_word(w):
     if w is None:
         return ''
@@ -90,7 +94,7 @@ def get_ipa_features(ipa_letter):
 
 
 def is_vowel(ipa_letter):
-    return ipa_letter in ['ɪ', 'e', 'æ', 'ʌ', 'ʊ', 'ɒ', 'ə', 'i', 'ɑ', 'ɔ', 'ɜ', 'u', 'ɛ' ]
+    return ipa_letter in IPA_VOWELS
 
 
 def get_stress_tail(phrase):
@@ -108,13 +112,13 @@ def align_vals(val1, val2):
     aligner = needle.NeedlemanWunsch(val1, val2)
     aligner.gap_character = '_'
     aligner.align()
-    fmt = core.AlignmentFormat.list
+    fmt = core.AlignmentFormat.str if type(val1) == str else core.AlignmentFormat.list
     aligned_val1, aligned_val2 = aligner.get_aligned_sequences(fmt)
     score = aligner.get_score()
     return aligned_val1, aligned_val2, score, aligner
 
 
-def proc_text(text):
+def proc_text_for_scoring(text):
     text = text.lower().strip()
     ipa = get_ipa_words(text)
     text = ' '.join(ipa)
@@ -123,9 +127,26 @@ def proc_text(text):
     return remove_stresses(val)
 
 
+@lru_cache(maxsize=500)
+def get_vowel_vector(text):
+    global ftable
+    ipa = proc_text_for_scoring(text)
+    vec = []
+    for c in ipa:
+        if is_vowel(c):
+            ft = ftable.word_array([
+                'syl', 'son', 'cons', 'voi', 'long',
+                'round', 'back', 'lo', 'hi', 'tense'
+            ], c).tolist() or ([0] * 10)
+            vec += ft
+    if len(vec) > 100:
+        vec = vec[-99:]
+    return vec
+
+
 def score_rhyme(text1, text2):
-    ipa1 = proc_text(text1)
-    ipa2 = proc_text(text2)
+    ipa1 = proc_text_for_scoring(text1)
+    ipa2 = proc_text_for_scoring(text2)
     seq1, seq2, _, _ = align_vals(ipa1, ipa2)
     f1, f2 = [], []
     for idx, c in enumerate(seq1):
@@ -143,3 +164,7 @@ def score_rhyme(text1, text2):
                 f2 += [ float(f) for f in ft2.numeric() ]
     score = distance.cosine(f1, f2)
     return score
+
+
+IPA_VOWELS = [u'i', u'y', u'e', u'ø', u'ɛ', u'œ', u'a', u'ɶ', u'ɑ', u'ɒ', u'ɔ',
+              u'ʌ', u'ɤ', u'o', u'ɯ', u'u', u'ɪ', u'ʊ', u'ə', u'æ']
