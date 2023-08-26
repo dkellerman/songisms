@@ -165,7 +165,7 @@ AUTHENTICATION_BACKENDS = [
 CORS_ALLOW_ALL_ORIGINS = not is_prod
 CORS_ALLOWED_ORIGINS = [
     'https://rhymes.vercel.app',
-    'https://rhymes-davidk-davidk415.vercel.app/',
+    'https://rhymes-davidk-davidk415.vercel.app',
     'https://songisms.vercel.app',
     'https://www.songrhymes.com',
 ]
