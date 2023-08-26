@@ -153,15 +153,12 @@ fetchRhymes(q.value, page.value);
   </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
+@import '@/rhymes.scss';
 @import 'vue3-simple-typeahead/dist/vue3-simple-typeahead.css';
 
-input[type='text'] {
+:deep(input[type='text']) {
   width: 100%;
   border-radius: 0;
 }
-</style>
-
-<style scoped lang="scss">
-@import '@/rhymes.scss';
 </style>
