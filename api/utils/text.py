@@ -260,7 +260,6 @@ def make_variants(gram):
         variants += [ss.lower() for ss in get_sim_sounds().get(var, [])]
 
     variants = set(variants)
-    print('---', list(variants))
     return [var for var in variants if var != gram]
 
 
