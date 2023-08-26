@@ -75,7 +75,7 @@ export const useRhymesStore = defineStore('rhymes', {
       if (page > 1) newRhymes = [...(this.rhymes ?? []), ...newRhymes];
 
       this.rhymes = newRhymes;
-      this.hasNextPage = newRhymes?.length === page * PER_PAGE && newRhymes.length < 200;
+      this.hasNextPage = newRhymes?.length === page * PER_PAGE && newRhymes.length < 150;
       this.loading = false;
     },
 
