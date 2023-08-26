@@ -2,13 +2,13 @@
 
 * Song lyric database
 * Rhymes search client (rhymes.vercel.app)
-* Song browser/admin (songsisms.vercel.app)
+* Song browser/admin
 
 ## Folders
 * `api` - django app for db/admin/graphql, deployed to heroku @ songisms.herokuapp.com
 * `clients` - client apps
-  * `browser` - api browser (VueJS), deployed to vercel @ songisms.vercel.app
   * `rhymes` - song rhymes app (VueJS), deployed to vercel @ rhymes.vercel.app
+  * `browser` - api browser (VueJS)  
 * `data` - misc data
 * `scripts` - misc scripts
 * `songisms` - django project settings
@@ -20,7 +20,6 @@
 * `CREATE EXTENSION fuzzystrmatch`
 * `CREATE EXTENSION cube`
 * `./manage.py migrate`
-* pull data from prod? `heroku pg:pull ...`
 * `./manage.py createinitialrevisions`
 
 ## Django setup
@@ -33,7 +32,7 @@
 
 ## Client app setup
 * `cd client/rhymes` (or `browser`)
-* `nvm use 14`
+* `nvm use 18`
 * `yarn`
 * `yarn dev` OR `vercel dev` (should have env vars setup)
 

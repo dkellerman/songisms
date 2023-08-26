@@ -42,7 +42,6 @@ export const useRhymesStore = defineStore('rhymes', {
         throw new Error(resp.data.errors[0].message);
       }
       let data = resp.data.data.rhymesSuggest;
-      console.log('*suggest', data);
       this.suggestions = data.map(item => item.text);
     },
 
@@ -70,7 +69,6 @@ export const useRhymesStore = defineStore('rhymes', {
       }
 
       let newRhymes = resp.data.data.rhymes;
-      console.log('* rhymes', page, newRhymes);
 
       if (page > 1) newRhymes = [...(this.rhymes ?? []), ...newRhymes];
 
