@@ -10,6 +10,14 @@ import { ref, computed, watch, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useRhymesStore } from '@/store';
+import { useSpeechRecognition } from '@vueuse/core';
+
+const speech = useSpeechRecognition({
+  lang: 'en-US',
+  interimResults: false,
+  continuous: true,
+});
+const { isListening, isSupported: listenSupported } = speech;
 
 const SUGGEST_DEBOUNCE = 200;
 
@@ -61,6 +69,34 @@ watch(
     page.value = route.query.page ?? 1;
   },
 );
+
+watch(speech.result, onSpeechResult);
+
+function onSpeechResult() {
+  let val = speech.result.value?.toLowerCase().trim();
+  const words = val.split(' ');
+  console.log('[R]', speech.isFinal.value ? '[F]' : '[-]', val);
+
+  if (speech.isFinal) {
+    if (!val) return;
+    if (val === 'stop listening') {
+      speech.toggle();
+      return;
+    } else if (val === 'clear search') {
+      val = '';
+    } else if (words.length > 2 && words.every(w => w.length === 1)) {
+      val = words.join('');
+    }
+
+    speech.result.value = '';
+    q.value = val;
+    page.value = 1;
+    if (isListening.value) speech.stop();
+    setTimeout(() => {
+      if (!isListening.value) speech.start();
+    }, 100);
+  }
+}
 
 function onSelectItem(val) {
   q.value = val;
@@ -135,6 +171,9 @@ fetchRhymes(q.value, page.value);
       </template>
     </vue3-simple-typeahead>
     <button @click.prevent="onClickSearch"><i class="fa fa-search" /></button>
+    <button v-if="listenSupported" @click.prevent="() => speech.toggle()" :class="{ listen: true, 'is-listening': isListening }">
+      <i :class="{ fa: true, 'fa-lg': true, 'fa-microphone': !isListening, 'fa-stop': isListening }" />
+    </button>
   </fieldset>
 
   <section class="output" ref="outputEl">
@@ -156,9 +195,4 @@ fetchRhymes(q.value, page.value);
 <style lang="scss" scoped>
 @import '@/rhymes.scss';
 @import 'vue3-simple-typeahead/dist/vue3-simple-typeahead.css';
-
-:deep(input[type='text']) {
-  width: 100%;
-  border-radius: 0;
-}
 </style>

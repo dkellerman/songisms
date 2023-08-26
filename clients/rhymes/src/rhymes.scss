@@ -1,4 +1,9 @@
 fieldset {
+  :deep(input[type='text']) {
+    width: 100%;
+    border-radius: 0;
+  }
+
   position: sticky;
   top: 0;
   background: white;
@@ -20,6 +25,15 @@ fieldset {
     margin-top: 10px;
     border-radius: 0;
     border: 1px dotted #aaa;
+
+    &.listen {
+      margin-left: 5px;
+      padding: 0 25px;
+      background: green;
+      &.is-listening {
+        background: red;
+      }
+    }
   }
 }
 

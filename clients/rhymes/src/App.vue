@@ -56,7 +56,6 @@ main {
   flex: 1;
 }
 footer {
-  border: 1px solid #eee;
   .links {
     display: none;
   }
