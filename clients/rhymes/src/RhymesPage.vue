@@ -12,13 +12,6 @@ import { storeToRefs } from 'pinia';
 import { useRhymesStore } from '@/store';
 import { useSpeechRecognition } from '@vueuse/core';
 
-const speech = useSpeechRecognition({
-  lang: 'en-US',
-  interimResults: false,
-  continuous: true,
-});
-const { isListening, isSupported: listenSupported } = speech;
-
 const SUGGEST_DEBOUNCE = 200;
 
 const route = useRoute();
@@ -32,6 +25,22 @@ const { fetchRhymes, fetchSuggestions, abort } = useRhymesStore();
 const debouncedFetchSuggestions = debounce(fetchSuggestions, SUGGEST_DEBOUNCE);
 const showListenTip = ref(false);
 
+const speech = useSpeechRecognition({
+  lang: 'en-US',
+  interimResults: false,
+  continuous: true,
+});
+const { isListening, isSupported: listenSupported } = speech;
+
+// override timeout
+speech.recognition.onend = () => {
+  if (isListening.value) {
+    speech.recognition.start();
+  } else {
+    speech.stop();
+  }
+};
+
 const counts = computed(() => ({
   rhyme: rhymes.value?.filter(r => r.type === 'rhyme').length || 0,
   l2: rhymes.value?.filter(r => r.type === 'rhyme-l2').length || 0,
@@ -40,7 +49,7 @@ const counts = computed(() => ({
 
 const label = computed(() => {
   if (showListenTip.value)
-    return 'Say words to search. Try also: "stop listening" and "clear search"';
+    return 'Say words to search. Try also: "stop listening" and "clear search", or spelling out a word';
 
   return [
     ct2str(counts.value.rhyme, 'rhyme'),
@@ -93,12 +102,12 @@ function onSpeechResult() {
       val = words.join('');
     }
 
-    speech.result.value = '';
     q.value = val;
     page.value = 1;
     if (isListening.value) speech.stop();
     setTimeout(() => {
       if (!isListening.value) speech.start();
+      speech.result.value = '';
     }, 100);
   }
 }
