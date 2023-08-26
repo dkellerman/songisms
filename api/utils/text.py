@@ -4,7 +4,7 @@ import eng_to_ipa
 import string
 import json
 import inflect
-import spacy
+import nltk
 from scipy.spatial import distance
 from functools import lru_cache
 from panphon import featuretable
@@ -324,18 +324,6 @@ def make_homophones(w, ignore_stress=True, multi=True):
     return [r for r in results if '(' not in r]
 
 
-@lru_cache(maxsize=None)
-def get_nlp():
-    vocab = 'en_core_web_sm'
-    try:
-        nlp = spacy.load(vocab)
-    except:
-        spacy.cli.download(vocab)
-        nlp = spacy.load(vocab)
-    nlp.tokenizer = spacy.tokenizer.Tokenizer(nlp.vocab)
-    return nlp
-
-
 @lru_cache(maxsize=500)
 def get_stresses(q):
     stresses = []
@@ -371,12 +359,19 @@ def get_formants(q, vowels_only=False, include_stresses=False):
 
 @lru_cache(maxsize=500)
 def get_mscore(text):
-    mscore = [POS_TO_MSCORE.get(tok.pos_, 0) for tok in get_nlp()(text)]
+    toks = tokenize_lyric(text)
+    pos = nltk.pos_tag(toks)
+    mscore = [POS_TO_MSCORE.get(tok[1], 0) for tok in pos if tok[1]]
     mscore[-1] *= 1.5
     return sum(mscore) / len(mscore)
 
 
-POS_TO_MSCORE = dict(ADJ=4, NOUN=4, VERB=4, PROPN=3, ADV=2, ADP=2, INTJ=2, NUM=2, X=2, PRON=1)
+POS_TO_MSCORE = dict(CC=2, CD=1, DT=1, EX=1, IN=2, JJ=4, JJR=4, JJS=4, LS=1, MD=2, NN=4, NNP=3, NNPS=3,
+                     NNS=3, PDT=2, POS=0, PRP=2, RB=4, RBR=4, RBS=4, RP=3, TO=1, UH=3, VB=4,
+                     VBD=4, VBG=4, VBN=4, VBP=4, VBZ=4, WDT=2, WP=2, WRB=2, SYM=0)
+POS_TO_MSCORE['PRP$'] = 2
+POS_TO_MSCORE['WP$'] = 2
+POS_TO_MSCORE["''"] = 2
 
 PHONE_TO_FORMANTS = {
     u'i': [240, 2400, 2160, 0],

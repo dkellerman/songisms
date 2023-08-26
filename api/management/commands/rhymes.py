@@ -41,7 +41,6 @@ class Command(BaseCommand):
 
         vector_cache, _ = Cache.objects.get_or_create(key='ngram_vector')
         datamuse_cache, _ = Cache.objects.get_or_create(key='datamuse')
-        mscores_cache, _ = Cache.objects.get_or_create(key='ngram_mscores')
 
         for idx, song in enumerate(tqdm(songs, desc='lyric ngrams')):
             # lyric lines
@@ -101,7 +100,7 @@ class Command(BaseCommand):
         nmulti = [n['text'] for n in tqdm(ngrams.values(), desc='prepping multi rhymes')
                   if (n.get('song_count', 0) > 2)
                   and (n['n'] in (2, 3,))
-                  and (mscores_cache.get(n['text'], get_mscore) > 3)
+                  and (get_mscore(n['text']) > 3)
                   and (not is_repeated(n['text']))]
 
         for ngram in tqdm(nmulti, desc='making multi rhymes'):
@@ -136,7 +135,7 @@ class Command(BaseCommand):
             line['phones'] = vector_cache.get(line['text'], vector_getter) or None
 
         for ngram in tqdm(ngrams.values(), desc='ngram mscores'):
-            ngram['mscore'] = mscores_cache.get(ngram['text'], get_mscore)
+            ngram['mscore'] = get_mscore(ngram['text'])
 
         ipa_cache, _ = Cache.objects.get_or_create(key='ngram_ipa')
         for ngram in tqdm(ngrams.values(), desc='ngram ipa'):
@@ -186,7 +185,7 @@ class Command(BaseCommand):
         if dry_run:
             return
 
-        for c in tqdm([datamuse_cache, vector_cache, mscores_cache, ipa_cache, stresses_cache], desc='saving db caches'):
+        for c in tqdm([datamuse_cache, vector_cache, ipa_cache, stresses_cache], desc='saving db caches'):
             c.save()
             del c
         del title_ngrams
