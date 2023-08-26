@@ -135,7 +135,7 @@ fetchRhymes(q.value, page.value);
 
   <section class="output" ref="outputEl">
     <label v-if="loading">Searching...</label>
-    <label v-else-if="!q">Top {{ counts.rhyme }} rhymes</label>
+    <label v-else-if="!q">Top {{ counts.rhyme }} most rhymed words</label>
     <label v-else-if="q">{{ label }}</label>
 
     <ul v-if="rhymes && (!loading || page > 1)">
