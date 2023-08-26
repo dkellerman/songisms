@@ -88,6 +88,7 @@ function onSpeechResult() {
   console.log('[R]', speech.isFinal.value ? '[F]' : '[-]', val);
 
   if (speech.isFinal) {
+    showListenTip.value = false;
     if (!val) return;
     if (val === 'stop listening') {
       speech.toggle();
@@ -100,10 +101,9 @@ function onSpeechResult() {
 
     q.value = val;
     page.value = 1;
-    if (isListening.value) speech.stop();
+    if (isListening.value) speech.recognition.stop();
     setTimeout(() => {
-      if (!isListening.value) speech.start();
-      speech.result.value = '';
+      if (!isListening.value) speech.recognition.start();
     }, 100);
   }
 }
