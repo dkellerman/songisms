@@ -25,10 +25,11 @@ fieldset {
     margin-top: 10px;
     border-radius: 0;
     border: 1px dotted #aaa;
+    padding: 0 20px;
 
     &.listen {
-      margin-left: 5px;
-      padding: 0 20px;
+      margin-left: 3px;
+
       background: green;
       &.is-listening {
         background: red;
