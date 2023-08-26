@@ -160,7 +160,7 @@ def get_ipa_tail(text, stresses=False):
 
 
 @lru_cache(maxsize=500)
-def get_vowel_vector(text):
+def get_vowel_vector(text, max_len=100):
     global ftable
     ipa = get_ipa_tail(text)
     vec = []
@@ -171,8 +171,7 @@ def get_vowel_vector(text):
                 'round', 'back', 'lo', 'hi', 'tense'
             ], c).tolist() or ([0] * 10)
             vec += ft
-    if len(vec) > 100:
-        vec = vec[-99:]
+    vec = [item for sublist in vec for item in sublist][-max_len:]
     return vec
 
 
