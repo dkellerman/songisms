@@ -48,9 +48,6 @@ const counts = computed(() => ({
 }));
 
 const label = computed(() => {
-  if (showListenTip.value)
-    return 'Say words to search. Try also: "stop listening" and "clear search", or spelling out a word';
-
   return [
     ct2str(counts.value.rhyme, 'rhyme'),
     counts.value.l2 > 0 && ct2str(counts.value.l2, 'maybe', 'maybe'),
@@ -91,7 +88,6 @@ function onSpeechResult() {
   console.log('[R]', speech.isFinal.value ? '[F]' : '[-]', val);
 
   if (speech.isFinal) {
-    showListenTip.value = false;
     if (!val) return;
     if (val === 'stop listening') {
       speech.toggle();
@@ -195,6 +191,10 @@ fetchRhymes(q.value, page.value);
 
   <section class="output" ref="outputEl">
     <label v-if="loading">Searching...</label>
+    <label v-else-if="showListenTip">
+      Say words to search. Try also: "stop listening", "clear search",
+      or spelling out a word
+    </label>
     <label v-else-if="!q">Top {{ counts.rhyme }} most rhymed words</label>
     <label v-else-if="q">{{ label }}</label>
 
