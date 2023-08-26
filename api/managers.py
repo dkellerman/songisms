@@ -13,12 +13,11 @@ class BaseManager(DataFrameManager):
 
 
 class RhymeManager(BaseManager):
-    HARD_LIMIT = 150
+    HARD_LIMIT = 100
     USE_SUGGESTIONS = True
 
-    def top_rhymes(self, offset=0, limit=150):
+    def top_rhymes(self, offset=0, limit=100):
         offset = offset or 0
-        limit = limit
         cache_key = f'top_rhymes_{offset}_{offset + limit}'
         qs = cache.get(cache_key) if settings.USE_QUERY_CACHE else None
 
@@ -40,12 +39,11 @@ class RhymeManager(BaseManager):
         return qs
 
 
-    def query(self, q, offset=0, limit=150):
+    def query(self, q, offset=0, limit=100):
         if not q:
             return self.top_rhymes(offset, limit)
 
         offset = offset or 0
-        limit = limit or 150
         qkey = re.sub(' ', '_', q)
         cache_key = f'query_{qkey}'
 

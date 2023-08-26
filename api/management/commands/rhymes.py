@@ -249,9 +249,9 @@ def reset_caches():
         key = str(key).split(':')[-1][:-1]
         cache.delete(key)
 
-    topn = 200
-    page_size = 150
-    qsize = 150
+    topn = 100
+    page_size = 100
+    qsize = 100
     sug_size = 20
 
     Rhyme.objects.HARD_LIMIT = topn

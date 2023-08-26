@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { defineStore } from 'pinia';
 
-const PER_PAGE = 150;
+const PER_PAGE = 100;
 const SUGGESTION_COUNT = 20;
 
 const FETCH_RHYMES = `
@@ -75,7 +75,7 @@ export const useRhymesStore = defineStore('rhymes', {
       if (page > 1) newRhymes = [...(this.rhymes ?? []), ...newRhymes];
 
       this.rhymes = newRhymes;
-      this.hasNextPage = newRhymes?.length === page * PER_PAGE && newRhymes.length < 150;
+      this.hasNextPage = newRhymes?.length === page * PER_PAGE && newRhymes.length < 100;
       this.loading = false;
     },
 

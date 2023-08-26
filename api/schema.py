@@ -192,7 +192,7 @@ class Query(graphene.ObjectType):
         return Tag.objects.filter(category=category).order_by('label')
 
     @staticmethod
-    def resolve_rhymes(root, info, q=None, offset=0, limit=150):
+    def resolve_rhymes(root, info, q=None, offset=0, limit=100):
         return Rhyme.objects.query(q, offset, limit)
 
     @staticmethod
