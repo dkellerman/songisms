@@ -17,26 +17,38 @@ class RhymeManager(BaseManager):
     USE_SUGGESTIONS = True
 
 
-    def top_rhymes(self, offset=0, limit=100):
+    def top_rhymes(self, offset=0, limit=100, q=None):
         offset = offset or 0
         cache_key = f'top_rhymes_{offset}_{offset + limit}'
-        qs = cache.get(cache_key) if settings.USE_QUERY_CACHE else None
 
-        if not qs:
-            from api.models import NGram
-            qs = NGram.objects.annotate(
-                frequency=models.Count('rhymed_from__song__id', distinct=True),
-                ngram=models.F('text'),
-                type=models.Value('rhyme'),
-            ).filter(frequency__gt=0) \
-             .filter(rhymed_from__level=1) \
-             .order_by('-frequency', 'text') \
-             .values('ngram', 'frequency', 'type')
+        if not q and settings.USE_QUERY_CACHE:
+            qs = cache.get(cache_key) if settings.USE_QUERY_CACHE else None
+            if qs:
+                return qs
 
-            qs = qs[offset:min(self.HARD_LIMIT, offset+limit)]
-            if settings.USE_QUERY_CACHE:
-                cache.set(cache_key, qs)
+        from api.models import NGram
+        qs = NGram.objects.all()
+        if q:
+            starts_with, ends_with = q.split('*')
+            if starts_with:
+                qs = qs.filter(text__istartswith=starts_with)
+            if ends_with:
+                qs = qs.filter(text__iendswith=ends_with)
 
+        qs = qs.annotate(
+            frequency=models.Count('rhymed_from__song__id', distinct=True),
+            ngram=models.F('text'),
+            type=models.Value('rhyme'),
+        )
+
+        qs = qs.filter(frequency__gt=0) \
+                .filter(rhymed_from__level=1) \
+                .order_by('-frequency', 'text') \
+                .values('ngram', 'frequency', 'type')
+
+        qs = qs[offset:min(self.HARD_LIMIT, offset+limit)]
+        if not q and settings.USE_QUERY_CACHE:
+            cache.set(cache_key, qs)
         return qs
 
 

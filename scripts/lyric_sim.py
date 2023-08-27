@@ -11,26 +11,28 @@ import gensim.downloader
 
 
 def train():
+    print("Downloading...")
+    kv = gensim.downloader.load("glove-twitter-25")
+
+    print("Building model...")
+    model = Word2Vec(vector_size=kv.vector_size, window=5, min_count=1, workers=4)
+    model.build_vocab([list(kv.index_to_key)], update=False)
+    for word in kv.index_to_key:
+        if word in model.wv.index_to_key:
+            model.wv[word] = kv[word]
+
+    print("Preparing data...")
     docs = []
     for song in Song.objects.exclude(lyrics=None).exclude(is_new=True):
         text = song.lyrics
         toks = [ tok for tok in tokenize_lyric(text) if get_mscore(tok) > 4 ]
         docs.append(toks)
-
-    kv = gensim.downloader.load("glove-wiki-gigaword-100")
-    model = Word2Vec(vector_size=kv.vector_size, window=5, min_count=1, workers=4)
-    model.build_vocab([list(kv.index_to_key)], update=False)
-
-    # model.wv.intersect_word2vec_format("./data/lyrics.w2v", binary=True)
-    for word in kv.index_to_key:
-        if word in model.wv.index_to_key:
-            model.wv[word] = kv[word]
-
     model.build_vocab(docs, update=True)
-    model.train(docs, total_examples=len(docs), epochs=model.epochs)
 
-    # model.train(docs, total_examples=model.corpus_count, epochs=model.epochs)
-    model.save('./data/lyrics2.w2v')
+    print("Training...")
+    model.train(docs, total_examples=len(docs), epochs=3)
+    print("Saving...")
+    model.save('./data/lyrics.w2v')
 
 
 def sim(q):
