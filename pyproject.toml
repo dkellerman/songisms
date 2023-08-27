@@ -30,7 +30,6 @@ requests-cache = "^0.9.4"
 hiredis = "^2.0.0"
 redis = "^4.3.3"
 django-smuggler = "^1.0.4"
-youtube_dl = "2020.12.2"
 panphon = "^0.20.0"
 g2p = "^1.1.20230511"
 minineedle = "^3.1.5"
@@ -46,10 +45,6 @@ autopep8 = "^2.0.0"
 gensim = "^4.2.0"
 numpy = "^1.22.4"
 
-
-
-[tool.poetry.group.dev.dependencies]
-torch = "^2.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
