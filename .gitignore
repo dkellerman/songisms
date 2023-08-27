@@ -12,8 +12,8 @@ data/fixtures/*
 !data/simsounds.json
 !data/variants.txt
 !data/ipa_gpt.json
-!data/fixtures/artists.json
-!data/fixtures/writers.json
+!songs/data/fixtures/artists.json
+!songs/data/fixtures/writers.json
 
 **/client/**/dist
 **/client/**/dist

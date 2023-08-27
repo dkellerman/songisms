@@ -1,0 +1,2290 @@
+[
+{
+  "model": "songs.taggedtext",
+  "pk": 1,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Now you got me hopped up on that\nPusher love\nSo high I’m on the ceiling baby\nYour my drug\nSo gon' and be my dealer baby\nRoll me up\n'Cause all I want is you, baby\nOne more time\nPusher love\nSo high I’m on the ceiling baby\nBe my drug\nSo gon' and be my dealer baby\nLook me up\n'Cause all I want is you baby",
+    "song": [
+      "773hekg7UEdbGvv3lJ3CmV"
+    ],
+    "created": "2022-05-28T00:17:02.027Z",
+    "updated": "2022-05-28T00:17:02.027Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 2,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "Wakin' up in the sand, sunburn on your nose\nYou scream and squeezed my hand\nWhen your east Kentucky toes hit the Atlantic\nSummertime in Brooklyn, Mustard on your lip\nI knew I loved you by the bottom of the fifth\nI never planned it",
+    "song": [
+      "7IsVQNBju6hpgwfC4NkhRm"
+    ],
+    "created": "2022-05-28T00:17:05.073Z",
+    "updated": "2022-05-28T00:17:05.073Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 3,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "A million perfect moments go rushin' through my brain\nOur first trip to the ocean, your first time on a plane\nWhen you look over your shoulder, baby, you can choose\nTo remember me however you want to\nThat's how I'll remember you",
+    "song": [
+      "7IsVQNBju6hpgwfC4NkhRm"
+    ],
+    "created": "2022-05-28T00:17:05.075Z",
+    "updated": "2022-05-28T00:17:05.075Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 4,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "I've forgot the bitter, the winter's just a blur\nI savor the sweet as if the summer's all we were\nAnd ever will be, oh, and I still see",
+    "song": [
+      "7IsVQNBju6hpgwfC4NkhRm"
+    ],
+    "created": "2022-05-28T00:17:05.076Z",
+    "updated": "2022-05-28T00:17:05.076Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 5,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "A million perfect moments go rushin' through my brain\nEvery time I touch the ocean, anytime I taste the rain\nWhen you look over your shoulder, baby, you can choose\nTo remember me however you want to\nyeah remember me however you want to\nThat's how I'll remember you\nThat's how I'll remember you",
+    "song": [
+      "7IsVQNBju6hpgwfC4NkhRm"
+    ],
+    "created": "2022-05-28T00:17:05.078Z",
+    "updated": "2022-05-28T00:17:05.078Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 6,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "A million perfect moments go rushin' through my brain\nEvery time I smell October you're standing in the rain\nWhen you look over your shoulder, baby, you can choose\nTo Remember me however you want to\nThat's how I'll remember you",
+    "song": [
+      "7IsVQNBju6hpgwfC4NkhRm"
+    ],
+    "created": "2022-05-28T00:17:05.079Z",
+    "updated": "2022-05-28T00:17:05.079Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 7,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "The dress that you were wearin', soakin' up the stains\nI can still see your mascara, though I can't recall the pain\nOf what came after\nYou were even beautiful tellin' me goodbye\nMaybe my version of the truth is just a lie\nWhat Does It Matter?\nWhat Does It Matter?",
+    "song": [
+      "7IsVQNBju6hpgwfC4NkhRm"
+    ],
+    "created": "2022-05-28T00:17:05.081Z",
+    "updated": "2022-05-28T00:17:05.081Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 8,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Hello from the other side\nI must have called a thousand times\nTo tell you I'm sorry for everything that I've done\nBut when I call you never seem to be home\n\nHello from the outside\nAt least I can say that I've tried\nTo tell you I'm sorry for breaking your heart\nBut it don't matter it clearly doesn't tear you apart anymore",
+    "song": [
+      "62PaSfnXSMyLshYJrlTuL3"
+    ],
+    "created": "2022-05-28T00:17:09.515Z",
+    "updated": "2022-05-28T00:17:09.515Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 9,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "So it's gonna be forever\nOr it's gonna go down in flames\nYou can tell me when it's over\nIf the high was worth the pain\nGot a long list of ex-lovers\nThey'll tell you I'm insane\n'Cause you know I love the players\nAnd you love the game\n\n'Cause we're young and we're reckless\nWe'll take this way too far\nIt'll leave you breathless\nOr with a nasty scar\nGot a long list of ex-lovers\nThey'll tell you I'm insane\nBut I've got a blank space baby\nAnd I'll write your name",
+    "song": [
+      "1p80LdxRV74UKvL8gnD7ky"
+    ],
+    "created": "2022-05-28T00:17:11.550Z",
+    "updated": "2022-05-28T00:17:11.550Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 10,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "'Cause if you like the way you look that much\nOh baby you should go and love yourself\nAnd if you think that I'm still holdin' on to somethin'\nYou should go and love yourself",
+    "song": [
+      "50kpGaPAhYJ3sGmk6vplg0"
+    ],
+    "created": "2022-05-28T00:17:12.170Z",
+    "updated": "2022-05-28T00:17:12.170Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 11,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "You find the spot and I'll find the money\nYou be the pretty and I'll be the funny\nYou plant the flowers, I'll plant the kisses\nBaby, let's get right down to business\n\nI'll hang the pictures, you hang the stars\nYou pick the paint, I'll pick a guitar\nSing you a song out there with the crickets and the frogs\nYou name the babies and I'll name the dogs, yeah",
+    "song": [
+      "609qKv3KPAbdtp0LQH2buA"
+    ],
+    "created": "2022-05-28T00:17:13.150Z",
+    "updated": "2022-05-28T00:17:13.150Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 12,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Come along and ride on a fantastic voyage\nSlide, slide slippity slide\nI'm hittin switches on the block in a 65\nCome along and ride on fantastic voyage\nSlide, slide hoo ride, ain't no valley low enough or mountain high",
+    "song": [
+      "5vpDsiVqiZLRwKAzQO708k"
+    ],
+    "created": "2022-05-28T00:17:31.515Z",
+    "updated": "2022-05-28T00:17:31.515Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 13,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Panama\nPanama\nPanama\nPanama",
+    "song": [
+      "05RgAMGypEvqhNs5hPCbMS"
+    ],
+    "created": "2022-05-28T00:17:48.836Z",
+    "updated": "2022-05-28T00:17:48.836Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 14,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Hey, I just met you and this is crazy\nBut here's my number, so call me maybe\nIt's hard to look right at you baby\nBut here's my number, so call me maybe\nHey I just met you and this is crazy\nBut here's my number, so call me maybe\nAnd all the other boys try to chase me\nBut here's my number, so call me maybe",
+    "song": [
+      "3TGRqZ0a2l1LRblBkJoaDx"
+    ],
+    "created": "2022-05-28T00:18:04.617Z",
+    "updated": "2022-05-28T00:18:04.617Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 15,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Oh sweet child o' mine\nOh sweet love of mine\nOh sweet child o' mine\nOh sweet love of mine\nOh sweet child o' mine\nOh sweet love of mine",
+    "song": [
+      "7snQQk1zcKl8gZ92AnueZW"
+    ],
+    "created": "2022-05-28T00:18:04.942Z",
+    "updated": "2022-05-28T00:18:04.942Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 16,
+  "fields": {
+    "tag": [
+      "snippet",
+      "prechorus"
+    ],
+    "text": "I don't believe, I don't believe it\nYou left in peace, left me in pieces\nToo hard to breathe, I'm on my knees\nRight now, 'ow",
+    "song": [
+      "1BZG99C7Co1r6QUC3zaS59"
+    ],
+    "created": "2022-05-28T00:18:05.999Z",
+    "updated": "2022-05-28T00:18:05.999Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 17,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "I'm so sick of that same old love, that shit, it tears me up\nI'm so sick of that same old love, my body's had enough\nOh, (that same old love)\nOh, (that same old love)\nI'm so sick of that same old love, feels like I've blown apart\nI'm so sick of that same old love, the kind that breaks your heart\nOh, (that same old love)\nOh, (that same old love)",
+    "song": [
+      "1BZG99C7Co1r6QUC3zaS59"
+    ],
+    "created": "2022-05-28T00:18:06.000Z",
+    "updated": "2022-05-28T00:18:06.000Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 18,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "in pieces",
+    "song": [
+      "1BZG99C7Co1r6QUC3zaS59"
+    ],
+    "created": "2022-05-28T00:18:06.002Z",
+    "updated": "2022-05-28T00:18:06.002Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 19,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "change your mind",
+    "song": [
+      "1BZG99C7Co1r6QUC3zaS59"
+    ],
+    "created": "2022-05-28T00:18:06.004Z",
+    "updated": "2022-05-28T00:18:06.004Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 20,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "breaks your heart",
+    "song": [
+      "7BKLCZ1jbUBVqRi2FVlTVw"
+    ],
+    "created": "2022-05-28T00:18:06.006Z",
+    "updated": "2022-05-28T00:18:06.006Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 21,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "heard it all",
+    "song": [
+      "1BZG99C7Co1r6QUC3zaS59"
+    ],
+    "created": "2022-05-28T00:18:06.007Z",
+    "updated": "2022-05-28T00:18:06.007Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 22,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "Take away your things and go\nYou can't take back what you said, I know\nI've heard it all before, at least a million times\nI'm not one to forget, you know",
+    "song": [
+      "1BZG99C7Co1r6QUC3zaS59"
+    ],
+    "created": "2022-05-28T00:18:06.009Z",
+    "updated": "2022-05-28T00:18:06.009Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 23,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "sick of",
+    "song": [
+      "1BZG99C7Co1r6QUC3zaS59"
+    ],
+    "created": "2022-05-28T00:18:06.011Z",
+    "updated": "2022-05-28T00:18:06.011Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 24,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "tears me up",
+    "song": [
+      "1BZG99C7Co1r6QUC3zaS59"
+    ],
+    "created": "2022-05-28T00:18:06.012Z",
+    "updated": "2022-05-28T00:18:06.012Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 25,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "take back what you said",
+    "song": [
+      "1BZG99C7Co1r6QUC3zaS59"
+    ],
+    "created": "2022-05-28T00:18:06.014Z",
+    "updated": "2022-05-28T00:18:06.014Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 26,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "I'm not spending any time, wasting tonight on you\nI know, I've heard it all\nSo don't you try and change your mind\n'Cause I won't be changing too, you know",
+    "song": [
+      "1BZG99C7Co1r6QUC3zaS59"
+    ],
+    "created": "2022-05-28T00:18:06.016Z",
+    "updated": "2022-05-28T00:18:06.016Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 27,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "And so, Sally can wait.\nShe knows it's too late as we're walking on by.\nHer soul slides away\nbut don't look back in anger, I heard you say.",
+    "song": [
+      "12dU3vAh6AFoJkisorfoUl"
+    ],
+    "created": "2022-05-28T00:18:09.069Z",
+    "updated": "2022-05-28T00:18:09.069Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 28,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Alison\nI know this world is killing you\nOh, Alison\nMy aim is true",
+    "song": [
+      "1v98rfd0an913AzHvMNG8a"
+    ],
+    "created": "2022-05-28T00:18:09.786Z",
+    "updated": "2022-05-28T00:18:09.786Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 29,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Oh my sweet Carolina\nWhat compels me to go?\nOh my sweet disposition\nMay you one day carry me home",
+    "song": [
+      "2Zcr8xMMZyNT5wMsj3SWmw"
+    ],
+    "created": "2022-05-28T00:18:11.992Z",
+    "updated": "2022-05-28T00:18:11.992Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 30,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "I get jealous, but I'm too cool to admit it\nWhen the fellas, talk to my girl I ain't with it\nI get jealous, but I'm too cool to admit it\nWhen the fellas, talk to my girl I ain't with it",
+    "song": [
+      "3R5FA1Ay1NxgtwbElR78by"
+    ],
+    "created": "2022-05-28T00:18:13.960Z",
+    "updated": "2022-05-28T00:18:13.960Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 31,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Say what you wanna say\nAnd let the words fall out\nHonestly I wanna see you be brave\n\nWith what you want to say\nAnd let the words fall out\nHonestly I wanna see you be brave",
+    "song": [
+      "6Uy6K3KdmUdAfelUp0SeXn"
+    ],
+    "created": "2022-05-28T00:18:14.952Z",
+    "updated": "2022-05-28T00:18:14.952Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 32,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Oh yeah, alright\nTake it easy, baby\nMake it last all night (make it last all night)\nShe was an American girl",
+    "song": [
+      "7MRyJPksH3G2cXHN8UKYzP"
+    ],
+    "created": "2022-05-28T00:18:15.863Z",
+    "updated": "2022-05-28T00:18:15.863Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 33,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Did you stand by me\nNo, not at all\nDid you stand by me\nNo way",
+    "song": [
+      "6ITuEsxEy2qPhqMowdDAeI"
+    ],
+    "created": "2022-05-28T00:18:16.425Z",
+    "updated": "2022-05-28T00:18:16.425Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 34,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Girls, hit your, \"Hallelujah\"\nGirls, hit your, \"Hallelujah\"\nGirls, hit your, \"Hallelujah\"\n'Cause Uptown Funk gon' give it to you\n'Cause Uptown Funk gon' give it to you\n'Cause Uptown Funk gon' give it to you\nSaturday night and we're in the spot\nDon't believe me, just watch (come on)",
+    "song": [
+      "32OlwWuMpZ6b0aN2RZOeMS"
+    ],
+    "created": "2022-05-28T00:18:20.361Z",
+    "updated": "2022-05-28T00:18:20.361Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 35,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "They tried to make me go to rehab\nI said, no, no, no\nYes, I been black\nBut when I come back, you'll know, know, know\nI ain't got the time\nAnd if my daddy thinks I'm fine\nHe's tried to make me go to rehab\nI won't go, go, go",
+    "song": [
+      "3N4DI1vuTSX1tz7fa2NQZw"
+    ],
+    "created": "2022-05-28T00:18:21.098Z",
+    "updated": "2022-05-28T00:18:21.098Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 36,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "All the lonely people\nWhere do they all come from?\nAll the lonely people\nWhere do they all belong?",
+    "song": [
+      "5GjPQ0eI7AgmOnADn1EO6Q"
+    ],
+    "created": "2022-05-28T00:18:23.269Z",
+    "updated": "2022-05-28T00:18:23.269Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 37,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Lola L-O-L-A Lola\nLo lo lo lo Lo - la",
+    "song": [
+      "0UAJH0k4k3slcE83a9UGCe"
+    ],
+    "created": "2022-05-28T00:18:23.623Z",
+    "updated": "2022-05-28T00:18:23.623Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 38,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Gold jewelry shining so bright\nStrawberry champagne on ice\nLucky for you, that's what I like\nThat's what I like\nLucky for you, that's what I like\nThat's what I like\nSex by the fire at night\nSilk sheets and diamonds all white\nLucky for you, that's what I like\nThat's what I like\nLucky for you, that's what I like\nThat's what I like",
+    "song": [
+      "0KKkJNfGyhkQ5aFogxQAPU"
+    ],
+    "created": "2022-05-28T00:18:24.660Z",
+    "updated": "2022-05-28T00:18:24.660Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 39,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Cause she got the blue jeans painted on tight\nThat everybody wants on a Saturday night\nShe got the mood ring, she's never the same\nShe's sun one minute then she's pouring down rain\nAnd she'll do whatever she wants\nAnd when she moves every jaw's gonna drop\nAnd I do but I don't want her to stop\nI want, I want, I want\nWhatever she's got\nYeah, I want whatever she's got",
+    "song": [
+      "4PJXT82AZtlDW4Q71b43oz"
+    ],
+    "created": "2022-05-28T00:18:25.037Z",
+    "updated": "2022-05-28T00:18:25.037Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 40,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Lately I been, I been losing sleep\nDreaming about the things that we could be\nBut baby I been, I been prayin' hard\nSaid no more counting dollars\nWe'll be counting stars\nYeah, we'll be counting stars",
+    "song": [
+      "6sy3LkhNFjJWlaeSMNwQ62"
+    ],
+    "created": "2022-05-28T00:18:25.954Z",
+    "updated": "2022-05-28T00:18:25.954Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 41,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "September's reminding July\nIt's time to be saying goodbye\nSummer is gone,\nOur love will remain\nLike old broken bicycles\nOut in the rain",
+    "song": [
+      "2gdaXqkDdzYmiTy8MPmZN5"
+    ],
+    "created": "2022-05-28T00:18:27.581Z",
+    "updated": "2022-05-28T00:18:27.581Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 42,
+  "fields": {
+    "tag": [
+      "snippet",
+      "rhyme.2"
+    ],
+    "text": "for",
+    "song": [
+      "2gdaXqkDdzYmiTy8MPmZN5"
+    ],
+    "created": "2022-05-28T00:18:27.584Z",
+    "updated": "2022-05-28T00:18:27.584Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 43,
+  "fields": {
+    "tag": [
+      "snippet",
+      "rhyme.1"
+    ],
+    "text": "spokes",
+    "song": [
+      "2gdaXqkDdzYmiTy8MPmZN5"
+    ],
+    "created": "2022-05-28T00:18:27.587Z",
+    "updated": "2022-05-28T00:18:27.587Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 44,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "Broken Bicycles,\nDon't tell my folks\nThere's all those playing cards\nPinned to the spokes\nLaid down like skeletons\nOut on the lawn\nThe wheels won't turn\nWhen the other has gone",
+    "song": [
+      "2gdaXqkDdzYmiTy8MPmZN5"
+    ],
+    "created": "2022-05-28T00:18:27.589Z",
+    "updated": "2022-05-28T00:18:27.589Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 45,
+  "fields": {
+    "tag": [
+      "snippet",
+      "rhyme.1"
+    ],
+    "text": "folks",
+    "song": [
+      "2gdaXqkDdzYmiTy8MPmZN5"
+    ],
+    "created": "2022-05-28T00:18:27.591Z",
+    "updated": "2022-05-28T00:18:27.591Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 46,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "Broken bicycles,\nOld busted chains,\nWith busted handle bars\nOut in the rain\nSomebody must\nHave an orphanage for\nAll these things that nobody\nWants any more",
+    "song": [
+      "2gdaXqkDdzYmiTy8MPmZN5"
+    ],
+    "created": "2022-05-28T00:18:27.593Z",
+    "updated": "2022-05-28T00:18:27.593Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 47,
+  "fields": {
+    "tag": [
+      "snippet",
+      "rhyme.2"
+    ],
+    "text": "more",
+    "song": [
+      "2gdaXqkDdzYmiTy8MPmZN5"
+    ],
+    "created": "2022-05-28T00:18:27.595Z",
+    "updated": "2022-05-28T00:18:27.595Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 48,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "The seasons can turn on a dime\nSomehow I forget every time\nFor all the things that you've given me\nWill always stay\nBroken, but I'll never throw them away",
+    "song": [
+      "2gdaXqkDdzYmiTy8MPmZN5"
+    ],
+    "created": "2022-05-28T00:18:27.597Z",
+    "updated": "2022-05-28T00:18:27.597Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 49,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Going up, you're coming down\nI'm only hoping some day you'll turn around\nCause I'd be shining and then you'll see\nWho could love you more than me?",
+    "song": [
+      "14GVvThuNAHA9c0IsIms7U"
+    ],
+    "created": "2022-05-28T00:18:27.923Z",
+    "updated": "2022-05-28T00:18:27.923Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 50,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Don't look so sad, Marina\nThere's another part to play\nDon't look so sad, Marina\nSave it for a rainy day\nSave it for a rainy day\nSave it for a rainy day",
+    "song": [
+      "6IZIEhCq9crPjl2jGUvELS"
+    ],
+    "created": "2022-05-28T00:18:30.591Z",
+    "updated": "2022-05-28T00:18:30.591Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 51,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "It's something unpredictable, but in the end it's right\nI hope you had the time of your life",
+    "song": [
+      "6ORqU0bHbVCRjXm9AjyHyZ"
+    ],
+    "created": "2022-05-28T00:18:32.024Z",
+    "updated": "2022-05-28T00:18:32.024Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 52,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "All around me are familiar faces, worn out places, worn out faces\nBright and early for the daily races\nGoing nowhere, going nowhere\nThe tears are filling up their glasses\nNo expression, no expression\nHide my head I want to drown my sorrow\nNo tomorrow, no tomorrow",
+    "song": [
+      "3JOVTQ5h8HGFnDdp4VT3MP"
+    ],
+    "created": "2022-05-28T00:18:32.596Z",
+    "updated": "2022-05-28T00:18:32.596Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 53,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "Children waiting for the day they feel good\nHappy Birthday, Happy Birthday\nAnd they feel the way that every child should\nSit and listen\nSit and listen\nWent to school and I was very nervous\nNo one knew me\nNo one knew me\nHello teacher tell me whats my lesson\nLook right through me\nLook right through me",
+    "song": [
+      "3JOVTQ5h8HGFnDdp4VT3MP"
+    ],
+    "created": "2022-05-28T00:18:32.599Z",
+    "updated": "2022-05-28T00:18:32.599Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 54,
+  "fields": {
+    "tag": [
+      "snippet",
+      "prechorus"
+    ],
+    "text": "And I find it kind of funny\nI find it kind of sad\nThe dreams in which I'm dying are the best I've ever had\nI find it hard to tell you\nI find it hard to take\nWhen people run in circles it's a very very",
+    "song": [
+      "3JOVTQ5h8HGFnDdp4VT3MP"
+    ],
+    "created": "2022-05-28T00:18:32.601Z",
+    "updated": "2022-05-28T00:18:32.601Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 55,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Mad World\nMad World",
+    "song": [
+      "3JOVTQ5h8HGFnDdp4VT3MP"
+    ],
+    "created": "2022-05-28T00:18:32.603Z",
+    "updated": "2022-05-28T00:18:32.603Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 56,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Come dancing,\nAll her boyfriends used to come and call.\nWhy not come dancing, it's only natural?",
+    "song": [
+      "0cTwMCvozZBj8jCq6o27nk"
+    ],
+    "created": "2022-05-28T00:18:34.478Z",
+    "updated": "2022-05-28T00:18:34.478Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 57,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "You're so vain\nYou probably think this song is about you\nYou're so vain\nI'll bet you think this song is about you\nDon't you? Don't you?",
+    "song": [
+      "2DnJjbjNTV9Nd5NOa1KGba"
+    ],
+    "created": "2022-05-28T00:18:34.801Z",
+    "updated": "2022-05-28T00:18:34.801Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 58,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "So, you see\nYou've got me back again for more\nAnd it seems\nYour song is in my head\nThis is war\nMystery, how I could feel you breathe me",
+    "song": [
+      "6sLxk7xOHjgwq3J67n65UP"
+    ],
+    "created": "2022-05-28T00:18:35.544Z",
+    "updated": "2022-05-28T00:18:35.544Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 59,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "left me hanging",
+    "song": [
+      "6sLxk7xOHjgwq3J67n65UP"
+    ],
+    "created": "2022-05-28T00:18:35.546Z",
+    "updated": "2022-05-28T00:18:35.546Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 60,
+  "fields": {
+    "tag": [
+      "snippet",
+      "prechorus"
+    ],
+    "text": "I was sure you would keep\nEvery promise; you would keep\nEvery word\n\nWell,\nI try to put your stories in line\nBut nothing adds up right",
+    "song": [
+      "6sLxk7xOHjgwq3J67n65UP"
+    ],
+    "created": "2022-05-28T00:18:35.548Z",
+    "updated": "2022-05-28T00:18:35.548Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 61,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "adds up",
+    "song": [
+      "6sLxk7xOHjgwq3J67n65UP"
+    ],
+    "created": "2022-05-28T00:18:35.551Z",
+    "updated": "2022-05-28T00:18:35.551Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 62,
+  "fields": {
+    "tag": [
+      "snippet",
+      "bridge"
+    ],
+    "text": "These things are oh, all so typical\nThese things are unforgivable\nI'm gone and you're invisible now\nDon't let me catch you following\nDon't ask, cause I'm not offering\nYou've caused enough of my suffering, oh",
+    "song": [
+      "6sLxk7xOHjgwq3J67n65UP"
+    ],
+    "created": "2022-05-28T00:18:35.553Z",
+    "updated": "2022-05-28T00:18:35.553Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 63,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "For every 99 times\nYou looked me in the eye,\nYou looked me in the eye\nAnd swore you weren't lying\nWell, I was so blind\nI never saw the signs\nI'm getting out tonight\nAnd you're not invited",
+    "song": [
+      "6sLxk7xOHjgwq3J67n65UP"
+    ],
+    "created": "2022-05-28T00:18:35.555Z",
+    "updated": "2022-05-28T00:18:35.555Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 64,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "put your stories in line",
+    "song": [
+      "6sLxk7xOHjgwq3J67n65UP"
+    ],
+    "created": "2022-05-28T00:18:35.557Z",
+    "updated": "2022-05-28T00:18:35.557Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 65,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "Its a shame\nThat you left me hanging like you did\nIt was brave\nBut it was much more foolish\nDon't you think?\nCause you know I wont be satisfied\nUntil you realize",
+    "song": [
+      "6sLxk7xOHjgwq3J67n65UP"
+    ],
+    "created": "2022-05-28T00:18:35.558Z",
+    "updated": "2022-05-28T00:18:35.558Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 66,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "looked me in the eye",
+    "song": [
+      "6sLxk7xOHjgwq3J67n65UP"
+    ],
+    "created": "2022-05-28T00:18:35.560Z",
+    "updated": "2022-05-28T00:18:35.560Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 67,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "Don't let me catch you",
+    "song": [
+      "6sLxk7xOHjgwq3J67n65UP"
+    ],
+    "created": "2022-05-28T00:18:35.561Z",
+    "updated": "2022-05-28T00:18:35.561Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 68,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "I'm just saying it's fine by me\nIf you never leave\nAnd we can live like this forever\nIt's fine by me",
+    "song": [
+      "4wTChU0tU44TAMC0xcQizi"
+    ],
+    "created": "2022-05-28T00:18:35.874Z",
+    "updated": "2022-05-28T00:18:35.874Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 69,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "My heart is drenched in wine\nBut you'll be on my mind\nForever",
+    "song": [
+      "6ybViy2qrO9sIi41EgRJgx"
+    ],
+    "created": "2022-05-28T00:18:36.241Z",
+    "updated": "2022-05-28T00:18:36.241Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 70,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "And I know she'll be the death of me, at least we'll both be numb\nAnd she'll always get the best of me, the worst is yet to come\nAll the misery was necessary when we're deep in love\nThis I know, girl, I know",
+    "song": [
+      "22VdIZQfgXJea34mQxlt81"
+    ],
+    "created": "2022-05-28T00:18:36.469Z",
+    "updated": "2022-05-28T00:18:36.469Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 71,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "I can't feel my face when I'm with you\nBut I love it, but I love it, oh\nI can't feel my face when I'm with you\nBut I love it, but I love it, oh",
+    "song": [
+      "22VdIZQfgXJea34mQxlt81"
+    ],
+    "created": "2022-05-28T00:18:36.470Z",
+    "updated": "2022-05-28T00:18:36.470Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 72,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "And I know she'll be the death of me, at least we'll both be numb\nAnd she'll always get the best of me, the worst is yet to come\nBut at least we'll both be beautiful and stay forever young\nThis I know, yeah, this I know",
+    "song": [
+      "22VdIZQfgXJea34mQxlt81"
+    ],
+    "created": "2022-05-28T00:18:36.472Z",
+    "updated": "2022-05-28T00:18:36.472Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 73,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "death of me",
+    "song": [
+      "22VdIZQfgXJea34mQxlt81"
+    ],
+    "created": "2022-05-28T00:18:36.473Z",
+    "updated": "2022-05-28T00:18:36.473Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 74,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "get the best of me",
+    "song": [
+      "22VdIZQfgXJea34mQxlt81"
+    ],
+    "created": "2022-05-28T00:18:36.475Z",
+    "updated": "2022-05-28T00:18:36.475Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 75,
+  "fields": {
+    "tag": [
+      "snippet",
+      "prechorus"
+    ],
+    "text": "She told me, don't worry about it\nShe told me, don't worry no more\nWe both know we can't go without it\nShe told me you'll never be in love, oh, oh, woo",
+    "song": [
+      "22VdIZQfgXJea34mQxlt81"
+    ],
+    "created": "2022-05-28T00:18:36.476Z",
+    "updated": "2022-05-28T00:18:36.476Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 76,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Yo, I'll tell you what I want, what I really, really want\nSo, tell me what you want, what you really, really want\nI'll tell you what I want, what I really, really want\nSo, tell me what you want, what you really, really want\nI wanna, I wanna, I wanna, I wanna\nI wanna really, really, really wanna zigazig ah",
+    "song": [
+      "1Je1IMUlBXcx1Fz0WE7oPT"
+    ],
+    "created": "2022-05-28T00:18:38.481Z",
+    "updated": "2022-05-28T00:18:38.481Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 77,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "It's the honky tonk women\nGimme, gimme, gimme the honky tonk blues",
+    "song": [
+      "3RZMzCvYsmJ0u2ioKTOsmJ"
+    ],
+    "created": "2022-05-28T00:18:39.355Z",
+    "updated": "2022-05-28T00:18:39.355Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 78,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "ice we skate is getting pretty thin",
+    "song": [
+      "3cfOd4CMv2snFaKAnMdnvK"
+    ],
+    "created": "2022-05-28T00:18:39.687Z",
+    "updated": "2022-05-28T00:18:39.687Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 79,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "all that glitters is gold",
+    "song": [
+      "3cfOd4CMv2snFaKAnMdnvK"
+    ],
+    "created": "2022-05-28T00:18:39.688Z",
+    "updated": "2022-05-28T00:18:39.688Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 80,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "shooting stars",
+    "song": [
+      "3cfOd4CMv2snFaKAnMdnvK"
+    ],
+    "created": "2022-05-28T00:18:39.690Z",
+    "updated": "2022-05-28T00:18:39.690Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 81,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "get the show on",
+    "song": [
+      "3cfOd4CMv2snFaKAnMdnvK"
+    ],
+    "created": "2022-05-28T00:18:39.692Z",
+    "updated": "2022-05-28T00:18:39.692Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 82,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "beg to differ",
+    "song": [
+      "3cfOd4CMv2snFaKAnMdnvK"
+    ],
+    "created": "2022-05-28T00:18:39.694Z",
+    "updated": "2022-05-28T00:18:39.694Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 83,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "rock star",
+    "song": [
+      "3cfOd4CMv2snFaKAnMdnvK"
+    ],
+    "created": "2022-05-28T00:18:39.697Z",
+    "updated": "2022-05-28T00:18:39.697Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 84,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "hit the ground running",
+    "song": [
+      "3cfOd4CMv2snFaKAnMdnvK"
+    ],
+    "created": "2022-05-28T00:18:39.706Z",
+    "updated": "2022-05-28T00:18:39.706Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 85,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "the sharpest tool in the shed",
+    "song": [
+      "3cfOd4CMv2snFaKAnMdnvK"
+    ],
+    "created": "2022-05-28T00:18:39.708Z",
+    "updated": "2022-05-28T00:18:39.708Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 86,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "break the mold",
+    "song": [
+      "3cfOd4CMv2snFaKAnMdnvK"
+    ],
+    "created": "2022-05-28T00:18:39.710Z",
+    "updated": "2022-05-28T00:18:39.710Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 87,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "roll me",
+    "song": [
+      "3cfOd4CMv2snFaKAnMdnvK"
+    ],
+    "created": "2022-05-28T00:18:39.711Z",
+    "updated": "2022-05-28T00:18:39.711Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 88,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "taking the back streets",
+    "song": [
+      "3cfOd4CMv2snFaKAnMdnvK"
+    ],
+    "created": "2022-05-28T00:18:39.723Z",
+    "updated": "2022-05-28T00:18:39.723Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 89,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "get your game on",
+    "song": [
+      "3cfOd4CMv2snFaKAnMdnvK"
+    ],
+    "created": "2022-05-28T00:18:39.725Z",
+    "updated": "2022-05-28T00:18:39.725Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 90,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "And I'm here to remind you\nOf the mess you left when you went away\nIt's not fair to deny me\nOf the cross I bear that you gave to me\nYou, you, you oughta know",
+    "song": [
+      "3jS7bB0oXVOwGFZn3aE5NV"
+    ],
+    "created": "2022-05-28T00:18:40.740Z",
+    "updated": "2022-05-28T00:18:40.740Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 91,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "And we'll never be royals\nIt don't run in our blood\nThat kind of lux just ain't for us\nWe crave a different kind of buzz\nLet me be your ruler, you can call me Queen B\nAnd baby I'll rule (I'll rule I'll rule I'll rule)\nLet me live that fantasy",
+    "song": [
+      "2dLLR6qlu5UJ5gk0dKz0h3"
+    ],
+    "created": "2022-05-28T00:18:41.900Z",
+    "updated": "2022-05-28T00:18:41.900Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 92,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "She’s telling you turn off the highway\nThe sunset melts all the blue away\nBlackbird watching on the telephone wire\nWhiskey on her lips and the night’s on fire",
+    "song": [
+      "5y2pNuAvWcPKiORZ12e44S"
+    ],
+    "created": "2022-05-28T00:18:44.057Z",
+    "updated": "2022-05-28T00:18:44.057Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 93,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Open your heart to me, baby\nI hold the lock and you hold the key\nOpen your heart to me, darlin'\nI'll give you love if you, you turn the key",
+    "song": [
+      "3kme5Qos8h04yrKxsgur79"
+    ],
+    "created": "2022-05-28T00:18:44.320Z",
+    "updated": "2022-05-28T00:18:44.320Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 94,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Hey ya! Uh-oh\nHey ya! Uh-oh\nDon't want to meet your daddy, Hey ya! Uh-oh\nJust want you in my Caddy, Uh-oh, Hey ya! Uh-oh\nDon't want to meet your mama, Hey ya! Uh-oh\nJust want to make you cumma, Uh-oh, Hey ya! Uh-oh\nI'm, I'm, I'm\nHey ya!\nI'm just being honest\nI'm just being honest",
+    "song": [
+      "2PpruBYCo4H7WOBJ7Q2EwM"
+    ],
+    "created": "2022-05-28T00:18:49.714Z",
+    "updated": "2022-05-28T00:18:49.714Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 95,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "But tell me, did the wind sweep you off your feet?\nDid you finally get the chance\nTo dance along the light of day\nAnd head back to the Milky Way?\nTell me, did Venus blow your mind?\nWas it everything you wanted to find?\nAnd did you miss me\nWhile you were looking for yourself out there?",
+    "song": [
+      "2hKdd3qO7cWr2Jo0Bcs0MA"
+    ],
+    "created": "2022-05-28T00:18:50.853Z",
+    "updated": "2022-05-28T00:18:50.853Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 96,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "But tell me, did you sail across the sun?\nDid you make it to the Milky Way\nTo see the lights all faded?\nAnd that heaven is overrated\nAnd tell me, did you fall for a shooting star?\nOne without a permanent scar\nAnd did you miss me\nWhile you were looking for yourself out there?",
+    "song": [
+      "2hKdd3qO7cWr2Jo0Bcs0MA"
+    ],
+    "created": "2022-05-28T00:18:50.855Z",
+    "updated": "2022-05-28T00:18:50.855Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 97,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "So suddenly I'm in love with a stranger\nI can't believe that she's mine\nNow all I see is you with fresh eyes, fresh eyes\nSo suddenly I'm in love with a stranger\nI can't believe that she's mine, yeah\nAnd now all I see is you with fresh eyes, fresh eyes",
+    "song": [
+      "5NDUXbMwcnTQp66tI2zcdR"
+    ],
+    "created": "2022-05-28T00:18:51.176Z",
+    "updated": "2022-05-28T00:18:51.176Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 98,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "He blew his mind out in a car\nHe didn't notice that the lights had changed\nA crowd of people stood and stared\nThey'd seen his face before\nBut nobody was really sure if he was from the House of Lords",
+    "song": [
+      "0hKRSZhUGEhKU6aNSPBACZ"
+    ],
+    "created": "2022-05-28T00:18:51.487Z",
+    "updated": "2022-05-28T00:18:51.487Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 99,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "I read the news today, oh boy\nAbout a lucky man who made the grade\nAnd though the news was rather sad\nWell I just had to laugh\nI saw the photograph",
+    "song": [
+      "0hKRSZhUGEhKU6aNSPBACZ"
+    ],
+    "created": "2022-05-28T00:18:51.489Z",
+    "updated": "2022-05-28T00:18:51.489Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 100,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "I saw a film today, oh, boy\nThe English Army had just won the war\nA crowd of people turned away\nBut I just had to look\nHaving read the book\nI'd love to turn you on",
+    "song": [
+      "0hKRSZhUGEhKU6aNSPBACZ"
+    ],
+    "created": "2022-05-28T00:18:51.490Z",
+    "updated": "2022-05-28T00:18:51.490Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 101,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "make a wish",
+    "song": [
+      "013AWvizllIUEC2FOBzOnh"
+    ],
+    "created": "2022-05-28T00:18:52.768Z",
+    "updated": "2022-05-28T00:18:52.768Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 102,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "tears of joy",
+    "song": [
+      "013AWvizllIUEC2FOBzOnh"
+    ],
+    "created": "2022-05-28T00:18:52.770Z",
+    "updated": "2022-05-28T00:18:52.770Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 103,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "I want to stand with you on a mountain.\nI want to bathe with you in the sea.\nI want to lay like this forever.\nUntil the sky falls down on me",
+    "song": [
+      "013AWvizllIUEC2FOBzOnh"
+    ],
+    "created": "2022-05-28T00:18:52.772Z",
+    "updated": "2022-05-28T00:18:52.772Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 104,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "I'll be your dream, I'll be your wish, I'll be your fantasy.\nI'll be your hope, I'll be your love, be everything that you need.\nI love you more with every breath, truly madly deeply do\nI will be strong, I will be faithful 'cause I'm counting on a new beginning.\nA reason for living. A deeper meaning.",
+    "song": [
+      "013AWvizllIUEC2FOBzOnh"
+    ],
+    "created": "2022-05-28T00:18:52.775Z",
+    "updated": "2022-05-28T00:18:52.775Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 105,
+  "fields": {
+    "tag": [
+      "snippet",
+      "prechorus"
+    ],
+    "text": "a new beginning.\nA reason for living.\nA deeper meaning.",
+    "song": [
+      "013AWvizllIUEC2FOBzOnh"
+    ],
+    "created": "2022-05-28T00:18:52.777Z",
+    "updated": "2022-05-28T00:18:52.777Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 106,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "And when the stars are shining brightly in the velvet sky,\nI'll make a wish send it to heaven then make you want to cry\nThe tears of joy for all the pleasure and the certainty.\nThat we're surrounded by the comfort and protection of",
+    "song": [
+      "013AWvizllIUEC2FOBzOnh"
+    ],
+    "created": "2022-05-28T00:18:52.779Z",
+    "updated": "2022-05-28T00:18:52.779Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 107,
+  "fields": {
+    "tag": [
+      "snippet",
+      "prechorus"
+    ],
+    "text": "The highest power, in lonely hours, the tears devour you",
+    "song": [
+      "013AWvizllIUEC2FOBzOnh"
+    ],
+    "created": "2022-05-28T00:18:52.781Z",
+    "updated": "2022-05-28T00:18:52.781Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 108,
+  "fields": {
+    "tag": [
+      "snippet",
+      "bridge"
+    ],
+    "text": "Oh can you see it baby?\nYou don't have to close your eyes\n'Cause it's standing right before you.\nAll that you need will surely come",
+    "song": [
+      "013AWvizllIUEC2FOBzOnh"
+    ],
+    "created": "2022-05-28T00:18:52.783Z",
+    "updated": "2022-05-28T00:18:52.783Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 109,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "sky falls down",
+    "song": [
+      "013AWvizllIUEC2FOBzOnh"
+    ],
+    "created": "2022-05-28T00:18:52.785Z",
+    "updated": "2022-05-28T00:18:52.785Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 110,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Well, you don't know what we can find\nWhy don't you come with me little girl on a magic carpet ride?\nWell you don't know what we can see\nWhy don't you tell your dreams to me?, fantasy will set you free.",
+    "song": [
+      "4c4jJJoaiY21t2TyRZgdWS"
+    ],
+    "created": "2022-05-28T00:18:57.232Z",
+    "updated": "2022-05-28T00:18:57.232Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 111,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "Ah, yeah, ah, yeah\nI got this feelin' inside my bones\nIt goes electric, wavy when I turn it on\nAll through my city, all through my home\nWe're flyin' up, no ceilin', when we in our zone",
+    "song": [
+      "1WkMMavIMc4JZ8cfMmxHkI"
+    ],
+    "created": "2022-05-28T00:18:58.711Z",
+    "updated": "2022-05-28T00:18:58.711Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 112,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "I ain't happy, I'm feeling glad\nI got sunshine in a bag\nI'm useless, but not for long\nThe future is coming on\nI ain't happy, I'm feeling glad\nI got sunshine in a bag\nI'm useless, but not for long\nThe future is coming on\nIt's coming on, it's coming on\nIt's coming on, it's coming on\nIt's coming on…",
+    "song": [
+      "7yMiX7n9SBvadzox8T5jzT"
+    ],
+    "created": "2022-05-28T00:18:59.508Z",
+    "updated": "2022-05-28T00:18:59.508Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 113,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Watchin' headlights all night\nMovin' cross the ceiling, prayin'\nSlow down, turn now\nI wish I was sleepin'\nInstead of wonderin' where you are\nWide awake, countin' cars",
+    "song": [
+      "55Bfs063oJrsXiU6xMY97P"
+    ],
+    "created": "2022-05-28T00:19:00.158Z",
+    "updated": "2022-05-28T00:19:00.158Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 114,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "Almost midnight\nAnother one drives by\nSounds like a V8\nListen to it fade away\nIt ain't her, that's for sure\nJust another night of",
+    "song": [
+      "55Bfs063oJrsXiU6xMY97P"
+    ],
+    "created": "2022-05-28T00:19:00.160Z",
+    "updated": "2022-05-28T00:19:00.160Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 115,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "There's nothin' like the sound\nOf her wheels rollin' down\nThis old gravel driveway\nLike she's done everyday\nComin' home girl, come on\nI'm here goin' crazy",
+    "song": [
+      "55Bfs063oJrsXiU6xMY97P"
+    ],
+    "created": "2022-05-28T00:19:00.162Z",
+    "updated": "2022-05-28T00:19:00.162Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 116,
+  "fields": {
+    "tag": [
+      "snippet",
+      "bridge"
+    ],
+    "text": "I wonder if she's drivin' by\nGoin' 'round and 'round in circles\nWide awake",
+    "song": [
+      "55Bfs063oJrsXiU6xMY97P"
+    ],
+    "created": "2022-05-28T00:19:00.164Z",
+    "updated": "2022-05-28T00:19:00.164Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 117,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "You look as good as the day I met you\nI forget just why I left you, I was insane\nStay and play that Blink-182 song\nThat we beat to death in Tucson, okay",
+    "song": [
+      "7BKLCZ1jbUBVqRi2FVlTVw"
+    ],
+    "created": "2022-05-28T00:19:02.630Z",
+    "updated": "2022-05-28T00:19:02.630Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 118,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "Hey, I was doing just fine before I met you\nI drink too much and that's an issue but I'm okay\nHey, you tell your friends it was nice to meet them\nBut I hope I never see them again",
+    "song": [
+      "7BKLCZ1jbUBVqRi2FVlTVw"
+    ],
+    "created": "2022-05-28T00:19:02.632Z",
+    "updated": "2022-05-28T00:19:02.632Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 119,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "beat to death",
+    "song": [
+      "7BKLCZ1jbUBVqRi2FVlTVw"
+    ],
+    "created": "2022-05-28T00:19:02.634Z",
+    "updated": "2022-05-28T00:19:02.634Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 120,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "So baby pull me closer in the backseat of your Rover\nThat I know you can't afford\nBite that tattoo on your shoulder\nPull the sheets right off the corner\nOf the mattress that you stole\nFrom your roommate back in Boulder\nWe ain't ever getting older",
+    "song": [
+      "7BKLCZ1jbUBVqRi2FVlTVw"
+    ],
+    "created": "2022-05-28T00:19:02.636Z",
+    "updated": "2022-05-28T00:19:02.636Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 121,
+  "fields": {
+    "tag": [
+      "snippet",
+      "prechorus"
+    ],
+    "text": "I know it breaks your heart\nMoved to the city in a broke down car\nAnd four years, no calls\nNow you're looking pretty in a hotel bar\nAnd I can't stop\nNo, I can't stop",
+    "song": [
+      "7BKLCZ1jbUBVqRi2FVlTVw"
+    ],
+    "created": "2022-05-28T00:19:02.638Z",
+    "updated": "2022-05-28T00:19:02.638Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 122,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "broke down car",
+    "song": [
+      "7BKLCZ1jbUBVqRi2FVlTVw"
+    ],
+    "created": "2022-05-28T00:19:02.641Z",
+    "updated": "2022-05-28T00:19:02.641Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 123,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Let's get it on\nAh, baby, let's get it on\nLet's love, baby\nLet's get it on, sugar\nLet's get it on",
+    "song": [
+      "0jHkgTtTaqg5LNCiYDQPUB"
+    ],
+    "created": "2022-05-28T00:19:03.918Z",
+    "updated": "2022-05-28T00:19:03.918Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 124,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "'Cause the players gonna play, play, play, play, play\nAnd the haters gonna hate, hate, hate, hate, hate\nBaby, I'm just gonna shake, shake, shake, shake, shake\nI shake it off, I shake it off\nHeartbreakers gonna break, break, break, break, break\nAnd the fakers gonna fake, fake, fake, fake, fake\nBaby, I'm just gonna shake, shake, shake, shake, shake\nI shake it off, I shake it off",
+    "song": [
+      "5xTtaWoae3wi06K5WfVUUH"
+    ],
+    "created": "2022-05-28T00:19:04.584Z",
+    "updated": "2022-05-28T00:19:04.584Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 125,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "One less problem without ya\nI got one less problem without ya\nI got one less problem without ya\nI got one less, one less problem\nOne less problem without ya\nI got one less problem without ya\nI got one less problem without ya\nI got one less, one less problem",
+    "song": [
+      "7vS3Y0IKjde7Xg85LWIEdP"
+    ],
+    "created": "2022-05-28T00:19:04.829Z",
+    "updated": "2022-05-28T00:19:04.829Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 126,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "So nah nah, honey I'm good\nI could have another but I probably shouldn't\nI've got somebody at home, and if I stay I might not leave alone\nNo, honey I'm good, I could have another but I probably shouldn't\nI've gotta bid you adieu and to another I will stay true",
+    "song": [
+      "4MflGTO2ZTcSQ12bWcyRgI"
+    ],
+    "created": "2022-05-28T00:19:08.340Z",
+    "updated": "2022-05-28T00:19:08.340Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 127,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "When it gets cold outside and you got nobody to love\nYou'll understand what I mean when I say\nThere's no way we're gonna give up\nAnd like a little girl cries in the face of a monster that lives in her dreams\nIs there anyone out there 'cause it's getting harder and harder to breathe\nIs there anyone out there 'cause it's getting harder and harder to breathe",
+    "song": [
+      "4V9JDRqKjN8F2HWdlEDxvI"
+    ],
+    "created": "2022-05-28T00:19:11.898Z",
+    "updated": "2022-05-28T00:19:11.898Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 128,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Because I'm happy\nClap along if you feel like a room without a roof\nBecause I'm happy\nClap along if you feel like happiness is the truth\nBecause I'm happy\nClap along if you know what happiness is to you\nBecause I'm happy\nClap along if you feel like that's what you wanna do",
+    "song": [
+      "60nZcImufyMA1MKQY3dcCH"
+    ],
+    "created": "2022-05-28T00:19:13.812Z",
+    "updated": "2022-05-28T00:19:13.812Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 129,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Control yourself\nTake only what you need from it\nA family of trees wanting\nTo be haunted\nControl yourself\nTake only what you need from it\nA family of trees wanting\nTo be haunted",
+    "song": [
+      "1jJci4qxiYcOHhQR247rEU"
+    ],
+    "created": "2022-05-28T00:19:15.060Z",
+    "updated": "2022-05-28T00:19:15.060Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 130,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "The water is warm\nBut it's sending me shivers\nA baby is born\nCrying out for attention\nThe memories fade\nLike looking through a fogged mirror\nDecision to decisions are made\nAnd not bought\nBut I thought this wouldn't hurt a lot\nI guess not",
+    "song": [
+      "1jJci4qxiYcOHhQR247rEU"
+    ],
+    "created": "2022-05-28T00:19:15.062Z",
+    "updated": "2022-05-28T00:19:15.062Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 131,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "You were a child\nCrawling on your knees toward it\nMaking mama so proud\nBut your voice is too loud\nWe like to watch you laughing\nYou pick the insects off plants\nNo time to think of consequences",
+    "song": [
+      "1jJci4qxiYcOHhQR247rEU"
+    ],
+    "created": "2022-05-28T00:19:15.064Z",
+    "updated": "2022-05-28T00:19:15.064Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 132,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "I found a way to let you win\nBut I never really had a doubt\nStanding in the light of your halo\nI got my angel now",
+    "song": [
+      "4JehYebiI9JE8sR8MisGVb"
+    ],
+    "created": "2022-05-28T00:19:16.565Z",
+    "updated": "2022-05-28T00:19:16.565Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 133,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Everywhere I'm looking now\nI'm surrounded by your embrace\nBaby, I can see your halo\nYou know you're my saving grace\n\nYou're everything I need and more\nIt's written all over your face\nBaby, I can feel your halo\nPray it won't fade away",
+    "song": [
+      "4JehYebiI9JE8sR8MisGVb"
+    ],
+    "created": "2022-05-28T00:19:16.567Z",
+    "updated": "2022-05-28T00:19:16.567Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 134,
+  "fields": {
+    "tag": [
+      "snippet",
+      "verse"
+    ],
+    "text": "Remember those walls I built\nWell, baby, they're tumbling down\nAnd they didn't even put up a fight\nThey didn't even make a sound",
+    "song": [
+      "4JehYebiI9JE8sR8MisGVb"
+    ],
+    "created": "2022-05-28T00:19:16.569Z",
+    "updated": "2022-05-28T00:19:16.569Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 135,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "All the broken hearts in the world still beat\nLet's not make it harder than it has to be\nOOh it's all the same thing\nGirls chase boys chase girls",
+    "song": [
+      "3tInTDUq8wdIMw5ftohmqJ"
+    ],
+    "created": "2022-05-28T00:19:16.896Z",
+    "updated": "2022-05-28T00:19:16.896Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 136,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Never mind I'll find someone like you\nI wish nothing but the best\nFor you too, don't forget me\nI beg, I'll remember you said\nSometimes it lasts in love\nBut sometimes it hurts instead\nSometimes it lasts in love\nBut sometimes it hurts instead yeah",
+    "song": [
+      "1zwMYTA5nlNjZxYrvBB2pV"
+    ],
+    "created": "2022-05-28T00:19:17.847Z",
+    "updated": "2022-05-28T00:19:17.847Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 137,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Your sugar\nYes, please\nWon't you come and put it down on me\nI'm right here, 'cause I need\nLittle love and little sympathy\nYeah you show me good loving\nMake it alright\nNeed a little sweetness in my life\nYour sugar (your sugar)\nYes, please (yes, please)\nWon't you come and put it down on me",
+    "song": [
+      "2iuZJX9X9P0GKaE93xcPjk"
+    ],
+    "created": "2022-05-28T00:19:20.739Z",
+    "updated": "2022-05-28T00:19:20.739Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 138,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "I'm every woman, it's all in me\nAnything you want done, baby\nI'll do it naturally\nI'm every woman, it's all in me\nI can read your thoughts right now\nEvery one from A to Z",
+    "song": [
+      "1oFiPGBafH9Woo9AMwgBSl"
+    ],
+    "created": "2022-05-28T00:19:21.761Z",
+    "updated": "2022-05-28T00:19:21.761Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 139,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "matter of time",
+    "song": [
+      "2aBxt229cbLDOvtL7Xbb9x"
+    ],
+    "created": "2022-05-28T00:19:22.442Z",
+    "updated": "2022-05-28T00:19:22.442Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 140,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "We were as one",
+    "song": [
+      "2aBxt229cbLDOvtL7Xbb9x"
+    ],
+    "created": "2022-05-28T00:19:22.444Z",
+    "updated": "2022-05-28T00:19:22.444Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 141,
+  "fields": {
+    "tag": [
+      "snippet",
+      "idiom"
+    ],
+    "text": "shake me",
+    "song": [
+      "2aBxt229cbLDOvtL7Xbb9x"
+    ],
+    "created": "2022-05-28T00:19:22.445Z",
+    "updated": "2022-05-28T00:19:22.445Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 142,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Shook me all night long\nYeah you shook me all night long",
+    "song": [
+      "2SiXAy7TuUkycRVbbWDEpo"
+    ],
+    "created": "2022-05-28T00:19:23.660Z",
+    "updated": "2022-05-28T00:19:23.660Z"
+  }
+},
+{
+  "model": "songs.taggedtext",
+  "pk": 143,
+  "fields": {
+    "tag": [
+      "snippet",
+      "chorus"
+    ],
+    "text": "Those stars need to be wished on\nYour skin needs to be kissed on\nMy eyes, baby, they're fixed on you in your snapback\nT-shirt of your favorite rock band\nCheckin' your make-up in my Ray Bans\nBreakin' hearts like only you can in your snapback",
+    "song": [
+      "7I5fYc4qKJddht8Ozhqqdx"
+    ],
+    "created": "2022-05-28T00:19:24.615Z",
+    "updated": "2022-05-28T00:19:24.615Z"
+  }
+}
+]

@@ -4,23 +4,11 @@
 * Rhymes search client (rhymes.vercel.app)
 * Song browser/admin
 
-## Folders
-* `api` - django app for db/admin/graphql, deployed to heroku @ songisms.herokuapp.com
-* `clients` - client apps
-  * `rhymes` - song rhymes app (VueJS), deployed to vercel @ rhymes.vercel.app
-  * `browser` - api browser (VueJS)  
-* `data` - misc data
-* `scripts` - misc scripts
-* `songisms` - django project settings
-* `Procfile` - heroku deployment info
-* `pyproject.toml` - poetry project configuration file
-
 ## Local database setup
-* Postgresql DB/user name: `songisms`
+* Create Postgresql DB/user name: `songisms` or set `SISM_DATABASE_URL` env var
 * `CREATE EXTENSION fuzzystrmatch`
 * `CREATE EXTENSION cube`
 * `./manage.py migrate`
-* `./manage.py createinitialrevisions`
 
 ## Django setup
 * `poetry install`
@@ -28,10 +16,10 @@
 * `./manage.py createsuperuser`
 * `./manage.py runserver`
 * Browse admin: https://localhost:8000/admin/
-* Browse GraphQL: https://localhost:8000/graphql/
+* Browse GraphQL: https://localhost:8000/songs/graphql/
 
-## Client app setup
-* `cd client/rhymes` (or `browser`)
+## Rhymes client app setup
+* `cd rhymes/client`
 * `nvm use 18`
 * `yarn`
 * `yarn dev` OR `vercel dev` (should have env vars setup)

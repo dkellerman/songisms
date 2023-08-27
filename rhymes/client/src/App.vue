@@ -27,42 +27,5 @@ export default {
 
 <style lang="scss">
 @import '../node_modules/milligram/dist/milligram.min.css';
-@import '../../shared/layout.scss';
-html,
-body,
-#app {
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-nav {
-  padding: 15px 20px 15px 20px;
-  h1 a {
-    color: black;
-    font-size: 32px;
-  }
-}
-
-main {
-  padding: 20px;
-  flex: 1;
-}
-
-footer {
-  .links {
-    display: none;
-  }
-  a, a:visited {
-    color: blue;
-  }
-}
-
-@media screen and (min-width: 640px) {
-  footer .links {
-    display: initial;
-  }
-}
+@import './rhymes.scss';
 </style>
