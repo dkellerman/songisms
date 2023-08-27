@@ -175,27 +175,35 @@ def get_vowel_vector(text, max_len=100):
     return vec
 
 
-def score_rhyme(text1, text2):
+FULL_IPA_FEATURE_LEN = len(get_ipa_features('a').numeric())
+EMPTY_FEATURES = [0.0] * FULL_IPA_FEATURE_LEN
+
+def get_rhyme_vectors(text1, text2):
     ipa1 = get_ipa_tail(text1)
     ipa2 = get_ipa_tail(text2)
     seq1, seq2, _, _ = align_vals(ipa1, ipa2)
-    f1, f2 = [], []
+    vec1, vec2 = [], []
+
     for idx, c in enumerate(seq1):
         if c == '-' or seq2[idx] == '-' or c == '' or seq2[idx] == '':
-            f1 += [0.0]
-            f2 += [0.0]
+            vec1 += EMPTY_FEATURES
+            vec2 += EMPTY_FEATURES
         else:
             ft1 = get_ipa_features(c)
             ft2 = get_ipa_features(seq2[idx])
-            if ft1 or ft2 is None:
-                f1 += [0.0]
-                f2 += [0.0]
+            if ft1 is None or ft2 is None:
+                vec1 += EMPTY_FEATURES
+                vec2 += EMPTY_FEATURES
             else:
-                f1 += [ float(f) for f in ft1.numeric() ]
-                f2 += [ float(f) for f in ft2.numeric() ]
-    score = distance.cosine(f1, f2)
-    return score
+                vec1 += [float(f) for f in ft1.numeric()]
+                vec2 += [float(f) for f in ft2.numeric()]
+    return vec1, vec2
 
+
+def score_rhyme(text1, text2):
+    vec1, vec2 = get_rhyme_vectors(text1, text2)
+    score = distance.cosine(vec1, vec2)
+    return score
 
 
 @lru_cache(maxsize=500)
@@ -434,7 +442,6 @@ def get_idioms():
 def get_mine():
     with open('./data/mine.txt', 'r') as f:
         return f.read()
-
 
 IPA_VOWELS = [u'i', u'y', u'e', u'ø', u'ɛ', u'œ', u'a', u'ɶ', u'ɑ', u'ɒ', u'ɔ',
               u'ʌ', u'ɤ', u'o', u'ɯ', u'u', u'ɪ', u'ʊ', u'ə', u'æ']

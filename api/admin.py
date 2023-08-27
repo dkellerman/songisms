@@ -150,6 +150,7 @@ class CacheAdmin(admin.ModelAdmin):
     list_display = ('key', 'version', 'updated')
 
 
+
 @admin.register(Line)
 class LineAdmin(admin.ModelAdmin):
     search_fields = ('text',)
