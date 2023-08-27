@@ -12,7 +12,7 @@ import { storeToRefs } from 'pinia';
 import { useRhymesStore } from '@/store';
 import { useSpeechRecognition } from '@vueuse/core';
 
-const SUGGEST_DEBOUNCE = 200;
+const COMPLETIONS_DEBOUNCE = 200;
 
 const route = useRoute();
 const router = useRouter();
@@ -20,9 +20,9 @@ const q = ref(route.query.q ?? '');
 const page = ref(route.query.page ?? 1);
 const outputEl = ref();
 const searchInput = ref();
-const { rhymes, hasNextPage, suggestions, loading } = storeToRefs(useRhymesStore());
-const { fetchRhymes, fetchSuggestions, abort } = useRhymesStore();
-const debouncedFetchSuggestions = debounce(fetchSuggestions, SUGGEST_DEBOUNCE);
+const { rhymes, hasNextPage, completions, loading } = storeToRefs(useRhymesStore());
+const { fetchRhymes, fetchCompletions, abort } = useRhymesStore();
+const debouncedFetchCompletions = debounce(fetchCompletions, COMPLETIONS_DEBOUNCE);
 const showListenTip = ref(false);
 
 const speech = useSpeechRecognition({
@@ -85,7 +85,6 @@ watch(speech.result, onSpeechResult);
 function onSpeechResult() {
   let val = speech.result.value?.toLowerCase().trim();
   const words = val.split(' ');
-  console.log('[R]', speech.isFinal.value ? '[F]' : '[-]', val);
 
   if (speech.isFinal) {
     showListenTip.value = false;
@@ -124,7 +123,7 @@ function onClickSearch(e) {
 
 function onInput(e) {
   searchInput.value.$data.currentSelectionIndex = -1;
-  if (e.input.trim()) debouncedFetchSuggestions(e.input);
+  if (e.input.trim()) debouncedFetchCompletions(e.input);
 }
 
 function onLink(val) {
@@ -169,7 +168,7 @@ fetchRhymes(q.value, page.value);
     <vue3-simple-typeahead
       ref="searchInput"
       placeholder="Find rhymes in songs..."
-      :items="suggestions"
+      :items="completions"
       :min-input-length="1"
       @onInput="onInput"
       @selectItem="onSelectItem"

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { defineStore } from 'pinia';
 
 const PER_PAGE = 100;
-const SUGGESTION_COUNT = 20;
+const COMPLETIONS_COUNT = 20;
 
 const FETCH_RHYMES = `
     query Rhymes($q: String, $offset: Int, $limit: Int) {
@@ -14,9 +14,9 @@ const FETCH_RHYMES = `
     }
   `;
 
-const FETCH_SUGGESTIONS = `
-    query Suggestions($q: String, $ct: Int) {
-      rhymesSuggest(q: $q, ct: $ct) {
+const FETCH_COMPLETIONS = `
+    query Completions($q: String, $ct: Int) {
+      completions(q: $q, ct: $ct) {
         text
       }
     }
@@ -27,22 +27,22 @@ const url = `${process.env.VUE_APP_SISM_API_BASE_URL}/graphql/`;
 export const useRhymesStore = defineStore('rhymes', {
   state: () => ({
     rhymes: [],
-    suggestions: [],
+    completions: [],
     hasNextPage: false,
     loading: false,
   }),
   actions: {
-    async fetchSuggestions(q) {
+    async fetchCompletions(q) {
       const resp = await axios.post(url, {
-        query: FETCH_SUGGESTIONS,
-        variables: { q, ct: SUGGESTION_COUNT },
+        query: FETCH_COMPLETIONS,
+        variables: { q, ct: COMPLETIONS_COUNT },
       });
       if (resp.data.errors) {
-        console.error('Suggest errors', resp.data.errors);
+        console.error('Completions errors', resp.data.errors);
         throw new Error(resp.data.errors[0].message);
       }
-      let data = resp.data.data.rhymesSuggest;
-      this.suggestions = data.map(item => item.text);
+      let data = resp.data.data.completions;
+      this.completions = data.map(item => item.text);
     },
 
     async fetchRhymes(q, page = 1) {

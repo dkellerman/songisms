@@ -132,7 +132,7 @@ class Query(graphene.ObjectType):
                            q=graphene.String(required=False),
                            limit=graphene.Int(required=False),
                            offset=graphene.Int(required=False))
-    rhymes_suggest = graphene.List(NGramType, q=graphene.String(required=False), ct=graphene.Int(required=False))
+    completions = graphene.List(NGramType, q=graphene.String(required=False), ct=graphene.Int(required=False))
     ngrams = graphene.Field(NGramsPaginatedType,
                             page=graphene.Int(required=False),
                             q=graphene.String(required=False),
@@ -196,8 +196,8 @@ class Query(graphene.ObjectType):
         return Rhyme.objects.query(q, offset, limit)
 
     @staticmethod
-    def resolve_rhymes_suggest(root, info, q=None, ct=None):
-        return NGram.objects.suggest(q=q, ct=ct)
+    def resolve_completions(root, info, q=None, ct=None):
+        return NGram.objects.completions(q=q, ct=ct)
 
     @staticmethod
     def resolve_ngrams(root, info, q=None, tags=None, page=1, ordering=None):

@@ -242,7 +242,7 @@ class Command(BaseCommand):
 def reset_caches():
     print('clearing caches')
     cc = cache._cache.get_client()
-    keys = cc.keys('sism:*:suggest_*') + \
+    keys = cc.keys('sism:*:completions_*') + \
            cc.keys('sism:*:query_*') + \
            cc.keys('sism:*:top_*')
     for key in keys:
@@ -264,7 +264,7 @@ def reset_caches():
         Rhyme.objects.query(q=val, limit=qsize)
         for i in range(0, len(val) + 1):
             qsug = val[:i]
-            NGram.objects.suggest(qsug, sug_size)
+            NGram.objects.completions(qsug, sug_size)
 
 
 def vector_getter(key):
