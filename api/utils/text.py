@@ -5,7 +5,6 @@ import string
 import json
 import inflect
 import nltk
-from scipy.spatial import distance
 from functools import lru_cache
 from panphon import featuretable
 from minineedle import needle, core
@@ -202,6 +201,7 @@ def get_rhyme_vectors(text1, text2):
 
 
 def score_rhyme(text1, text2):
+    from scipy.spatial import distance
     vec1, vec2 = get_rhyme_vectors(text1, text2)
     score = distance.cosine(vec1, vec2)
     return score
