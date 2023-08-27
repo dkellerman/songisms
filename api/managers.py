@@ -175,17 +175,12 @@ class NGramManager(BaseManager):
         qkey = re.sub(' ', '_', q)
         cache_key = f'completion_{qkey}'
         qs = cache.get(cache_key) if settings.USE_QUERY_CACHE else None
-        spaces = sum([1 for c in q if c == ' '])
 
         if not qs:
             from api.models import NGram
             qs = NGram.objects.filter(text__istartswith=q)
             qs = qs.annotate(rhyme_ct=models.Count('rhymes')).filter(rhyme_ct__gt=0)
-            if spaces == 0:
-                qs = qs.filter(n=1)
-            else:
-                qs = qs.filter(n__gt=spaces)
-            qs = qs.order_by('-rhyme_ct')[:ct]
+            qs = qs.order_by('n', '-rhyme_ct')[:ct]
             cache.set(cache_key, qs)
         return qs
 
