@@ -15,7 +15,8 @@ data/fixtures/*
 !data/fixtures/artists.json
 !data/fixtures/writers.json
 
-clients/**/dist
+**/client/**/dist
+**/client/**/dist
 
 scripts/**/*
 !scripts/load_data.py

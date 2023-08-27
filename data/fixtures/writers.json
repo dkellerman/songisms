@@ -1,6 +1,6 @@
 [
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Allen Shamblin",
     "alt_names": "[]",
@@ -9,7 +9,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tom Douglas",
     "alt_names": "[]",
@@ -18,7 +18,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Eric Church",
     "alt_names": "[]",
@@ -27,7 +27,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jeffery Hyde",
     "alt_names": "[]",
@@ -36,7 +36,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ryan Tyndell",
     "alt_names": "[]",
@@ -45,7 +45,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Bob Seger",
     "alt_names": "[]",
@@ -54,7 +54,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jessi Leigh Alexander",
     "alt_names": "[]",
@@ -63,7 +63,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John Osborne",
     "alt_names": "[]",
@@ -72,7 +72,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tj Osborne",
     "alt_names": "[]",
@@ -81,7 +81,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Anton Zaslavski",
     "alt_names": "[]",
@@ -90,7 +90,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jordan Kendall Johnson",
     "alt_names": "[]",
@@ -99,7 +99,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kyle Mark Trewartha",
     "alt_names": "[]",
@@ -108,7 +108,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Marcus Durand Lomax",
     "alt_names": "[]",
@@ -117,7 +117,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael Glen Trewartha",
     "alt_names": "[]",
@@ -126,7 +126,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sarah Paige Aarons",
     "alt_names": "[]",
@@ -135,7 +135,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Stefan Adam Johnson",
     "alt_names": "[]",
@@ -144,7 +144,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Chris Godbey",
     "alt_names": "[]",
@@ -153,7 +153,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Justin Timberlake",
     "alt_names": "[]",
@@ -162,7 +162,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Timothy Mosely",
     "alt_names": "[]",
@@ -171,7 +171,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "James Fauntleroy",
     "alt_names": "[]",
@@ -180,7 +180,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jerome Harmon",
     "alt_names": "[]",
@@ -189,7 +189,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Scott D. Hoffman",
     "alt_names": "[]",
@@ -198,7 +198,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Patrick Seacor",
     "alt_names": "[]",
@@ -207,7 +207,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Derek Gruen",
     "alt_names": "[]",
@@ -216,7 +216,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jason Sellards",
     "alt_names": "[]",
@@ -225,7 +225,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ashley Glenn Gorley",
     "alt_names": "[]",
@@ -234,7 +234,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jesse Frasure",
     "alt_names": "[]",
@@ -243,7 +243,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Shane L Mcanally",
     "alt_names": "[]",
@@ -252,7 +252,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Thomas Rhett",
     "alt_names": "[]",
@@ -261,7 +261,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ryan Adams",
     "alt_names": "[]",
@@ -270,7 +270,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Raul Ignacio Cubina",
     "alt_names": "[]",
@@ -279,7 +279,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mark Carl Stolinski Williams",
     "alt_names": "[]",
@@ -288,7 +288,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jonathan David Bellion",
     "alt_names": "[]",
@@ -297,7 +297,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Travis Franklyn Mendes",
     "alt_names": "[]",
@@ -306,7 +306,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Abel Tesfaye",
     "alt_names": "[]",
@@ -315,7 +315,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ahmad Balshe",
     "alt_names": "[]",
@@ -324,7 +324,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jason Quenneville",
     "alt_names": "[]",
@@ -333,7 +333,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Martin Karl Sandberg",
     "alt_names": "[]",
@@ -342,7 +342,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Oscar Thomas Holter",
     "alt_names": "[]",
@@ -351,7 +351,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Dino Fekaris",
     "alt_names": "[]",
@@ -360,7 +360,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Frederick J. Perren",
     "alt_names": "[]",
@@ -369,7 +369,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John Clayton Mayer",
     "alt_names": "[]",
@@ -378,7 +378,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Marc Scibilia",
     "alt_names": "[]",
@@ -387,7 +387,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brandy Lynn Clark",
     "alt_names": "[]",
@@ -396,7 +396,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Shane Mcanally",
     "alt_names": "[]",
@@ -405,7 +405,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Madeleine Sleightholm",
     "alt_names": "[]",
@@ -414,7 +414,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Edward Heyman",
     "alt_names": "[]",
@@ -423,7 +423,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John W. Green",
     "alt_names": "[]",
@@ -432,7 +432,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Johnny Green",
     "alt_names": "[]",
@@ -441,7 +441,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Bryan Kelley",
     "alt_names": "[]",
@@ -450,7 +450,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Chase Rice",
     "alt_names": "[]",
@@ -459,7 +459,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jesse Kenneth Robert Rice",
     "alt_names": "[]",
@@ -468,7 +468,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Joseph Kelly Moi",
     "alt_names": "[]",
@@ -477,7 +477,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tyler Reed Hubbard",
     "alt_names": "[]",
@@ -486,7 +486,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Greg Allen Kurstin",
     "alt_names": "[]",
@@ -495,7 +495,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Maren Larae Morris",
     "alt_names": "[]",
@@ -504,7 +504,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Edward Christopher Sheeran",
     "alt_names": "[]",
@@ -513,7 +513,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "James Mcnair",
     "alt_names": "[]",
@@ -522,7 +522,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Luke Combs",
     "alt_names": "[]",
@@ -531,7 +531,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ray Fulcher",
     "alt_names": "[]",
@@ -540,7 +540,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Audrey Grisham",
     "alt_names": "[]",
@@ -549,7 +549,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Josh Osborne",
     "alt_names": "[]",
@@ -558,7 +558,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Luke Laird",
     "alt_names": "[]",
@@ -567,7 +567,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mary Jean Shurtz",
     "alt_names": "[]",
@@ -576,7 +576,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Russ Hull",
     "alt_names": "[]",
@@ -585,7 +585,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sam Hunt",
     "alt_names": "[]",
@@ -594,7 +594,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Liz Rose",
     "alt_names": "[]",
@@ -603,7 +603,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Lori Mckenna",
     "alt_names": "[]",
@@ -612,7 +612,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Hillary Lee Lindsey",
     "alt_names": "[]",
@@ -621,7 +621,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Luke Dick",
     "alt_names": "[]",
@@ -630,7 +630,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Natalie Hemby",
     "alt_names": "[]",
@@ -639,7 +639,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Thomas Osborne",
     "alt_names": "[]",
@@ -648,7 +648,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Bob Dylan",
     "alt_names": "[]",
@@ -657,7 +657,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ketch Secor",
     "alt_names": "[]",
@@ -666,7 +666,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Adele Laurie Blue Adkins",
     "alt_names": "[]",
@@ -675,7 +675,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Gregory Allen Kurstin",
     "alt_names": "[]",
@@ -684,7 +684,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jason Thomas Mraz",
     "alt_names": "[]",
@@ -693,7 +693,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Aaron Scherz",
     "alt_names": "[]",
@@ -702,7 +702,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Madison Marlow",
     "alt_names": "[]",
@@ -711,7 +711,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Taylor Dye",
     "alt_names": "[]",
@@ -720,7 +720,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Robert Thomas",
     "alt_names": "[]",
@@ -729,7 +729,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Itaal Shur",
     "alt_names": "[]",
@@ -738,7 +738,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Max Martin",
     "alt_names": "[]",
@@ -747,7 +747,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Johan Karl Schuster",
     "alt_names": "[]",
@@ -756,7 +756,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Taylor Alison Swift",
     "alt_names": "[]",
@@ -765,7 +765,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Benny Blanco",
     "alt_names": "[]",
@@ -774,7 +774,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ed Sheeran",
     "alt_names": "[]",
@@ -783,7 +783,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Justin Bieber",
     "alt_names": "[]",
@@ -792,7 +792,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael James Ryan Busbee",
     "alt_names": "[]",
@@ -801,7 +801,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Benjamin S. Hayslip",
     "alt_names": "[]",
@@ -810,7 +810,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Joshua Dennis Anthony Bagles",
     "alt_names": "[]",
@@ -819,7 +819,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Matthew Peters Dragstrem",
     "alt_names": "[]",
@@ -828,7 +828,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Daniel Wayne Sermon",
     "alt_names": "[]",
@@ -837,7 +837,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Daniel Coulter Reynolds",
     "alt_names": "[]",
@@ -846,7 +846,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Benjamin Arthur Mckee",
     "alt_names": "[]",
@@ -855,7 +855,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Daniel James Platzman",
     "alt_names": "[]",
@@ -864,7 +864,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Robin Lennart Fredriksson",
     "alt_names": "[]",
@@ -873,7 +873,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mattias Per Larsson",
     "alt_names": "[]",
@@ -882,7 +882,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Justin Drew Tranter",
     "alt_names": "[]",
@@ -891,7 +891,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Chris Stapleton",
     "alt_names": "[]",
@@ -900,7 +900,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jim Beavers",
     "alt_names": "[]",
@@ -909,7 +909,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brad Tursi",
     "alt_names": "[]",
@@ -918,7 +918,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Matt Ramsey",
     "alt_names": "[]",
@@ -927,7 +927,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Trevor Rosen",
     "alt_names": "[]",
@@ -936,7 +936,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "OTIS BLACKWELL",
     "alt_names": "[]",
@@ -945,7 +945,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "WINFIELD SCOTT",
     "alt_names": "[]",
@@ -954,7 +954,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "George Michael",
     "alt_names": "[]",
@@ -963,7 +963,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael Heeney",
     "alt_names": "[]",
@@ -972,7 +972,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Hillary Lindsey",
     "alt_names": "[]",
@@ -981,7 +981,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael Busbee",
     "alt_names": "[]",
@@ -990,7 +990,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ryan Hurd",
     "alt_names": "[]",
@@ -999,7 +999,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Elvis Costello",
     "alt_names": "[]",
@@ -1008,7 +1008,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Craig Lee Fuller",
     "alt_names": "[]",
@@ -1017,7 +1017,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Lee Brice",
     "alt_names": "[]",
@@ -1026,7 +1026,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Charles Kelley",
     "alt_names": "[]",
@@ -1035,7 +1035,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Corey Crowder",
     "alt_names": "[]",
@@ -1044,7 +1044,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Wesley Haywood",
     "alt_names": "[]",
@@ -1053,7 +1053,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Hillary Scott",
     "alt_names": "[]",
@@ -1062,7 +1062,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sarah Buxton",
     "alt_names": "[]",
@@ -1071,7 +1071,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Chris Tompkins",
     "alt_names": "[]",
@@ -1080,7 +1080,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Dierks Bentley",
     "alt_names": "[]",
@@ -1089,7 +1089,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Josh Kear",
     "alt_names": "[]",
@@ -1098,7 +1098,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Matraca Maria Berg",
     "alt_names": "[]",
@@ -1107,7 +1107,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Deana Kay Carter",
     "alt_names": "[]",
@@ -1116,7 +1116,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Aubrey Drake Graham",
     "alt_names": "[]",
@@ -1125,7 +1125,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Daveon Lamont Jackson",
     "alt_names": "[]",
@@ -1134,7 +1134,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Matthew Jehu Samuels",
     "alt_names": "[]",
@@ -1143,7 +1143,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Noah Shebib",
     "alt_names": "[]",
@@ -1152,7 +1152,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ronald Latour",
     "alt_names": "[]",
@@ -1161,7 +1161,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brock F. Korsan",
     "alt_names": "[]",
@@ -1170,7 +1170,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Shane L. Mcanally",
     "alt_names": "[]",
@@ -1179,7 +1179,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Cameron Thomas Duddy",
     "alt_names": "[]",
@@ -1188,7 +1188,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jess Parker Carson",
     "alt_names": "[]",
@@ -1197,7 +1197,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mark C. Wystrach",
     "alt_names": "[]",
@@ -1206,7 +1206,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Joshua Shaun Osborne",
     "alt_names": "[]",
@@ -1215,7 +1215,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Casey Beathard",
     "alt_names": "[]",
@@ -1224,7 +1224,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Thomas J. Osborne",
     "alt_names": "[]",
@@ -1233,7 +1233,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Connie Harrington",
     "alt_names": "[]",
@@ -1242,7 +1242,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jessi Alexander",
     "alt_names": "[]",
@@ -1251,7 +1251,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Deric Ruttan",
     "alt_names": "[]",
@@ -1260,7 +1260,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Barry Dean",
     "alt_names": "[]",
@@ -1269,7 +1269,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tom Guidera",
     "alt_names": "[]",
@@ -1278,7 +1278,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Lindsay Egan Walter",
     "alt_names": "[]",
@@ -1287,7 +1287,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Anthony Dent",
     "alt_names": "[]",
@@ -1296,7 +1296,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Beyonce Knowles",
     "alt_names": "[]",
@@ -1305,7 +1305,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mathew Knowles",
     "alt_names": "[]",
@@ -1314,7 +1314,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mark Sanders",
     "alt_names": "[]",
@@ -1323,7 +1323,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Elvis Presley",
     "alt_names": "[]",
@@ -1332,7 +1332,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Otis Blackwell",
     "alt_names": "[]",
@@ -1341,7 +1341,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Chris Janson",
     "alt_names": "[]",
@@ -1350,7 +1350,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Charles Christopher Du Bois",
     "alt_names": "[]",
@@ -1359,7 +1359,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ben West",
     "alt_names": "[]",
@@ -1368,7 +1368,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Caitlyn Smith",
     "alt_names": "[]",
@@ -1377,7 +1377,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Stephen Wilson",
     "alt_names": "[]",
@@ -1386,7 +1386,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Homer Banks",
     "alt_names": "[]",
@@ -1395,7 +1395,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Lester Snell",
     "alt_names": "[]",
@@ -1404,7 +1404,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Adam Levine",
     "alt_names": "[]",
@@ -1413,7 +1413,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jacob Hindlin",
     "alt_names": "[]",
@@ -1422,7 +1422,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jonathan Bellion",
     "alt_names": "[]",
@@ -1431,7 +1431,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jordan Johnson",
     "alt_names": "[]",
@@ -1440,7 +1440,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael Pollack",
     "alt_names": "[]",
@@ -1449,7 +1449,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Stefan Johnson",
     "alt_names": "[]",
@@ -1458,7 +1458,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Vincent Ford",
     "alt_names": "[]",
@@ -1467,7 +1467,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mark Hoppus",
     "alt_names": "[]",
@@ -1476,7 +1476,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Thomas Delonge",
     "alt_names": "[]",
@@ -1485,7 +1485,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Travis L. Barker",
     "alt_names": "[]",
@@ -1494,7 +1494,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kacey Musgraves",
     "alt_names": "[]",
@@ -1503,7 +1503,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Deborah Harry",
     "alt_names": "[]",
@@ -1512,7 +1512,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Giorgio Moroder",
     "alt_names": "[]",
@@ -1521,7 +1521,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Matthew Ramsey",
     "alt_names": "[]",
@@ -1530,7 +1530,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jessica Lee Levin",
     "alt_names": "[]",
@@ -1539,7 +1539,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kelsea Nicole Ballerini",
     "alt_names": "[]",
@@ -1548,7 +1548,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Forest Glen Whitehead",
     "alt_names": "[]",
@@ -1557,7 +1557,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Daniel Smyers",
     "alt_names": "[]",
@@ -1566,7 +1566,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "James Shay Mooney",
     "alt_names": "[]",
@@ -1575,7 +1575,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jessie Jo Dillon",
     "alt_names": "[]",
@@ -1584,7 +1584,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jordan Kyle Reynolds",
     "alt_names": "[]",
@@ -1593,7 +1593,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jason P. D. Boyd",
     "alt_names": "[]",
@@ -1602,7 +1602,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Justin Drew Bieber",
     "alt_names": "[]",
@@ -1611,7 +1611,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Daniel Tashian",
     "alt_names": "[]",
@@ -1620,7 +1620,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ian Fitchuk",
     "alt_names": "[]",
@@ -1629,7 +1629,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tyler Joseph",
     "alt_names": "[]",
@@ -1638,7 +1638,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Emily Warren",
     "alt_names": "[]",
@@ -1647,7 +1647,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ian Kirkpatrick",
     "alt_names": "[]",
@@ -1656,7 +1656,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Caroline Ailin",
     "alt_names": "[]",
@@ -1665,7 +1665,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Dua Lipa",
     "alt_names": "[]",
@@ -1674,7 +1674,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Saul Hudson",
     "alt_names": "[]",
@@ -1683,7 +1683,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Izzy Stradlin",
     "alt_names": "[]",
@@ -1692,7 +1692,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Duff Mckagan",
     "alt_names": "[]",
@@ -1701,7 +1701,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Darren A Reed",
     "alt_names": "[]",
@@ -1710,7 +1710,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Matt Sorum",
     "alt_names": "[]",
@@ -1719,7 +1719,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "W. Axl Rose",
     "alt_names": "[]",
@@ -1728,7 +1728,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John Mayer",
     "alt_names": "[]",
@@ -1737,7 +1737,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Cameron Bartolini",
     "alt_names": "[]",
@@ -1746,7 +1746,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Josh Jenkins",
     "alt_names": "[]",
@@ -1755,7 +1755,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Shane Pittman",
     "alt_names": "[]",
@@ -1764,7 +1764,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Walker Hayes",
     "alt_names": "[]",
@@ -1773,7 +1773,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Rodney Clawson",
     "alt_names": "[]",
@@ -1782,7 +1782,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Chris Stein",
     "alt_names": "[]",
@@ -1791,7 +1791,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Fred Alexander",
     "alt_names": "[]",
@@ -1800,7 +1800,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Fred Lewis",
     "alt_names": "[]",
@@ -1809,7 +1809,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mark Wood Jr.",
     "alt_names": "[]",
@@ -1818,7 +1818,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Marvin Craig",
     "alt_names": "[]",
@@ -1827,7 +1827,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Norman Beavers",
     "alt_names": "[]",
@@ -1836,7 +1836,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Otis Stokes",
     "alt_names": "[]",
@@ -1845,7 +1845,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Stephen Shockley",
     "alt_names": "[]",
@@ -1854,7 +1854,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Thomas Shelby",
     "alt_names": "[]",
@@ -1863,7 +1863,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tiemeyer Mccain",
     "alt_names": "[]",
@@ -1872,7 +1872,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John Thomas Harding",
     "alt_names": "[]",
@@ -1881,7 +1881,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mason David Levy",
     "alt_names": "[]",
@@ -1890,7 +1890,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Robert Jason Boyd",
     "alt_names": "[]",
@@ -1899,7 +1899,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Frederick John Philip Gibson",
     "alt_names": "[]",
@@ -1908,7 +1908,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Johnny Mcdaid",
     "alt_names": "[]",
@@ -1917,7 +1917,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Dan Smyers",
     "alt_names": "[]",
@@ -1926,7 +1926,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jordan Reynolds",
     "alt_names": "[]",
@@ -1935,7 +1935,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Nicolle Anne Galyon",
     "alt_names": "[]",
@@ -1944,7 +1944,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "James Taylor",
     "alt_names": "[]",
@@ -1953,7 +1953,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Neil Finn",
     "alt_names": "[]",
@@ -1962,7 +1962,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Scott Harris",
     "alt_names": "[]",
@@ -1971,7 +1971,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Alan Gordon",
     "alt_names": "[]",
@@ -1980,7 +1980,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Garry Bonner",
     "alt_names": "[]",
@@ -1989,7 +1989,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Luiz Bonfa",
     "alt_names": "[]",
@@ -1998,7 +1998,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Walter Andre De Backer",
     "alt_names": "[]",
@@ -2007,7 +2007,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John Sturgill Simpson",
     "alt_names": "[]",
@@ -2016,7 +2016,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Billy Joel",
     "alt_names": "[]",
@@ -2025,7 +2025,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Christopher Michael Lacorte",
     "alt_names": "[]",
@@ -2034,7 +2034,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sam Lawry Hunt",
     "alt_names": "[]",
@@ -2043,7 +2043,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Shane Lamar Mcanally",
     "alt_names": "[]",
@@ -2052,7 +2052,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brandy Clark",
     "alt_names": "[]",
@@ -2061,7 +2061,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Clint Daniels",
     "alt_names": "[]",
@@ -2070,7 +2070,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jack Hody Johnson",
     "alt_names": "[]",
@@ -2079,7 +2079,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brad Warren",
     "alt_names": "[]",
@@ -2088,7 +2088,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brett Beavers",
     "alt_names": "[]",
@@ -2097,7 +2097,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brett Warren",
     "alt_names": "[]",
@@ -2106,7 +2106,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Olivia Rodrigo",
     "alt_names": "[]",
@@ -2115,7 +2115,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Daniel Leonard Nigro",
     "alt_names": "[]",
@@ -2124,7 +2124,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Hayley Nichole Williams",
     "alt_names": "[]",
@@ -2133,7 +2133,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Joshua Neil Farro",
     "alt_names": "[]",
@@ -2142,7 +2142,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Miranda Lambert",
     "alt_names": "[]",
@@ -2151,7 +2151,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jack Ingram",
     "alt_names": "[]",
@@ -2160,7 +2160,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jon Randall",
     "alt_names": "[]",
@@ -2169,7 +2169,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Gordon Sumner",
     "alt_names": "[]",
@@ -2178,7 +2178,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Steven Andre Battey",
     "alt_names": "[]",
@@ -2187,7 +2187,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sammy Mitchell",
     "alt_names": "[]",
@@ -2196,7 +2196,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Robert Steven Williford",
     "alt_names": "[]",
@@ -2205,7 +2205,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Andrew Wotman",
     "alt_names": "[]",
@@ -2214,7 +2214,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Bernard Alexander Harvey",
     "alt_names": "[]",
@@ -2223,7 +2223,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Giveon D. Evans",
     "alt_names": "[]",
@@ -2232,7 +2232,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Aaron St. Clair Burnett Simmonds",
     "alt_names": "[]",
@@ -2241,7 +2241,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Felisha Tashira King",
     "alt_names": "[]",
@@ -2250,7 +2250,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Keavan Yazdani",
     "alt_names": "[]",
@@ -2259,7 +2259,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Louis Russell Bell",
     "alt_names": "[]",
@@ -2268,7 +2268,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Luis Manuel Jr. Martinez",
     "alt_names": "[]",
@@ -2277,7 +2277,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Matthew Sean Leon",
     "alt_names": "[]",
@@ -2286,7 +2286,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ashton D. Simmonds",
     "alt_names": "[]",
@@ -2295,7 +2295,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Paul Epworth",
     "alt_names": "[]",
@@ -2304,7 +2304,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tom Hull",
     "alt_names": "[]",
@@ -2313,7 +2313,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Florence Welch",
     "alt_names": "[]",
@@ -2322,7 +2322,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mark Narmore",
     "alt_names": "[]",
@@ -2331,7 +2331,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jesse Jo Dillon",
     "alt_names": "[]",
@@ -2340,7 +2340,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kimberly Perry",
     "alt_names": "[]",
@@ -2349,7 +2349,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael W Campbell",
     "alt_names": "[]",
@@ -2358,7 +2358,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Thomas Earl Petty",
     "alt_names": "[]",
@@ -2367,7 +2367,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Christopher A. J. Martin",
     "alt_names": "[]",
@@ -2376,7 +2376,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Guy Rupert Berryman",
     "alt_names": "[]",
@@ -2385,7 +2385,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jonathan Mark Buckland",
     "alt_names": "[]",
@@ -2394,7 +2394,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "William Champion",
     "alt_names": "[]",
@@ -2403,7 +2403,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Cary Ryan Barlowe",
     "alt_names": "[]",
@@ -2412,7 +2412,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Shane Stevens",
     "alt_names": "[]",
@@ -2421,7 +2421,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Stone C. Gossard",
     "alt_names": "[]",
@@ -2430,7 +2430,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Eddie Jerome Vedder",
     "alt_names": "[]",
@@ -2439,7 +2439,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brian Harold May",
     "alt_names": "[]",
@@ -2448,7 +2448,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brad Francis Tursi",
     "alt_names": "[]",
@@ -2457,7 +2457,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Matthew Thomas Ramsey",
     "alt_names": "[]",
@@ -2466,7 +2466,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Trevor Joseph Rosen",
     "alt_names": "[]",
@@ -2475,7 +2475,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Caroline Polachek",
     "alt_names": "[]",
@@ -2484,7 +2484,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Daniel Nigro",
     "alt_names": "[]",
@@ -2493,7 +2493,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Teddy Geiger",
     "alt_names": "[]",
@@ -2502,7 +2502,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ray Charles",
     "alt_names": "[]",
@@ -2511,7 +2511,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jimmy Page",
     "alt_names": "[]",
@@ -2520,7 +2520,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Robert Plant",
     "alt_names": "[]",
@@ -2529,7 +2529,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Erin Enderlin",
     "alt_names": "[]",
@@ -2538,7 +2538,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Wyatt Durrette",
     "alt_names": "[]",
@@ -2547,7 +2547,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brian Joseph Burton",
     "alt_names": "[]",
@@ -2556,7 +2556,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Daniel Quine Auerbach",
     "alt_names": "[]",
@@ -2565,7 +2565,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Patrick James Carney",
     "alt_names": "[]",
@@ -2574,7 +2574,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Billie Eilish O'connell",
     "alt_names": "[]",
@@ -2583,7 +2583,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Finneas Baird O'connell",
     "alt_names": "[]",
@@ -2592,7 +2592,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jon Nite",
     "alt_names": "[]",
@@ -2601,7 +2601,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Nicole Galyon",
     "alt_names": "[]",
@@ -2610,7 +2610,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jimmy Robbins",
     "alt_names": "[]",
@@ -2619,7 +2619,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Stewart",
     "alt_names": "[]",
@@ -2628,7 +2628,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jessica Agombar",
     "alt_names": "[]",
@@ -2637,7 +2637,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Anthony Caleb Followill",
     "alt_names": "[]",
@@ -2646,7 +2646,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ivan Nathan Followill",
     "alt_names": "[]",
@@ -2655,7 +2655,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jared Followill",
     "alt_names": "[]",
@@ -2664,7 +2664,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Matthew Followill",
     "alt_names": "[]",
@@ -2673,7 +2673,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Gian Piero Reverberi",
     "alt_names": "[]",
@@ -2682,7 +2682,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Gianfranco Reverberi",
     "alt_names": "[]",
@@ -2691,7 +2691,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Thomas Decarlo Callaway",
     "alt_names": "[]",
@@ -2700,7 +2700,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Keith Richards",
     "alt_names": "[]",
@@ -2709,7 +2709,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mick Jagger",
     "alt_names": "[]",
@@ -2718,7 +2718,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Bob Dipiero",
     "alt_names": "[]",
@@ -2727,7 +2727,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Abel Makkonen Tesfaye",
     "alt_names": "[]",
@@ -2736,7 +2736,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Guy-manuel De Homem-christo",
     "alt_names": "[]",
@@ -2745,7 +2745,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Thomas Bangalter",
     "alt_names": "[]",
@@ -2754,7 +2754,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Martin Mckinney",
     "alt_names": "[]",
@@ -2763,7 +2763,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Henry Russell Walter",
     "alt_names": "[]",
@@ -2772,7 +2772,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Andrew Wyatt",
     "alt_names": "[]",
@@ -2781,7 +2781,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Anthony Rossomando",
     "alt_names": "[]",
@@ -2790,7 +2790,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mark Ronson",
     "alt_names": "[]",
@@ -2799,7 +2799,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Stefani Germanotta",
     "alt_names": "[]",
@@ -2808,7 +2808,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Josh Thompson",
     "alt_names": "[]",
@@ -2817,7 +2817,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Miller Zachery Crowell",
     "alt_names": "[]",
@@ -2826,7 +2826,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tim Dubois",
     "alt_names": "[]",
@@ -2835,7 +2835,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Vince Gill",
     "alt_names": "[]",
@@ -2844,7 +2844,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Alex Van Halen",
     "alt_names": "[]",
@@ -2853,7 +2853,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Edward Van Halen",
     "alt_names": "[]",
@@ -2862,7 +2862,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Roth",
     "alt_names": "[]",
@@ -2871,7 +2871,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Christopher Stapleton",
     "alt_names": "[]",
@@ -2880,7 +2880,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Thomas Daniel Green",
     "alt_names": "[]",
@@ -2889,7 +2889,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Carrie Underwood",
     "alt_names": "[]",
@@ -2898,7 +2898,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Clarence Bernard Coffee",
     "alt_names": "[]",
@@ -2907,7 +2907,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jonathan Lyndale Kirk",
     "alt_names": "[]",
@@ -2916,7 +2916,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sarah Theresa Hudson",
     "alt_names": "[]",
@@ -2925,7 +2925,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Stephen Noel Kozmeniuk",
     "alt_names": "[]",
@@ -2934,7 +2934,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jason Isbell",
     "alt_names": "[]",
@@ -2943,7 +2943,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Stephen Stills",
     "alt_names": "[]",
@@ -2952,7 +2952,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Hank Williams",
     "alt_names": "[]",
@@ -2961,7 +2961,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sr.",
     "alt_names": "[]",
@@ -2970,7 +2970,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Anthony Jones",
     "alt_names": "[]",
@@ -2979,7 +2979,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Chancelor Bennett",
     "alt_names": "[]",
@@ -2988,7 +2988,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jorgen Michael Odegard",
     "alt_names": "[]",
@@ -2997,7 +2997,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Steven Franks",
     "alt_names": "[]",
@@ -3006,7 +3006,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tommy Brown",
     "alt_names": "[]",
@@ -3015,7 +3015,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Taylor A. Swift",
     "alt_names": "[]",
@@ -3024,7 +3024,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Dave Haywood",
     "alt_names": "[]",
@@ -3033,7 +3033,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael Jagger",
     "alt_names": "[]",
@@ -3042,7 +3042,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brent Cobb",
     "alt_names": "[]",
@@ -3051,7 +3051,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Charlie Worsham",
     "alt_names": "[]",
@@ -3060,7 +3060,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Scott B Stepakoff",
     "alt_names": "[]",
@@ -3069,7 +3069,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mark Rooney",
     "alt_names": "[]",
@@ -3078,7 +3078,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Samuel Barnes",
     "alt_names": "[]",
@@ -3087,7 +3087,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jean Olivier",
     "alt_names": "[]",
@@ -3096,7 +3096,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brian Kelley",
     "alt_names": "[]",
@@ -3105,7 +3105,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jordan Schmidt",
     "alt_names": "[]",
@@ -3114,7 +3114,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Morgan Cole Wallen",
     "alt_names": "[]",
@@ -3123,7 +3123,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ernest Keith Smith",
     "alt_names": "[]",
@@ -3132,7 +3132,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael Hardy",
     "alt_names": "[]",
@@ -3141,7 +3141,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Morgan Wallen",
     "alt_names": "[]",
@@ -3150,7 +3150,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ryan Vojtesak",
     "alt_names": "[]",
@@ -3159,7 +3159,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Bruce Hornsby",
     "alt_names": "[]",
@@ -3168,7 +3168,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Finneas O'connell",
     "alt_names": "[]",
@@ -3177,7 +3177,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Nasri Tony Atweh",
     "alt_names": "[]",
@@ -3186,7 +3186,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Adam David Messinger",
     "alt_names": "[]",
@@ -3195,7 +3195,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mark Richard Pellizzer",
     "alt_names": "[]",
@@ -3204,7 +3204,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Benjamin Spivak",
     "alt_names": "[]",
@@ -3213,7 +3213,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Alexander Vincent Tanasijczuk",
     "alt_names": "[]",
@@ -3222,7 +3222,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Cook",
     "alt_names": "[]",
@@ -3231,7 +3231,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Trenton Summar",
     "alt_names": "[]",
@@ -3240,7 +3240,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jay C. Knowles",
     "alt_names": "[]",
@@ -3249,7 +3249,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jessica Alexander",
     "alt_names": "[]",
@@ -3258,7 +3258,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "James Yeary",
     "alt_names": "[]",
@@ -3267,7 +3267,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ari Levine",
     "alt_names": "[]",
@@ -3276,7 +3276,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Bruno Mars",
     "alt_names": "[]",
@@ -3285,7 +3285,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Christopher Brown",
     "alt_names": "[]",
@@ -3294,7 +3294,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Claude Kelly",
     "alt_names": "[]",
@@ -3303,7 +3303,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jeff Tweedy",
     "alt_names": "[]",
@@ -3312,7 +3312,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Philip Lawrence",
     "alt_names": "[]",
@@ -3321,7 +3321,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mark Knopfler",
     "alt_names": "[]",
@@ -3330,7 +3330,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brett James",
     "alt_names": "[]",
@@ -3339,7 +3339,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Priscilla Renea",
     "alt_names": "[]",
@@ -3348,7 +3348,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Christopher Michael Destefano",
     "alt_names": "[]",
@@ -3357,7 +3357,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Anthony Ray",
     "alt_names": "[]",
@@ -3366,7 +3366,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Thomas Callaway",
     "alt_names": "[]",
@@ -3375,7 +3375,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Trevor Smith",
     "alt_names": "[]",
@@ -3384,7 +3384,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Clint Lagerberg",
     "alt_names": "[]",
@@ -3393,7 +3393,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Steven Olsen",
     "alt_names": "[]",
@@ -3402,7 +3402,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Thomas Marc Archer",
     "alt_names": "[]",
@@ -3411,7 +3411,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Luke Albert Combs",
     "alt_names": "[]",
@@ -3420,7 +3420,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Taylor Phillips",
     "alt_names": "[]",
@@ -3429,7 +3429,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Joshua Osborne",
     "alt_names": "[]",
@@ -3438,7 +3438,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Matthew Dragstrem",
     "alt_names": "[]",
@@ -3447,7 +3447,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mike Busbee",
     "alt_names": "[]",
@@ -3456,7 +3456,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Natalie Nicole Hemby",
     "alt_names": "[]",
@@ -3465,7 +3465,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Van Morrison",
     "alt_names": "[]",
@@ -3474,7 +3474,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Frasier",
     "alt_names": "[]",
@@ -3483,7 +3483,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ed Hill",
     "alt_names": "[]",
@@ -3492,7 +3492,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Zachery Miller Crowell",
     "alt_names": "[]",
@@ -3501,7 +3501,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Dann Gallucci",
     "alt_names": "[]",
@@ -3510,7 +3510,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Eric Judy",
     "alt_names": "[]",
@@ -3519,7 +3519,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Isaac Brock",
     "alt_names": "[]",
@@ -3528,7 +3528,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Thomas Archer",
     "alt_names": "[]",
@@ -3537,7 +3537,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ronnie Van Zant",
     "alt_names": "[]",
@@ -3546,7 +3546,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Gary Robert Rossington",
     "alt_names": "[]",
@@ -3555,7 +3555,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Edward C. King",
     "alt_names": "[]",
@@ -3564,7 +3564,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Peter Brown",
     "alt_names": "[]",
@@ -3573,7 +3573,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Robert Rans",
     "alt_names": "[]",
@@ -3582,7 +3582,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Rhett Akins",
     "alt_names": "[]",
@@ -3591,7 +3591,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ashley Gorley",
     "alt_names": "[]",
@@ -3600,7 +3600,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Demitria Lovato",
     "alt_names": "[]",
@@ -3609,7 +3609,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sean Douglas",
     "alt_names": "[]",
@@ -3618,7 +3618,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Trevor W. Brown",
     "alt_names": "[]",
@@ -3627,7 +3627,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Warren Felder",
     "alt_names": "[]",
@@ -3636,7 +3636,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "William Simmons",
     "alt_names": "[]",
@@ -3645,7 +3645,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jason Desrouleaux",
     "alt_names": "[]",
@@ -3654,7 +3654,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Lindy Robbins",
     "alt_names": "[]",
@@ -3663,7 +3663,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Samuel Denison Martin",
     "alt_names": "[]",
@@ -3672,7 +3672,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ian Eric Kirkpatrick",
     "alt_names": "[]",
@@ -3681,7 +3681,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mitch Allan",
     "alt_names": "[]",
@@ -3690,7 +3690,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ashley Mcbryde",
     "alt_names": "[]",
@@ -3699,7 +3699,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Nicolette Rose Hayford",
     "alt_names": "[]",
@@ -3708,7 +3708,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jesse Kenneth Rice",
     "alt_names": "[]",
@@ -3717,7 +3717,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John Mcdaid",
     "alt_names": "[]",
@@ -3726,7 +3726,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Steve Mac",
     "alt_names": "[]",
@@ -3735,7 +3735,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kandi L. Burruss",
     "alt_names": "[]",
@@ -3744,7 +3744,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kevin Jerome Briggs",
     "alt_names": "[]",
@@ -3753,7 +3753,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tameka D. Cottle",
     "alt_names": "[]",
@@ -3762,7 +3762,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Delbert Ross Mcclinton",
     "alt_names": "[]",
@@ -3771,7 +3771,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Steve Miller",
     "alt_names": "[]",
@@ -3780,7 +3780,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Charles Thompson",
     "alt_names": "[]",
@@ -3789,7 +3789,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Crispin Macmichael Sandys Hunt",
     "alt_names": "[]",
@@ -3798,7 +3798,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Simon Edward Stafford",
     "alt_names": "[]",
@@ -3807,7 +3807,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Darwin Merwan Smith",
     "alt_names": "[]",
@@ -3816,7 +3816,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Carly Rae Jepsen",
     "alt_names": "[]",
@@ -3825,7 +3825,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Joshua Keeler Ramsay",
     "alt_names": "[]",
@@ -3834,7 +3834,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tavish Joseph Crowe",
     "alt_names": "[]",
@@ -3843,7 +3843,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "W. Axl Rose Rose",
     "alt_names": "[]",
@@ -3852,7 +3852,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Saul Hudson Hudson",
     "alt_names": "[]",
@@ -3861,7 +3861,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Duff Rose Mckagan",
     "alt_names": "[]",
@@ -3870,7 +3870,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Steven Adler",
     "alt_names": "[]",
@@ -3879,7 +3879,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Glenn Frey",
     "alt_names": "[]",
@@ -3888,7 +3888,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jackson Browne",
     "alt_names": "[]",
@@ -3897,7 +3897,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "James Brown",
     "alt_names": "[]",
@@ -3906,7 +3906,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Johnny Terry",
     "alt_names": "[]",
@@ -3915,7 +3915,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mikkel Eriksen",
     "alt_names": "[]",
@@ -3924,7 +3924,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tor Hermansen",
     "alt_names": "[]",
@@ -3933,7 +3933,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Charlotte Aitchison",
     "alt_names": "[]",
@@ -3942,7 +3942,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ross Golan",
     "alt_names": "[]",
@@ -3951,7 +3951,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Benjamin Joseph Levin",
     "alt_names": "[]",
@@ -3960,7 +3960,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Paul Simon",
     "alt_names": "[]",
@@ -3969,7 +3969,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Dido Armstrong",
     "alt_names": "[]",
@@ -3978,7 +3978,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Paul Philip Herman",
     "alt_names": "[]",
@@ -3987,7 +3987,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Billy Currington",
     "alt_names": "[]",
@@ -3996,7 +3996,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Blake \"shy\" Anthony Carter",
     "alt_names": "[]",
@@ -4005,7 +4005,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Cathy Dennis",
     "alt_names": "[]",
@@ -4014,7 +4014,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Christian Karlsson",
     "alt_names": "[]",
@@ -4023,7 +4023,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Henrik Jonback",
     "alt_names": "[]",
@@ -4032,7 +4032,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Pontus Winnberg",
     "alt_names": "[]",
@@ -4041,7 +4041,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Clifford N. Branch Jr.",
     "alt_names": "[]",
@@ -4050,7 +4050,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Phyllis Robinson",
     "alt_names": "[]",
@@ -4059,7 +4059,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Henry Binns",
     "alt_names": "[]",
@@ -4068,7 +4068,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sam Hardaker",
     "alt_names": "[]",
@@ -4077,7 +4077,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sophie Alexandra Jessica Barker",
     "alt_names": "[]",
@@ -4086,7 +4086,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ariana Grande",
     "alt_names": "[]",
@@ -4095,7 +4095,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Charles Michael Anderson",
     "alt_names": "[]",
@@ -4104,7 +4104,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael Foster",
     "alt_names": "[]",
@@ -4113,7 +4113,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Taylor Monet Parks",
     "alt_names": "[]",
@@ -4122,7 +4122,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Victoria Monet Mccants",
     "alt_names": "[]",
@@ -4131,7 +4131,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kimberly Krysiuk",
     "alt_names": "[]",
@@ -4140,7 +4140,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael David Foster",
     "alt_names": "[]",
@@ -4149,7 +4149,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Njomza Vitia",
     "alt_names": "[]",
@@ -4158,7 +4158,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Thomas Lee Brown",
     "alt_names": "[]",
@@ -4167,7 +4167,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Christopher John Hayes",
     "alt_names": "[]",
@@ -4176,7 +4176,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Huey Lewis",
     "alt_names": "[]",
@@ -4185,7 +4185,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Noel Gallagher",
     "alt_names": "[]",
@@ -4194,7 +4194,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Anthony Paul Jefferies",
     "alt_names": "[]",
@@ -4203,7 +4203,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Timmy Thomas",
     "alt_names": "[]",
@@ -4212,7 +4212,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Elton John",
     "alt_names": "[]",
@@ -4221,7 +4221,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Bernie Taupin",
     "alt_names": "[]",
@@ -4230,7 +4230,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Gordie Sampson",
     "alt_names": "[]",
@@ -4239,7 +4239,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Hunter Hayes",
     "alt_names": "[]",
@@ -4248,7 +4248,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John Lennon",
     "alt_names": "[]",
@@ -4257,7 +4257,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Paul Mccartney",
     "alt_names": "[]",
@@ -4266,7 +4266,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Chris Cornell",
     "alt_names": "[]",
@@ -4275,7 +4275,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Wayne Carson Thompson",
     "alt_names": "[]",
@@ -4284,7 +4284,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John Jr. Christopher",
     "alt_names": "[]",
@@ -4293,7 +4293,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mark James",
     "alt_names": "[]",
@@ -4302,7 +4302,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Cydel Charles Young",
     "alt_names": "[]",
@@ -4311,7 +4311,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Dallas L Austin",
     "alt_names": "[]",
@@ -4320,7 +4320,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Longstreth",
     "alt_names": "[]",
@@ -4329,7 +4329,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Elon Rutberg",
     "alt_names": "[]",
@@ -4338,7 +4338,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kanye Omari West",
     "alt_names": "[]",
@@ -4347,7 +4347,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kirby Lauryen",
     "alt_names": "[]",
@@ -4356,7 +4356,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mike Dean",
     "alt_names": "[]",
@@ -4365,7 +4365,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Noah D Goldstein",
     "alt_names": "[]",
@@ -4374,7 +4374,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Paul James Mccartney",
     "alt_names": "[]",
@@ -4383,7 +4383,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Robyn Rihanna Fenty",
     "alt_names": "[]",
@@ -4392,7 +4392,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tyrone William Jr Griffin",
     "alt_names": "[]",
@@ -4401,7 +4401,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Stephan Jenkins",
     "alt_names": "[]",
@@ -4410,7 +4410,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Johnny Mosegaard",
     "alt_names": "[]",
@@ -4419,7 +4419,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Karsten Dahlgaard",
     "alt_names": "[]",
@@ -4428,7 +4428,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Claus Norreen",
     "alt_names": "[]",
@@ -4437,7 +4437,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Soren Rasted",
     "alt_names": "[]",
@@ -4446,7 +4446,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Rene Dif",
     "alt_names": "[]",
@@ -4455,7 +4455,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Lene Nystrom",
     "alt_names": "[]",
@@ -4464,7 +4464,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Esther Dean",
     "alt_names": "[]",
@@ -4473,7 +4473,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sandy Julien Wilhelm",
     "alt_names": "[]",
@@ -4482,7 +4482,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tor Erik Hermansen",
     "alt_names": "[]",
@@ -4491,7 +4491,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mikkel Storleer Eriksen",
     "alt_names": "[]",
@@ -4500,7 +4500,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Katheryn Hudson",
     "alt_names": "[]",
@@ -4509,7 +4509,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Norman Gimbel",
     "alt_names": "[]",
@@ -4518,7 +4518,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Charles Fox",
     "alt_names": "[]",
@@ -4527,7 +4527,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Regina Spektor",
     "alt_names": "[]",
@@ -4536,7 +4536,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Macklovitch",
     "alt_names": "[]",
@@ -4545,7 +4545,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Oliver Elliot Goldstein",
     "alt_names": "[]",
@@ -4554,7 +4554,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Patrick Gemayel",
     "alt_names": "[]",
@@ -4563,7 +4563,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Grant Fitch",
     "alt_names": "[]",
@@ -4572,7 +4572,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mark Hennessy",
     "alt_names": "[]",
@@ -4581,7 +4581,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jack Antonoff",
     "alt_names": "[]",
@@ -4590,7 +4590,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sara Bareilles",
     "alt_names": "[]",
@@ -4599,7 +4599,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Stephen Duffy",
     "alt_names": "[]",
@@ -4608,7 +4608,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Steven Page",
     "alt_names": "[]",
@@ -4617,7 +4617,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brian Peter George Eno",
     "alt_names": "[]",
@@ -4626,7 +4626,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Bowie",
     "alt_names": "[]",
@@ -4635,7 +4635,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tom Petty",
     "alt_names": "[]",
@@ -4644,7 +4644,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Joe Strummer",
     "alt_names": "[]",
@@ -4653,7 +4653,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mick Jones",
     "alt_names": "[]",
@@ -4662,7 +4662,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Paul Simonon",
     "alt_names": "[]",
@@ -4671,7 +4671,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Topper Headon",
     "alt_names": "[]",
@@ -4680,7 +4680,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John Prine",
     "alt_names": "[]",
@@ -4689,7 +4689,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Nile Rodgers",
     "alt_names": "[]",
@@ -4698,7 +4698,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Pharrell Williams",
     "alt_names": "[]",
@@ -4707,7 +4707,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Bruce Springsteen",
     "alt_names": "[]",
@@ -4716,7 +4716,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Freddie Mercury",
     "alt_names": "[]",
@@ -4725,7 +4725,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brian Holland",
     "alt_names": "[]",
@@ -4734,7 +4734,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Lamont Dozier",
     "alt_names": "[]",
@@ -4743,7 +4743,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Edward Jr. Holland",
     "alt_names": "[]",
@@ -4752,7 +4752,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sam Cooke",
     "alt_names": "[]",
@@ -4761,7 +4761,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Lionel Richie",
     "alt_names": "[]",
@@ -4770,7 +4770,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Peter Andrew Willis",
     "alt_names": "[]",
@@ -4779,7 +4779,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Robert John Lange",
     "alt_names": "[]",
@@ -4788,7 +4788,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Joseph Thomas Elliott",
     "alt_names": "[]",
@@ -4797,7 +4797,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Richard Savage",
     "alt_names": "[]",
@@ -4806,7 +4806,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Stephen Maynard Clark",
     "alt_names": "[]",
@@ -4815,7 +4815,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Richard John Cyril Allen",
     "alt_names": "[]",
@@ -4824,7 +4824,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Alecia Moore",
     "alt_names": "[]",
@@ -4833,7 +4833,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Dallas Austin",
     "alt_names": "[]",
@@ -4842,7 +4842,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Charles Wilson",
     "alt_names": "[]",
@@ -4851,7 +4851,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Devon Gallaspy",
     "alt_names": "[]",
@@ -4860,7 +4860,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jeffrey Bhasker",
     "alt_names": "[]",
@@ -4869,7 +4869,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Lonnie Simmons",
     "alt_names": "[]",
@@ -4878,7 +4878,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Nicholaus Williams",
     "alt_names": "[]",
@@ -4887,7 +4887,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Peter Hernandez",
     "alt_names": "[]",
@@ -4896,7 +4896,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Robert Wilson",
     "alt_names": "[]",
@@ -4905,7 +4905,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ronnie Wilson",
     "alt_names": "[]",
@@ -4914,7 +4914,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Rudy Taylor",
     "alt_names": "[]",
@@ -4923,7 +4923,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Pierre Guetta",
     "alt_names": "[]",
@@ -4932,7 +4932,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Giorgio Hesdey Tuinfort",
     "alt_names": "[]",
@@ -4941,7 +4941,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Nick Van De Wall",
     "alt_names": "[]",
@@ -4950,7 +4950,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sia Kate Furler",
     "alt_names": "[]",
@@ -4959,7 +4959,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Amy Winehouse",
     "alt_names": "[]",
@@ -4968,7 +4968,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Greg Camp",
     "alt_names": "[]",
@@ -4977,7 +4977,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Paul Gerard Delisle",
     "alt_names": "[]",
@@ -4986,7 +4986,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Steven Scott Harwell",
     "alt_names": "[]",
@@ -4995,7 +4995,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kevin John Iannello",
     "alt_names": "[]",
@@ -5004,7 +5004,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Christopher Alvin Stapleton",
     "alt_names": "[]",
@@ -5013,7 +5013,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Lee Thomas Miller",
     "alt_names": "[]",
@@ -5022,7 +5022,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "June Carter",
     "alt_names": "[]",
@@ -5031,7 +5031,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Merle Kilgore",
     "alt_names": "[]",
@@ -5040,7 +5040,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tom Scholz",
     "alt_names": "[]",
@@ -5049,7 +5049,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Raymond Douglas Davies",
     "alt_names": "[]",
@@ -5058,7 +5058,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mike Campbell",
     "alt_names": "[]",
@@ -5067,7 +5067,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Steve Porcaro",
     "alt_names": "[]",
@@ -5076,7 +5076,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John Bettis",
     "alt_names": "[]",
@@ -5085,7 +5085,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ray Charles Ii Mccullough",
     "alt_names": "[]",
@@ -5094,7 +5094,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Philip Martin Lawrence Ii",
     "alt_names": "[]",
@@ -5103,7 +5103,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "James Edward Fauntleroy Ii",
     "alt_names": "[]",
@@ -5112,7 +5112,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Christopher Brody Brown",
     "alt_names": "[]",
@@ -5121,7 +5121,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Peter Gene Hernandez",
     "alt_names": "[]",
@@ -5130,7 +5130,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jeremy L. Reeves",
     "alt_names": "[]",
@@ -5139,7 +5139,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ray Romulus",
     "alt_names": "[]",
@@ -5148,7 +5148,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jonathan James Yip",
     "alt_names": "[]",
@@ -5157,7 +5157,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mick Mars",
     "alt_names": "[]",
@@ -5166,7 +5166,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tommy Lee",
     "alt_names": "[]",
@@ -5175,7 +5175,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Nikki Sixx",
     "alt_names": "[]",
@@ -5184,7 +5184,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ryan Tedder",
     "alt_names": "[]",
@@ -5193,7 +5193,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Gregg Alexander",
     "alt_names": "[]",
@@ -5202,7 +5202,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Rick Nowels",
     "alt_names": "[]",
@@ -5211,7 +5211,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tom Waits",
     "alt_names": "[]",
@@ -5220,7 +5220,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Afie Salomon Jurvanen",
     "alt_names": "[]",
@@ -5229,7 +5229,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael Reid",
     "alt_names": "[]",
@@ -5238,7 +5238,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Pirner",
     "alt_names": "[]",
@@ -5247,7 +5247,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Hal David",
     "alt_names": "[]",
@@ -5256,7 +5256,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Burt Bacharach",
     "alt_names": "[]",
@@ -5265,7 +5265,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael Love",
     "alt_names": "[]",
@@ -5274,7 +5274,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brian Wilson",
     "alt_names": "[]",
@@ -5283,7 +5283,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Adam Richard Wiles",
     "alt_names": "[]",
@@ -5292,7 +5292,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brittany Talia Hazzard",
     "alt_names": "[]",
@@ -5301,7 +5301,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Pharrell L. Williams",
     "alt_names": "[]",
@@ -5310,7 +5310,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sean Michael Anderson",
     "alt_names": "[]",
@@ -5319,7 +5319,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Cindy Walker",
     "alt_names": "[]",
@@ -5328,7 +5328,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Eddy Arnold",
     "alt_names": "[]",
@@ -5337,7 +5337,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Gary Michael Louris",
     "alt_names": "[]",
@@ -5346,7 +5346,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Roger Miller",
     "alt_names": "[]",
@@ -5355,7 +5355,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jon Bon Jovi",
     "alt_names": "[]",
@@ -5364,7 +5364,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Desmond Child",
     "alt_names": "[]",
@@ -5373,7 +5373,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Richard S. Sambora",
     "alt_names": "[]",
@@ -5382,7 +5382,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael Pritchard",
     "alt_names": "[]",
@@ -5391,7 +5391,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Frank Wright Iii",
     "alt_names": "[]",
@@ -5400,7 +5400,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Billie Joe Armstrong",
     "alt_names": "[]",
@@ -5409,7 +5409,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Roland Orzabal",
     "alt_names": "[]",
@@ -5418,7 +5418,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Barry Gibb",
     "alt_names": "[]",
@@ -5427,7 +5427,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Maurice Gibb",
     "alt_names": "[]",
@@ -5436,7 +5436,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Robin Gibb",
     "alt_names": "[]",
@@ -5445,7 +5445,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jeffrey Robert Trott",
     "alt_names": "[]",
@@ -5454,7 +5454,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sheryl Suzanne Crow",
     "alt_names": "[]",
@@ -5463,7 +5463,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ray Davies",
     "alt_names": "[]",
@@ -5472,7 +5472,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Carly E. Simon",
     "alt_names": "[]",
@@ -5481,7 +5481,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kate Elizabeth Voegele",
     "alt_names": "[]",
@@ -5490,7 +5490,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Andrew Grammer",
     "alt_names": "[]",
@@ -5499,7 +5499,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Matthew Radosevich",
     "alt_names": "[]",
@@ -5508,7 +5508,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Norah Jones",
     "alt_names": "[]",
@@ -5517,7 +5517,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ali Payami",
     "alt_names": "[]",
@@ -5526,7 +5526,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Peter Svensson",
     "alt_names": "[]",
@@ -5535,7 +5535,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Savan Kotecha",
     "alt_names": "[]",
@@ -5544,7 +5544,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sara Allen",
     "alt_names": "[]",
@@ -5553,7 +5553,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John Oates",
     "alt_names": "[]",
@@ -5562,7 +5562,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Daryl Hall",
     "alt_names": "[]",
@@ -5571,7 +5571,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Raymon Ameer Murray",
     "alt_names": "[]",
@@ -5580,7 +5580,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Rico Renard Wade",
     "alt_names": "[]",
@@ -5589,7 +5589,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Lisa Nicole Lopes",
     "alt_names": "[]",
@@ -5598,7 +5598,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Marqueze M. Ethridge",
     "alt_names": "[]",
@@ -5607,7 +5607,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Patrick L. Brown",
     "alt_names": "[]",
@@ -5616,7 +5616,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Leonard Cohen",
     "alt_names": "[]",
@@ -5625,7 +5625,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Roger Murrah",
     "alt_names": "[]",
@@ -5634,7 +5634,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Keith Stegall",
     "alt_names": "[]",
@@ -5643,7 +5643,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Alan Jackson",
     "alt_names": "[]",
@@ -5652,7 +5652,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Melanie Chisholm",
     "alt_names": "[]",
@@ -5661,7 +5661,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Geri Halliwell",
     "alt_names": "[]",
@@ -5670,7 +5670,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Victoria Beckham",
     "alt_names": "[]",
@@ -5679,7 +5679,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Emma Bunton",
     "alt_names": "[]",
@@ -5688,7 +5688,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Melanie Brown",
     "alt_names": "[]",
@@ -5697,7 +5697,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Matthew Paul Rowbottom",
     "alt_names": "[]",
@@ -5706,7 +5706,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Richard Stannard",
     "alt_names": "[]",
@@ -5715,7 +5715,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Justin Tranter",
     "alt_names": "[]",
@@ -5724,7 +5724,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Julia Michaels",
     "alt_names": "[]",
@@ -5733,7 +5733,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Selena Marie Gomez",
     "alt_names": "[]",
@@ -5742,7 +5742,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Bill Bottrell",
     "alt_names": "[]",
@@ -5751,7 +5751,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kevin M Gilbert",
     "alt_names": "[]",
@@ -5760,7 +5760,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Wyn Cooper",
     "alt_names": "[]",
@@ -5769,7 +5769,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Francis Baerwald",
     "alt_names": "[]",
@@ -5778,7 +5778,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Gregory Camp",
     "alt_names": "[]",
@@ -5787,7 +5787,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Lyle Pearce Lovett",
     "alt_names": "[]",
@@ -5796,7 +5796,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Glen Ballard",
     "alt_names": "[]",
@@ -5805,7 +5805,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Alanis Nadine Morissette",
     "alt_names": "[]",
@@ -5814,7 +5814,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jules Shear",
     "alt_names": "[]",
@@ -5823,7 +5823,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ella Marija La Yelich O'connor",
     "alt_names": "[]",
@@ -5832,7 +5832,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Joel Little",
     "alt_names": "[]",
@@ -5841,7 +5841,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John Winston Lennon",
     "alt_names": "[]",
@@ -5850,7 +5850,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Neil Diamond",
     "alt_names": "[]",
@@ -5859,7 +5859,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Adam Clayton",
     "alt_names": "[]",
@@ -5868,7 +5868,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Dave Evans",
     "alt_names": "[]",
@@ -5877,7 +5877,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Larry Mullen",
     "alt_names": "[]",
@@ -5886,7 +5886,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Paul David Hewson",
     "alt_names": "[]",
@@ -5895,7 +5895,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jack Tempchin",
     "alt_names": "[]",
@@ -5904,7 +5904,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Robert Arnold Strandlund",
     "alt_names": "[]",
@@ -5913,7 +5913,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jonathan Singleton",
     "alt_names": "[]",
@@ -5922,7 +5922,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Gardner Cole",
     "alt_names": "[]",
@@ -5931,7 +5931,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Madonna Ciccone",
     "alt_names": "[]",
@@ -5940,7 +5940,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Peter Rafelson",
     "alt_names": "[]",
@@ -5949,7 +5949,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Christopher Anthony John Martin",
     "alt_names": "[]",
@@ -5958,7 +5958,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Thomas A. Waits",
     "alt_names": "[]",
@@ -5967,7 +5967,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Max Freedman",
     "alt_names": "[]",
@@ -5976,7 +5976,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "James Myers",
     "alt_names": "[]",
@@ -5985,7 +5985,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Don Mclean",
     "alt_names": "[]",
@@ -5994,7 +5994,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Channing Wade Wilson",
     "alt_names": "[]",
@@ -6003,7 +6003,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Robert Francis Snyder",
     "alt_names": "[]",
@@ -6012,7 +6012,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Hillary Dawn Scott",
     "alt_names": "[]",
@@ -6021,7 +6021,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Charles B. Kelley",
     "alt_names": "[]",
@@ -6030,7 +6030,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael Jackson",
     "alt_names": "[]",
@@ -6039,7 +6039,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "George Robert Merrill",
     "alt_names": "[]",
@@ -6048,7 +6048,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Shannon Rubicam",
     "alt_names": "[]",
@@ -6057,7 +6057,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Baerwald",
     "alt_names": "[]",
@@ -6066,7 +6066,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Ricketts",
     "alt_names": "[]",
@@ -6075,7 +6075,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kevin Gilbert",
     "alt_names": "[]",
@@ -6084,7 +6084,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sheryl Crow",
     "alt_names": "[]",
@@ -6093,7 +6093,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Bobby Braddock",
     "alt_names": "[]",
@@ -6102,7 +6102,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Curly Putman",
     "alt_names": "[]",
@@ -6111,7 +6111,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Linda Perry",
     "alt_names": "[]",
@@ -6120,7 +6120,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Alicia Augello-cook",
     "alt_names": "[]",
@@ -6129,7 +6129,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "K.d. Lang",
     "alt_names": "[]",
@@ -6138,7 +6138,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Benjamin Mink",
     "alt_names": "[]",
@@ -6147,7 +6147,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "James Stafford",
     "alt_names": "[]",
@@ -6156,7 +6156,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Scott Underwood",
     "alt_names": "[]",
@@ -6165,7 +6165,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Robert Hotchkiss",
     "alt_names": "[]",
@@ -6174,7 +6174,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Pat Monahan",
     "alt_names": "[]",
@@ -6183,7 +6183,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Charles Colin",
     "alt_names": "[]",
@@ -6192,7 +6192,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ross Jacob Golan",
     "alt_names": "[]",
@@ -6201,7 +6201,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Andrew Charles Grammer",
     "alt_names": "[]",
@@ -6210,7 +6210,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Donald Edmond Rollins",
     "alt_names": "[]",
@@ -6219,7 +6219,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Julian Casablancas",
     "alt_names": "[]",
@@ -6228,7 +6228,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Daniel Jones",
     "alt_names": "[]",
@@ -6237,7 +6237,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Darren Hayes",
     "alt_names": "[]",
@@ -6246,7 +6246,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Christina Aguilera",
     "alt_names": "[]",
@@ -6255,7 +6255,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Scott Spencer Storch",
     "alt_names": "[]",
@@ -6264,7 +6264,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Phil Spector",
     "alt_names": "[]",
@@ -6273,7 +6273,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Barry Mann",
     "alt_names": "[]",
@@ -6282,7 +6282,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Cynthia Weil",
     "alt_names": "[]",
@@ -6291,7 +6291,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Roger Frederick Cook",
     "alt_names": "[]",
@@ -6300,7 +6300,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "William Butler",
     "alt_names": "[]",
@@ -6309,7 +6309,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Win Butler",
     "alt_names": "[]",
@@ -6318,7 +6318,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Regine Chassagne",
     "alt_names": "[]",
@@ -6327,7 +6327,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tim Kingsbury",
     "alt_names": "[]",
@@ -6336,7 +6336,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Richard R Parry",
     "alt_names": "[]",
@@ -6345,7 +6345,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Nigel Harrison",
     "alt_names": "[]",
@@ -6354,7 +6354,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "James Hetfield",
     "alt_names": "[]",
@@ -6363,7 +6363,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kirk Hammett",
     "alt_names": "[]",
@@ -6372,7 +6372,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Lars Ulrich",
     "alt_names": "[]",
@@ -6381,7 +6381,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Dolores Mary O'riordan",
     "alt_names": "[]",
@@ -6390,7 +6390,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Graham Parsons",
     "alt_names": "[]",
@@ -6399,7 +6399,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Beau Brown",
     "alt_names": "[]",
@@ -6408,7 +6408,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John Kay",
     "alt_names": "[]",
@@ -6417,7 +6417,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Rushton John Moreve",
     "alt_names": "[]",
@@ -6426,7 +6426,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Prince Rogers Nelson",
     "alt_names": "[]",
@@ -6435,7 +6435,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Joni Mitchell",
     "alt_names": "[]",
@@ -6444,7 +6444,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kurt Cobain",
     "alt_names": "[]",
@@ -6453,7 +6453,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Justin R. Timberlake",
     "alt_names": "[]",
@@ -6462,7 +6462,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "James B. Valentine",
     "alt_names": "[]",
@@ -6471,7 +6471,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jesse Royal Carmichael",
     "alt_names": "[]",
@@ -6480,7 +6480,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael Allen Madden",
     "alt_names": "[]",
@@ -6489,7 +6489,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ryan Michael Dusick",
     "alt_names": "[]",
@@ -6498,7 +6498,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Damon Albarn",
     "alt_names": "[]",
@@ -6507,7 +6507,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Teren Devlon Jones",
     "alt_names": "[]",
@@ -6516,7 +6516,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jamie Hewlett",
     "alt_names": "[]",
@@ -6525,7 +6525,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Hank Devito",
     "alt_names": "[]",
@@ -6534,7 +6534,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael William Dulaney",
     "alt_names": "[]",
@@ -6543,7 +6543,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Neil Thrasher",
     "alt_names": "[]",
@@ -6552,7 +6552,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Percy Mayfield",
     "alt_names": "[]",
@@ -6561,7 +6561,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Randy Montana",
     "alt_names": "[]",
@@ -6570,7 +6570,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Joshua Kear",
     "alt_names": "[]",
@@ -6579,7 +6579,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Eric Patrick Clapton",
     "alt_names": "[]",
@@ -6588,7 +6588,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jim Gordon",
     "alt_names": "[]",
@@ -6597,7 +6597,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Frederic Kennett",
     "alt_names": "[]",
@@ -6606,7 +6606,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Andrew Taggart",
     "alt_names": "[]",
@@ -6615,7 +6615,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ashley Frangipane",
     "alt_names": "[]",
@@ -6624,7 +6624,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Shaun Charles Frank",
     "alt_names": "[]",
@@ -6633,7 +6633,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Isaac Edward Slade",
     "alt_names": "[]",
@@ -6642,7 +6642,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Joseph A. King",
     "alt_names": "[]",
@@ -6651,7 +6651,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Helen Reddy",
     "alt_names": "[]",
@@ -6660,7 +6660,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ray Burton",
     "alt_names": "[]",
@@ -6669,7 +6669,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Arthur Hamilton",
     "alt_names": "[]",
@@ -6678,7 +6678,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Albert Hammond",
     "alt_names": "[]",
@@ -6687,7 +6687,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Colin Greenwood",
     "alt_names": "[]",
@@ -6696,7 +6696,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Edward O'brien",
     "alt_names": "[]",
@@ -6705,7 +6705,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jonathan Greenwood",
     "alt_names": "[]",
@@ -6714,7 +6714,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mike Hazlewood",
     "alt_names": "[]",
@@ -6723,7 +6723,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Philip Selway",
     "alt_names": "[]",
@@ -6732,7 +6732,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Thomas Yorke",
     "alt_names": "[]",
@@ -6741,7 +6741,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Martin Max Sandberg",
     "alt_names": "[]",
@@ -6750,7 +6750,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Amethyst Amelia Kelly",
     "alt_names": "[]",
@@ -6759,7 +6759,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ilya Salmanzadeh",
     "alt_names": "[]",
@@ -6768,7 +6768,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Savan Harish Kotecha",
     "alt_names": "[]",
@@ -6777,7 +6777,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John T. Rzeznik",
     "alt_names": "[]",
@@ -6786,7 +6786,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Cameron Thane Muncey",
     "alt_names": "[]",
@@ -6795,7 +6795,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Nicholas John Cester",
     "alt_names": "[]",
@@ -6804,7 +6804,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Amund Bjorklund",
     "alt_names": "[]",
@@ -6813,7 +6813,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Espen Lind",
     "alt_names": "[]",
@@ -6822,7 +6822,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Donald L. Von Tress",
     "alt_names": "[]",
@@ -6831,7 +6831,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Freddie Perren",
     "alt_names": "[]",
@@ -6840,7 +6840,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Alphonso Mizell",
     "alt_names": "[]",
@@ -6849,7 +6849,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Deke Richards",
     "alt_names": "[]",
@@ -6858,7 +6858,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Berry Gordy Jr",
     "alt_names": "[]",
@@ -6867,7 +6867,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Abel Meeropol",
     "alt_names": "[]",
@@ -6876,7 +6876,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Geoff Sprung",
     "alt_names": "[]",
@@ -6885,7 +6885,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Whit Sellers",
     "alt_names": "[]",
@@ -6894,7 +6894,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Reginald Grant Lucas",
     "alt_names": "[]",
@@ -6903,7 +6903,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Nolan Sipe",
     "alt_names": "[]",
@@ -6912,7 +6912,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Andy Grammer",
     "alt_names": "[]",
@@ -6921,7 +6921,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Albert Louis Hammond",
     "alt_names": "[]",
@@ -6930,7 +6930,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Diane Eve Warren",
     "alt_names": "[]",
@@ -6939,7 +6939,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Luke Robert Laird",
     "alt_names": "[]",
@@ -6948,7 +6948,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ahmet Ertegun",
     "alt_names": "[]",
@@ -6957,7 +6957,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Eddie Curtis",
     "alt_names": "[]",
@@ -6966,7 +6966,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Dolly Parton",
     "alt_names": "[]",
@@ -6975,7 +6975,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John William Callis",
     "alt_names": "[]",
@@ -6984,7 +6984,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Philip Oakey",
     "alt_names": "[]",
@@ -6993,7 +6993,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Adrian Philip Wright",
     "alt_names": "[]",
@@ -7002,7 +7002,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Willie Mitchell",
     "alt_names": "[]",
@@ -7011,7 +7011,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Al Green",
     "alt_names": "[]",
@@ -7020,7 +7020,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Al Jackson Jr",
     "alt_names": "[]",
@@ -7029,7 +7029,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kenneth Edmonds",
     "alt_names": "[]",
@@ -7038,7 +7038,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Antonio Reid",
     "alt_names": "[]",
@@ -7047,7 +7047,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Daryl Simmons",
     "alt_names": "[]",
@@ -7056,7 +7056,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John Anthony White",
     "alt_names": "[]",
@@ -7065,7 +7065,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Paich",
     "alt_names": "[]",
@@ -7074,7 +7074,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Adam Noah Levine",
     "alt_names": "[]",
@@ -7083,7 +7083,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Katz",
     "alt_names": "[]",
@@ -7092,7 +7092,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sam Hollander",
     "alt_names": "[]",
@@ -7101,7 +7101,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Byrne",
     "alt_names": "[]",
@@ -7110,7 +7110,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kenneth Chesney",
     "alt_names": "[]",
@@ -7119,7 +7119,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Scooter Carusoe",
     "alt_names": "[]",
@@ -7128,7 +7128,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Atticus Ross",
     "alt_names": "[]",
@@ -7137,7 +7137,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Trent Reznor",
     "alt_names": "[]",
@@ -7146,7 +7146,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Declan Macmanus",
     "alt_names": "[]",
@@ -7155,7 +7155,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Susan Werner",
     "alt_names": "[]",
@@ -7164,7 +7164,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Benjamin Nicholas Huner Goldwasser",
     "alt_names": "[]",
@@ -7173,7 +7173,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Andrew Wells Vanwyngarden",
     "alt_names": "[]",
@@ -7182,7 +7182,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "David Nail",
     "alt_names": "[]",
@@ -7191,7 +7191,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Aaron Comess",
     "alt_names": "[]",
@@ -7200,7 +7200,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Christopher Gross",
     "alt_names": "[]",
@@ -7209,7 +7209,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Eric Schenkman",
     "alt_names": "[]",
@@ -7218,7 +7218,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mark White",
     "alt_names": "[]",
@@ -7227,7 +7227,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Alex Turner",
     "alt_names": "[]",
@@ -7236,7 +7236,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Evan Kidd Bogart",
     "alt_names": "[]",
@@ -7245,7 +7245,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ryan B. Tedder",
     "alt_names": "[]",
@@ -7254,7 +7254,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Trent Dabbs",
     "alt_names": "[]",
@@ -7263,7 +7263,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Barry George Dean",
     "alt_names": "[]",
@@ -7272,7 +7272,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ingrid Ellen Michaelson",
     "alt_names": "[]",
@@ -7281,7 +7281,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Parker Yancey Mccollum",
     "alt_names": "[]",
@@ -7290,7 +7290,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Daniel Dodd Wilson",
     "alt_names": "[]",
@@ -7299,7 +7299,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Johan Schuster",
     "alt_names": "[]",
@@ -7308,7 +7308,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Eric Roberts",
     "alt_names": "[]",
@@ -7317,7 +7317,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Travis L. Mccoy",
     "alt_names": "[]",
@@ -7326,7 +7326,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brandon Lowry",
     "alt_names": "[]",
@@ -7335,7 +7335,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Ammar Malik",
     "alt_names": "[]",
@@ -7344,7 +7344,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Daniel Thomas Omelio",
     "alt_names": "[]",
@@ -7353,7 +7353,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Disashi Lumumba-kasongo",
     "alt_names": "[]",
@@ -7362,7 +7362,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Matthew Mcginley",
     "alt_names": "[]",
@@ -7371,7 +7371,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Yusuf Islam",
     "alt_names": "[]",
@@ -7380,7 +7380,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Afie Jurvanen",
     "alt_names": "[]",
@@ -7389,7 +7389,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Stevie Wonder",
     "alt_names": "[]",
@@ -7398,7 +7398,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Joshua Coleman",
     "alt_names": "[]",
@@ -7407,7 +7407,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Lukasz Gottwald",
     "alt_names": "[]",
@@ -7416,7 +7416,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mike Posner",
     "alt_names": "[]",
@@ -7425,7 +7425,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Pedro Canale",
     "alt_names": "[]",
@@ -7434,7 +7434,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Henry Walter",
     "alt_names": "[]",
@@ -7443,7 +7443,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jaren Johnston",
     "alt_names": "[]",
@@ -7452,7 +7452,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Nickolas Ashford",
     "alt_names": "[]",
@@ -7461,7 +7461,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Valerie Simpson",
     "alt_names": "[]",
@@ -7470,7 +7470,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Kristian Matsson",
     "alt_names": "[]",
@@ -7479,7 +7479,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jermaine Dupri",
     "alt_names": "[]",
@@ -7488,7 +7488,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Manuel Lonnie Seal",
     "alt_names": "[]",
@@ -7497,7 +7497,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Mariah Carey",
     "alt_names": "[]",
@@ -7506,7 +7506,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Oscar Hammerstein II",
     "alt_names": "[]",
@@ -7515,7 +7515,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Sigmund Romberg",
     "alt_names": "[]",
@@ -7524,7 +7524,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Brian Johnson",
     "alt_names": "[]",
@@ -7533,7 +7533,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Angus McKinnon Young",
     "alt_names": "[]",
@@ -7542,7 +7542,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Malcolm Mitchell Young",
     "alt_names": "[]",
@@ -7551,7 +7551,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Taylor Swift",
     "alt_names": "[]",
@@ -7560,7 +7560,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Anthony Scalzo",
     "alt_names": "[]",
@@ -7569,7 +7569,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Chuck Berry",
     "alt_names": "[]",
@@ -7578,7 +7578,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Isaac Hanson",
     "alt_names": "[]",
@@ -7587,7 +7587,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Taylor Hanson",
     "alt_names": "[]",
@@ -7596,7 +7596,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Zac Hanson",
     "alt_names": "[]",
@@ -7605,7 +7605,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Gary Lightbody",
     "alt_names": "[]",
@@ -7614,7 +7614,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Jonathan Quinn",
     "alt_names": "[]",
@@ -7623,7 +7623,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Natah Connolly",
     "alt_names": "[]",
@@ -7632,7 +7632,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Paul Wilson",
     "alt_names": "[]",
@@ -7641,7 +7641,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Tom Simpson",
     "alt_names": "[]",
@@ -7650,7 +7650,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Frank Michael Sullivan",
     "alt_names": "[]",
@@ -7659,7 +7659,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "James Peterik",
     "alt_names": "[]",
@@ -7668,7 +7668,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "William Thomas Berry",
     "alt_names": "[]",
@@ -7677,7 +7677,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Peter Lawrence Buck",
     "alt_names": "[]",
@@ -7686,7 +7686,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "Michael E. Mills",
     "alt_names": "[]",
@@ -7695,7 +7695,7 @@
   }
 },
 {
-  "model": "api.writer",
+  "model": "songs.writer",
   "fields": {
     "name": "John Michael Stipe",
     "alt_names": "[]",

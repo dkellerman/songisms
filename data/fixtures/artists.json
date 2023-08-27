@@ -1,6 +1,6 @@
 [
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Miranda Lambert",
     "created": "2022-05-28T00:16:59.953Z",
@@ -8,7 +8,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Eric Church",
     "created": "2022-05-28T00:17:00.389Z",
@@ -16,7 +16,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Bob Seger",
     "created": "2022-05-28T00:17:00.785Z",
@@ -24,7 +24,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Brothers Osborne",
     "created": "2022-05-28T00:17:01.114Z",
@@ -32,7 +32,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Zedd",
     "created": "2022-05-28T00:17:01.444Z",
@@ -40,7 +40,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Maren Morris",
     "created": "2022-05-28T00:17:01.445Z",
@@ -48,7 +48,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Grey",
     "created": "2022-05-28T00:17:01.448Z",
@@ -56,7 +56,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Justin Timberlake",
     "created": "2022-05-28T00:17:02.005Z",
@@ -64,7 +64,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Scissor Sisters",
     "created": "2022-05-28T00:17:02.368Z",
@@ -72,7 +72,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Thomas Rhett",
     "created": "2022-05-28T00:17:02.629Z",
@@ -80,7 +80,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Ryan Adams",
     "created": "2022-05-28T00:17:02.966Z",
@@ -88,7 +88,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Jon Bellion",
     "created": "2022-05-28T00:17:03.275Z",
@@ -96,7 +96,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Weeknd",
     "created": "2022-05-28T00:17:03.545Z",
@@ -104,7 +104,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Gloria Gaynor",
     "created": "2022-05-28T00:17:03.972Z",
@@ -112,7 +112,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "John Mayer",
     "created": "2022-05-28T00:17:04.329Z",
@@ -120,7 +120,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Marc Scibilia",
     "created": "2022-05-28T00:17:04.677Z",
@@ -128,7 +128,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "David Nail",
     "created": "2022-05-28T00:17:05.062Z",
@@ -136,7 +136,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "George Strait",
     "created": "2022-05-28T00:17:05.419Z",
@@ -144,7 +144,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Florida Georgia Line",
     "created": "2022-05-28T00:17:05.823Z",
@@ -152,7 +152,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Ed Sheeran",
     "created": "2022-05-28T00:17:06.626Z",
@@ -160,7 +160,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Luke Combs",
     "created": "2022-05-28T00:17:06.904Z",
@@ -168,7 +168,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Sam Hunt",
     "created": "2022-05-28T00:17:07.379Z",
@@ -176,7 +176,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Snow Patrol",
     "created": "2022-05-28T00:17:07.726Z",
@@ -184,7 +184,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Little Big Town",
     "created": "2022-05-28T00:17:08.159Z",
@@ -192,7 +192,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Old Crow Medicine Show",
     "created": "2022-05-28T00:17:09.029Z",
@@ -200,7 +200,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Adele",
     "created": "2022-05-28T00:17:09.486Z",
@@ -208,7 +208,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Jason Mraz",
     "created": "2022-05-28T00:17:09.821Z",
@@ -216,7 +216,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Maddie & Tae",
     "created": "2022-05-28T00:17:10.404Z",
@@ -224,7 +224,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Santana",
     "created": "2022-05-28T00:17:10.959Z",
@@ -232,7 +232,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Rob Thomas",
     "created": "2022-05-28T00:17:10.960Z",
@@ -240,7 +240,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Taylor Swift",
     "created": "2022-05-28T00:17:11.540Z",
@@ -248,7 +248,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Justin Bieber",
     "created": "2022-05-28T00:17:12.151Z",
@@ -256,7 +256,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Blake Shelton",
     "created": "2022-05-28T00:17:13.135Z",
@@ -264,7 +264,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Imagine Dragons",
     "created": "2022-05-28T00:17:13.457Z",
@@ -272,7 +272,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Luke Bryan",
     "created": "2022-05-28T00:17:13.869Z",
@@ -280,7 +280,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Old Dominion",
     "created": "2022-05-28T00:17:14.690Z",
@@ -288,7 +288,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Otis Redding",
     "created": "2022-05-28T00:17:15.022Z",
@@ -296,7 +296,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "George Michael",
     "created": "2022-05-28T00:17:15.427Z",
@@ -304,7 +304,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Lady A",
     "created": "2022-05-28T00:17:16.185Z",
@@ -312,7 +312,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Elvis Costello & The Imposters",
     "created": "2022-05-28T00:17:16.533Z",
@@ -320,7 +320,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Pure Prairie League",
     "created": "2022-05-28T00:17:16.950Z",
@@ -328,7 +328,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Eli Young Band",
     "created": "2022-05-28T00:17:17.392Z",
@@ -336,7 +336,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Dierks Bentley",
     "created": "2022-05-28T00:17:18.123Z",
@@ -344,7 +344,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Kenny Chesney",
     "created": "2022-05-28T00:17:18.564Z",
@@ -352,7 +352,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Grace Potter",
     "created": "2022-05-28T00:17:18.566Z",
@@ -360,7 +360,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Drake",
     "created": "2022-05-28T00:17:19.080Z",
@@ -368,7 +368,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Midland",
     "created": "2022-05-28T00:17:19.418Z",
@@ -376,7 +376,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Survivor",
     "created": "2022-05-28T00:17:21.470Z",
@@ -384,7 +384,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Gram Parsons",
     "created": "2022-05-28T00:17:21.909Z",
@@ -392,7 +392,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Destiny's Child",
     "created": "2022-05-28T00:17:22.774Z",
@@ -400,7 +400,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Brandy Clark",
     "created": "2022-05-28T00:17:23.353Z",
@@ -408,7 +408,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Elvis Presley",
     "created": "2022-05-28T00:17:23.790Z",
@@ -416,7 +416,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Niko Moon",
     "created": "2022-05-28T00:17:24.116Z",
@@ -424,7 +424,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Chris Janson",
     "created": "2022-05-28T00:17:24.604Z",
@@ -432,7 +432,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Caitlyn Smith",
     "created": "2022-05-28T00:17:24.996Z",
@@ -440,7 +440,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Chris Stapleton",
     "created": "2022-05-28T00:17:25.363Z",
@@ -448,7 +448,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Maroon 5",
     "created": "2022-05-28T00:17:25.643Z",
@@ -456,7 +456,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "blink-182",
     "created": "2022-05-28T00:17:25.957Z",
@@ -464,7 +464,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Blondie",
     "created": "2022-05-28T00:17:26.931Z",
@@ -472,7 +472,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Kelsea Ballerini",
     "created": "2022-05-28T00:17:27.562Z",
@@ -480,7 +480,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Dan + Shay",
     "created": "2022-05-28T00:17:27.892Z",
@@ -488,7 +488,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "R.E.M.",
     "created": "2022-05-28T00:17:28.214Z",
@@ -496,7 +496,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Kacey Musgraves",
     "created": "2022-05-28T00:17:28.611Z",
@@ -504,7 +504,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Twenty One Pilots",
     "created": "2022-05-28T00:17:28.865Z",
@@ -512,7 +512,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Dua Lipa",
     "created": "2022-05-28T00:17:29.114Z",
@@ -520,7 +520,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Guns N' Roses",
     "created": "2022-05-28T00:17:29.413Z",
@@ -528,7 +528,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Walker Hayes",
     "created": "2022-05-28T00:17:30.155Z",
@@ -536,7 +536,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Coolio",
     "created": "2022-05-28T00:17:31.500Z",
@@ -544,7 +544,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "James Taylor",
     "created": "2022-05-28T00:17:33.530Z",
@@ -552,7 +552,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Crowded House",
     "created": "2022-05-28T00:17:34.207Z",
@@ -560,7 +560,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Turtles",
     "created": "2022-05-28T00:17:34.824Z",
@@ -568,7 +568,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Gotye",
     "created": "2022-05-28T00:17:35.194Z",
@@ -576,7 +576,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Kimbra",
     "created": "2022-05-28T00:17:35.196Z",
@@ -584,7 +584,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Sturgill Simpson",
     "created": "2022-05-28T00:17:35.708Z",
@@ -592,7 +592,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Billy Joel",
     "created": "2022-05-28T00:17:36.057Z",
@@ -600,7 +600,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Tim Mcgraw",
     "created": "2022-05-28T00:17:36.364Z",
@@ -608,7 +608,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Jack Johnson",
     "created": "2022-05-28T00:17:37.481Z",
@@ -616,7 +616,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Toby Keith",
     "created": "2022-05-28T00:17:37.901Z",
@@ -624,7 +624,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Olivia Rodrigo",
     "created": "2022-05-28T00:17:38.333Z",
@@ -632,7 +632,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Sting",
     "created": "2022-05-28T00:17:39.091Z",
@@ -640,7 +640,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Daniel Caesar",
     "created": "2022-05-28T00:17:39.967Z",
@@ -648,7 +648,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Giveon",
     "created": "2022-05-28T00:17:39.969Z",
@@ -656,7 +656,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Manchester Orchestra",
     "created": "2022-05-28T00:17:40.502Z",
@@ -664,7 +664,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Band Perry",
     "created": "2022-05-28T00:17:41.199Z",
@@ -672,7 +672,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Tom Petty",
     "created": "2022-05-28T00:17:41.491Z",
@@ -680,7 +680,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Coldplay",
     "created": "2022-05-28T00:17:41.856Z",
@@ -688,7 +688,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Pearl Jam",
     "created": "2022-05-28T00:17:42.444Z",
@@ -696,7 +696,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Queen",
     "created": "2022-05-28T00:17:42.700Z",
@@ -704,7 +704,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Chris Young",
     "created": "2022-05-28T00:17:43.343Z",
@@ -712,7 +712,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Caroline Polachek",
     "created": "2022-05-28T00:17:43.585Z",
@@ -720,7 +720,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Ray Charles",
     "created": "2022-05-28T00:17:43.873Z",
@@ -728,7 +728,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Led Zeppelin",
     "created": "2022-05-28T00:17:44.236Z",
@@ -736,7 +736,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Lee Ann Womack",
     "created": "2022-05-28T00:17:44.542Z",
@@ -744,7 +744,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Black Keys",
     "created": "2022-05-28T00:17:45.365Z",
@@ -752,7 +752,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Kid LAROI",
     "created": "2022-05-28T00:17:45.622Z",
@@ -760,7 +760,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Keith Urban",
     "created": "2022-05-28T00:17:45.972Z",
@@ -768,7 +768,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "BTS",
     "created": "2022-05-28T00:17:46.215Z",
@@ -776,7 +776,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Kings of Leon",
     "created": "2022-05-28T00:17:46.451Z",
@@ -784,7 +784,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Gnarls Barkley",
     "created": "2022-05-28T00:17:46.767Z",
@@ -792,7 +792,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Rolling Stones",
     "created": "2022-05-28T00:17:47.189Z",
@@ -800,7 +800,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Daft Punk",
     "created": "2022-05-28T00:17:47.698Z",
@@ -808,7 +808,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Lady Gaga",
     "created": "2022-05-28T00:17:47.990Z",
@@ -816,7 +816,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Bradley Cooper",
     "created": "2022-05-28T00:17:47.991Z",
@@ -824,7 +824,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Vince Gill",
     "created": "2022-05-28T00:17:48.525Z",
@@ -832,7 +832,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Van Halen",
     "created": "2022-05-28T00:17:48.819Z",
@@ -840,7 +840,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Carrie Underwood",
     "created": "2022-05-28T00:17:49.539Z",
@@ -848,7 +848,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Dababy",
     "created": "2022-05-28T00:17:50.070Z",
@@ -856,7 +856,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Jason Isbell",
     "created": "2022-05-28T00:17:50.421Z",
@@ -864,7 +864,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Buffalo Springfield",
     "created": "2022-05-28T00:17:50.643Z",
@@ -872,7 +872,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Hank Williams",
     "created": "2022-05-28T00:17:50.970Z",
@@ -880,7 +880,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Drifting Cowboys",
     "created": "2022-05-28T00:17:50.971Z",
@@ -888,7 +888,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Chance The Rapper",
     "created": "2022-05-28T00:17:51.619Z",
@@ -896,7 +896,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Charlie Worsham",
     "created": "2022-05-28T00:17:52.836Z",
@@ -904,7 +904,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Jason Aldean",
     "created": "2022-05-28T00:17:54.139Z",
@@ -912,7 +912,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Morgan Wallen",
     "created": "2022-05-28T00:17:54.566Z",
@@ -920,7 +920,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Bruce Hornsby",
     "created": "2022-05-28T00:17:54.892Z",
@@ -928,7 +928,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Range",
     "created": "2022-05-28T00:17:54.893Z",
@@ -936,7 +936,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Billie Eilish",
     "created": "2022-05-28T00:17:55.204Z",
@@ -944,7 +944,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "MAGIC!",
     "created": "2022-05-28T00:17:55.450Z",
@@ -952,7 +952,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Lee Brice",
     "created": "2022-05-28T00:17:56.011Z",
@@ -960,7 +960,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Bruno Mars",
     "created": "2022-05-28T00:17:56.446Z",
@@ -968,7 +968,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Dire Straits",
     "created": "2022-05-28T00:17:56.718Z",
@@ -976,7 +976,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Shawn Mendes",
     "created": "2022-05-28T00:17:57.265Z",
@@ -984,7 +984,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Camila Cabello",
     "created": "2022-05-28T00:17:57.266Z",
@@ -992,7 +992,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Van Morrison",
     "created": "2022-05-28T00:17:58.918Z",
@@ -1000,7 +1000,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Modest Mouse",
     "created": "2022-05-28T00:17:59.778Z",
@@ -1008,7 +1008,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Lynyrd Skynyrd",
     "created": "2022-05-28T00:18:00.396Z",
@@ -1016,7 +1016,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Madonna",
     "created": "2022-05-28T00:18:00.688Z",
@@ -1024,7 +1024,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Jon Pardi",
     "created": "2022-05-28T00:18:01.028Z",
@@ -1032,7 +1032,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Demi Lovato",
     "created": "2022-05-28T00:18:01.271Z",
@@ -1040,7 +1040,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Jason Derulo",
     "created": "2022-05-28T00:18:01.457Z",
@@ -1048,7 +1048,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Ashley Mcbryde",
     "created": "2022-05-28T00:18:01.773Z",
@@ -1056,7 +1056,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Delbert Mcclinton",
     "created": "2022-05-28T00:18:02.426Z",
@@ -1064,7 +1064,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Steve Miller Band",
     "created": "2022-05-28T00:18:02.803Z",
@@ -1072,7 +1072,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Pixies",
     "created": "2022-05-28T00:18:03.036Z",
@@ -1080,7 +1080,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Kane Brown",
     "created": "2022-05-28T00:18:03.493Z",
@@ -1088,7 +1088,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Lauren Alaina",
     "created": "2022-05-28T00:18:03.495Z",
@@ -1096,7 +1096,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Darwin Deez",
     "created": "2022-05-28T00:18:03.751Z",
@@ -1104,7 +1104,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Carly Rae Jepsen",
     "created": "2022-05-28T00:18:04.602Z",
@@ -1112,7 +1112,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Eagles",
     "created": "2022-05-28T00:18:05.281Z",
@@ -1120,7 +1120,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "James Brown",
     "created": "2022-05-28T00:18:05.561Z",
@@ -1128,7 +1128,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Selena Gomez",
     "created": "2022-05-28T00:18:05.981Z",
@@ -1136,7 +1136,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Paul Simon",
     "created": "2022-05-28T00:18:06.376Z",
@@ -1144,7 +1144,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Gui Boratto",
     "created": "2022-05-28T00:18:06.377Z",
@@ -1152,7 +1152,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Dido",
     "created": "2022-05-28T00:18:06.752Z",
@@ -1160,7 +1160,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Billy Currington",
     "created": "2022-05-28T00:18:07.221Z",
@@ -1168,7 +1168,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Britney Spears",
     "created": "2022-05-28T00:18:07.546Z",
@@ -1176,7 +1176,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Smokey Robinson & The Miracles",
     "created": "2022-05-28T00:18:07.852Z",
@@ -1184,7 +1184,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Zero 7",
     "created": "2022-05-28T00:18:08.093Z",
@@ -1192,7 +1192,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Sophie Barker",
     "created": "2022-05-28T00:18:08.094Z",
@@ -1200,7 +1200,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Ariana Grande",
     "created": "2022-05-28T00:18:08.443Z",
@@ -1208,7 +1208,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Huey Lewis & The News",
     "created": "2022-05-28T00:18:08.751Z",
@@ -1216,7 +1216,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Oasis",
     "created": "2022-05-28T00:18:09.058Z",
@@ -1224,7 +1224,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Elvis Costello",
     "created": "2022-05-28T00:18:09.774Z",
@@ -1232,7 +1232,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Elton John",
     "created": "2022-05-28T00:18:10.094Z",
@@ -1240,7 +1240,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Hunter Hayes",
     "created": "2022-05-28T00:18:10.452Z",
@@ -1248,7 +1248,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Beatles",
     "created": "2022-05-28T00:18:10.718Z",
@@ -1256,7 +1256,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Soundgarden",
     "created": "2022-05-28T00:18:11.045Z",
@@ -1264,7 +1264,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Willie Nelson",
     "created": "2022-05-28T00:18:11.329Z",
@@ -1272,7 +1272,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Rihanna",
     "created": "2022-05-28T00:18:11.698Z",
@@ -1280,7 +1280,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Kanye West",
     "created": "2022-05-28T00:18:11.698Z",
@@ -1288,7 +1288,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Paul Mccartney",
     "created": "2022-05-28T00:18:11.699Z",
@@ -1296,7 +1296,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Third Eye Blind",
     "created": "2022-05-28T00:18:12.333Z",
@@ -1304,7 +1304,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Aqua",
     "created": "2022-05-28T00:18:12.588Z",
@@ -1312,7 +1312,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Katy Perry",
     "created": "2022-05-28T00:18:13.041Z",
@@ -1320,7 +1320,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Roberta Flack",
     "created": "2022-05-28T00:18:13.374Z",
@@ -1328,7 +1328,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Regina Spektor",
     "created": "2022-05-28T00:18:13.655Z",
@@ -1336,7 +1336,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Chromeo",
     "created": "2022-05-28T00:18:13.944Z",
@@ -1344,7 +1344,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Sara Bareilles",
     "created": "2022-05-28T00:18:14.937Z",
@@ -1352,7 +1352,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Steven Page",
     "created": "2022-05-28T00:18:15.304Z",
@@ -1360,7 +1360,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "David Bowie",
     "created": "2022-05-28T00:18:15.605Z",
@@ -1368,7 +1368,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Tom Petty and the Heartbreakers",
     "created": "2022-05-28T00:18:15.847Z",
@@ -1376,7 +1376,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Simon & Garfunkel",
     "created": "2022-05-28T00:18:16.086Z",
@@ -1384,7 +1384,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Clash",
     "created": "2022-05-28T00:18:16.412Z",
@@ -1392,7 +1392,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "John Prine",
     "created": "2022-05-28T00:18:16.689Z",
@@ -1400,7 +1400,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Pharrell Williams",
     "created": "2022-05-28T00:18:17.056Z",
@@ -1408,7 +1408,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Nile Rodgers",
     "created": "2022-05-28T00:18:17.057Z",
@@ -1416,7 +1416,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Bruce Springsteen",
     "created": "2022-05-28T00:18:17.422Z",
@@ -1424,7 +1424,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Supremes",
     "created": "2022-05-28T00:18:18.476Z",
@@ -1432,7 +1432,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Sam Cooke",
     "created": "2022-05-28T00:18:18.785Z",
@@ -1440,7 +1440,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Lionel Richie",
     "created": "2022-05-28T00:18:19.030Z",
@@ -1448,7 +1448,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Def Leppard",
     "created": "2022-05-28T00:18:19.324Z",
@@ -1456,7 +1456,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "P!nk",
     "created": "2022-05-28T00:18:19.934Z",
@@ -1464,7 +1464,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "David Guetta",
     "created": "2022-05-28T00:18:20.727Z",
@@ -1472,7 +1472,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Sia",
     "created": "2022-05-28T00:18:20.728Z",
@@ -1480,7 +1480,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Amy Winehouse",
     "created": "2022-05-28T00:18:21.085Z",
@@ -1488,7 +1488,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Smash Mouth",
     "created": "2022-05-28T00:18:21.829Z",
@@ -1496,7 +1496,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Johnny Cash",
     "created": "2022-05-28T00:18:22.405Z",
@@ -1504,7 +1504,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Boston",
     "created": "2022-05-28T00:18:23.017Z",
@@ -1512,7 +1512,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Kinks",
     "created": "2022-05-28T00:18:23.606Z",
@@ -1520,7 +1520,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Michael Jackson",
     "created": "2022-05-28T00:18:24.140Z",
@@ -1528,7 +1528,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Mötley Crüe",
     "created": "2022-05-28T00:18:25.525Z",
@@ -1536,7 +1536,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "OneRepublic",
     "created": "2022-05-28T00:18:25.942Z",
@@ -1544,7 +1544,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Bob Dylan",
     "created": "2022-05-28T00:18:26.257Z",
@@ -1552,7 +1552,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "New Radicals",
     "created": "2022-05-28T00:18:26.673Z",
@@ -1560,7 +1560,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Tom Waits",
     "created": "2022-05-28T00:18:27.567Z",
@@ -1568,7 +1568,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Bahamas",
     "created": "2022-05-28T00:18:27.911Z",
@@ -1576,7 +1576,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Bonnie Raitt",
     "created": "2022-05-28T00:18:28.227Z",
@@ -1584,7 +1584,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Barenaked Ladies",
     "created": "2022-05-28T00:18:28.606Z",
@@ -1592,7 +1592,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Soul Asylum",
     "created": "2022-05-28T00:18:29.031Z",
@@ -1600,7 +1600,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Dionne Warwick",
     "created": "2022-05-28T00:18:29.295Z",
@@ -1608,7 +1608,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Beach Boys",
     "created": "2022-05-28T00:18:29.540Z",
@@ -1616,7 +1616,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Calvin Harris",
     "created": "2022-05-28T00:18:29.926Z",
@@ -1624,7 +1624,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Big Sean",
     "created": "2022-05-28T00:18:29.928Z",
@@ -1632,7 +1632,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Funk Wav",
     "created": "2022-05-28T00:18:29.929Z",
@@ -1640,7 +1640,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Jayhawks",
     "created": "2022-05-28T00:18:30.578Z",
@@ -1648,7 +1648,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Roger Miller",
     "created": "2022-05-28T00:18:30.925Z",
@@ -1656,7 +1656,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Bon Jovi",
     "created": "2022-05-28T00:18:31.242Z",
@@ -1664,7 +1664,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Green Day",
     "created": "2022-05-28T00:18:32.008Z",
@@ -1672,7 +1672,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Police",
     "created": "2022-05-28T00:18:32.290Z",
@@ -1680,7 +1680,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Gary Jules",
     "created": "2022-05-28T00:18:32.580Z",
@@ -1688,7 +1688,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Michael Andrews",
     "created": "2022-05-28T00:18:32.581Z",
@@ -1696,7 +1696,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Dolly Parton",
     "created": "2022-05-28T00:18:32.995Z",
@@ -1704,7 +1704,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Kenny Rogers",
     "created": "2022-05-28T00:18:32.996Z",
@@ -1712,7 +1712,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Sheryl Crow",
     "created": "2022-05-28T00:18:34.063Z",
@@ -1720,7 +1720,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Carly Simon",
     "created": "2022-05-28T00:18:34.789Z",
@@ -1728,7 +1728,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Kate Voegele",
     "created": "2022-05-28T00:18:35.532Z",
@@ -1736,7 +1736,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Andy Grammer",
     "created": "2022-05-28T00:18:35.860Z",
@@ -1744,7 +1744,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Norah Jones",
     "created": "2022-05-28T00:18:36.228Z",
@@ -1752,7 +1752,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Daryl Hall & John Oates",
     "created": "2022-05-28T00:18:36.797Z",
@@ -1760,7 +1760,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "TLC",
     "created": "2022-05-28T00:18:37.061Z",
@@ -1768,7 +1768,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Leonard Cohen",
     "created": "2022-05-28T00:18:37.344Z",
@@ -1776,7 +1776,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Alan Jackson",
     "created": "2022-05-28T00:18:37.629Z",
@@ -1784,7 +1784,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Spice Girls",
     "created": "2022-05-28T00:18:38.465Z",
@@ -1792,7 +1792,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Lyle Lovett",
     "created": "2022-05-28T00:18:39.989Z",
@@ -1800,7 +1800,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Alanis Morissette",
     "created": "2022-05-28T00:18:40.727Z",
@@ -1808,7 +1808,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Cyndi Lauper",
     "created": "2022-05-28T00:18:41.016Z",
@@ -1816,7 +1816,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Lorde",
     "created": "2022-05-28T00:18:41.878Z",
@@ -1824,7 +1824,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "John Lennon",
     "created": "2022-05-28T00:18:42.180Z",
@@ -1832,7 +1832,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Neil Diamond",
     "created": "2022-05-28T00:18:42.362Z",
@@ -1840,7 +1840,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "U2",
     "created": "2022-05-28T00:18:42.697Z",
@@ -1848,7 +1848,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Fiona Apple",
     "created": "2022-05-28T00:18:43.326Z",
@@ -1856,7 +1856,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Bill Haley & His Comets",
     "created": "2022-05-28T00:18:45.482Z",
@@ -1864,7 +1864,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Don McLean",
     "created": "2022-05-28T00:18:46.335Z",
@@ -1872,7 +1872,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Elvis Costello & The Attractions",
     "created": "2022-05-28T00:18:47.142Z",
@@ -1880,7 +1880,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Whitney Houston",
     "created": "2022-05-28T00:18:48.111Z",
@@ -1888,7 +1888,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Fats Domino",
     "created": "2022-05-28T00:18:48.658Z",
@@ -1896,7 +1896,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "George Jones",
     "created": "2022-05-28T00:18:49.440Z",
@@ -1904,7 +1904,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Outkast",
     "created": "2022-05-28T00:18:49.706Z",
@@ -1912,7 +1912,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Alicia Keys",
     "created": "2022-05-28T00:18:49.949Z",
@@ -1920,7 +1920,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Train",
     "created": "2022-05-28T00:18:50.835Z",
@@ -1928,7 +1928,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Strokes",
     "created": "2022-05-28T00:18:52.105Z",
@@ -1936,7 +1936,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Savage Garden",
     "created": "2022-05-28T00:18:52.754Z",
@@ -1944,7 +1944,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Christina Aguilera",
     "created": "2022-05-28T00:18:53.192Z",
@@ -1952,7 +1952,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Righteous Brothers",
     "created": "2022-05-28T00:18:53.418Z",
@@ -1960,7 +1960,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Arcade Fire",
     "created": "2022-05-28T00:18:54.363Z",
@@ -1968,7 +1968,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Metallica",
     "created": "2022-05-28T00:18:55.369Z",
@@ -1976,7 +1976,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Cranberries",
     "created": "2022-05-28T00:18:55.718Z",
@@ -1984,7 +1984,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Wham!",
     "created": "2022-05-28T00:18:56.063Z",
@@ -1992,7 +1992,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Steppenwolf",
     "created": "2022-05-28T00:18:57.222Z",
@@ -2000,7 +2000,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Prince",
     "created": "2022-05-28T00:18:57.513Z",
@@ -2008,7 +2008,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Joni Mitchell",
     "created": "2022-05-28T00:18:58.003Z",
@@ -2016,7 +2016,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Nirvana",
     "created": "2022-05-28T00:18:58.372Z",
@@ -2024,7 +2024,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Gorillaz",
     "created": "2022-05-28T00:18:59.493Z",
@@ -2032,7 +2032,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Juice Newton",
     "created": "2022-05-28T00:18:59.826Z",
@@ -2040,7 +2040,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Derek & The Dominos",
     "created": "2022-05-28T00:19:02.107Z",
@@ -2048,7 +2048,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Chainsmokers",
     "created": "2022-05-28T00:19:02.615Z",
@@ -2056,7 +2056,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Halsey",
     "created": "2022-05-28T00:19:02.616Z",
@@ -2064,7 +2064,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Helen Reddy",
     "created": "2022-05-28T00:19:02.978Z",
@@ -2072,7 +2072,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Julie London",
     "created": "2022-05-28T00:19:03.209Z",
@@ -2080,7 +2080,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Marvin Gaye",
     "created": "2022-05-28T00:19:03.909Z",
@@ -2088,7 +2088,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Radiohead",
     "created": "2022-05-28T00:19:04.138Z",
@@ -2096,7 +2096,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Iggy Azalea",
     "created": "2022-05-28T00:19:04.811Z",
@@ -2104,7 +2104,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Goo Goo Dolls",
     "created": "2022-05-28T00:19:05.124Z",
@@ -2112,7 +2112,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Jet",
     "created": "2022-05-28T00:19:05.358Z",
@@ -2120,7 +2120,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Alison Krauss",
     "created": "2022-05-28T00:19:05.578Z",
@@ -2128,7 +2128,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Billy Ray Cyrus",
     "created": "2022-05-28T00:19:06.343Z",
@@ -2136,7 +2136,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Jackson 5",
     "created": "2022-05-28T00:19:06.600Z",
@@ -2144,7 +2144,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Billie Holiday",
     "created": "2022-05-28T00:19:06.870Z",
@@ -2152,7 +2152,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Starship",
     "created": "2022-05-28T00:19:08.624Z",
@@ -2160,7 +2160,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Human League",
     "created": "2022-05-28T00:19:09.967Z",
@@ -2168,7 +2168,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Al Green",
     "created": "2022-05-28T00:19:10.262Z",
@@ -2176,7 +2176,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Boyz II Men",
     "created": "2022-05-28T00:19:10.612Z",
@@ -2184,7 +2184,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The White Stripes",
     "created": "2022-05-28T00:19:10.878Z",
@@ -2192,7 +2192,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "TOTO",
     "created": "2022-05-28T00:19:11.501Z",
@@ -2200,7 +2200,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Talking Heads",
     "created": "2022-05-28T00:19:12.420Z",
@@ -2208,7 +2208,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Jerry Harrison",
     "created": "2022-05-28T00:19:12.422Z",
@@ -2216,7 +2216,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Nine Inch Nails",
     "created": "2022-05-28T00:19:14.152Z",
@@ -2224,7 +2224,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Susan Werner",
     "created": "2022-05-28T00:19:14.704Z",
@@ -2232,7 +2232,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "MGMT",
     "created": "2022-05-28T00:19:15.044Z",
@@ -2240,7 +2240,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Spin Doctors",
     "created": "2022-05-28T00:19:15.611Z",
@@ -2248,7 +2248,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Arctic Monkeys",
     "created": "2022-05-28T00:19:16.272Z",
@@ -2256,7 +2256,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Beyoncé",
     "created": "2022-05-28T00:19:16.552Z",
@@ -2264,7 +2264,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Ingrid Michaelson",
     "created": "2022-05-28T00:19:16.878Z",
@@ -2272,7 +2272,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Stevie Wonder",
     "created": "2022-05-28T00:19:17.131Z",
@@ -2280,7 +2280,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Gym Class Heroes",
     "created": "2022-05-28T00:19:18.825Z",
@@ -2288,7 +2288,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Adam Levine",
     "created": "2022-05-28T00:19:18.826Z",
@@ -2296,7 +2296,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Yusuf / Cat Stevens",
     "created": "2022-05-28T00:19:19.360Z",
@@ -2304,7 +2304,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Frankie Ballard",
     "created": "2022-05-28T00:19:21.454Z",
@@ -2312,7 +2312,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Chaka Khan",
     "created": "2022-05-28T00:19:21.746Z",
@@ -2320,7 +2320,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "The Tallest Man On Earth",
     "created": "2022-05-28T00:19:22.093Z",
@@ -2328,7 +2328,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Mariah Carey",
     "created": "2022-05-28T00:19:22.431Z",
@@ -2336,7 +2336,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Nat King Cole",
     "created": "2022-05-28T00:19:22.647Z",
@@ -2344,7 +2344,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Commodores",
     "created": "2022-05-28T00:19:22.955Z",
@@ -2352,7 +2352,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "AC/DC",
     "created": "2022-05-28T00:19:23.647Z",
@@ -2360,7 +2360,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Fastball",
     "created": "2022-05-28T00:19:24.204Z",
@@ -2368,7 +2368,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Chuck Berry",
     "created": "2022-05-28T00:19:24.887Z",
@@ -2376,7 +2376,7 @@
   }
 },
 {
-  "model": "api.artist",
+  "model": "songs.artist",
   "fields": {
     "name": "Hanson",
     "created": "2022-05-28T00:19:25.277Z",

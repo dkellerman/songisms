@@ -48,13 +48,12 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    'reversion',
-    'reversion_compare',
     'graphene_django',
     'corsheaders',
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
-    'api.apps.ApiConfig',
     'smuggler',
+    'songs.apps.SongsConfig',
+    'rhymes.apps.RhymesConfig',
 ]
 
 MIDDLEWARE = [
@@ -93,14 +92,13 @@ WSGI_APPLICATION = 'songisms.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# django-on-heroku replaces this with DATABASE_URL in production
-SISM_DATABASE_URL = os.environ.get('SISM_DATABASE_URL', None)
-
+# db info for dev only, django-on-heroku replaces this with DATABASE_URL in production
+SISM_DATABASE_URL = None # os.environ.get('SISM_DATABASE_URL', None)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'songisms',
-        'USER': 'songisms',
+        'NAME': 'songisms2',
+        'USER': 'songisms2',
         'PASSWORD': os.environ['SISM_DB_PASSWORD'],
     } if not SISM_DATABASE_URL else dj_database_url.parse(SISM_DATABASE_URL, conn_max_age=600),
 }
@@ -147,7 +145,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 GRAPHENE = {
-    "SCHEMA": "api.schema.schema",
+    "SCHEMA": "songs.schema.schema",
     "MIDDLEWARE": [
         "graphql_jwt.middleware.JSONWebTokenMiddleware",
     ],
@@ -177,10 +175,6 @@ GS_BUCKET_NAME = 'songisms.appspot.com'
 
 key = json.loads(base64.b64decode(os.environ['SISM_GOOGLE_CREDENTIALS']))
 GS_CREDENTIALS = service_account.Credentials.from_service_account_info(key)
-
-ADD_REVERSION_ADMIN = True
-REVERSION_COMPARE_FOREIGN_OBJECTS_AS_ID = False
-REVERSION_COMPARE_IGNORE_NOT_REGISTERED = False
 
 REDIS_URL = os.environ.get('SISM_REDIS_URL', os.environ.get('REDIS_URL'))
 

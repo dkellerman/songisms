@@ -9,8 +9,8 @@ import re
 import sys
 import json
 from tqdm import tqdm
-from api.models import Song
-from api.utils import normalize_ipa, get_ipa_words, align_vals, remove_stresses, normalize_lyric
+from songs.models import Song
+from songisms.utils import normalize_ipa, get_ipa_words, align_vals, remove_stresses, normalize_lyric
 
 
 if __name__ == '__main__':

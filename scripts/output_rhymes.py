@@ -3,7 +3,9 @@
 import random
 import json
 from tqdm import tqdm
-from api.models import *
+from songs.models import Song
+from rhymes.models import Rhyme
+
 
 # output all rhyme groups to JSON
 lines = list()
