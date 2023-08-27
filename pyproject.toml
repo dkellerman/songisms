@@ -34,6 +34,8 @@ panphon = "^0.20.0"
 g2p = "^1.1.20230511"
 minineedle = "^3.1.5"
 django-pandas = "^0.6.6"
+youtube_dl = "2020.12.2"
+
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.2"

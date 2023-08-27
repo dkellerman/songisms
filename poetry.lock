@@ -3158,6 +3158,17 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [[package]]
+name = "youtube-dl"
+version = "2020.12.2"
+description = "YouTube video downloader"
+optional = false
+python-versions = "*"
+files = [
+    {file = "youtube_dl-2020.12.2-py2.py3-none-any.whl", hash = "sha256:daa514c0d36af478fe249ea93ca63ae3aaa60ac5f82aa3d5514bce9ba7ed8451"},
+    {file = "youtube_dl-2020.12.2.tar.gz", hash = "sha256:bc82acb0b59b25b822fad85bef0cbe78e5754ca532e3bd6899fe06386e2b8e7c"},
+]
+
+[[package]]
 name = "zipp"
 version = "3.16.2"
 description = "Backport of pathlib-compatible object wrapper for zip files"
@@ -3175,4 +3186,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "3.9.13"
-content-hash = "10d9e112f2cb63849344fc3581ec389f50b77fd6ca7f962691d082f9424294ac"
+content-hash = "0e454a3e3feaa10d103363486842a60900e8a8ce7ba9eb3ae3b984e4c838913f"
