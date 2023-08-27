@@ -28,9 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ['SISM_DJANGO_SECRET_KEY']
 
-is_prod = bool(os.environ.get('DYNO'))
+IS_PROD = bool(os.environ.get('DYNO'))
 
-DEBUG = not is_prod
+DEBUG = not IS_PROD
 
 ALLOWED_HOSTS = []
 
@@ -162,7 +162,7 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 
-CORS_ALLOW_ALL_ORIGINS = not is_prod
+CORS_ALLOW_ALL_ORIGINS = not IS_PROD
 CORS_ALLOWED_ORIGINS = [
     'https://rhymes.vercel.app',
     'https://rhymes-davidk-davidk415.vercel.app',
@@ -195,7 +195,7 @@ CACHES = {
 
 SMUGGLER_FIXTURE_DIR = BASE_DIR / 'data' / 'fixtures'
 
-USE_QUERY_CACHE = is_prod
+USE_QUERY_CACHE = IS_PROD
 
 MOISES_API_KEY = os.environ.get('SISM_MOISES_API_KEY', '')
 

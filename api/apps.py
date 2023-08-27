@@ -7,11 +7,13 @@ class ApiConfig(AppConfig):
     name = 'api'
 
     def ready(self):
+        from django.conf import settings
         from api.models import Rhyme, NGram
         try:
-            now = str(int(time.time()))
-            Rhyme.objects.top_rhymes()
-            Rhyme.objects.query(q=f'startup {now}')
-            NGram.objects.completions(q=f'startup {now}')
+            if settings.IS_PROD:
+                now = str(int(time.time()))
+                Rhyme.objects.top_rhymes()
+                Rhyme.objects.query(q=f'startup {now}')
+                NGram.objects.completions(q=f'startup {now}')
         except:
             pass

@@ -7,9 +7,6 @@ export default {
 <template>
   <nav>
     <h1><router-link to="/">Song Rhymes</router-link></h1>
-    <div class="links">
-      <a href="https://bipium.com">Metronome</a>
-    </div>
   </nav>
   <main>
     <router-view />
@@ -40,21 +37,20 @@ body,
   flex-direction: column;
   min-height: 100vh;
 }
+
 nav {
   padding: 15px 20px 15px 20px;
   h1 a {
     color: black;
     font-size: 32px;
   }
-  .links a {
-    font-size: 14px;
-    display: none;
-  }
 }
+
 main {
   padding: 20px;
   flex: 1;
 }
+
 footer {
   .links {
     display: none;
@@ -63,6 +59,7 @@ footer {
     color: blue;
   }
 }
+
 @media screen and (min-width: 640px) {
   footer .links {
     display: initial;
