@@ -1,10 +1,16 @@
 #!/usr/bin/env python ./manage.py script
 
+'''
+Cleans up GPT's lyrical IPA output and aligns it to the real lyrics. Writes out a corpus
+to a JSON file.
+'''
+
+import re
 import sys
 import json
 from tqdm import tqdm
-from api.models import *
-from api.utils.text import normalize_ipa, get_ipa_words, align_vals, remove_stresses
+from api.models import Song
+from api.utils import normalize_ipa, get_ipa_words, align_vals, remove_stresses, normalize_lyric
 
 
 if __name__ == '__main__':
@@ -17,10 +23,8 @@ if __name__ == '__main__':
         songs = tqdm(Song.objects.all())
 
     for song in songs:
-        lines = [normalize_lyric(l)
-                 for l in song.lyrics.split('\n') if l.strip()]
-        ipa_lines_gpt = [normalize_ipa(
-            l) for l in song.metadata['ipa'].split('\n') if l.strip()]
+        lines = [normalize_lyric(l) for l in song.lyrics.split('\n') if l.strip()]
+        ipa_lines_gpt = [normalize_ipa(l) for l in song.metadata['ipa'].split('\n') if l.strip()]
         text = ' '.join(lines)
         ipa_text_gpt = ' '.join(ipa_lines_gpt)
         words = text.split()
@@ -30,15 +34,13 @@ if __name__ == '__main__':
         is_aligned = False
         while not is_aligned:
             ipa_words_canon = get_ipa_words(text)
-            aligned_ipa_words_gpt, aligned_ipa_words_canon, _, _ = align_vals(
-                ipa_words_gpt, ipa_words_canon)
+            aligned_ipa_words_gpt, aligned_ipa_words_canon, _ = align_vals(ipa_words_gpt, ipa_words_canon)
             is_aligned = True
 
             for idx, word in enumerate(words):
                 ipa = str(aligned_ipa_words_gpt[idx])
                 # check dashes were handled correctly
                 if '-' in word and ipa and ipa != '_' and "ˈ" not in ipa and "ˌ" not in ipa and "-" not in ipa:
-                    # print('=>', word, ipa)
                     words[idx:idx+1] = word.split('-')
                     text = ' '.join(words)
                     is_aligned = False
@@ -47,7 +49,6 @@ if __name__ == '__main__':
                     # check word/letter split handled correctly, e.g. p1 -> p 1
                     match = re.match(r'([a-zA-Z]+)(\d+)', word)
                     if match:
-                        # print("=> SPLIT", match.group(1), match.group(2))
                         words[idx:idx+1] = [match.group(1), match.group(2)]
                         text = ' '.join(words)
                         is_aligned = False

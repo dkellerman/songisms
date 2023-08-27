@@ -1,3 +1,5 @@
+'''GraphQL utilities'''
+
 import graphene
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 

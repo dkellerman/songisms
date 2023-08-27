@@ -1,10 +1,12 @@
+'''GPT queries'''
+
 import json
 import openai
 
 
 def gpt_json_query(system_message, user_message, model="gpt-3.5-turbo", verbose=False):
-    '''Generic GPT to json query'''
-
+    '''Generic GPT to json query
+    '''
     if verbose:
         print(user_message)
 
@@ -42,6 +44,8 @@ def gpt_json_query(system_message, user_message, model="gpt-3.5-turbo", verbose=
 
 
 def gpt_fetch_ipa(text):
+    '''Fetch IPA translation from GPT
+    '''
     val = gpt_json_query(
         system_message="""You are a helpful IPA translator""",
         user_message="""

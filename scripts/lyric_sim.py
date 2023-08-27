@@ -4,7 +4,7 @@ import sys
 import multiprocessing as mp
 from pprint import pprint
 from api.models import Song
-from api.utils.text import *
+from api.utils import *
 import gensim.models
 import gensim.downloader
 from gensim.models import Word2Vec

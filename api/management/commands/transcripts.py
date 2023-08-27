@@ -5,8 +5,7 @@ import json
 import multiprocessing as mp
 from django.core.management.base import BaseCommand
 from api.models import Song
-from api.utils.cloud import fetch_workflow
-from api.utils.text import normalize_lyric, tokenize_lyric, align_vals
+from api.utils import normalize_lyric, tokenize_lyric, align_vals, fetch_workflow
 
 
 class Command(BaseCommand):
@@ -76,7 +75,7 @@ def process_transcript(song):
         obj.data['text'] = normalize_lyric(obj.data['text'])
     song_words = sum([ tokenize_lyric(l) for l in song.lyrics.split('\n') if l.strip() ], [])
 
-    aligned_song_words, aligned_tr_words, _, _ = align_vals(song_words, tr_words)
+    aligned_song_words, aligned_tr_words, _ = align_vals(song_words, tr_words)
 
     slots = []
     slot = None

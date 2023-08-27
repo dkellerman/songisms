@@ -10,7 +10,8 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 from nltk import FreqDist
 from api.models import *
-from api.utils.text import normalize_lyric, get_lyric_ngrams, get_rhyme_pairs, get_common_words, get_mscore, get_ipa_text
+from api.utils import (normalize_lyric, get_lyric_ngrams, get_rhyme_pairs, get_common_words,
+                       get_mscore, get_ipa_text, get_stresses_vector)
 from django.core.cache import cache
 from tqdm import tqdm
 
@@ -145,9 +146,9 @@ class Command(BaseCommand):
 
         stresses_cache, _ = Cache.objects.get_or_create(key='ngram_stresses')
         for ngram in tqdm(ngrams.values(), desc='ngram stresses'):
-            ngram['stresses'] = stresses_cache.get(ngram['text'], get_stresses)
+            ngram['stresses'] = stresses_cache.get(ngram['text'], get_stresses_vector)
         for line in tqdm(lines.values(), desc='line stresses'):
-            line['stresses'] = stresses_cache.get(line['text'], get_stresses)
+            line['stresses'] = stresses_cache.get(line['text'], get_stresses_vector)
 
         n_counts = [0 for _ in range(15)]
         for sn in tqdm(song_ngrams.values(), desc='index ngram counts'):

@@ -1,53 +1,21 @@
+'''Text processing utilities'''
+
 import re
-import g2p
-import eng_to_ipa
 import string
-import json
 import inflect
 import nltk
 from functools import lru_cache
-from panphon import featuretable
 from minineedle import needle, core
 import pronouncing as pron
-from nltk import FreqDist
 from nltk.util import ngrams as nltk_make_ngrams
-from nltk.corpus import brown
 from num2words import num2words
+from api.utils.data import get_common_words, get_custom_variants, get_sim_sounds
 
-
-ftable = featuretable.FeatureTable()
-transducer = g2p.make_g2p('eng', 'eng-ipa')
 inflector = inflect.engine()
 
 
-@lru_cache(maxsize=None)
-def get_common_words(n=700):
-    fd = FreqDist(i.lower() for i in brown.words())
-    return dict(fd.most_common()[:n])
-
-
-@lru_cache(maxsize=None)
-def get_custom_variants():
-    with open('./data/variants.txt', 'r') as syn_file:
-        return [
-            [l.strip() for l in line.split(';')]
-            for line in syn_file.readlines()
-        ]
-
-
-@lru_cache(maxsize=None)
-def get_sim_sounds():
-    with open('./data/simsounds.json', 'r') as f:
-        return json.loads(f.read())
-
-
-@lru_cache(maxsize=None)
-def get_gpt_ipa():
-    with open('./data/ipa_gpt.json', 'r') as f:
-        return json.load(f)
-
-
 def tokenize_lyric(val):
+    '''Split lyric into normalized tokens'''
     val = val.lower().strip()
     val = re.sub(r'[\,\"]', '', val)
     val = re.sub(r'[\,\"]', '', val)
@@ -64,151 +32,41 @@ def tokenize_lyric(val):
 
 
 def normalize_lyric(val):
+    '''Normalize lyric without tokenizing'''
     return ' '.join(tokenize_lyric(val))
 
 
-def normalize_ipa(ipa):
-    ipa = ipa.strip().replace("ː", "")
-    return remove_non_lyric_punctuation(ipa)
-
-
-def get_ipa_words(text):
-    global transducer
-    words = eng_to_ipa.convert(text).split()
-    gpt_ipa = get_gpt_ipa()
-    ipa = []
-    for w in words:
-        if '*' in w or not w.strip():
-            w = w.replace('*', '').strip()
-            w = gpt_ipa.get(w, get_g2p_word(w))
-        ipa.append(fix_ipa_word(w))
-    return ipa
-
-
-def get_ipa_text(text):
-    return ' '.join(get_ipa_words(text))
-
-
-def fix_ipa_word(w):
-    if w is None:
-        return ''
-    w = re.sub(r"'ɛs$", "s", w)
-    w = re.sub(r"'", "", w)
-    return w.strip()
-
-
 def remove_stresses(text):
+    '''Remove IPA stress marks'''
     return re.sub(r'\ˈ|\ˌ', '', text)
 
 
 def remove_punctuation(text):
+    '''Remove all punctuation'''
     return ''.join([t for t in text if t not in string.punctuation])
 
 
 def remove_non_lyric_punctuation(text):
+    '''Remove punctuation not critical to lyrics'''
     return ''.join([t for t in text if t not in r"""!"#$%&()*+,./:;<=>?@[\]^_`{|}~"""])
 
 
-def get_g2p_word(w):
-    if w[-1] == "'":
-        return re.sub(r'ŋ$', 'n', transducer(w[:-1] + 'g').output_string)
-    return transducer(w).output_string
-
-
-def get_ipa_features(ipa_letter):
-    global ftable
-    f = ftable.fts(ipa_letter)
-    return f
-
-
-def is_vowel(ipa_letter):
-    return ipa_letter in IPA_VOWELS
-
-
-def get_stress_tail(phrase):
-    if not phrase.strip():
-        return ''
-    stress_index = phrase.find("ˈ") + 1
-    while not is_vowel(phrase[stress_index]):
-        stress_index += 1
-        if stress_index > len(phrase) - 1:
-            return phrase[stress_index - 1:]
-    return phrase[stress_index:]
-
-
 def align_vals(val1, val2):
+    '''Aligns two strings or lists of strings using Needleman-Wunsch.
+       Returned sequences may contain gap character classes - calling str()
+       will convert them to a gap character (_)
+    '''
     aligner = needle.NeedlemanWunsch(val1, val2)
     aligner.gap_character = '_'
     aligner.align()
-    fmt = core.AlignmentFormat.str if type(
-        val1) == str else core.AlignmentFormat.list
+    fmt = core.AlignmentFormat.str if type(val1) == str else core.AlignmentFormat.list
     aligned_val1, aligned_val2 = aligner.get_aligned_sequences(fmt)
-    score = aligner.get_score()
-    return aligned_val1, aligned_val2, score, aligner
-
-
-def get_ipa_tail(text, stresses=False):
-    text = text.lower().strip()
-    ipa = get_ipa_words(text)
-    text = ' '.join(ipa)
-    tail = get_stress_tail(text)
-    val = ''.join(tail.split(' '))
-    if not stresses:
-        val = remove_stresses(val)
-    return val
-
-
-@lru_cache(maxsize=500)
-def get_vowel_vector(text, max_len=100):
-    global ftable
-    ipa = get_ipa_tail(text)
-    vec = []
-    for c in ipa:
-        if is_vowel(c):
-            ft = ftable.word_array([
-                'syl', 'son', 'cons', 'voi', 'long',
-                'round', 'back', 'lo', 'hi', 'tense'
-            ], c).tolist() or ([0] * 10)
-            vec += ft
-    vec = [item for sublist in vec for item in sublist][-max_len:]
-    return vec
-
-
-FULL_IPA_FEATURE_LEN = len(get_ipa_features('a').numeric())
-EMPTY_FEATURES = [0.0] * FULL_IPA_FEATURE_LEN
-
-
-def get_rhyme_vectors(text1, text2):
-    ipa1 = get_ipa_tail(text1)
-    ipa2 = get_ipa_tail(text2)
-    seq1, seq2, _, _ = align_vals(ipa1, ipa2)
-    vec1, vec2 = [], []
-
-    for idx, c in enumerate(seq1):
-        if c == '-' or seq2[idx] == '-' or c == '' or seq2[idx] == '':
-            vec1 += EMPTY_FEATURES
-            vec2 += EMPTY_FEATURES
-        else:
-            ft1 = get_ipa_features(c)
-            ft2 = get_ipa_features(seq2[idx])
-            if ft1 is None or ft2 is None:
-                vec1 += EMPTY_FEATURES
-                vec2 += EMPTY_FEATURES
-            else:
-                vec1 += [float(f) for f in ft1.numeric()]
-                vec2 += [float(f) for f in ft2.numeric()]
-    return vec1, vec2
-
-
-def score_rhyme(text1, text2):
-    from scipy.spatial import distance
-    vec1, vec2 = get_rhyme_vectors(text1, text2)
-    score = distance.cosine(vec1, vec2)
-    return score
+    return aligned_val1, aligned_val2, aligner
 
 
 @lru_cache(maxsize=500)
 def make_variants(gram):
+    '''Make a list of variants of a word or phrase for searching'''
     words = gram.split()
 
     if ' ' in gram:
@@ -274,8 +132,9 @@ def make_variants(gram):
 
 @lru_cache(maxsize=500)
 def get_word_splits(word):
+    '''Return possible splits of a word into two words'''
     splits = set()
-    common = get_common_words(1000)
+    common = get_common_words()
     for sp in range(1, len(word)):
         w1 = word[:sp]
         w2 = word[sp:]
@@ -285,6 +144,7 @@ def get_word_splits(word):
 
 
 def get_lyric_ngrams(lyrics, n_range=range(5)):
+    '''Return all possible word-based ngrams of all lengths in a given range'''
     ngrams = []
     lines = [tokenize_lyric(l.strip())
              for l in lyrics.split('\n') if l.strip()]
@@ -296,6 +156,9 @@ def get_lyric_ngrams(lyrics, n_range=range(5)):
 
 
 def get_rhyme_pairs(val=''):
+    '''Takes a list of rhyme sets separated by newlines, with each rhyme separated by semicolons.
+       Outputs all possible pairs of rhymes.
+    '''
     lines = val.strip().split('\n')
     pairs = []
     for line in lines:
@@ -307,8 +170,8 @@ def get_rhyme_pairs(val=''):
     return list(set(pairs))
 
 
-@lru_cache(maxsize=500)
 def make_homophones(w, ignore_stress=True, multi=True):
+    '''Get homophones'''
     # currently needs to be installed via `pip install homophones``
     from homophones import homophones as hom
 
@@ -316,7 +179,7 @@ def make_homophones(w, ignore_stress=True, multi=True):
     all_words = list(hom.Words_from_cmudict_string(hom.ENTIRE_CMUDICT))
     words = list(hom.Word.from_string(w, all_words))
     results = []
-    common = brown.words()
+    common = get_common_words()
     for word in words:
         for h in hom.homophones(word, all_words, ignore_stress=ignore_stress):
             if h.word.lower() != w and h.word.lower() in common:
@@ -333,40 +196,9 @@ def make_homophones(w, ignore_stress=True, multi=True):
 
 
 @lru_cache(maxsize=500)
-def get_stresses(q):
-    stresses = []
-    for word in q.split():
-        word = re.sub(r'in\'', 'ing', word)
-        p = pron.phones_for_word(word)
-        p = p[0] if len(p) else ''
-        if p:
-            s = pron.stresses(p)
-            stresses.append(s if len(s) else '0')
-        else:
-            stresses.append('1')
-    return [int(s) for s in (''.join(stresses))]
-
-
-@lru_cache(maxsize=500)
-def get_formants(q, vowels_only=False, include_stresses=False):
-    ipa = get_ipa_text(q).split()
-    formants = []
-
-    for ch in ipa:
-        if not include_stresses:
-            ch = re.sub(r'[\ˈˌ]', '', ch)
-        if ch in IPA_VOWELS or not vowels_only:
-            f = PHONE_TO_FORMANTS.get(ch, [0, 0, 0, 0])
-            formants.append(f)
-
-    if len([f for f in formants if f != [0, 0, 0, 0]]) < (len(formants) / 2):
-        return None
-
-    return formants
-
-
-@lru_cache(maxsize=500)
 def get_mscore(text):
+    '''Meaning score is a custom metric for how meaningful a lyric is based on part-of-speech.
+    '''
     toks = tokenize_lyric(text)
     pos = nltk.pos_tag(toks)
     mscore = [POS_TO_MSCORE.get(tok[1], 0) for tok in pos if tok[1]]
@@ -380,71 +212,3 @@ POS_TO_MSCORE = dict(CC=2, CD=1, DT=1, EX=1, IN=2, JJ=4, JJR=4, JJS=4, LS=1, MD=
 POS_TO_MSCORE['PRP$'] = 2
 POS_TO_MSCORE['WP$'] = 2
 POS_TO_MSCORE["''"] = 2
-
-PHONE_TO_FORMANTS = {
-    u'i': [240, 2400, 2160, 0],
-    u'y': [235, 2100, 1865, 0],
-    u'e': [390, 2300, 1910, 0],
-    u'ø': [370, 1900, 1530, 0],
-    u'ɛ': [610, 1900, 1290, 0],
-    u'œ': [585, 1710, 1125, 0],
-    u'a': [850, 1610, 760, 0],
-    u'ɶ': [820, 1530, 710, 0],
-    u'ɑ': [750, 940, 190, 0],
-    u'ɒ': [700, 760, 60, 0],
-    u'ɔ': [500, 700, 200, 0],
-    u'ʌ': [600, 1170, 570, 0],
-    u'ɤ': [460, 1310, 850, 0],
-    u'o': [360, 640, 280, 0],
-    u'ɯ': [300, 1390, 1090, 0],
-    u'u': [250, 595, 345, 0],
-
-    # https://www.jobilize.com/course/section/formant-analysis-lab-9a-speech-processing-part-1-by-openstax#uid32
-    u'ɪ': [390, 1990, 2550, 0],
-    u'ʊ': [300, 870, 2240, 0],
-    u'ə': [520, 1190, 2390, 0],
-    u'æ': [660, 1720, 2410, 0],
-
-    # https://www.advancedbionics.com/content/dam/advancedbionics/Documents/libraries/Tools-for-Schools/Educational_Support/Tools-for-Learning-about-Hearing-loss-and-Cochlear-Implants/ToolsforSchools-Sounds-of-Speech-Flyer.pdf
-    u'ŋ': [325, 1250, 2500, 0],
-    u'ʧ': [0, 0, 1750, 4500],
-    u'θ': [0, 0, 0, 6000],
-    u'ð': [300, 0, 0, 5250],
-    u'ʤ': [250, 0, 2500, 0],
-    u'ʃ': [0, 0, 1750, 5000],
-    u'w': [525, 0, 0, 0],
-    u'n': [300, 1250, 2500, 0],
-    u'm': [300, 1250, 3000, 0],
-    u'r': [700, 2250, 2100, 0],
-    u'g': [250, 0, 2000, 0],
-    u'j': [250, 0, 2500, 0],
-    u'l': [325, 0, 2500, 0],
-    u'd': [350, 0, 2750, 0],  # ???
-    u'z': [250, 0, 0, 4500],
-    u'v': [350, 0, 0, 4000],
-    u'h': [0, 0, 1750, 0],
-    u'p': [0, 0, 1750, 0],
-    u'k': [0, 0, 2250, 0],
-    u't': [0, 0, 3000, 0],
-    u's': [0, 0, 0, 5500],
-    u'f': [0, 0, 0, 4500],
-    u'b': [350, 0, 2250, 0],
-
-    # ??? u'a': [],
-}
-
-
-@lru_cache(maxsize=None)
-def get_idioms():
-    with open('./data/idioms.txt', 'r') as f:
-        return f.read()
-
-
-@lru_cache(maxsize=None)
-def get_mine():
-    with open('./data/mine.txt', 'r') as f:
-        return f.read()
-
-
-IPA_VOWELS = [u'i', u'y', u'e', u'ø', u'ɛ', u'œ', u'a', u'ɶ', u'ɑ', u'ɒ', u'ɔ',
-              u'ʌ', u'ɤ', u'o', u'ɯ', u'u', u'ɪ', u'ʊ', u'ə', u'æ']

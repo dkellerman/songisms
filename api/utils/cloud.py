@@ -1,3 +1,5 @@
+'''Utilities for various APIs and cloud services'''
+
 import os
 import time
 import pafy
@@ -10,9 +12,8 @@ from django.conf import settings
 from google.cloud.storage import Client as SClient
 from google.oauth2 import service_account
 
-key = json.loads(base64.b64decode(os.environ['SISM_GOOGLE_CREDENTIALS']))
-storage_credentials = service_account.Credentials.from_service_account_info(
-    key)
+google_key = json.loads(base64.b64decode(os.environ['SISM_GOOGLE_CREDENTIALS']))
+storage_credentials = service_account.Credentials.from_service_account_info(google_key)
 sclient = SClient(credentials=storage_credentials)
 bucket = sclient.bucket(settings.GS_BUCKET_NAME)
 
@@ -26,6 +27,7 @@ def get_storage_blob(fname):
 
 
 def fetch_audio(song, convert=False):
+    '''Fetch audio for a song from youtube. Convert to mp3 if convert=True, requires ffmpeg'''
     yt_id = song.youtube_id
     print("***** fetching video", song.id, song.title, yt_id)
 
@@ -107,6 +109,8 @@ MOISES_WORKFLOWS = {
 
 
 def queue_workflow(workflow_id, song):
+    '''Start moises.ai workflow
+    '''
     resp = requests.post('https://developer-api.moises.ai/api/job', json={
         'name': f'Workflow {workflow_id} for {song.spotify_id}',
         'workflow': MOISES_WORKFLOWS[workflow_id],

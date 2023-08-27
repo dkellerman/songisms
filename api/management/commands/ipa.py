@@ -5,7 +5,7 @@ import argparse
 import multiprocessing as mp
 from django.core.management.base import BaseCommand
 from api.models import *
-from api.utils.gpt import gpt_fetch_ipa
+from api.utils import gpt_fetch_ipa
 
 
 class Command(BaseCommand):

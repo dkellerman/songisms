@@ -37,7 +37,8 @@ django-pandas = "^0.6.6"
 youtube_dl = "2020.12.2"
 
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
+ffmpeg = "^1.4"
 pytest = "^7.2"
 torch = "^2.0.1"
 scikit-learn = "^1.1.1"

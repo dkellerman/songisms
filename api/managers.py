@@ -5,7 +5,7 @@ from django.db.models import Q, F
 from django.core.cache import cache
 from django.conf import settings
 from django_pandas.managers import DataFrameManager
-from .utils.text import make_variants, get_stresses, get_vowel_vector, normalize_lyric
+from .utils import make_variants, get_stresses_vector, get_vowel_vector, normalize_lyric
 
 
 class BaseManager(DataFrameManager):
@@ -67,7 +67,7 @@ class RhymeManager(BaseManager):
         n = len(q.split())
         variants = make_variants(q)
         vec = get_vowel_vector(q) or None
-        stresses = get_stresses(q)
+        stresses = get_stresses_vector(q)
         all_q = [q.upper()] + [s.upper() for s in variants]
 
         rhymes_sql = f'''

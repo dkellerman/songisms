@@ -785,6 +785,16 @@ files = [
 test = ["pytest (>=6)"]
 
 [[package]]
+name = "ffmpeg"
+version = "1.4"
+description = "ffmpeg python package url [https://github.com/jiashaokun/ffmpeg]"
+optional = false
+python-versions = "*"
+files = [
+    {file = "ffmpeg-1.4.tar.gz", hash = "sha256:6931692c890ff21d39938433c2189747815dca0c60ddc7f9bb97f199dba0b5b9"},
+]
+
+[[package]]
 name = "filelock"
 version = "3.12.2"
 description = "A platform independent file lock."
@@ -3186,4 +3196,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "3.9.13"
-content-hash = "0e454a3e3feaa10d103363486842a60900e8a8ce7ba9eb3ae3b984e4c838913f"
+content-hash = "d183b18ec3264af7a26a587277df88bec0de2476b171e0fb8a24c7229d2b19eb"

@@ -3,7 +3,7 @@
 import multiprocessing as mp
 from django.core.management.base import BaseCommand
 from api.models import *
-from api.utils.cloud import fetch_workflow
+from api.utils import fetch_workflow
 
 
 class Command(BaseCommand):
