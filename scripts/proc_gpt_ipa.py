@@ -17,8 +17,10 @@ if __name__ == '__main__':
         songs = tqdm(Song.objects.all())
 
     for song in songs:
-        lines = [ normalize_lyric(l) for l in song.lyrics.split('\n') if l.strip() ]
-        ipa_lines_gpt = [ normalize_ipa(l) for l in song.metadata['ipa'].split('\n') if l.strip() ]
+        lines = [normalize_lyric(l)
+                 for l in song.lyrics.split('\n') if l.strip()]
+        ipa_lines_gpt = [normalize_ipa(
+            l) for l in song.metadata['ipa'].split('\n') if l.strip()]
         text = ' '.join(lines)
         ipa_text_gpt = ' '.join(ipa_lines_gpt)
         words = text.split()
@@ -28,7 +30,8 @@ if __name__ == '__main__':
         is_aligned = False
         while not is_aligned:
             ipa_words_canon = get_ipa_words(text)
-            aligned_ipa_words_gpt, aligned_ipa_words_canon, _, _ = align_vals(ipa_words_gpt, ipa_words_canon)
+            aligned_ipa_words_gpt, aligned_ipa_words_canon, _, _ = align_vals(
+                ipa_words_gpt, ipa_words_canon)
             is_aligned = True
 
             for idx, word in enumerate(words):
@@ -65,10 +68,9 @@ if __name__ == '__main__':
 
             if cur_val:
                 if remove_stresses(val) == cur_val:
-                    word2ipa[word] = val if len(val) > len(cur_val) else cur_val
+                    word2ipa[word] = val if len(
+                        val) > len(cur_val) else cur_val
             else:
                 word2ipa[word] = val
 
-
     print(json.dumps(word2ipa, indent=2, ensure_ascii=False))
-

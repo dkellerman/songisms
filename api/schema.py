@@ -105,8 +105,10 @@ class TaggedTextType(DjangoObjectType):
 
 
 SongsPaginatedType = GraphenePaginatedType('SongsPaginatedType', SongType)
-WritersPaginatedType = GraphenePaginatedType('WritersPaginatedType', WriterType)
-ArtistsPaginatedType = GraphenePaginatedType('ArtistsPaginatedType', ArtistType)
+WritersPaginatedType = GraphenePaginatedType(
+    'WritersPaginatedType', WriterType)
+ArtistsPaginatedType = GraphenePaginatedType(
+    'ArtistsPaginatedType', ArtistType)
 NGramsPaginatedType = GraphenePaginatedType('NGramsPaginatedType', NGramType)
 
 
@@ -132,13 +134,16 @@ class Query(graphene.ObjectType):
                            q=graphene.String(required=False),
                            limit=graphene.Int(required=False),
                            offset=graphene.Int(required=False))
-    completions = graphene.List(NGramType, q=graphene.String(required=False), ct=graphene.Int(required=False))
+    completions = graphene.List(NGramType, q=graphene.String(
+        required=False), ct=graphene.Int(required=False))
     ngrams = graphene.Field(NGramsPaginatedType,
                             page=graphene.Int(required=False),
                             q=graphene.String(required=False),
-                            tags=graphene.List(required=False, of_type=graphene.String),
+                            tags=graphene.List(
+                                required=False, of_type=graphene.String),
                             ordering=graphene.List(required=False, of_type=graphene.String))
-    tags_by_category = graphene.List(TagType, category=graphene.String(required=True))
+    tags_by_category = graphene.List(
+        TagType, category=graphene.String(required=True))
 
     @staticmethod
     @login_required

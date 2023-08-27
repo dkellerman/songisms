@@ -11,7 +11,8 @@ from google.cloud.storage import Client as SClient
 from google.oauth2 import service_account
 
 key = json.loads(base64.b64decode(os.environ['SISM_GOOGLE_CREDENTIALS']))
-storage_credentials = service_account.Credentials.from_service_account_info(key)
+storage_credentials = service_account.Credentials.from_service_account_info(
+    key)
 sclient = SClient(credentials=storage_credentials)
 bucket = sclient.bucket(settings.GS_BUCKET_NAME)
 
@@ -70,7 +71,8 @@ def fetch_audio(song, convert=False):
         tmpfile_mp3 = f'/tmp/{fname_mp3}'
         if not os.path.exists(tmpfile_mp3):
             print('convert to mp3...')
-            ffmpeg.input(tmpfile).output(tmpfile_mp3, ac=1, audio_bitrate='128k').run()
+            ffmpeg.input(tmpfile).output(
+                tmpfile_mp3, ac=1, audio_bitrate='128k').run()
         else:
             print('mp3 exists')
         fname_upload = fname_mp3
@@ -102,6 +104,7 @@ MOISES_WORKFLOWS = {
     'stems': 'moises/stems-vocals-accompaniment',
     'transcript': 'sism2',
 }
+
 
 def queue_workflow(workflow_id, song):
     resp = requests.post('https://developer-api.moises.ai/api/job', json={

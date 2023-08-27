@@ -19,7 +19,8 @@ class SongAdmin(CompareVersionAdmin):
     search_fields = ('title', 'spotify_id', 'lyrics',)
     list_display = ('title', 'artists_display', 'spotify_link', 'is_new_check', 'has_lyrics',
                     'has_audio', 'has_metadata', 'has_jaxsta_id',)
-    readonly_fields = ('spotify_player', 'jaxsta_link', 'youtube_link', 'rhymes',)
+    readonly_fields = ('spotify_player', 'jaxsta_link',
+                       'youtube_link', 'rhymes',)
     list_filter = ('is_new', 'tags',)
     autocomplete_fields = ('artists', 'tags', 'writers',)
     inlines = [AttachmentInline]
@@ -74,7 +75,8 @@ class SongAdmin(CompareVersionAdmin):
         if obj.youtube_id:
             return mark_safe(f'<a href={obj.youtube_url} target="__blank">{obj.youtube_id}</a>')
         else:
-            q = quote_plus(f'{obj.title} {obj.artists.all()[0].name} official audio')
+            q = quote_plus(
+                f'{obj.title} {obj.artists.all()[0].name} official audio')
             return mark_safe(f'<a href="https://youtube.com/results?search_query={q}" target="_blank">Search</a>')
     youtube_link.short_description = 'Youtube Link'
 
@@ -95,7 +97,8 @@ class WriterAdmin(CompareVersionAdmin):
 @admin.register(NGram)
 class NGramAdmin(admin.ModelAdmin):
     search_fields = ('text',)
-    list_display = ('text', 'n', 'song_ct', 'total_ct', 'ipa', 'phones', 'mscore',)
+    list_display = ('text', 'n', 'song_ct', 'total_ct',
+                    'ipa', 'phones', 'mscore',)
     fields = ('text', 'n', 'song_ct', 'total_ct', 'ipa', 'phones', 'mscore',)
     readonly_fields = ('song_ct', 'total_ct',)
 
@@ -148,7 +151,6 @@ class TagAdmin(CompareVersionAdmin):
 class CacheAdmin(admin.ModelAdmin):
     change_list_template = 'smuggler/change_list.html'
     list_display = ('key', 'version', 'updated')
-
 
 
 @admin.register(Line)

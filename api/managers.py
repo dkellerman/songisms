@@ -16,7 +16,6 @@ class RhymeManager(BaseManager):
     HARD_LIMIT = 100
     USE_SUGGESTIONS = True
 
-
     def top_rhymes(self, offset=0, limit=100, q=None):
         offset = offset or 0
         cache_key = f'top_rhymes_{offset}_{offset + limit}'
@@ -42,15 +41,14 @@ class RhymeManager(BaseManager):
         )
 
         qs = qs.filter(frequency__gt=0) \
-                .filter(rhymed_from__level=1) \
-                .order_by('-frequency', 'text') \
-                .values('ngram', 'frequency', 'type')
+            .filter(rhymed_from__level=1) \
+            .order_by('-frequency', 'text') \
+            .values('ngram', 'frequency', 'type')
 
         qs = qs[offset:min(self.HARD_LIMIT, offset+limit)]
         if not q and settings.USE_QUERY_CACHE:
             cache.set(cache_key, qs)
         return qs
-
 
     def query(self, q, offset=0, limit=100):
         if not q:
@@ -191,14 +189,16 @@ class NGramManager(BaseManager):
         if not qs:
             from api.models import NGram
             qs = NGram.objects.filter(text__istartswith=q)
-            qs = qs.annotate(rhyme_ct=models.Count('rhymes')).filter(rhyme_ct__gt=0)
+            qs = qs.annotate(rhyme_ct=models.Count(
+                'rhymes')).filter(rhyme_ct__gt=0)
             qs = qs.order_by('n', '-rhyme_ct')[:ct]
             cache.set(cache_key, qs)
         return qs
 
     def by_query(self, q):
         from api.models import NGram
-        qs = NGram.objects.filter(text__istartswith=q).order_by(F('song_count').desc(nulls_last=True))
+        qs = NGram.objects.filter(text__istartswith=q).order_by(
+            F('song_count').desc(nulls_last=True))
         return qs
 
     def top(self):

@@ -26,7 +26,8 @@ class Artist(models.Model):
 @reversion.register()
 class Writer(models.Model):
     name = models.CharField(max_length=300, unique=True)
-    alt_names = ArrayField(models.CharField(max_length=300, unique=True), default=list, blank=True)
+    alt_names = ArrayField(models.CharField(
+        max_length=300, unique=True), default=list, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = WriterManager()
@@ -46,7 +47,8 @@ class Tag(models.Model):
     )
     value = models.SlugField()
     label = models.CharField(max_length=100)
-    category = models.CharField(max_length=100, choices=TAG_CATEGORY_CHOICES, default='song')
+    category = models.CharField(
+        max_length=100, choices=TAG_CATEGORY_CHOICES, default='song')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = TagManager()
@@ -62,9 +64,11 @@ class Tag(models.Model):
 
 
 class TaggedText(models.Model):
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name='texts')
+    tag = models.ForeignKey(
+        Tag, on_delete=models.CASCADE, related_name='texts')
     text = models.TextField(db_index=True)
-    song = models.ForeignKey('Song', null=True, blank=True, related_name='tagged_texts', on_delete=models.CASCADE)
+    song = models.ForeignKey('Song', null=True, blank=True,
+                             related_name='tagged_texts', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
 
@@ -75,8 +79,10 @@ class TaggedText(models.Model):
 class Line(models.Model):
     text = models.CharField(max_length=500, unique=True)
     ipa = models.CharField(max_length=500, blank=True, null=True)
-    phones = ArrayField(ArrayField(models.FloatField()), null=True, blank=True, db_index=True)
-    stresses = ArrayField(models.IntegerField(), null=True, blank=True, db_index=True)
+    phones = ArrayField(ArrayField(models.FloatField()),
+                        null=True, blank=True, db_index=True)
+    stresses = ArrayField(models.IntegerField(),
+                          null=True, blank=True, db_index=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = LineManager()
@@ -93,11 +99,14 @@ class NGram(models.Model):
     n = models.PositiveIntegerField(db_index=True)
     rhymes = models.ManyToManyField('self', through='Rhyme')
     ipa = models.CharField(max_length=500, blank=True, null=True)
-    phones = ArrayField(ArrayField(models.FloatField()), null=True, blank=True, db_index=True)
-    stresses = ArrayField(models.IntegerField(), null=True, blank=True, db_index=True)
+    phones = ArrayField(ArrayField(models.FloatField()),
+                        null=True, blank=True, db_index=True)
+    stresses = ArrayField(models.IntegerField(),
+                          null=True, blank=True, db_index=True)
     mscore = models.FloatField(blank=True, null=True, db_index=True)
     count = models.PositiveIntegerField(blank=True, null=True, db_index=True)
-    song_count = models.PositiveIntegerField(blank=True, null=True, db_index=True)
+    song_count = models.PositiveIntegerField(
+        blank=True, null=True, db_index=True)
     pct = models.FloatField(blank=True, null=True, db_index=True)
     adj_pct = models.FloatField(blank=True, null=True, db_index=True)
     song_pct = models.FloatField(blank=True, null=True, db_index=True)
@@ -118,9 +127,12 @@ class NGram(models.Model):
 
 
 class Rhyme(models.Model):
-    from_ngram = models.ForeignKey(NGram, on_delete=models.CASCADE, related_name='rhymed_from')
-    to_ngram = models.ForeignKey(NGram, on_delete=models.CASCADE, related_name='rhymed_to')
-    song = models.ForeignKey('Song', on_delete=models.CASCADE, related_name='rhymes', blank=True, null=True)
+    from_ngram = models.ForeignKey(
+        NGram, on_delete=models.CASCADE, related_name='rhymed_from')
+    to_ngram = models.ForeignKey(
+        NGram, on_delete=models.CASCADE, related_name='rhymed_to')
+    song = models.ForeignKey(
+        'Song', on_delete=models.CASCADE, related_name='rhymes', blank=True, null=True)
     level = models.PositiveIntegerField(default=1, db_index=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
@@ -134,8 +146,10 @@ class Rhyme(models.Model):
 
 
 class SongNGram(models.Model):
-    ngram = models.ForeignKey('NGram', on_delete=models.CASCADE, related_name='song_ngrams')
-    song = models.ForeignKey('Song', on_delete=models.CASCADE, related_name='song_ngrams')
+    ngram = models.ForeignKey(
+        'NGram', on_delete=models.CASCADE, related_name='song_ngrams')
+    song = models.ForeignKey(
+        'Song', on_delete=models.CASCADE, related_name='song_ngrams')
     count = models.PositiveIntegerField(db_index=True)
     objects = RhymeManager()
 
@@ -160,11 +174,13 @@ class Attachment(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     attachment_type = models.SlugField()
-    file = models.FileField(upload_to=attachment_upload_path, blank=True, null=True)
+    file = models.FileField(
+        upload_to=attachment_upload_path, blank=True, null=True)
     objects = AttachmentManager()
 
     class Meta:
-        unique_together = [['content_type', 'object_id', 'attachment_type', 'file']]
+        unique_together = [
+            ['content_type', 'object_id', 'attachment_type', 'file']]
 
     def __str__(self):
         return f'{self.content_object} [{self.attachment_type}]'
@@ -181,12 +197,14 @@ class Song(models.Model):
     writers = models.ManyToManyField(Writer, related_name='songs', blank=True)
     tags = models.ManyToManyField(Tag, related_name='songs', blank=True)
     lyrics = models.TextField(blank=True, null=True)
-    ngrams = models.ManyToManyField(NGram, through='SongNGram', blank=True, related_name='songs')
+    ngrams = models.ManyToManyField(
+        NGram, through='SongNGram', blank=True, related_name='songs')
     rhymes_raw = models.TextField(blank=True, null=True)
     spotify_id = models.SlugField()
     jaxsta_id = models.SlugField(blank=True, null=True)
     youtube_id = models.SlugField(blank=True, null=True, unique=True)
-    audio_file = models.FileField(upload_to='data/audio', blank=True, null=True)
+    audio_file = models.FileField(
+        upload_to='data/audio', blank=True, null=True)
     metadata = models.JSONField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
@@ -274,7 +292,8 @@ class Song(models.Model):
 
         with transaction.atomic():
             new_writers = [
-                Writer.objects.get_or_create(Q(name=name) | Q(alt_names__contains=name))[0]
+                Writer.objects.get_or_create(
+                    Q(name=name) | Q(alt_names__contains=name))[0]
                 for name in names
             ]
             self.writers.set(new_writers)

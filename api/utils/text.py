@@ -27,7 +27,6 @@ def get_common_words(n=700):
     return dict(fd.most_common()[:n])
 
 
-
 @lru_cache(maxsize=None)
 def get_custom_variants():
     with open('./data/variants.txt', 'r') as syn_file:
@@ -142,7 +141,8 @@ def align_vals(val1, val2):
     aligner = needle.NeedlemanWunsch(val1, val2)
     aligner.gap_character = '_'
     aligner.align()
-    fmt = core.AlignmentFormat.str if type(val1) == str else core.AlignmentFormat.list
+    fmt = core.AlignmentFormat.str if type(
+        val1) == str else core.AlignmentFormat.list
     aligned_val1, aligned_val2 = aligner.get_aligned_sequences(fmt)
     score = aligner.get_score()
     return aligned_val1, aligned_val2, score, aligner
@@ -177,6 +177,7 @@ def get_vowel_vector(text, max_len=100):
 
 FULL_IPA_FEATURE_LEN = len(get_ipa_features('a').numeric())
 EMPTY_FEATURES = [0.0] * FULL_IPA_FEATURE_LEN
+
 
 def get_rhyme_vectors(text1, text2):
     ipa1 = get_ipa_tail(text1)
@@ -285,7 +286,8 @@ def get_word_splits(word):
 
 def get_lyric_ngrams(lyrics, n_range=range(5)):
     ngrams = []
-    lines = [tokenize_lyric(l.strip()) for l in lyrics.split('\n') if l.strip()]
+    lines = [tokenize_lyric(l.strip())
+             for l in lyrics.split('\n') if l.strip()]
     for toks in lines:
         for i in n_range:
             for ngram in nltk_make_ngrams(sequence=toks, n=i+1):
@@ -442,6 +444,7 @@ def get_idioms():
 def get_mine():
     with open('./data/mine.txt', 'r') as f:
         return f.read()
+
 
 IPA_VOWELS = [u'i', u'y', u'e', u'ø', u'ɛ', u'œ', u'a', u'ɶ', u'ɑ', u'ɒ', u'ɔ',
               u'ʌ', u'ɤ', u'o', u'ɯ', u'u', u'ɪ', u'ʊ', u'ə', u'æ']

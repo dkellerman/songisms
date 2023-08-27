@@ -16,7 +16,8 @@ def train():
 
     print("Building model...")
     cores = mp.cpu_count()
-    model = Word2Vec(vector_size=kv.vector_size, window=5, min_count=1, workers=cores)
+    model = Word2Vec(vector_size=kv.vector_size,
+                     window=5, min_count=1, workers=cores)
     model.build_vocab([list(kv.index_to_key)], update=False)
     for word in kv.index_to_key:
         if word in model.wv.index_to_key:
@@ -29,7 +30,7 @@ def train():
         for line in text.split('\n'):
             if line.strip() == '':
                 continue
-            toks = [ tok for tok in tokenize_lyric(line) if get_mscore(tok) > 3 ]
+            toks = [tok for tok in tokenize_lyric(line) if get_mscore(tok) > 3]
             docs.append(toks)
     model.build_vocab(docs, update=True)
 
