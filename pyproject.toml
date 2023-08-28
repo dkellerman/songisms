@@ -24,6 +24,7 @@ requests = "^2.28.0"
 requests-cache = "^0.9.4"
 hiredis = "^2.0.0"
 redis = "^4.3.3"
+dj-database-url = "^2.1.0"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -33,7 +33,7 @@ class RhymeManager(BaseManager):
                 qs = qs.filter(text__iendswith=ends_with)
 
         qs = qs.annotate(
-            frequency=models.Count('rhymed_from__song__id', distinct=True),
+            frequency=models.Count('rhymed_from__song_uid', distinct=True),
             ngram=models.F('text'),
             type=models.Value('rhyme'),
         )
@@ -74,7 +74,7 @@ class RhymeManager(BaseManager):
                 rto.text AS ngram,
                 rto.n AS n,
                 r.level AS level,
-                COUNT(r.song_id) AS frequency,
+                COUNT(r.song_uid) AS frequency,
                 0 AS vec_distance,
                 {f'CUBE(%(stresses)s) <-> CUBE(n.stresses) AS stresses_distance' if len(stresses)
                  else '0 AS stresses_distance'},

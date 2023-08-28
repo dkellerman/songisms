@@ -28,7 +28,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             from songs.models import Song  # songs app needs to be installed
-        except ImportError:
+        except:
             print('songs app not installed')
             return
 
@@ -53,11 +53,11 @@ class Command(BaseCommand):
             texts = get_lyric_ngrams(song.lyrics, range(5))
             for text, n in texts:
                 ngrams[text] = ngrams.get(text, None) or dict(text=text, n=n)
-                song_ngram = song_ngrams.get((song.id, text), None)
+                song_ngram = song_ngrams.get((song.spotify_id, text), None)
                 if song_ngram:
                     song_ngram['count'] += 1
                 else:
-                    song_ngrams[(song.id, text)] = dict(ngram=ngrams[text], song=song, count=1)
+                    song_ngrams[(song.spotify_id, text)] = dict(ngram=ngrams[text], song=song.spotify_id, count=1)
 
             for text, _ in list(set(texts)):
                 ngrams[text]['song_count'] = ngrams[text].get('song_count', 0) + 1
@@ -67,8 +67,8 @@ class Command(BaseCommand):
                 for from_text, to_text in rhyme_pairs:
                     ngrams[from_text] = ngrams.get(from_text) or dict(text=from_text, n=len(from_text.split()))
                     ngrams[to_text] = ngrams.get(to_text) or dict(text=to_text, n=len(to_text.split()))
-                    rhymes[(from_text, to_text, song.id)] = \
-                        dict(from_ngram=ngrams[from_text], to_ngram=ngrams[to_text], song=song, level=1)
+                    rhymes[(from_text, to_text, song.spotify_id)] = \
+                        dict(from_ngram=ngrams[from_text], to_ngram=ngrams[to_text], song=song.spotify_id, level=1)
 
         extra = []
         with open('./data/idioms.txt', 'r') as f:
@@ -201,10 +201,10 @@ class Command(BaseCommand):
                 nfrom = ngrams[rhyme['from_ngram']['text']]
                 nto = ngrams[rhyme['to_ngram']['text']]
                 song = rhyme['song']
-                rhyme_objs.append(Rhyme(from_ngram=nfrom, to_ngram=nto, song=song, level=rhyme['level']))
-                revkey = (nto.text, nfrom.text, song.id if song else None)
+                rhyme_objs.append(Rhyme(from_ngram=nfrom, to_ngram=nto, song_uid=song, level=rhyme['level']))
+                revkey = (nto.text, nfrom.text, song if song else None)
                 if revkey not in rhymes:
-                    rhyme_objs.append(Rhyme(from_ngram=nto, to_ngram=nfrom, song=song, level=rhyme['level']))
+                    rhyme_objs.append(Rhyme(from_ngram=nto, to_ngram=nfrom, song_uid=song, level=rhyme['level']))
 
             print('writing rhymes', len(rhyme_objs))
             Rhyme.objects.bulk_create(rhyme_objs, batch_size=batch_size)
@@ -214,7 +214,7 @@ class Command(BaseCommand):
             sn_objs = []
             for sn in tqdm(song_ngrams.values(), desc='prepping song_ngrams'):
                 n = ngrams[sn['ngram']['text']]
-                sn_objs.append(SongNGram(song=sn['song'], ngram=n, count=sn['count']))
+                sn_objs.append(SongNGram(song_uid=sn['song'], ngram=n, count=sn['count']))
             print('creating song_ngrams', len(sn_objs))
             SongNGram.objects.bulk_create(sn_objs, batch_size=batch_size)
 

@@ -35,14 +35,14 @@ class NGram(models.Model):
 class Rhyme(models.Model):
     from_ngram = models.ForeignKey(NGram, on_delete=models.CASCADE, related_name='rhymed_from')
     to_ngram = models.ForeignKey(NGram, on_delete=models.CASCADE, related_name='rhymed_to')
-    song = models.ForeignKey('songs.Song', on_delete=models.CASCADE, related_name='rhymes', blank=True, null=True)
+    song_uid = models.SlugField(blank=True, null=True)
     level = models.PositiveIntegerField(default=1, db_index=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = RhymeManager()
 
     class Meta:
-        unique_together = [['from_ngram', 'to_ngram', 'song']]
+        unique_together = [['from_ngram', 'to_ngram', 'song_uid']]
 
     def __str__(self):
         return f'{self.from_ngram.text} => {self.to_ngram.text} [L{self.level}]'
@@ -50,12 +50,12 @@ class Rhyme(models.Model):
 
 class SongNGram(models.Model):
     ngram = models.ForeignKey('NGram', on_delete=models.CASCADE, related_name='song_ngrams')
-    song = models.ForeignKey('songs.Song', on_delete=models.CASCADE, related_name='song_ngrams')
+    song_uid = models.SlugField()
     count = models.PositiveIntegerField(db_index=True)
     objects = RhymeManager()
 
     class Meta:
-        unique_together = [['ngram', 'song']]
+        unique_together = [['ngram', 'song_uid']]
 
     def __str__(self):
         return f'{self.ngram.text} [{self.count}x IN {self.song.title}]'

@@ -29,6 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ['SISM_DJANGO_SECRET_KEY']
 
 IS_PROD = bool(os.environ.get('DYNO'))
+RHYMES_ONLY = True # IS_PROD
 
 DEBUG = not IS_PROD
 
@@ -38,7 +39,7 @@ INTERNAL_IPS = [ '127.0.0.1', '0.0.0.0', ]
 
 # Application definition
 
-INSTALLED_APPS = [
+INSTALLED_APPS = [app for app in [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,13 +49,13 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    'graphene_django',
+    'graphene_django' if not RHYMES_ONLY else None,
     'corsheaders',
-    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig' if not RHYMES_ONLY else None,
     'smuggler',
-    'songs.apps.SongsConfig',
+    'songs.apps.SongsConfig' if not RHYMES_ONLY else None,
     'rhymes.apps.RhymesConfig',
-]
+] if app]
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -92,15 +93,13 @@ WSGI_APPLICATION = 'songisms.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# db info for dev only, django-on-heroku replaces this with DATABASE_URL in production
-SISM_DATABASE_URL = os.environ.get('SISM_DATABASE_URL', None)
+# SISM_DB_URL is for dev only, django-on-heroku replaces this with DATABASE_URL in production
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'songisms2',
-        'USER': 'songisms2',
-        'PASSWORD': os.environ['SISM_DB_PASSWORD'],
-    } if not SISM_DATABASE_URL else dj_database_url.parse(SISM_DATABASE_URL, conn_max_age=600),
+    'default': dj_database_url.config(
+        default=os.environ.get('SISM_DB_URL', None),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
 # Password validation
