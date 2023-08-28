@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { debounce } from 'lodash-es/';
+import { debounce } from 'lodash-es';
 import type { Rhyme, CompletionsResponse, RhymesResponse } from './types';
 import ListenButton from './ListenButton.vue';
 
 const { public: { apiBaseUrl } } = useRuntimeConfig();
 const route = useRoute();
 const router = useRouter();
+
 const q = ref((route.query.q ?? '') as string);
 const completionsQuery = ref('');
 const searchInput = ref();
 const showListenTip = ref(false);
 
-// completions
+// completions fetch
 const { data: completionsData } = await useFetch<CompletionsResponse>(`${apiBaseUrl}/rhymes/completions/`, {
   query: { q: completionsQuery, limit: 20 },
   immediate: false,
@@ -19,7 +20,7 @@ const { data: completionsData } = await useFetch<CompletionsResponse>(`${apiBase
 const completions = computed<string[]>(() => completionsData.value?.hits.map(h => h.text) ?? []);
 const fetchCompletions = debounce((q: string) => completionsQuery.value = q, 200);
 
-// rhymes
+// rhymes fetch
 const { data: rhymesData, pending: loading } = await useFetch<RhymesResponse>(`${apiBaseUrl}/rhymes/`, {
   query: { q, limit: 100 },
   immediate: true,
@@ -114,65 +115,65 @@ function abortFetch() {} // TODO?
 
 <template>
   <div id="app">
-  <nav>
-    <h1><router-link to="/">Song Rhymes</router-link></h1>
-  </nav>
+    <nav>
+      <h1><router-link to="/">Song Rhymes</router-link></h1>
+    </nav>
 
-  <main>
-    <fieldset>
-      <vue3-simple-typeahead
-        ref="searchInput"
-        placeholder="Find rhymes in songs..."
-        :items="completions"
-        :min-input-length="1"
-        @onInput="onInput"
-        @selectItem="onSelectItem"
-        @keyup.enter="onEnter"
-        @onFocus="onFocus"
-      >
-        <template #list-item-text="slot">
-          <span v-html="slot.boldMatchText(slot.itemProjection(slot.item))"></span>
-        </template>
-      </vue3-simple-typeahead>
+    <main>
+      <fieldset>
+        <vue3-simple-typeahead
+          ref="searchInput"
+          placeholder="Find rhymes in songs..."
+          :items="completions"
+          :min-input-length="1"
+          @onInput="onInput"
+          @selectItem="onSelectItem"
+          @keyup.enter="onEnter"
+          @onFocus="onFocus"
+        >
+          <template #list-item-text="slot">
+            <span v-html="slot.boldMatchText(slot.itemProjection(slot.item))"></span>
+          </template>
+        </vue3-simple-typeahead>
 
-      <button @click.prevent="onClickSearch"><i class="fa fa-search" /></button>
+        <button @click.prevent="onClickSearch"><i class="fa fa-search" /></button>
 
-      <ListenButton
-        @on-query="(val: string) => { q = val; showListenTip = false; }"
-        @on-started="showListenTip = true"
-      />
-    </fieldset>
+        <ListenButton
+          @on-query="(val: string) => { q = val; showListenTip = false; }"
+          @on-started="showListenTip = true"
+        />
+      </fieldset>
 
-    <section class="output" ref="outputEl">
-      <label v-if="loading">Searching...</label>
-      <label v-else-if="showListenTip">
-        Say words to search. Try also: "stop listening", "clear search",
-        or spelling out a word
-      </label>
-      <label v-else-if="!q">Top {{ counts.rhyme }} most rhymed words</label>
-      <label v-else-if="q">{{ label }}</label>
+      <section class="output" ref="outputEl">
+        <label v-if="loading">Searching...</label>
+        <label v-else-if="showListenTip">
+          Say words to search. Try also: "stop listening", "clear search",
+          or spelling out a word
+        </label>
+        <label v-else-if="!q">Top {{ counts.rhyme }} most rhymed words</label>
+        <label v-else-if="q">{{ label }}</label>
 
-      <ul v-if="rhymes && !loading">
-        <li v-for="r of rhymes" :key="r.text" :class="`hit ${r.type}`">
-          <a @click="() => onLink(r.text)">{{ formatText(r.text) }}</a>
-          <span v-if="!!r.frequency && r.type === 'rhyme'" class="freq"> ({{ r.frequency }}) </span>
-        </li>
-      </ul>
-    </section>
-  </main>
+        <ul v-if="rhymes && !loading">
+          <li v-for="r of rhymes" :key="r.text" :class="`hit ${r.type}`">
+            <a @click="() => onLink(r.text)">{{ formatText(r.text) }}</a>
+            <span v-if="!!r.frequency && r.type === 'rhyme'" class="freq"> ({{ r.frequency }}) </span>
+          </li>
+        </ul>
+      </section>
+    </main>
 
-  <footer>
-    SongRhymes by
-    <a target="_blank" rel="noopener noreferer" href="https://linkedin.com/in/david-kellerman">&nbsp;David Kellerman</a>
-    <div class="links">
-      &nbsp;&mdash;
-      <a target="_blank" rel="noopener noreferrer" href="https://github.com/dkellerman/songisms">&nbsp;Source code</a>
-      &nbsp;&#183;
-      <a target="_blank" rel="noopener noreferrer" href="https://bipium.com">&nbsp;Metronome</a>
-      &nbsp;&#183;
-      <a target="_blank" rel="noopener noreferrer" href="https://open.spotify.com/artist/2fxGUIL1BUCzWwKqP1ykUi">&nbsp;Music</a>
-    </div>
-  </footer>
+    <footer>
+      SongRhymes by
+      <a target="_blank" rel="noopener noreferer" href="https://linkedin.com/in/david-kellerman">&nbsp;David Kellerman</a>
+      <div class="links">
+        &nbsp;&mdash;
+        <a target="_blank" rel="noopener noreferrer" href="https://github.com/dkellerman/songisms">&nbsp;Source code</a>
+        &nbsp;&#183;
+        <a target="_blank" rel="noopener noreferrer" href="https://bipium.com">&nbsp;Metronome</a>
+        &nbsp;&#183;
+        <a target="_blank" rel="noopener noreferrer" href="https://open.spotify.com/artist/2fxGUIL1BUCzWwKqP1ykUi">&nbsp;Music</a>
+      </div>
+    </footer>
   </div>
 </template>
 
