@@ -3,9 +3,12 @@ import { debounce } from 'lodash-es';
 import type { Rhyme, CompletionsResponse, RhymesResponse } from './types';
 import ListenButton from './ListenButton.vue';
 
-const { public: { apiBaseUrl } } = useRuntimeConfig();
 const route = useRoute();
 const router = useRouter();
+const rtConfig = useRuntimeConfig();
+const apiBaseUrl = (rtConfig.public.apiBaseUrl ?? 'http://localhost:8000')
+  // workaround node 18 ofetch bug for SSR by using 127.0.0.1 for dev
+  .replaceAll('localhost', '127.0.0.1');
 
 const q = ref((route.query.q ?? '') as string);
 const completionsQuery = ref('');
