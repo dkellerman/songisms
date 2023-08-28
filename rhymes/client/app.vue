@@ -57,6 +57,7 @@ watch([q], () => {
   track('engagement', 'search', q.value);
   const query = {} as any;
   if (q.value) query.q = q.value;
+  window.scrollTo(0, 0);
   router.push({ query });
 });
 
