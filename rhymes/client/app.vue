@@ -88,7 +88,11 @@ function onLink(val: string) {
 
 function onFocus(e: FocusEvent) {
   window.oncontextmenu = () => false;
-  (document.getElementById(searchInput.value.$data.inputId) as any).select();
+  const id = searchInput.value?.$el?.id;
+  const el = document.getElementById(id);
+  if (!el) return;
+  const inpEl = el?.querySelector('input');
+  inpEl?.select?.();
 }
 
 function track(category: string, action: string, label: string) {
