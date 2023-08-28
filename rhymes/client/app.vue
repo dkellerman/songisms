@@ -117,7 +117,7 @@ function formatText(text: string) {
   <div id="app">
     <Head>
       <Title v-if="q">Rhymes for {{ q }} | Song Rhymes</Title>
-      <Title v-else>Song Rhymes | Top rhymes</Title>
+      <Title v-else>Top 100 rhymes | Song Rhymes</Title>
     </Head>
 
     <nav>
