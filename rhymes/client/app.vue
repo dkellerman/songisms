@@ -115,6 +115,11 @@ function formatText(text: string) {
 
 <template>
   <div id="app">
+    <Head>
+      <Title v-if="q">Rhymes for {{ q }} | Song Rhymes</Title>
+      <Title v-else>Song Rhymes | Top rhymes</Title>
+    </Head>
+
     <nav>
       <h1><router-link to="/">Song Rhymes</router-link></h1>
     </nav>
@@ -169,7 +174,7 @@ function formatText(text: string) {
     </main>
 
     <footer>
-      SongRhymes by
+      Song Rhymes by
       <a target="_blank" rel="noopener noreferer" href="https://linkedin.com/in/david-kellerman">&nbsp;David Kellerman</a>
       <div class="links">
         &nbsp;&mdash;
