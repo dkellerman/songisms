@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'songisms.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 # db info for dev only, django-on-heroku replaces this with DATABASE_URL in production
-SISM_DATABASE_URL = None # os.environ.get('SISM_DATABASE_URL', None)
+SISM_DATABASE_URL = os.environ.get('SISM_DATABASE_URL', None)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',

@@ -3,18 +3,16 @@ import { debounce } from 'lodash-es/';
 import type { Rhyme, CompletionsResponse, RhymesResponse } from './types';
 import ListenButton from './ListenButton.vue';
 
-const completionsURL = 'http://localhost:8000/rhymes/completions/';
-const rhymesURL = 'http://localhost:8000/rhymes/';
-
+const { public: { apiBaseUrl } } = useRuntimeConfig();
 const route = useRoute();
 const router = useRouter();
-const q = ref('');
+const q = ref((route.query.q ?? '') as string);
 const completionsQuery = ref('');
 const searchInput = ref();
 const showListenTip = ref(false);
 
 // completions
-const { data: completionsData } = await useFetch<CompletionsResponse>(completionsURL, {
+const { data: completionsData } = await useFetch<CompletionsResponse>(`${apiBaseUrl}/rhymes/completions/`, {
   query: { q: completionsQuery, limit: 20 },
   immediate: false,
 });
@@ -22,12 +20,13 @@ const completions = computed<string[]>(() => completionsData.value?.hits.map(h =
 const fetchCompletions = debounce((q: string) => completionsQuery.value = q, 200);
 
 // rhymes
-const { data: rhymesData, pending: loading } = await useFetch<RhymesResponse>(rhymesURL, {
+const { data: rhymesData, pending: loading } = await useFetch<RhymesResponse>(`${apiBaseUrl}/rhymes/`, {
   query: { q, limit: 100 },
   immediate: true,
 });
 const rhymes = computed<Rhyme[]>(() => rhymesData.value?.hits ?? []);
 
+// computed
 const counts = computed(() => ({
   rhyme: rhymes.value?.filter(r => r.type === 'rhyme').length || 0,
   l2: rhymes.value?.filter(r => r.type === 'rhyme-l2').length || 0,
@@ -58,13 +57,9 @@ watch([q], () => {
   router.push({ query });
 });
 
-watch(
-  () => [route?.query.q],
-  () => {
-    q.value = (route?.query.q ?? '') as string;
-  },
-);
-
+watch(() => [route?.query.q], () => {
+  q.value = (route?.query.q ?? '') as string;
+});
 
 function onSelectItem(val: string) {
   q.value = val;

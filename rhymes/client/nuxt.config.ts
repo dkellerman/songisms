@@ -4,6 +4,11 @@ export default defineNuxtConfig({
   ssr: false,
   modules: [ '@pinia/nuxt' ],
   nitro: { preset: 'vercel'},
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.SISM_RHYMES_API_BASE_URL,
+    },
+  },
   routeRules: {},
   app: {
     head: {
