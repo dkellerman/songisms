@@ -51,7 +51,6 @@ watchEffect(() => {
 });
 
 watch([q], () => {
-  abortFetch?.();
   track('engagement', 'search', q.value);
   const query = {} as any;
   if (q.value) query.q = q.value;
@@ -109,8 +108,6 @@ function ct2str(ct: number, singularWord: string, pluralWord?: string) {
 function formatText(text: string) {
   return text?.replace(/\bi\b/g, 'I');
 }
-
-function abortFetch() {} // TODO?
 </script>
 
 <template>
