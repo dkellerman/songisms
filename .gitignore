@@ -2,6 +2,8 @@
 
 .idea
 .ipython
+.vercel
+.nuxt
 __pycache__
 staticfiles
 TODO.md
@@ -17,7 +19,6 @@ TODO.md
 
 **/client/**/dist
 **/client/**/dist
-.nuxt
 
 scripts/**/*
 !scripts/load_data.py
@@ -50,6 +51,3 @@ yarn-error.log*
 # local env files
 .env*.local
 
-# vercel
-.vercel
-.next
