@@ -17,6 +17,7 @@ data/fixtures/*
 
 **/client/**/dist
 **/client/**/dist
+.nuxt
 
 scripts/**/*
 !scripts/load_data.py
