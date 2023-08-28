@@ -1,138 +1,79 @@
-// nav {
-//   padding: 10px 0 10px 20px;
-//   background: aliceblue;
-//   display: flex;
-//   align-items: center;
+html, body {
+  padding: 0;
+  margin: 0;
+}
 
-//   h1 {
-//     flex: 1;
-//     margin: 0;
-//     font-size: 36px;
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
-//     a,
-//     a:visited {
-//       border: 0;
-//     }
-//   }
+nav {
+  padding: 10px 0 10px 20px;
+  background: aliceblue;
+  display: flex;
+  align-items: center;
 
-//   .links {
-//     white-space: nowrap;
+  h1 {
+    flex: 1;
+    margin: 0;
+    font-size: 30px;
 
-//     a,
-//     button {
-//       margin: 0 0 0 10px;
-//       color: black;
-//       font-size: medium;
-//     }
-//   }
-// }
+    a,
+    a:visited {
+      border: 0;
+      color: black;
+    }
+  }
+}
 
-// main {
-//   padding: 0 20px;
+main {
+  flex: 1;
+  padding: 20px;
 
-//   h2 {
-//     font-size: 32px;
-//     margin-bottom: 10px;
-//   }
+  fieldset {
+    border: 0;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 0 0 5px 0;
+    padding-right: 5px;
 
-//   fieldset {
-//     border: 0;
-//     padding: 0;
-//   }
+    button {
+      border-radius: 0;
+      padding: 0 25px;
+      border: 0;
 
-//   nav[aria-label='breadcrumbs'] {
-//     padding: 20px 0 10px 0;
-//     background: initial;
-//   }
+      &.listen {
+        margin-left: 5px;
+        background: green;
+        &.is-listening {
+          background: red;
+        }
+      }
+    }
+  }
 
-//   a,
-//   a:visited {
-//     color: blue;
-//     border: 0;
-//   }
-
-//   div[role='alert'] {
-//     background: pink;
-//     color: darkred;
-//     border: red;
-//     padding: 8px;
-//     margin: 10px 0;
-//     width: fit-content;
-//   }
-// }
-
-// button.compact {
-//   padding: 10px;
-//   font-size: medium;
-// }
-
-// button.more {
-//   margin-top: 15px;
-//   padding: 10px;
-//   font-size: medium;
-// }
-
-// ul.none {
-//   list-style: none;
-//   padding-left: 0;
-//   li {
-//     text-indent: 0;
-//     &:before {
-//       display: none;
-//     }
-//   }
-// }
-
-// section {
-//   margin-bottom: 30px;
-// }
-
-// footer {
-//   padding: 10px 0 10px 20px;
-//   background: aliceblue;
-//   display: flex;
-//   align-items: center;
-//   border: 1px solid #eee;
-// }
+  a,
+  a:visited {
+    color: blue;
+    border: 0;
+  }
+}
 
 
-// // ############################################################
+footer {
+  padding: 10px 0 10px 20px;
+  background: aliceblue;
+  display: flex;
+  align-items: center;
+  border: 1px solid #eee;
+}
 
-
-// html,
-// body,
-// #app {
-//   padding: 0;
-//   margin: 0;
-//   display: flex;
-//   flex-direction: column;
-//   min-height: 100vh;
-// }
-
-// nav {
-//   padding: 15px 20px 15px 20px;
-//   h1 a {
-//     color: black;
-//     font-size: 32px;
-//   }
-// }
-
-// main {
-//   padding: 20px;
-//   flex: 1;
-// }
-
-// footer {
-//   .links {
-//     display: none;
-//   }
-//   a, a:visited {
-//     color: blue;
-//   }
-// }
-
-// @media screen and (min-width: 640px) {
-//   footer .links {
-//     display: initial;
-//   }
-// }
+@media screen and (min-width: 640px) {
+  footer .links {
+    display: initial;
+  }
+}

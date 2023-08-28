@@ -160,6 +160,7 @@ fetchRhymes(q.value);
 </script>
 
 <template>
+  <div id="app">
   <nav>
     <h1><router-link to="/">Song Rhymes</router-link></h1>
   </nav>
@@ -221,7 +222,24 @@ fetchRhymes(q.value);
       <a target="_blank" rel="noopener noreferrer" href="https://open.spotify.com/artist/2fxGUIL1BUCzWwKqP1ykUi">&nbsp;Music</a>
     </div>
   </footer>
+  </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
+.simple-typeahead {
+  width: initial !important;
+  background: red !important;
+
+  input[type='text'] {
+    border-radius: 0;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 100;
+    width: 80vw;
+    min-width: 190px;
+    max-width: 610px;
+    font-size: 17px;
+  }
+}
 </style>
