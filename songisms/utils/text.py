@@ -144,13 +144,13 @@ def get_word_splits(word):
 
 
 def get_lyric_ngrams(lyrics, n_range=range(5)):
-    '''Return all possible word-based ngrams of all lengths in a given range
+    '''Return all possible word-based ngrams of all lengths in a given range.
+       Lyrics should be passed in as one big newline separated string.
     '''
     from nltk.util import ngrams as nltk_make_ngrams
 
     ngrams = []
-    lines = [tokenize_lyric(l.strip())
-             for l in lyrics.split('\n') if l.strip()]
+    lines = [tokenize_lyric(l.strip()) for l in lyrics.split('\n') if l.strip()]
     for toks in lines:
         for i in n_range:
             for ngram in nltk_make_ngrams(sequence=toks, n=i+1):

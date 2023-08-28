@@ -30,16 +30,16 @@ def get_sim_sounds():
 @lru_cache(maxsize=None)
 def get_gpt_ipa():
     with open('./data/ipa_gpt.json', 'r') as f:
-        return json.load(f)
+        return json.loads(f.read())
 
 
 @lru_cache(maxsize=None)
 def get_idioms():
     with open('./data/idioms.txt', 'r') as f:
-        return f.read()
+        return [l.strip() for l in f.read().split('\n')]
 
 
 @lru_cache(maxsize=None)
 def get_mine():
     with open('./data/mine.txt', 'r') as f:
-        return f.read()
+        return [l.strip() for l in f.read().split('\n')]
