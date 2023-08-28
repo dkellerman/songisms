@@ -2,7 +2,6 @@
 
 import os
 import time
-import pafy
 import json
 import base64
 import requests
@@ -11,25 +10,34 @@ import requests
 from urllib.parse import urlencode
 from django.core.files import File
 from django.conf import settings
-from google.cloud.storage import Client as SClient
 from google.oauth2 import service_account
 
 google_key = json.loads(base64.b64decode(os.environ['SISM_GOOGLE_CREDENTIALS']))
 storage_credentials = service_account.Credentials.from_service_account_info(google_key)
-sclient = SClient(credentials=storage_credentials)
-bucket = sclient.bucket(settings.GS_BUCKET_NAME)
+storage_client = None
+bucket = None
 
 
 def get_cloud_storage():
-    return sclient, bucket
+    global storage_client, bucket
+    from google.cloud.storage import Client as SClient
+    if storage_client is None:
+        storage_client = SClient(credentials=storage_credentials)
+        bucket = storage_client.bucket(settings.GS_BUCKET_NAME)
+    return storage_client, bucket
 
 
 def get_storage_blob(fname):
+    if bucket is None:
+        return None
     return bucket.blob(fname)
 
 
 def fetch_audio(song, convert=False):
-    '''Fetch audio for a song from youtube. Convert to mp3 if convert=True, requires ffmpeg'''
+    '''Fetch audio for a song from youtube. Convert to mp3 if convert=True, requires ffmpeg
+    '''
+    import pafy
+
     yt_id = song.youtube_id
     print("***** fetching video", song.id, song.title, yt_id)
 

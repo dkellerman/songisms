@@ -3,12 +3,7 @@
 import re
 import string
 import inflect
-import nltk
 from functools import lru_cache
-from minineedle import needle, core
-import pronouncing as pron
-from nltk.util import ngrams as nltk_make_ngrams
-from num2words import num2words
 from songisms.utils.data import get_common_words, get_custom_variants, get_sim_sounds
 
 inflector = inflect.engine()
@@ -56,6 +51,7 @@ def align_vals(val1, val2):
        Returned sequences may contain gap character classes - calling str()
        will convert them to a gap character (_)
     '''
+    from minineedle import needle, core
     aligner = needle.NeedlemanWunsch(val1, val2)
     aligner.gap_character = '_'
     aligner.align()
@@ -66,7 +62,11 @@ def align_vals(val1, val2):
 
 @lru_cache(maxsize=500)
 def make_variants(gram):
-    '''Make a list of variants of a word or phrase for searching'''
+    '''Make a list of variants of a word or phrase for searching
+    '''
+    import pronouncing as pron
+    from num2words import num2words
+
     words = gram.split()
 
     if ' ' in gram:
@@ -144,7 +144,10 @@ def get_word_splits(word):
 
 
 def get_lyric_ngrams(lyrics, n_range=range(5)):
-    '''Return all possible word-based ngrams of all lengths in a given range'''
+    '''Return all possible word-based ngrams of all lengths in a given range
+    '''
+    from nltk.util import ngrams as nltk_make_ngrams
+
     ngrams = []
     lines = [tokenize_lyric(l.strip())
              for l in lyrics.split('\n') if l.strip()]
@@ -199,6 +202,8 @@ def make_homophones(w, ignore_stress=True, multi=True):
 def get_mscore(text):
     '''Meaning score is a custom metric for how meaningful a lyric is based on part-of-speech.
     '''
+    import nltk
+
     toks = tokenize_lyric(text)
     pos = nltk.pos_tag(toks)
     mscore = [POS_TO_MSCORE.get(tok[1], 0) for tok in pos if tok[1]]

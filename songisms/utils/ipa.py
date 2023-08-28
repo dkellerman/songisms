@@ -1,16 +1,14 @@
 '''IPA and other pronounciation-related utilities'''
 
 import re
-import g2p
-import eng_to_ipa
 from functools import lru_cache
-from panphon import featuretable
 import pronouncing as pron
+from panphon import featuretable
 from songisms.utils.text import remove_non_lyric_punctuation, align_vals
 from songisms.utils.data import get_gpt_ipa
 
 ftable = featuretable.FeatureTable()
-transducer = g2p.make_g2p('eng', 'eng-ipa')
+transducer = None
 
 
 def normalize_ipa(ipa):
@@ -23,7 +21,7 @@ def normalize_ipa(ipa):
 def get_ipa_words(text):
     '''Translate to IPA, returns list of words
     '''
-    global transducer
+    import eng_to_ipa
     words = eng_to_ipa.convert(text).split()
     gpt_ipa = get_gpt_ipa()
     ipa = []
@@ -58,6 +56,11 @@ def remove_stresses(text):
 def get_g2p_word(w):
     '''Gets a IPA translation via g2p library (based on sounds, not lookup)
     '''
+    import g2p
+    global transducer
+    if transducer is None:
+        transducer = g2p.make_g2p('eng', 'eng-ipa')
+
     if w[-1] == "'":
         return re.sub(r'ŋ$', 'n', transducer(w[:-1] + 'g').output_string)
     return transducer(w).output_string
@@ -66,7 +69,6 @@ def get_g2p_word(w):
 def get_ipa_features(ipa_letter):
     '''Get feature table for IPA character
     '''
-    global ftable
     f = ftable.fts(ipa_letter)
     return f
 
@@ -105,7 +107,6 @@ def get_ipa_tail(text, stresses=False):
 def get_vowel_vector(text, max_len=100):
     '''DB comparison vector for vowels in a word
     '''
-    global ftable
     ipa = get_ipa_tail(text)
     vec = []
     for c in ipa:

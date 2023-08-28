@@ -1,12 +1,13 @@
 '''GPT queries'''
 
 import json
-import openai
 
 
 def gpt_json_query(system_message, user_message, model="gpt-3.5-turbo", verbose=False):
     '''Generic GPT to json query
     '''
+    import openai
+
     if verbose:
         print(user_message)
 

@@ -2,12 +2,12 @@
 
 import json
 from functools import lru_cache
-from nltk import FreqDist
-from nltk.corpus import brown
 
 
 @lru_cache(maxsize=None)
 def get_common_words(n=700):
+    from nltk.corpus import brown
+    from nltk import FreqDist
     fd = FreqDist(i.lower() for i in brown.words())
     return dict(fd.most_common()[:n])
 

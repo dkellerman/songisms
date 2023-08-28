@@ -1,6 +1,5 @@
 '''GraphQL utilities'''
 
-import graphene
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
@@ -24,6 +23,7 @@ def get_paginator(qs, page_size, page, paginated_type, **kwargs):
 
 
 def GraphenePaginatedType(id, T):
+    import graphene
     return type(id, (graphene.ObjectType,), dict(
         items=graphene.List(T),
         page=graphene.Int(),
