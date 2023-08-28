@@ -42,7 +42,6 @@ if (speech?.recognition) {
       speech.recognition!.start();
     } else {
       speech.stop();
-      console.log("endING");
       if (onend) onend.call(speech.recognition!, event);
     }
   };
