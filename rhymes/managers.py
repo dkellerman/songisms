@@ -23,7 +23,7 @@ class RhymeManager(BaseManager):
             if qs:
                 return qs
 
-        from songs.models import NGram
+        from rhymes.models import NGram
         qs = NGram.objects.all()
         if q:
             starts_with, ends_with = q.split('*')
@@ -185,7 +185,8 @@ class NGramManager(BaseManager):
             qs = NGram.objects.filter(text__istartswith=q)
             qs = qs.annotate(rhyme_ct=models.Count('rhymes')).filter(rhyme_ct__gt=0)
             qs = qs.order_by('n', '-rhyme_ct')[:ct]
-            cache.set(cache_key, qs)
+            if settings.USE_QUERY_CACHE:
+                cache.set(cache_key, qs)
         return qs
 
     def by_query(self, q):

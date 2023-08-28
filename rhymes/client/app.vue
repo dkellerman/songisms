@@ -2,36 +2,33 @@
 import { debounce } from 'lodash-es/';
 import { useRoute, useRouter } from 'vue-router';
 import { useSpeechRecognition } from '@vueuse/core';
-import { type Rhyme, type Completion, CompletionsResponse, RhymesResponse } from './types';
-
-const COMPLETIONS_DEBOUNCE = 200;
-const completionsURL = 'http://localhost:8000/rhymes/completions/';
-const rhymesURL = 'http://localhost:8000/rhymes/';
+import { type Rhyme, CompletionsResponse, RhymesResponse } from './types';
 
 const route = useRoute();
 const router = useRouter();
 const q = ref('');
 
+// completions
+const COMPLETIONS_DEBOUNCE = 200;
+const completionsURL = 'http://localhost:8000/rhymes/completions/';
 const completionsQuery = ref('');
 const { data: completionsData } = await useFetch<CompletionsResponse>(completionsURL, {
   query: { q: completionsQuery },
   immediate: false,
 });
 const completions = computed<string[]>(() => completionsData.value?.hits.map(h => h.text) ?? []);
-
-async function fetchCompletions(q: string) {
-  completionsQuery.value = q;
-}
+async function fetchCompletions(q: string) { completionsQuery.value = q; }
 const debouncedFetchCompletions = debounce(fetchCompletions, COMPLETIONS_DEBOUNCE);
 
+// rhymes
+const rhymesURL = 'http://localhost:8000/rhymes/';
 const { data: rhymesData, pending: loading } = await useFetch<RhymesResponse>(rhymesURL, {
   query: { q },
-  immediate: false,
+  immediate: true,
 });
-
 const rhymes = computed<Rhyme[]>(() => rhymesData.value?.hits ?? []);
+// function fetchRhymes(q: string) {}
 
-function fetchRhymes(q: string) {}
 function abortFetch() {}
 
 const searchInput = ref();
@@ -82,7 +79,7 @@ watch([q], () => {
   const query = {} as any;
   if (q.value) query.q = q.value;
   router.push({ query });
-  fetchRhymes(q.value);
+  // fetchRhymes(q.value);
 });
 
 watch(
@@ -166,7 +163,7 @@ function formatText(text: string) {
   return text?.replace(/\bi\b/g, 'I');
 }
 
-fetchRhymes(q.value);
+// fetchRhymes(q.value);
 </script>
 
 <template>
