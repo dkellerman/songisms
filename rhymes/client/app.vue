@@ -21,7 +21,7 @@ const completions = computed<string[]>(() => completionsData.value?.hits.map(h =
 const fetchCompletions = debounce((q: string) => completionsQuery.value = q, 200);
 
 // rhymes fetch
-const { data: rhymesData, pending: loading } = await useFetch<RhymesResponse>(`${apiBaseUrl}/rhymes/`, {
+const { data: rhymesData, pending } = await useFetch<RhymesResponse>(`${apiBaseUrl}/rhymes/`, {
   query: { q, limit: 100 },
   immediate: true,
 });
@@ -135,15 +135,20 @@ function formatText(text: string) {
 
         <button class="search" @click.prevent="onClickSearch"><i class="fa fa-search" /></button>
 
-        <ListenButton
-          @on-query="(val: string) => { q = val; showListenTip = false; }"
-          @on-started="showListenTip = true"
-          @on-stopped="showListenTip = false"
-        />
+        <ClientOnly>
+          <ListenButton
+            @on-query="(val: string) => { q = val; showListenTip = false; }"
+            @on-started="showListenTip = true"
+            @on-stopped="showListenTip = false"
+          />
+        </ClientOnly>
       </fieldset>
 
       <section class="output" ref="outputEl">
-        <label v-if="loading">Searching...</label>
+        <label v-if="pending">
+          <i class="fa fa-spinner" />
+          Searching...
+        </label>
         <label v-else-if="showListenTip">
           <strong>Say words to search. Try also: "stop listening", "clear search",
           or spelling out a word</strong>
@@ -151,7 +156,7 @@ function formatText(text: string) {
         <label v-else-if="!q">Top {{ counts.rhyme }} most rhymed words</label>
         <label v-else-if="q">{{ label }}</label>
 
-        <ul v-if="rhymes && !loading">
+        <ul v-if="rhymes">
           <li v-for="r of rhymes" :key="r.text" :class="`hit ${r.type}`">
             <a @click="() => onLink(r.text)">{{ formatText(r.text) }}</a>
             <span v-if="!!r.frequency && r.type === 'rhyme'" class="freq"> ({{ r.frequency }}) </span>
