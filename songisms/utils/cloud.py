@@ -7,6 +7,8 @@ import json
 import base64
 import requests
 import shutil
+import requests
+from urllib.parse import urlencode
 from django.core.files import File
 from django.conf import settings
 from google.cloud.storage import Client as SClient
@@ -191,3 +193,20 @@ def fetch_workflow(workflow_id, song):
             print("[FINISHED]", a.attachment_type, a.file.url)
 
     return attachments
+
+
+def fetch_datamuse_rhymes(key):
+    query = urlencode(dict(rel_rhy=key, max=50))
+    query2 = urlencode(dict(rel_nry=key, max=50))
+    vals = []
+    try:
+        vals += requests.get(f'https://api.datamuse.com/words?{query}').json()
+    except:
+        print('error retrieving datamuse RHY for', key)
+    try:
+        vals += requests.get(f'https://api.datamuse.com/words?{query2}').json()
+    except:
+        print('error retrieving datamuse NRY for', key)
+    return vals
+
+

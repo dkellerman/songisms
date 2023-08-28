@@ -3,16 +3,13 @@
 import argparse
 import itertools
 import gc
-import requests
-from urllib.parse import urlencode
 from itertools import product
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from nltk import FreqDist
 from rhymes.models import NGram, Rhyme, SongNGram, Cache
 from songisms.utils import (get_vowel_vector, get_lyric_ngrams, get_rhyme_pairs, get_common_words,
-                            get_mscore, get_ipa_text, get_stresses_vector)
-from django.core.cache import cache
+                            get_mscore, get_ipa_text, get_stresses_vector, fetch_datamuse_rhymes)
 from tqdm import tqdm
 
 
@@ -20,8 +17,6 @@ class Command(BaseCommand):
     help = 'Process ngrams and rhymes'
 
     def add_arguments(self, parser):
-        parser.add_argument('--caches', '-c', action=argparse.BooleanOptionalAction)
-        parser.add_argument('--caches-only', '-C', action=argparse.BooleanOptionalAction)
         parser.add_argument('--dry-run', '-D', action=argparse.BooleanOptionalAction)
         parser.add_argument('--batch-size', '-b', type=int, default=1000)
 
@@ -32,13 +27,8 @@ class Command(BaseCommand):
             print('songs app not installed')
             return
 
-        batch_size, dry_run, do_caches = [options[k] for k in ('batch_size', 'dry_run', 'caches')]
+        batch_size, dry_run = [options[k] for k in ('batch_size', 'dry_run',)]
         dry_run = options['dry_run']
-        do_caches = options['caches']
-
-        if options['caches_only']:
-            reset_caches()
-            return
 
         songs = Song.objects.filter(is_new=False).exclude(lyrics=None)
         ngrams = dict()
@@ -218,54 +208,12 @@ class Command(BaseCommand):
             print('creating song_ngrams', len(sn_objs))
             SongNGram.objects.bulk_create(sn_objs, batch_size=batch_size)
 
-            if do_caches:
-                reset_caches()
-
             print('finishing transaction')
         print('done')
 
 
-def reset_caches():
-    print('clearing caches')
-    cc = cache._cache.get_client()
-    keys = cc.keys('sism:*:completions_*') + \
-           cc.keys('sism:*:query_*') + \
-           cc.keys('sism:*:top_*')
-    for key in keys:
-        key = str(key).split(':')[-1][:-1]
-        cache.delete(key)
-
-    topn = 100
-    qsize = 100
-    sug_size = 20
-
-    top = Rhyme.objects.top_rhymes(0, topn)
-
-    for ngram in tqdm(top, desc='queries cache'):
-        val = ngram['ngram']
-        Rhyme.objects.query(q=val, limit=qsize)
-        for i in range(0, len(val) + 1):
-            qsug = val[:i]
-            NGram.objects.completions(qsug, sug_size)
-
-
 def vector_getter(key):
     return get_vowel_vector(key)
-
-
-def fetch_datamuse_rhymes(key):
-    query = urlencode(dict(rel_rhy=key, max=50))
-    query2 = urlencode(dict(rel_nry=key, max=50))
-    vals = []
-    try:
-        vals += requests.get(f'https://api.datamuse.com/words?{query}').json()
-    except:
-        print('error retrieving datamuse RHY for', key)
-    try:
-        vals += requests.get(f'https://api.datamuse.com/words?{query2}').json()
-    except:
-        print('error retrieving datamuse NRY for', key)
-    return vals
 
 
 def is_repeated(w):
