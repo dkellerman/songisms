@@ -1,55 +1,32 @@
 <script setup lang="ts">
 import { debounce } from 'lodash-es/';
-import { useRoute, useRouter } from 'vue-router';
-import { useSpeechRecognition } from '@vueuse/core';
-import { type Rhyme, CompletionsResponse, RhymesResponse } from './types';
+import type { Rhyme, CompletionsResponse, RhymesResponse } from './types';
+import ListenButton from './ListenButton.vue';
+
+const completionsURL = 'http://localhost:8000/rhymes/completions/';
+const rhymesURL = 'http://localhost:8000/rhymes/';
 
 const route = useRoute();
 const router = useRouter();
 const q = ref('');
+const completionsQuery = ref('');
+const searchInput = ref();
+const showListenTip = ref(false);
 
 // completions
-const COMPLETIONS_DEBOUNCE = 200;
-const completionsURL = 'http://localhost:8000/rhymes/completions/';
-const completionsQuery = ref('');
 const { data: completionsData } = await useFetch<CompletionsResponse>(completionsURL, {
-  query: { q: completionsQuery },
+  query: { q: completionsQuery, limit: 100 },
   immediate: false,
 });
 const completions = computed<string[]>(() => completionsData.value?.hits.map(h => h.text) ?? []);
-async function fetchCompletions(q: string) { completionsQuery.value = q; }
-const debouncedFetchCompletions = debounce(fetchCompletions, COMPLETIONS_DEBOUNCE);
+const fetchCompletions = debounce((q: string) => completionsQuery.value = q, 200);
 
 // rhymes
-const rhymesURL = 'http://localhost:8000/rhymes/';
 const { data: rhymesData, pending: loading } = await useFetch<RhymesResponse>(rhymesURL, {
   query: { q },
   immediate: true,
 });
 const rhymes = computed<Rhyme[]>(() => rhymesData.value?.hits ?? []);
-// function fetchRhymes(q: string) {}
-
-function abortFetch() {}
-
-const searchInput = ref();
-const showListenTip = ref(false);
-const speech = useSpeechRecognition({
-  lang: 'en-US',
-  interimResults: false,
-  continuous: true,
-});
-const { isListening, isSupported: listenSupported } = speech;
-
-// override timeout
-if (speech?.recognition) {
-  speech.recognition.onend = () => {
-    if (isListening.value) {
-      speech.recognition!.start();
-    } else {
-      speech.stop();
-    }
-  };
-}
 
 const counts = computed(() => ({
   rhyme: rhymes.value?.filter(r => r.type === 'rhyme').length || 0,
@@ -79,7 +56,6 @@ watch([q], () => {
   const query = {} as any;
   if (q.value) query.q = q.value;
   router.push({ query });
-  // fetchRhymes(q.value);
 });
 
 watch(
@@ -89,31 +65,6 @@ watch(
   },
 );
 
-watch(speech.result, onSpeechResult);
-
-function onSpeechResult() {
-  let val = speech.result.value?.toLowerCase().trim();
-  const words = val.split(' ');
-
-  if (speech.isFinal) {
-    showListenTip.value = false;
-    if (!val) return;
-    if (val === 'stop listening') {
-      speech.toggle();
-      return;
-    } else if (val === 'clear search') {
-      val = '';
-    } else if (words.length > 2 && words.every(w => w.length === 1)) {
-      val = words.join('');
-    }
-
-    q.value = val;
-    if (isListening.value) speech.recognition!.stop();
-    setTimeout(() => {
-      if (!isListening.value) speech.recognition!.start();
-    }, 100);
-  }
-}
 
 function onSelectItem(val: string) {
   q.value = val;
@@ -130,7 +81,7 @@ function onClickSearch(e: MouseEvent) {
 
 function onInput(e: any) {
   searchInput.value.$data.currentSelectionIndex = -1;
-  if (e.input.trim()) debouncedFetchCompletions(e.input);
+  if (e.input.trim()) fetchCompletions(e.input);
 }
 
 function onLink(val: string) {
@@ -163,7 +114,7 @@ function formatText(text: string) {
   return text?.replace(/\bi\b/g, 'I');
 }
 
-// fetchRhymes(q.value);
+function abortFetch() {} // TODO?
 </script>
 
 <template>
@@ -191,12 +142,10 @@ function formatText(text: string) {
 
       <button @click.prevent="onClickSearch"><i class="fa fa-search" /></button>
 
-      <button v-if="listenSupported" @click.prevent="() => {
-        speech.toggle();
-        showListenTip = isListening;
-      }" :class="{ listen: true, 'is-listening': isListening }">
-        <i :class="{ fa: true, 'fa-lg': true, 'fa-microphone': !isListening, 'fa-stop': isListening }" />
-      </button>
+      <ListenButton
+        @on-query="(val: string) => { q = val; showListenTip = false; }"
+        @on-started="showListenTip = true"
+      />
     </fieldset>
 
     <section class="output" ref="outputEl">
@@ -235,7 +184,6 @@ function formatText(text: string) {
 <style lang="scss">
 .simple-typeahead {
   width: initial !important;
-  background: red !important;
 
   input[type='text'] {
     border-radius: 0;

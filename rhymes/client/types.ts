@@ -8,21 +8,11 @@ export interface Completion {
   text: string;
 };
 
-export interface RhymesRequest {
-  q: string;
-  limit?: number;
-}
-
 export interface RhymesResponse {
   isTop: boolean;
   hits: Rhyme[];
 }
 
-
-export interface CompletionsRequest {
-  q: string;
-  limit?: number;
-}
 
 export interface CompletionsResponse {
   hits: Completion[];

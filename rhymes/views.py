@@ -6,7 +6,7 @@ from rhymes.models import Rhyme, NGram
 @require_GET
 def rhymes(request):
     q = request.GET.get("q", "")
-    limit = request.GET.get("limit", 10)
+    limit = int(request.GET.get("limit", 10))
     hits = Rhyme.objects.query(q, limit)
 
     return JsonResponse({
@@ -25,7 +25,7 @@ def rhymes(request):
 @require_GET
 def completions(request):
     q = request.GET.get("q", "")
-    limit = request.GET.get("limit", 10)
+    limit = int(request.GET.get("limit", 10))
     hits = NGram.objects.completions(q, limit)
 
     return JsonResponse({
