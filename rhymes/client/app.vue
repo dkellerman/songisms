@@ -138,6 +138,7 @@ function formatText(text: string) {
         <ListenButton
           @on-query="(val: string) => { q = val; showListenTip = false; }"
           @on-started="showListenTip = true"
+          @on-stopped="showListenTip = false"
         />
       </fieldset>
 
