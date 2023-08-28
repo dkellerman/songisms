@@ -45,7 +45,14 @@ main {
       border-radius: 0;
       padding: 0 25px;
       border: 0;
-
+      &:hover, &:focus, &:active {
+        opacity: .8;
+      }
+      &.search {
+        &, &:focus {
+          background: #9b4dca;
+        }
+      }
       &.listen {
         margin-left: 4px;
         background: green;

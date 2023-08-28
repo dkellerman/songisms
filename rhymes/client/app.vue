@@ -133,7 +133,7 @@ function formatText(text: string) {
           </template>
         </vue3-simple-typeahead>
 
-        <button @click.prevent="onClickSearch"><i class="fa fa-search" /></button>
+        <button class="search" @click.prevent="onClickSearch"><i class="fa fa-search" /></button>
 
         <ListenButton
           @on-query="(val: string) => { q = val; showListenTip = false; }"
