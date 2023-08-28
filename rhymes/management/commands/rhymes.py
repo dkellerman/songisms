@@ -236,14 +236,10 @@ def reset_caches():
         cache.delete(key)
 
     topn = 100
-    page_size = 100
     qsize = 100
     sug_size = 20
 
-    Rhyme.objects.HARD_LIMIT = topn
-    top = []
-    for pg in tqdm(range(0, int(topn / page_size)), desc='top rhymes cache'):
-        top += Rhyme.objects.top_rhymes(limit=page_size, offset=pg*page_size)
+    top = Rhyme.objects.top_rhymes(0, topn)
 
     for ngram in tqdm(top, desc='queries cache'):
         val = ngram['ngram']

@@ -14,7 +14,7 @@ class RhymeManager(BaseManager):
     HARD_LIMIT = 100
     USE_SUGGESTIONS = True
 
-    def top_rhymes(self, offset=0, limit=100, q=None):
+    def top_rhymes(self, offset, limit, q=None):
         offset = offset or 0
         cache_key = f'top_rhymes_{offset}_{offset + limit}'
 
@@ -51,7 +51,7 @@ class RhymeManager(BaseManager):
 
     def query(self, q, offset=0, limit=100):
         if not q:
-            return self.top_rhymes(offset, limit)
+            return []
 
         offset = offset or 0
         qkey = re.sub(' ', '_', q)

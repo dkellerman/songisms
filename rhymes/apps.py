@@ -12,7 +12,7 @@ class RhymesConfig(AppConfig):
         try:
             if settings.IS_PROD:
                 now = str(int(time.time()))
-                Rhyme.objects.top_rhymes()
+                Rhyme.objects.top_rhymes(0, 100)
                 Rhyme.objects.query(q=f'startup {now}')
                 NGram.objects.completions(q=f'startup {now}')
         except:

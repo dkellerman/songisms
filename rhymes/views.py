@@ -7,18 +7,26 @@ from rhymes.models import Rhyme, NGram
 def rhymes(request):
     q = request.GET.get("q", "")
     limit = int(request.GET.get("limit", 10))
-    hits = Rhyme.objects.query(q, limit)
 
+    if q:
+        hits = Rhyme.objects.query(q, 0, limit)
+        return JsonResponse({
+            "isTop": False,
+            "hits": [
+                {
+                    "text": hit['ngram'],
+                    "type": hit['type'],
+                    "frequency": hit['frequency']
+                }
+                for hit in hits
+            ]
+        })
+
+
+    hits = Rhyme.objects.top_rhymes(0, limit)
     return JsonResponse({
-        "isTop": not q,
-        "hits": [
-            {
-                "text": hit['ngram'],
-                "type": hit['type'],
-                "frequency": hit['frequency']
-            }
-            for hit in hits
-        ]
+        "isTop": True,
+        "hits": [{ "text": hit['ngram'], "type": "rhyme" } for hit in hits]
     })
 
 
@@ -29,8 +37,5 @@ def completions(request):
     hits = NGram.objects.completions(q, limit)
 
     return JsonResponse({
-        "hits": [
-            { "text": hit['ngram'] }
-            for hit in hits
-        ]
+        "hits": [{ "text": hit.text } for hit in hits]
     })

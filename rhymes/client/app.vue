@@ -15,7 +15,7 @@ const showListenTip = ref(false);
 
 // completions
 const { data: completionsData } = await useFetch<CompletionsResponse>(completionsURL, {
-  query: { q: completionsQuery, limit: 100 },
+  query: { q: completionsQuery, limit: 20 },
   immediate: false,
 });
 const completions = computed<string[]>(() => completionsData.value?.hits.map(h => h.text) ?? []);
@@ -23,7 +23,7 @@ const fetchCompletions = debounce((q: string) => completionsQuery.value = q, 200
 
 // rhymes
 const { data: rhymesData, pending: loading } = await useFetch<RhymesResponse>(rhymesURL, {
-  query: { q },
+  query: { q, limit: 100 },
   immediate: true,
 });
 const rhymes = computed<Rhyme[]>(() => rhymesData.value?.hits ?? []);
@@ -191,7 +191,7 @@ function abortFetch() {} // TODO?
     top: 0;
     background: white;
     z-index: 100;
-    width: 80vw;
+    width: 50vw;
     min-width: 190px;
     max-width: 610px;
     font-size: 17px;

@@ -47,10 +47,70 @@ main {
       border: 0;
 
       &.listen {
-        margin-left: 5px;
+        margin-left: 4px;
         background: green;
         &.is-listening {
           background: red;
+        }
+      }
+    }
+  }
+
+  .output {
+    label {
+      font-size: 14px;
+      font-weight: normal;
+      padding-left: 1px;
+    }
+
+    ul {
+      --gap: 20;
+      margin-top: 30px;
+      list-style: none;
+      padding-left: 2px;
+      display: flex;
+      flex-flow: row wrap;
+      max-width: 768px;
+      gap: var(--gap) px;
+
+      li {
+        text-indent: 0;
+        font-size: 20px;
+        margin-bottom: 12px;
+        a {
+          cursor: pointer;
+        }
+
+        &:before {
+          display: none;
+        }
+
+        &.hit {
+          &.rhyme a {
+            opacity: 1;
+            font-style: normal;
+            font-weight: bold;
+          }
+
+          &.rhyme-l2 a {
+            opacity: 0.8;
+            font-style: normal;
+            font-weight: normal;
+          }
+
+          &.suggestion a {
+            opacity: 0.7;
+            font-style: italic;
+            font-weight: normal;
+            overflow: visible;
+            padding: 3px 3px 3px 0;
+          }
+
+          .freq {
+            font-size: medium;
+            color: #666;
+            display: none;
+          }
         }
       }
     }
@@ -60,6 +120,10 @@ main {
   a:visited {
     color: blue;
     border: 0;
+    &:hover {
+      color: blue;
+      text-decoration: underline;
+    }
   }
 }
 
@@ -81,5 +145,25 @@ footer {
 @media screen and (min-width: 640px) {
   footer .links {
     display: initial;
+  }
+}
+
+@function colWidth($defaultCols) {
+  @return calc((100% - (var(--gap) * var(--cols, #{$defaultCols - 1}) * 1px)) / var(--cols, #{$defaultCols}));
+}
+
+@media screen and (max-width: 349px) {
+  ul li {
+    width: colWidth(1);
+  }
+}
+@media screen and (min-width: 350px) and (max-width: 479px) {
+  ul li {
+    width: colWidth(2);
+  }
+}
+@media screen and (min-width: 480px) {
+  ul li {
+    width: colWidth(3);
   }
 }
