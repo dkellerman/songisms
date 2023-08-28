@@ -147,8 +147,8 @@ function abortFetch() {} // TODO?
       <section class="output" ref="outputEl">
         <label v-if="loading">Searching...</label>
         <label v-else-if="showListenTip">
-          Say words to search. Try also: "stop listening", "clear search",
-          or spelling out a word
+          <strong>Say words to search. Try also: "stop listening", "clear search",
+          or spelling out a word</strong>
         </label>
         <label v-else-if="!q">Top {{ counts.rhyme }} most rhymed words</label>
         <label v-else-if="q">{{ label }}</label>
