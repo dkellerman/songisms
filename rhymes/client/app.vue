@@ -2,29 +2,39 @@
 import { debounce } from 'lodash-es/';
 import { useRoute, useRouter } from 'vue-router';
 import { useSpeechRecognition } from '@vueuse/core';
-import type { Rhyme, Completion } from './types';
+import { type Rhyme, type Completion, CompletionsResponse, RhymesResponse } from './types';
 
 const COMPLETIONS_DEBOUNCE = 200;
-
-// const { data, pending } = await useFetch('/api/rhymes', {
-//   query: { q: searchQuery },
-//   immediate: true,
-// });
-// const { rhymes, completions, loading } = storeToRefs(useRhymesStore());
-
-const completions = ref<Completion[]>([]);
-const rhymes = ref<Rhyme[]>([]);
-const loading = ref(false);
-
-function fetchRhymes(q: string) {}
-function fetchCompletions(q: string) {}
-function abortFetch() {}
+const completionsURL = 'http://localhost:8000/rhymes/completions/';
+const rhymesURL = 'http://localhost:8000/rhymes/';
 
 const route = useRoute();
 const router = useRouter();
 const q = ref('');
-const searchInput = ref();
+
+const completionsQuery = ref('');
+const { data: completionsData } = await useFetch<CompletionsResponse>(completionsURL, {
+  query: { q: completionsQuery },
+  immediate: false,
+});
+const completions = computed<string[]>(() => completionsData.value?.hits.map(h => h.text) ?? []);
+
+async function fetchCompletions(q: string) {
+  completionsQuery.value = q;
+}
 const debouncedFetchCompletions = debounce(fetchCompletions, COMPLETIONS_DEBOUNCE);
+
+const { data: rhymesData, pending: loading } = await useFetch<RhymesResponse>(rhymesURL, {
+  query: { q },
+  immediate: false,
+});
+
+const rhymes = computed<Rhyme[]>(() => rhymesData.value?.hits ?? []);
+
+function fetchRhymes(q: string) {}
+function abortFetch() {}
+
+const searchInput = ref();
 const showListenTip = ref(false);
 const speech = useSpeechRecognition({
   lang: 'en-US',

@@ -70,6 +70,12 @@ footer {
   display: flex;
   align-items: center;
   border: 1px solid #eee;
+
+  a,
+  a:visited {
+    color: blue;
+    border: 0;
+  }
 }
 
 @media screen and (min-width: 640px) {

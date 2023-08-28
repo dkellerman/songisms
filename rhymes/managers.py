@@ -85,13 +85,13 @@ class RhymeManager(BaseManager):
                 0 AS mscore,
                 n.song_count AS song_count
             FROM
-                api_ngram n
+                rhymes_ngram n
             INNER JOIN
-                api_rhyme r ON r.from_ngram_id = n.id
+                rhymes_rhyme r ON r.from_ngram_id = n.id
             INNER JOIN
-                api_ngram rfrom ON rfrom.id = r.from_ngram_id
+                rhymes_ngram rfrom ON rfrom.id = r.from_ngram_id
             INNER JOIN
-                api_ngram rto ON rto.id = r.to_ngram_id
+                rhymes_ngram rto ON rto.id = r.to_ngram_id
             WHERE
                 UPPER(n.text) = ANY(%(q)s)
                 AND NOT (UPPER(rto.text) = ANY(%(q)s))
@@ -114,7 +114,7 @@ class RhymeManager(BaseManager):
                 n.mscore AS mscore,
                 n.song_count AS song_count
             FROM
-                api_ngram n
+                rhymes_ngram n
             WHERE
                 NOT (UPPER(n.text) = ANY(%(q)s))
                 AND n.phones IS NOT NULL
