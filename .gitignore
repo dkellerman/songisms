@@ -6,8 +6,8 @@ __pycache__
 staticfiles
 TODO.md
 
-data/*
-data/fixtures/*
+**/data/*
+**/data/fixtures/*
 !data/rhymes.json
 !data/simsounds.json
 !data/variants.txt
