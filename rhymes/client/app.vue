@@ -97,6 +97,12 @@ function onFocus(e: FocusEvent) {
   inpEl?.select?.();
 }
 
+function onVoiceQuery(val: string) {
+  showListenTip.value = false;
+  partialSpeechResult.value = '';
+  q.value = val;
+}
+
 function track(category: string, action: string, label: string) {
   const gtag = (window as any).gtag;
   if (gtag) {
@@ -153,7 +159,7 @@ function formatText(text: string) {
 
         <ClientOnly>
           <ListenButton
-            @on-query="(val: string) => { q = val; showListenTip = false; partialSpeechResult = ''; }"
+            @on-query="onVoiceQuery"
             @on-partial-result="partialSpeechResult = $event"
             @on-started="showListenTip = true"
             @on-stopped="showListenTip = false"

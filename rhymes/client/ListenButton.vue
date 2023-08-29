@@ -64,9 +64,16 @@ function onSpeechResult(event: SpeechRecognitionEvent) {
       transcript.value += event.results[i][0].transcript.toLowerCase().trim();
       switch (transcript.value) {
         case 'stop listening':
+        case 'stop search':
+        case 'end search':
+        case 'stop recording':
+        case 'stop mic':
           stop();
           break;
         case 'clear search':
+        case 'reset search':
+        case 'clear query':
+        case 'top rhymes':
           transcript.value = '';
         default:
           emit('onQuery', transcript.value);
