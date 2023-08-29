@@ -48,12 +48,14 @@ const label = computed(() => {
     .join(', ');
 });
 
+// fill the search input with the query param
 watchEffect(() => {
   if (searchInput.value) {
     searchInput.value.$data.input = route?.query.q ?? '';
   }
 });
 
+// additional things to do on search
 watch([q], () => {
   track('engagement', 'search', q.value);
   const query = {} as any;
@@ -62,6 +64,7 @@ watch([q], () => {
   router.push({ query });
 });
 
+// watch for URL query param changes
 watch(() => [route?.query.q], () => {
   q.value = (route?.query.q ?? '') as string;
 });
@@ -97,14 +100,14 @@ function onFocus(e: FocusEvent) {
   inpEl?.select?.();
 }
 
-function clearListeningText() {
-  showListenTip.value = false;
-  partialSpeechResult.value = '';
-}
-
 function onVoiceQuery(val: string) {
   clearListeningText();
   q.value = val;
+}
+
+function clearListeningText() {
+  showListenTip.value = false;
+  partialSpeechResult.value = '';
 }
 
 function track(category: string, action: string, label: string) {
@@ -172,7 +175,7 @@ function formatText(text: string) {
       </fieldset>
 
       <section class="output" ref="outputEl">
-        <label v-if="showListenTip && partialSpeechResult">
+        <label v-if="partialSpeechResult">
           <i class="fa fa-spinner" />&nbsp;
           <em>{{ partialSpeechResult }}</em>
         </label>

@@ -4,13 +4,13 @@ import argparse
 import itertools
 import gc
 from itertools import product
+from tqdm import tqdm
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from nltk import FreqDist
 from rhymes.models import NGram, Rhyme, SongNGram, Cache
 from songisms.utils import (get_vowel_vector, get_lyric_ngrams, get_rhyme_pairs, get_common_words,
                             get_mscore, get_ipa_text, get_stresses_vector, fetch_datamuse_rhymes)
-from tqdm import tqdm
 
 
 class Command(BaseCommand):
@@ -21,24 +21,24 @@ class Command(BaseCommand):
         parser.add_argument('--batch-size', '-b', type=int, default=1000)
 
     def handle(self, *args, **options):
+        batch_size, dry_run = [options[k] for k in ('batch_size', 'dry_run',)]
+
         try:
             from songs.models import Song  # songs app needs to be in INSTALLED_APPS
         except:
             print('songs app not installed')
             return
 
-        batch_size, dry_run = [options[k] for k in ('batch_size', 'dry_run',)]
-        dry_run = options['dry_run']
-
-        songs = Song.objects.filter(is_new=False).exclude(lyrics=None)
         ngrams = dict()
         rhymes = dict()
         song_ngrams = dict()
-
         vector_cache, _ = Cache.objects.get_or_create(key='ngram_vector')
         datamuse_cache, _ = Cache.objects.get_or_create(key='datamuse')
 
-        for idx, song in enumerate(tqdm(songs, desc='lyric ngrams')):
+        # loop through all songs with lyrics
+        songs = Song.objects.filter(is_new=False).exclude(lyrics=None)
+
+        for song in tqdm(songs, desc='lyric ngrams'):
             # lyric ngrams
             texts = get_lyric_ngrams(song.lyrics, range(5))
             for text, n in texts:
@@ -125,7 +125,7 @@ class Command(BaseCommand):
 
         # get feature vectors
         for ngram in tqdm(ngrams.values(), desc='ngram vectors'):
-            ngram['phones'] = vector_cache.get(ngram['text'], vector_getter) or None
+            ngram['phones'] = vector_cache.get(ngram['text'], get_vowel_vector) or None
 
         # get meaning scores
         for ngram in tqdm(ngrams.values(), desc='ngram mscores'):
@@ -156,7 +156,7 @@ class Command(BaseCommand):
 
         # now calculate various ngram percentages
         # * pct = ngram count as percentage of all ngram occurrences (with same n)
-        # * adj_pct = odds of a multiword phrase appearing above chance
+        # * adj_pct = percentage of a multiword phrase appearing above chance
         # * song_pct = percentage of songs with this ngram
         # * title_pct = percentage of song titles this ngram appears in
         for ngram in tqdm(ngrams.values(), desc='ngrams pct'):
@@ -188,14 +188,12 @@ class Command(BaseCommand):
         for c in tqdm([datamuse_cache, vector_cache, ipa_cache, stresses_cache], desc='saving db caches'):
             c.save()
             del c
-
-        # clear some memory
         del title_ngrams
         gc.collect()
 
         # begin the DB writes
         with transaction.atomic():
-            print('deleting')
+            print('deleting...')
             Rhyme.objects.all().delete()
             NGram.objects.all().delete()
             SongNGram.objects.all().delete()
@@ -234,10 +232,6 @@ class Command(BaseCommand):
 
             print('finishing transaction')
         print('done')
-
-
-def vector_getter(key):
-    return get_vowel_vector(key)
 
 
 def is_repeated(w):

@@ -29,7 +29,7 @@ rhymes = list(Rhyme.objects.filter(
 random.shuffle(rhymes)
 lines = set()
 i = 0
-while len(lines) < 2000:
+while len(lines) < 5000:
     i += 1
     r = rhymes[i]
     anchor = r.from_ngram.text

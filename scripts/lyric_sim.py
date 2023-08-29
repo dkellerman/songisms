@@ -16,8 +16,7 @@ def train():
 
     print("Building model...")
     cores = mp.cpu_count()
-    model = Word2Vec(vector_size=kv.vector_size,
-                     window=5, min_count=1, workers=cores)
+    model = Word2Vec(vector_size=kv.vector_size, window=5, min_count=1, workers=cores)
     model.build_vocab([list(kv.index_to_key)], update=False)
     for word in kv.index_to_key:
         if word in model.wv.index_to_key:
@@ -36,6 +35,7 @@ def train():
 
     print("Training...", len(docs))
     model.train(docs, total_examples=len(docs), epochs=1)
+
     print("Saving...")
     model.save('./data/lyrics.w2v')
 

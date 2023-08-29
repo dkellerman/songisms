@@ -12,6 +12,7 @@ const isSupported = ref(!!SR);
 const isListening = ref(false);
 const transcript = ref('');
 const lastPartialResult = ref('');
+
 const TIMEOUT_MS = 120 * 1000;
 let timeout: ReturnType<typeof setTimeout> | undefined;
 
@@ -65,9 +66,9 @@ function onSpeechResult(event: SpeechRecognitionEvent) {
       switch (transcript.value) {
         case 'stop listening':
         case 'stop search':
-        case 'end search':
         case 'stop recording':
         case 'stop mic':
+        case 'end search':
           stop();
           break;
         case 'clear search':
@@ -89,7 +90,9 @@ function onSpeechResult(event: SpeechRecognitionEvent) {
     }
   }
 
-  if (!hasFinal) {
+  if (hasFinal) {
+    lastPartialResult.value = '';
+  } else {
     if (partialResult?.transcript?.trim() &&
         partialResult.transcript.length > lastPartialResult.value.length
     ) {
@@ -97,8 +100,6 @@ function onSpeechResult(event: SpeechRecognitionEvent) {
       lastPartialResult.value = val;
       emit('onPartialResult', val);
     }
-  } else {
-    lastPartialResult.value = '';
   }
 }
 
@@ -112,7 +113,7 @@ function start() {
   sr.value = createSpeechRecognition();
   sr.value.start();
   isListening.value = true;
-  startTimer(); // override listen timeout
+  startTimer(); // custom listen timeout
   emit('onStarted');
 }
 

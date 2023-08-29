@@ -5,7 +5,6 @@ from django.core.cache import cache
 from django.conf import settings
 from songisms import utils
 
-
 class BaseManager(models.Manager):
     pass
 

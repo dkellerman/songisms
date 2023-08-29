@@ -37,6 +37,7 @@ if __name__ == '__main__':
             aligned_ipa_words_gpt, aligned_ipa_words_canon, _ = align_vals(ipa_words_gpt, ipa_words_canon)
             is_aligned = True
 
+            # check for some specific issues, and set is_aligned to False if we need to re-align after
             for idx, word in enumerate(words):
                 ipa = str(aligned_ipa_words_gpt[idx])
                 # check dashes were handled correctly
@@ -54,7 +55,7 @@ if __name__ == '__main__':
                         is_aligned = False
                         break
 
-        # make dict
+        # make output word->ipa dict
         for idx, word in enumerate(words):
             val = str(aligned_ipa_words_gpt[idx])
 
@@ -69,8 +70,7 @@ if __name__ == '__main__':
 
             if cur_val:
                 if remove_stresses(val) == cur_val:
-                    word2ipa[word] = val if len(
-                        val) > len(cur_val) else cur_val
+                    word2ipa[word] = val if len(val) > len(cur_val) else cur_val
             else:
                 word2ipa[word] = val
 
