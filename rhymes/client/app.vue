@@ -97,9 +97,13 @@ function onFocus(e: FocusEvent) {
   inpEl?.select?.();
 }
 
-function onVoiceQuery(val: string) {
+function clearListeningText() {
   showListenTip.value = false;
   partialSpeechResult.value = '';
+}
+
+function onVoiceQuery(val: string) {
+  clearListeningText();
   q.value = val;
 }
 
@@ -161,24 +165,22 @@ function formatText(text: string) {
           <ListenButton
             @on-query="onVoiceQuery"
             @on-partial-result="partialSpeechResult = $event"
-            @on-started="showListenTip = true"
-            @on-stopped="showListenTip = false"
+            @on-started="() => { clearListeningText(); showListenTip = true; }"
+            @on-stopped="clearListeningText"
           />
         </ClientOnly>
       </fieldset>
 
       <section class="output" ref="outputEl">
-        <label v-if="partialSpeechResult">
+        <label v-if="showListenTip && partialSpeechResult">
           <i class="fa fa-spinner" />&nbsp;
           <em>{{ partialSpeechResult }}</em>
         </label>
-        <label v-else-if="pending">
-          <i class="fa fa-spinner" />
-          Searching...
-        </label>
         <label v-else-if="showListenTip">
-          <strong>Say words to search. Try also: "stop listening", "clear search",
-          or spelling out a word</strong>
+          <strong>Say words to search. Try also: "stop listening", "clear search", or spelling out a word</strong>
+        </label>
+        <label v-else-if="pending">
+          <i class="fa fa-spinner" /> Searching...
         </label>
         <label v-else-if="!q">Top {{ counts.rhyme }} most rhymed words</label>
         <label v-else-if="q">{{ label }}</label>

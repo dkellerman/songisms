@@ -117,9 +117,10 @@ function start() {
 }
 
 function stop() {
-  if (!sr.value) return;
-  sr.value.stop();
+  if (sr.value) sr.value.stop();
   isListening.value = false;
+  transcript.value = '';
+  lastPartialResult.value = '';
   emit('onStopped');
 }
 
