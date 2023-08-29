@@ -14,6 +14,7 @@ const q = ref((route.query.q ?? '') as string);
 const completionsQuery = ref('');
 const searchInput = ref();
 const showListenTip = ref(false);
+const partialSpeechResult = ref<string>();
 
 // completions fetch
 const { data: completionsData } = await useFetch<CompletionsResponse>(`${apiBaseUrl}/rhymes/completions/`, {
@@ -146,11 +147,14 @@ function formatText(text: string) {
           </template>
         </vue3-simple-typeahead>
 
-        <button class="search" @click.prevent="onClickSearch"><i class="fa fa-search" /></button>
+        <button class="search" @click.prevent="onClickSearch" title="Search">
+          <i class="fa fa-search fa-lg" />
+        </button>
 
         <ClientOnly>
           <ListenButton
-            @on-query="(val: string) => { q = val; showListenTip = false; }"
+            @on-query="(val: string) => { q = val; showListenTip = false; partialSpeechResult = ''; }"
+            @on-partial-result="partialSpeechResult = $event"
             @on-started="showListenTip = true"
             @on-stopped="showListenTip = false"
           />
@@ -158,7 +162,11 @@ function formatText(text: string) {
       </fieldset>
 
       <section class="output" ref="outputEl">
-        <label v-if="pending">
+        <label v-if="partialSpeechResult">
+          <i class="fa fa-spinner" />&nbsp;
+          <em>{{ partialSpeechResult }}</em>
+        </label>
+        <label v-else-if="pending">
           <i class="fa fa-spinner" />
           Searching...
         </label>

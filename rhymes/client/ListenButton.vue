@@ -1,93 +1,131 @@
 <script setup lang="ts">
-import { useSpeechRecognition } from '@vueuse/core';
-
 const emit = defineEmits([
   'onQuery',
   'onStarted',
   'onStopped',
+  'onPartialResult',
 ]);
 
-const speech = useSpeechRecognition({
-  lang: 'en-US',
-  interimResults: false,
-  continuous: true,
-});
-
-const { isListening, isSupported: listenSupported } = speech;
-
-const TIMEOUT_MS = 60 * 1000;
+const SR = window && ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition);
+const sr = ref<typeof SR>();
+const isSupported = ref(!!SR);
+const isListening = ref(false);
+const transcript = ref('');
+const lastPartialResult = ref('');
+const TIMEOUT_MS = 120 * 1000;
 let timeout: ReturnType<typeof setTimeout> | undefined;
 
-// override timeout
-if (speech?.recognition) {
-  const onend = speech.recognition.onend;
-  const onstart = speech.recognition.onstart;
-
-  speech.recognition.onstart = (event: Event) => {
-    timeout = setTimeout(() => {
-      speech.stop();
-      timeout = undefined;
-    }, TIMEOUT_MS);
-
-    if (onstart) onstart.call(speech.recognition!, event);
-  };
-
-  speech.recognition.onend = (event: Event) => {
-    if (timeout) {
-      clearTimeout(timeout);
-      timeout = undefined;
-    }
-
-    if (isListening.value) {
-      speech.recognition!.start();
-    } else {
-      speech.stop();
-      if (onend) onend.call(speech.recognition!, event);
-    }
-  };
+function createSpeechRecognition() {
+  const srObj = new SR();
+  srObj.continuous = true;
+  srObj.interimResults = true;
+  srObj.lang = 'en-US';
+  srObj.onstart = onSpeechStarted;
+  srObj.onend = onSpeechEnded;
+  srObj.onresult = onSpeechResult;
+  srObj.onerror = onSpeechError;
+  return srObj;
 }
 
-function onSpeechResult() {
-  let val = speech.result.value?.toLowerCase().trim();
-  console.log("*", val);
+function startTimer() {
+  clearTimer();
+  timeout = setTimeout(() => {
+    stop();
+    timeout = undefined;
+  }, TIMEOUT_MS);
+}
 
-  if (speech.isFinal) {
-    console.log("FINAL");
-    if (!val) return;
-    const words = val.split(' ');
-
-    if (val === 'stop listening') {
-      speech.toggle();
-      return;
-    } else if (val === 'clear search') {
-      val = '';
-    } else if (words.length > 2 && words.every(w => w.length === 1)) {
-      val = words.join('');
-    }
-
-    emit('onQuery', val);
-
-    // start and stop to reset transcript
-    if (isListening.value) speech.recognition!.stop();
-    setTimeout(() => {
-      if (!isListening.value) speech.recognition!.start();
-    }, 100);
+function clearTimer() {
+  if (timeout) {
+    clearTimeout(timeout);
+    timeout = undefined;
   }
 }
 
-function toggle() {
-  speech.toggle();
-  if (isListening.value)
-    emit('onStarted');
-  else
-    emit('onStopped');
+function onSpeechStarted(event: any) {
 }
 
-watch(speech.result, onSpeechResult);
+function onSpeechEnded(event: any) {
+  if (isListening.value) {
+    // override the natural timeout of the speech recognition object
+    sr.value.start();
+  } else {
+    clearTimer();
+  }
+}
+
+function onSpeechResult(event: SpeechRecognitionEvent) {
+  let hasFinal = false;
+  let partialResult;
+
+  for (let i = event.resultIndex; i < event.results.length; i++) {
+    if (event.results[i].isFinal) {
+      hasFinal = true;
+      transcript.value += event.results[i][0].transcript.toLowerCase().trim();
+      switch (transcript.value) {
+        case 'stop listening':
+          stop();
+          break;
+        case 'clear search':
+          transcript.value = '';
+        default:
+          emit('onQuery', transcript.value);
+          startTimer(); // restart listening for timeout
+          transcript.value = '';
+      }
+    } else {
+      const item = event.results[i].item(0);
+      if (!partialResult || (
+        item.confidence > partialResult.confidence &&
+        item.confidence > .90
+      )) partialResult = item;
+    }
+  }
+
+  if (!hasFinal) {
+    if (partialResult && partialResult.transcript.length > lastPartialResult.value.length) {
+      lastPartialResult.value = partialResult.transcript;
+      emit('onPartialResult', partialResult.transcript);
+    }
+  } else {
+    lastPartialResult.value = '';
+  }
+}
+
+function onSpeechError(event: any) {
+  if (event.error === 'no-speech') return;
+  console.error('speech recognition error', event);
+  stop();
+}
+
+function start() {
+  sr.value = createSpeechRecognition();
+  sr.value.start();
+  isListening.value = true;
+  startTimer(); // override listen timeout
+  emit('onStarted');
+}
+
+function stop() {
+  if (!sr.value) return;
+  sr.value.stop();
+  isListening.value = false;
+  emit('onStopped');
+}
+
+function toggle() {
+  if (isListening.value) stop(); else start();
+}
 </script>
 
 <template>
-    <button v-if="listenSupported" @click.prevent="toggle" :class="{ listen: true, 'is-listening': isListening }">
-      <i :class="{ fa: true, 'fa-lg': true, 'fa-microphone': !isListening, 'fa-stop': isListening }" />
+    <button
+      v-if="isSupported"
+      @click.prevent="toggle"
+      :title="isListening ? 'Stop listening' : 'Voice search'"
+      :class="{ listen: true, 'is-listening': isListening }"
+    >
+      <i v-if="isListening" class="fa fa-stop" :style="{fontSize: '14px'}" />
+      <i v-else class="fa fa-microphone" :style="{fontSize: '18px'}" />
     </button>
 </template>

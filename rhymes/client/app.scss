@@ -50,6 +50,7 @@ main {
     button {
       border-radius: 0;
       padding: 0 25px;
+      line-height: 0;
       border: 0;
       &:hover, &:focus, &:active {
         opacity: .8;
@@ -60,7 +61,7 @@ main {
         }
       }
       &.listen {
-        margin-left: 4px;
+        margin-left: 5px;
         background: green;
         &.is-listening {
           background: red;
