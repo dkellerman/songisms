@@ -210,7 +210,6 @@ function formatText(text: string) {
 <style lang="scss">
 .simple-typeahead {
   flex: 1;
-
   input[type='text'] {
     border-radius: 0;
     font-size: 17px;
