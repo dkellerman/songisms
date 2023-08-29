@@ -4,7 +4,7 @@ import re
 import string
 import inflect
 from functools import lru_cache
-from songisms.utils.data import get_common_words, get_custom_variants, get_sim_sounds
+from songisms.utils.data import get_common_words, get_custom_variants, get_sim_sounds, get_misspellings
 
 inflector = inflect.engine()
 
@@ -66,64 +66,78 @@ def make_variants(gram):
     '''
     import pronouncing as pron
     from num2words import num2words
+    misspellings = get_misspellings()
 
     words = gram.split()
-
     if ' ' in gram:
         compound = re.sub(' ', '', gram)
         if compound in get_common_words():
             words.append(compound)
 
     variants = []
-    for word in words[-1:]:
-        if len(word) >= 5:
-            if word.endswith('in\''):
-                variants.append(re.sub(r"'$", "g", word))
-                variants.append(word[:-1])
-            elif word.endswith('ing'):
-                variants.append(re.sub(r'g$', '\'', word))
-                variants.append(word[:-1])
-            elif word.endswith('in'):
-                variants.append(word + 'g')
-                variants.append(word + "'")
+    word = words[-1] # just using the last word works best for now
 
-        if word.startswith('a-'):
-            variants.append(word[2:])
-            variants.append('a' + word[2:])
+    # common misspellings
+    new_sp = misspellings.get(word, None)
+    if new_sp:
+        variants.append(new_sp)
+        word = new_sp  # make variants of this
 
-        if word.endswith("'ve") and len(word) > 3:
-            if word[-4] == 'd':
-                variants.append(word[:-3] + 'a')
-            variants.append(word[:-3] + ' have')
+    # in' -> ing
+    if len(word) >= 5:
+        if word.endswith('in\''):
+            variants.append(re.sub(r"'$", "g", word))
+            variants.append(word[:-1])
+        elif word.endswith('ing'):
+            variants.append(re.sub(r'g$', '\'', word))
+            variants.append(word[:-1])
+        elif word.endswith('in'):
+            variants.append(word + 'g')
+            variants.append(word + "'")
 
-        try:
-            variants.append(num2words(word))
-        except:
-            pass
+    # froggie went a-courtin'
+    if word.startswith('a-'):
+        variants.append(word[2:])
+        variants.append('a' + word[2:])
 
-        # add plural/singular if it only involves adding/removing an s
-        simple_plural = word + 's'
-        simple_sing = word[:-1]
+    #  would've woulda would have
+    if word.endswith("'ve") and len(word) > 3:
+        if word[-4] == 'd':
+            variants.append(word[:-3] + 'a')
+        variants.append(word[:-3] + ' have')
 
-        if simple_plural == inflector.plural(word):
-            variants.append(simple_plural)
-        elif simple_sing == inflector.singular_noun(word):
-            variants.append(simple_sing)
+    # try numbers as words also
+    try:
+        variants.append(num2words(word))
+    except:
+        pass
 
-        match_w = word.lower().strip()
-        matches = [line for line in get_custom_variants() if match_w in line]
-        for line in matches:
-            for l in line:
-                tok = l.lower().strip()
-                if tok != match_w:
-                    variants.append(tok)
+    # add plural/singular if it only involves adding/removing an s
+    simple_plural = word + 's'
+    simple_sing = word[:-1]
+    if simple_plural == inflector.plural(word):
+        variants.append(simple_plural)
+    elif simple_sing == inflector.singular_noun(word):
+        variants.append(simple_sing)
 
+    # custom variants, mostly very songy kinda stuff
+    match_w = word.lower().strip()
+    matches = [line for line in get_custom_variants() if match_w in line]
+    for line in matches:
+        for l in line:
+            tok = l.lower().strip()
+            if tok != match_w:
+                variants.append(tok)
+
+    # reprocess all the words
     variants = list(set(variants))
-
     for var in [gram] + variants:
+        # add some stupid rhymes for lookup sake, seems to help
         rhymes = pron.rhymes(var)
         variants += [r for r in rhymes if r in get_common_words()]
+        # compound word splits
         variants += get_word_splits(var)
+        # similar sounding words, covers heterophones
         variants += [ss.lower() for ss in get_sim_sounds().get(var, [])]
 
     variants = set(variants)

@@ -114,7 +114,7 @@ def get_vowel_vector(text, max_len=100):
             ft = ftable.word_array([
                 'syl', 'son', 'cons', 'voi', 'long',
                 'round', 'back', 'lo', 'hi', 'tense'
-            ], c).tolist() or ([0] * 10)
+            ], c).tolist() or ([0.0] * 10)
             vec += ft
     vec = [item for sublist in vec for item in sublist][-max_len:]
     return vec

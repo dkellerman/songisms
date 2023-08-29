@@ -9,8 +9,7 @@ from django.db import transaction
 from nltk import FreqDist
 from rhymes.models import NGram, Rhyme, SongNGram, Cache
 from songisms.utils import (get_vowel_vector, get_lyric_ngrams, get_rhyme_pairs, get_common_words,
-                            get_mscore, get_ipa_text, get_stresses_vector, fetch_datamuse_rhymes,
-                            get_idioms)
+                            get_mscore, get_ipa_text, get_stresses_vector, fetch_datamuse_rhymes)
 from tqdm import tqdm
 
 
@@ -63,13 +62,6 @@ class Command(BaseCommand):
                     ngrams[to_text] = ngrams.get(to_text) or dict(text=to_text, n=len(to_text.split()))
                     rhymes[(from_text, to_text, song.spotify_id)] = \
                         dict(from_ngram=ngrams[from_text], to_ngram=ngrams[to_text], song_uid=song.spotify_id, level=1)
-
-        # adding some ngrams not in songs
-        # extra = []
-        # idioms = '\n'.join(get_idioms())
-        # extra += get_lyric_ngrams(idioms, range(5))
-        # for text, n in tqdm(extra, desc='extra ngrams'):
-        #     ngrams[text] = ngrams.get(text, None) or dict(text=text, n=n)
 
         # add some rhymes data from muse for common words
         single_words = [n for n in ngrams.values() if n['n'] == 1]

@@ -14,11 +14,18 @@ def get_common_words(n=700):
 
 @lru_cache(maxsize=None)
 def get_custom_variants():
-    with open('./data/variants.txt', 'r') as syn_file:
+    with open('./data/variants.txt', 'r') as f:
         return [
             [l.strip() for l in line.split(';')]
-            for line in syn_file.readlines()
+            for line in f.readlines()
         ]
+
+
+@lru_cache(maxsize=None)
+def get_misspellings():
+    with open('./data/misspellings.txt', 'r') as f:
+        lines = [l.lower().strip().split('->')  for l in f.read().split('\n') if l.strip()]
+        return { l[0]: l[1].split(',')[0].strip() for l in lines }
 
 
 @lru_cache(maxsize=None)

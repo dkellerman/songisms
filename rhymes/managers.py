@@ -67,7 +67,7 @@ class RhymeManager(BaseManager):
         variants = utils.make_variants(q)
         vec = utils.get_vowel_vector(q) or None
         stresses = utils.get_stresses_vector(q)
-        all_q = [q.upper()] + [s.upper() for s in variants]
+        all_q = [q.upper()] + [v.upper() for v in variants]
 
         rhymes_sql = f'''
             SELECT DISTINCT ON (ngram)
@@ -118,9 +118,10 @@ class RhymeManager(BaseManager):
             WHERE
                 NOT (UPPER(n.text) = ANY(%(q)s))
                 AND n.phones IS NOT NULL
-                AND CUBE(%(vec)s) <-> CUBE(n.phones) <= 2.5
-                AND adj_pct >= 0.00005
-                AND n.mscore > 4
+                AND CUBE(%(vec)s) <-> CUBE(n.phones) >= 3.0
+                AND CUBE(%(vec)s) <-> CUBE(n.phones) <= 3.2
+                AND adj_pct >= 0.00012
+                AND n.mscore >= 4
                 AND n.song_count > 2
             GROUP BY ngram, n, level, frequency, vec_distance, stresses_distance,
                      adj_pct, song_pct, title_pct, ndiff, mscore, song_count
@@ -154,7 +155,7 @@ class RhymeManager(BaseManager):
                     OFFSET 0
                     LIMIT %(limit)s
                 ;
-            ''', dict(q=all_q, qstr=q, n=n, vec=vec, stresses=stresses, limit=self.HARD_LIMIT))
+            ''', dict(q=all_q, n=n, vec=vec, stresses=stresses, limit=self.HARD_LIMIT))
 
             columns = [col[0] for col in cursor.description]
             vals = [
