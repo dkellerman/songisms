@@ -90,9 +90,12 @@ function onSpeechResult(event: SpeechRecognitionEvent) {
   }
 
   if (!hasFinal) {
-    if (partialResult && partialResult.transcript.length > lastPartialResult.value.length) {
-      lastPartialResult.value = partialResult.transcript;
-      emit('onPartialResult', partialResult.transcript);
+    if (partialResult?.transcript?.trim() &&
+        partialResult.transcript.length > lastPartialResult.value.length
+    ) {
+      const val = partialResult.transcript.toLowerCase().trim();
+      lastPartialResult.value = val;
+      emit('onPartialResult', val);
     }
   } else {
     lastPartialResult.value = '';
