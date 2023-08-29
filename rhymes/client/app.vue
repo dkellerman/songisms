@@ -209,17 +209,10 @@ function formatText(text: string) {
 
 <style lang="scss">
 .simple-typeahead {
-  width: initial !important;
+  flex: 1;
 
   input[type='text'] {
     border-radius: 0;
-    position: sticky;
-    top: 0;
-    background: white;
-    z-index: 100;
-    width: 50vw;
-    min-width: 190px;
-    max-width: 610px;
     font-size: 17px;
   }
 }

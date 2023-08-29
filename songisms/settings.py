@@ -98,7 +98,7 @@ DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('SISM_DB_URL', None),
         conn_max_age=600,
-        conn_health_checks=True,
+        conn_health_checks=IS_PROD,
     )
 }
 
