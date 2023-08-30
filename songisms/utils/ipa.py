@@ -2,6 +2,7 @@
 
 import re
 from functools import lru_cache
+from collections import defaultdict
 import pronouncing as pron
 from panphon import featuretable
 from songisms.utils.text import remove_non_lyric_punctuation, align_vals
@@ -152,6 +153,12 @@ def score_rhyme(text1, text2):
     vec1, vec2 = get_rhyme_vectors(text1, text2)
     score = distance.cosine(vec1, vec2)
     return score
+
+
+ipa_token_dict = defaultdict(lambda: len(ipa_token_dict))
+
+def ipa_to_unique_tokens(text):
+    return [ipa_token_dict[c] for c in text]
 
 
 @lru_cache(maxsize=500)

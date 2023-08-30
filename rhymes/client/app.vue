@@ -5,12 +5,12 @@ import ListenButton from './ListenButton.vue';
 
 const route = useRoute();
 const router = useRouter();
-const rtConfig = useRuntimeConfig();
-const apiBaseUrl = (rtConfig.public.apiBaseUrl ?? 'http://localhost:8000')
+const config = useRuntimeConfig();
+const apiBaseUrl = (config.public.apiBaseUrl ?? 'http://localhost:8000')
   // workaround node 18 ofetch bug for SSR by using 127.0.0.1 for dev
   .replaceAll('localhost', '127.0.0.1');
 
-const q = ref((route.query.q ?? '') as string);
+const searchQuery = ref((route.query.q ?? '') as string);
 const completionsQuery = ref('');
 const searchInput = ref();
 const showListenTip = ref(false);
@@ -26,7 +26,7 @@ const fetchCompletions = debounce((q: string) => completionsQuery.value = q, 200
 
 // rhymes fetch
 const { data: rhymesData, pending } = await useFetch<RhymesResponse>(`${apiBaseUrl}/rhymes/`, {
-  query: { q, limit: 100 },
+  query: { q: searchQuery, limit: 100 },
   immediate: true,
 });
 const rhymes = computed<Rhyme[]>(() => rhymesData.value?.hits ?? []);
@@ -38,11 +38,11 @@ const counts = computed(() => ({
   sug: rhymes.value?.filter(r => r.type === 'suggestion').length || 0,
 }));
 
-const label = computed(() => {
+const searchInfoLabel = computed(() => {
   return [
-    ct2str(counts.value.rhyme, 'rhyme'),
-    counts.value.l2 > 0 && ct2str(counts.value.l2, 'maybe', 'maybe'),
-    counts.value.sug > 0 && ct2str(counts.value.sug, 'suggestion'),
+    `<span class="info-rhymes">${ct2str(counts.value.rhyme, 'rhyme')}</span>`,
+    counts.value.l2 > 0 && `<span class="info-l2">${ct2str(counts.value.l2, 'maybe', 'maybe')}</span>`,
+    counts.value.sug > 0 && `<span class="info-sug">${ct2str(counts.value.sug, 'suggestion')}</span>`,
   ]
     .filter(Boolean)
     .join(', ');
@@ -56,30 +56,31 @@ watchEffect(() => {
 });
 
 // additional things to do on search
-watch([q], () => {
-  track('engagement', 'search', q.value);
+watch([searchQuery], () => {
+  track('engagement', 'search', searchQuery.value);
+
   const query = {} as any;
-  if (q.value) query.q = q.value;
+  if (searchQuery.value) query.q = searchQuery.value;
   window.scrollTo(0, 0);
   router.push({ query });
 });
 
 // watch for URL query param changes
 watch(() => [route?.query.q], () => {
-  q.value = (route?.query.q ?? '') as string;
+  searchQuery.value = (route?.query.q ?? '') as string;
 });
 
 function onSelectItem(val: string) {
-  q.value = val;
+  searchQuery.value = val;
 }
 
 function onEnter(e: KeyboardEvent) {
-  q.value = ((e.target as HTMLInputElement)?.value ?? '').trim();
-  searchInput.value.selectItem(q.value);
+  searchQuery.value = ((e.target as HTMLInputElement)?.value ?? '').trim();
+  searchInput.value.selectItem(searchQuery.value);
 }
 
 function onClickSearch(e: MouseEvent) {
-  q.value = searchInput.value.$data.input;
+  searchQuery.value = searchInput.value.$data.input;
 }
 
 function onInput(e: any) {
@@ -88,21 +89,19 @@ function onInput(e: any) {
 }
 
 function onLink(val: string) {
-  q.value = val;
+  searchQuery.value = val;
 }
 
 function onFocus(e: FocusEvent) {
   window.oncontextmenu = () => false;
-  const id = searchInput.value?.$el?.id;
-  const el = document.getElementById(id);
+  const el = document.getElementById(searchInput.value?.$el?.id);
   if (!el) return;
-  const inpEl = el?.querySelector('input');
-  inpEl?.select?.();
+  el.querySelector('input')?.select();
 }
 
 function onVoiceQuery(val: string) {
   clearListeningText();
-  q.value = val;
+  searchQuery.value = val;
 }
 
 function clearListeningText() {
@@ -128,14 +127,14 @@ function ct2str(ct: number, singularWord: string, pluralWord?: string) {
 }
 
 function formatText(text: string) {
-  return text?.replace(/\bi\b/g, 'I');
+  return text.replace(/\bi\b/g, 'I');
 }
 </script>
 
 <template>
   <div id="app">
     <Head>
-      <Title v-if="q">Rhymes for {{ q }} | Song Rhymes</Title>
+      <Title v-if="searchQuery">Rhymes for {{ searchQuery }} | Song Rhymes</Title>
       <Title v-else>Top 100 rhymes | Song Rhymes</Title>
     </Head>
 
@@ -174,50 +173,66 @@ function formatText(text: string) {
         </ClientOnly>
       </fieldset>
 
-      <section class="output" ref="outputEl">
+      <section class="output">
         <label v-if="partialSpeechResult">
           <i class="fa fa-spinner" />&nbsp;
           <em>{{ partialSpeechResult }}</em>
         </label>
+
         <label v-else-if="showListenTip">
-          <strong>Say words to search. Try also: "stop listening", "clear search", or spelling out a word</strong>
+          <strong>
+            Say words to search. Try also: "stop listening", "clear search", or spelling out a word
+          </strong>
         </label>
+
         <label v-else-if="pending">
           <i class="fa fa-spinner" /> Searching...
         </label>
-        <label v-else-if="!q">Top {{ counts.rhyme }} most rhymed words</label>
-        <label v-else-if="q">{{ label }}</label>
+
+        <label v-else-if="!searchQuery">
+          Top {{ counts.rhyme }} most rhymed words
+        </label>
+
+        <label v-else-if="searchQuery" v-html="searchInfoLabel" />
 
         <ul v-if="rhymes">
-          <li v-for="r of rhymes" :key="r.text" :class="`hit ${r.type}`">
-            <a @click="() => onLink(r.text)">{{ formatText(r.text) }}</a>
-            <span v-if="!!r.frequency && r.type === 'rhyme'" class="freq"> ({{ r.frequency }}) </span>
+          <li v-for="rhyme of rhymes" :key="rhyme.text" :class="`hit ${rhyme.type}`">
+            <a @click="() => onLink(rhyme.text)">
+              {{ formatText(rhyme.text) }}
+            </a>
+            <span v-if="!!rhyme.frequency && rhyme.type === 'rhyme'" class="freq">
+              ({{ rhyme.frequency }})
+            </span>
           </li>
         </ul>
       </section>
     </main>
 
     <footer>
-      Song Rhymes by
-      <a target="_blank" rel="noopener noreferer" href="https://linkedin.com/in/david-kellerman">&nbsp;David Kellerman</a>
+      Song Rhymes by&nbsp;
+      <a target="_blank" rel="noopener noreferer" href="https://linkedin.com/in/david-kellerman">
+        David Kellerman
+      </a>
       <div class="links">
-        &nbsp;&mdash;
-        <a target="_blank" rel="noopener noreferrer" href="https://github.com/dkellerman/songisms">&nbsp;Source code</a>
-        &nbsp;&#183;
-        <a target="_blank" rel="noopener noreferrer" href="https://bipium.com">&nbsp;Metronome</a>
-        &nbsp;&#183;
-        <a target="_blank" rel="noopener noreferrer" href="https://open.spotify.com/artist/2fxGUIL1BUCzWwKqP1ykUi">&nbsp;Music</a>
+        &nbsp;&mdash;&nbsp;
+        <a target="_blank" rel="noopener noreferrer" href="https://github.com/dkellerman/songisms">
+          Source code
+        </a>
+        &nbsp;&#183;&nbsp;
+        <a target="_blank" rel="noopener noreferrer" href="https://bipium.com">
+          Metronome
+        </a>
+        &nbsp;&#183;&nbsp;
+        <a target="_blank" rel="noopener noreferrer" href="https://open.spotify.com/artist/2fxGUIL1BUCzWwKqP1ykUi">
+          Music
+        </a>
       </div>
     </footer>
   </div>
 </template>
 
-<style lang="scss">
-.simple-typeahead {
-  flex: 1;
-  input[type='text'] {
-    border-radius: 0;
-    font-size: 17px;
-  }
+<style lang="scss" scoped>
+section {
+  display: initial;
 }
 </style>
