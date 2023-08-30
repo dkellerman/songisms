@@ -3,7 +3,7 @@
 
 from .cloud import *
 from .data import *
-from .text import *
+from .lyrics import *
 from .ipa import *
 from .gql import *
 from .gpt import *

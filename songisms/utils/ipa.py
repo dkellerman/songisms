@@ -1,4 +1,5 @@
-'''IPA and other pronounciation-related utilities'''
+'''IPA and other pronounciation-related utilities
+'''
 
 import re
 from functools import lru_cache, cached_property
@@ -17,6 +18,7 @@ def transducer():
     import g2p
     return g2p.make_g2p('eng', 'eng-ipa')
 
+
 def normalize_ipa(ipa):
     '''Normalize IPA string
     '''
@@ -24,8 +26,15 @@ def normalize_ipa(ipa):
     return utils.remove_non_lyric_punctuation(ipa)
 
 
+def remove_stresses(text):
+    '''Remove IPA stress marks
+    '''
+    return re.sub(r'\ˈ|\ˌ', '', text)
+
+
 def get_ipa_words(text):
     '''Translate to IPA, returns list of words
+       eng_to_ipa (lookup) -> custom lookup (via GPT) -> g2p (from sounds)
     '''
     import eng_to_ipa
     words = eng_to_ipa.convert(text).split()
@@ -39,7 +48,8 @@ def get_ipa_words(text):
 
 
 def get_ipa_text(text):
-    '''Translate to IPA, returns string'''
+    '''Translate to IPA, returns string
+    '''
     return ' '.join(get_ipa_words(text))
 
 
@@ -51,11 +61,6 @@ def fix_ipa_word(w):
     w = re.sub(r"'ɛs$", "s", w)
     w = re.sub(r"'", "", w)
     return w.strip()
-
-
-def remove_stresses(text):
-    '''Remove IPA stress marks'''
-    return re.sub(r'\ˈ|\ˌ', '', text)
 
 
 def get_g2p_word(w):
@@ -79,7 +84,7 @@ def is_vowel(ipa_letter):
 
 def get_stress_tail_for_ipa(ipa_phrase):
     '''Stress tail is basically the primary stressed vowel and everything after, so
-       include stress markers if possible.
+       include stress markers in the input string if possible.
     '''
     if not ipa_phrase.strip():
         return ''
@@ -248,6 +253,5 @@ PHONE_TO_FORMANTS = {
     u's': [0, 0, 0, 5500],
     u'f': [0, 0, 0, 4500],
     u'b': [350, 0, 2250, 0],
-
     # ??? u'a': [],
 }

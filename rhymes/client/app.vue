@@ -34,14 +34,14 @@ const rhymes = computed<Rhyme[]>(() => rhymesData.value?.hits ?? []);
 // computed
 const counts = computed(() => ({
   rhyme: rhymes.value?.filter(r => r.type === 'rhyme').length || 0,
-  l2: rhymes.value?.filter(r => r.type === 'rhyme-l2').length || 0,
+  maybe: rhymes.value?.filter(r => r.type === 'rhyme-l2').length || 0,
   sug: rhymes.value?.filter(r => r.type === 'suggestion').length || 0,
 }));
 
 const searchInfoLabel = computed(() => {
   return [
     `<span class="info-rhymes">${ct2str(counts.value.rhyme, 'rhyme')}</span>`,
-    counts.value.l2 > 0 && `<span class="info-l2">${ct2str(counts.value.l2, 'maybe', 'maybe')}</span>`,
+    counts.value.maybe > 0 && `<span class="info-maybe">${ct2str(counts.value.maybe, 'maybe', 'maybe')}</span>`,
     counts.value.sug > 0 && `<span class="info-sug">${ct2str(counts.value.sug, 'suggestion')}</span>`,
   ]
     .filter(Boolean)

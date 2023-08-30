@@ -1,4 +1,5 @@
-'''Text processing utilities'''
+'''Text processing utilities related to lyrics
+'''
 
 import re
 import string
@@ -13,7 +14,8 @@ def inflector():
 
 
 def tokenize_lyric(val):
-    '''Split lyric into normalized tokens'''
+    '''Split lyric into normalized tokens
+    '''
     val = val.lower().strip()
     val = re.sub(r'[\,\"]', '', val)
     val = re.sub(r'[\,\"]', '', val)
@@ -30,22 +32,20 @@ def tokenize_lyric(val):
 
 
 def normalize_lyric(val):
-    '''Normalize lyric without tokenizing'''
+    '''Normalize lyric without tokenizing
+    '''
     return ' '.join(tokenize_lyric(val))
 
 
-def remove_stresses(text):
-    '''Remove IPA stress marks'''
-    return re.sub(r'\ˈ|\ˌ', '', text)
-
-
-def remove_punctuation(text):
-    '''Remove all punctuation'''
+def remove_all_punctuation(text):
+    '''Remove all punctuation
+    '''
     return ''.join([t for t in text if t not in string.punctuation])
 
 
 def remove_non_lyric_punctuation(text):
-    '''Remove punctuation not critical to lyrics'''
+    '''Remove punctuation not critical to lyrics
+    '''
     return ''.join([t for t in text if t not in r"""!"#$%&()*+,./:;<=>?@[\]^_`{|}~"""])
 
 
@@ -190,7 +190,8 @@ def get_rhyme_pairs(val=''):
 
 
 def make_homophones(w, ignore_stress=True, multi=True):
-    '''Get homophones'''
+    '''Get homophones
+    '''
     # currently needs to be installed via `pip install homophones``
     from homophones import homophones as hom
 
@@ -221,7 +222,8 @@ def get_mscore(text):
     toks = tokenize_lyric(text)
     pos = nltk.pos_tag(toks)
     mscore = [POS_TO_MSCORE.get(tok[1], 0) for tok in pos if tok[1]]
-    mscore[-1] *= 1.5
+    if len(toks) > 1:
+        mscore[-1] *= 1.3
     return sum(mscore) / len(mscore)
 
 
