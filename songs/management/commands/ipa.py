@@ -4,7 +4,7 @@ import argparse
 import multiprocessing as mp
 from django.core.management.base import BaseCommand
 from songs.models import Song
-from songisms.utils import gpt_fetch_ipa
+from songisms import utils
 
 
 class Command(BaseCommand):
@@ -39,7 +39,7 @@ class Command(BaseCommand):
 def fetch_wrapper(song):
     try:
         print("==> Fetching IPA", song.pk, song.title)
-        return gpt_fetch_ipa(song.lyrics)
+        return utils.gpt_fetch_ipa(song.lyrics)
     except Exception as err:
         print("Error fetching IPA", err, song.pk, song.title)
 

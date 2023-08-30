@@ -1,22 +1,27 @@
 '''IPA and other pronounciation-related utilities'''
 
 import re
-from functools import lru_cache
+from functools import lru_cache, cached_property
 from collections import defaultdict
-import pronouncing as pron
-from panphon import featuretable
-from songisms.utils.text import remove_non_lyric_punctuation, align_vals
-from songisms.utils.data import get_gpt_ipa
+from . import utils
 
-ftable = featuretable.FeatureTable()
-transducer = None
 
+@lru_cache(maxsize=None)
+def ftable():
+    from panphon import featuretable
+    return featuretable.FeatureTable()
+
+
+@lru_cache(maxsize=None)
+def transducer():
+    import g2p
+    return g2p.make_g2p('eng', 'eng-ipa')
 
 def normalize_ipa(ipa):
     '''Normalize IPA string
     '''
     ipa = ipa.strip().replace("ː", "")
-    return remove_non_lyric_punctuation(ipa)
+    return utils.remove_non_lyric_punctuation(ipa)
 
 
 def get_ipa_words(text):
@@ -24,12 +29,11 @@ def get_ipa_words(text):
     '''
     import eng_to_ipa
     words = eng_to_ipa.convert(text).split()
-    gpt_ipa = get_gpt_ipa()
     ipa = []
     for w in words:
         if '*' in w or not w.strip():
             w = w.replace('*', '').strip()
-            w = gpt_ipa.get(w, get_g2p_word(w))
+            w = utils.data.gpt_ipa.get(w, get_g2p_word(w))
         ipa.append(fix_ipa_word(w))
     return ipa
 
@@ -57,20 +61,15 @@ def remove_stresses(text):
 def get_g2p_word(w):
     '''Gets a IPA translation via g2p library (based on sounds, not lookup)
     '''
-    import g2p
-    global transducer
-    if transducer is None:
-        transducer = g2p.make_g2p('eng', 'eng-ipa')
-
     if w[-1] == "'":
-        return re.sub(r'ŋ$', 'n', transducer(w[:-1] + 'g').output_string)
-    return transducer(w).output_string
+        return re.sub(r'ŋ$', 'n', transducer()(w[:-1] + 'g').output_string)
+    return transducer()(w).output_string
 
 
 def get_ipa_features(ipa_letter):
     '''Get feature table for IPA character
     '''
-    f = ftable.fts(ipa_letter)
+    f = ftable().fts(ipa_letter)
     return f
 
 
@@ -104,7 +103,7 @@ def get_ipa_tail(text, stresses=False):
     return val
 
 
-@lru_cache(maxsize=500)
+@lru_cache(maxsize=1000)
 def get_vowel_vector(text, max_len=100):
     '''DB comparison vector for vowels in a word
     '''
@@ -112,7 +111,7 @@ def get_vowel_vector(text, max_len=100):
     vec = []
     for c in ipa:
         if is_vowel(c):
-            ft = ftable.word_array([
+            ft = ftable().word_array([
                 'syl', 'son', 'cons', 'voi', 'long',
                 'round', 'back', 'lo', 'hi', 'tense'
             ], c).tolist() or ([0.0] * 10)
@@ -129,7 +128,7 @@ def get_rhyme_vectors(text1, text2):
     '''
     ipa1 = get_ipa_tail(text1)
     ipa2 = get_ipa_tail(text2)
-    seq1, seq2, _ = align_vals(ipa1, ipa2)
+    seq1, seq2, _ = utils.align_vals(ipa1, ipa2)
     vec1, vec2 = [], []
 
     for idx, c in enumerate(seq1):
@@ -161,10 +160,11 @@ def ipa_to_unique_tokens(text):
     return [ipa_token_dict[c] for c in text]
 
 
-@lru_cache(maxsize=500)
+@lru_cache(maxsize=1000)
 def get_stresses_vector(q):
     '''Get stresses vector
     '''
+    import pronouncing as pron
     stresses = []
     for word in q.split():
         word = re.sub(r'in\'', 'ing', word)
@@ -178,7 +178,7 @@ def get_stresses_vector(q):
     return [int(s) for s in (''.join(stresses))]
 
 
-@lru_cache(maxsize=500)
+@lru_cache(maxsize=1000)
 def get_formants_vector(q, vowels_only=False, include_stresses=False):
     ipa = get_ipa_text(q).split()
     formants = []

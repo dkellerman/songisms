@@ -10,7 +10,7 @@ import sys
 import json
 from tqdm import tqdm
 from songs.models import Song
-from songisms.utils import normalize_ipa, get_ipa_words, align_vals, remove_stresses, normalize_lyric
+from songisms import utils
 
 
 if __name__ == '__main__':
@@ -23,8 +23,8 @@ if __name__ == '__main__':
         songs = tqdm(Song.objects.all())
 
     for song in songs:
-        lines = [normalize_lyric(l) for l in song.lyrics.split('\n') if l.strip()]
-        ipa_lines_gpt = [normalize_ipa(l) for l in song.metadata['ipa'].split('\n') if l.strip()]
+        lines = [utils.normalize_lyric(l) for l in song.lyrics.split('\n') if l.strip()]
+        ipa_lines_gpt = [utils.normalize_ipa(l) for l in song.metadata['ipa'].split('\n') if l.strip()]
         text = ' '.join(lines)
         ipa_text_gpt = ' '.join(ipa_lines_gpt)
         words = text.split()
@@ -33,8 +33,8 @@ if __name__ == '__main__':
         # check alignment
         is_aligned = False
         while not is_aligned:
-            ipa_words_canon = get_ipa_words(text)
-            aligned_ipa_words_gpt, aligned_ipa_words_canon, _ = align_vals(ipa_words_gpt, ipa_words_canon)
+            ipa_words_canon = utils.get_ipa_words(text)
+            aligned_ipa_words_gpt, aligned_ipa_words_canon, _ = utils.align_vals(ipa_words_gpt, ipa_words_canon)
             is_aligned = True
 
             # check for some specific issues, and set is_aligned to False if we need to re-align after
@@ -69,7 +69,7 @@ if __name__ == '__main__':
                 continue
 
             if cur_val:
-                if remove_stresses(val) == cur_val:
+                if utils.remove_stresses(val) == cur_val:
                     word2ipa[word] = val if len(val) > len(cur_val) else cur_val
             else:
                 word2ipa[word] = val

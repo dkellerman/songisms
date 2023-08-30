@@ -1,3 +1,6 @@
+'''GraphQL schema for songs app
+'''
+
 import graphene
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
@@ -7,7 +10,7 @@ from graphene.types.generic import GenericScalar
 import graphql_jwt
 from graphql_jwt.decorators import login_required
 from .models import Song, Artist, Writer, Tag, TaggedText, Attachment
-from songisms.utils import get_paginator, GraphenePaginatedType
+from songisms import utils
 
 DEFAULT_PAGE_SIZE = 20
 
@@ -88,9 +91,9 @@ class TaggedTextType(DjangoObjectType):
         convert_choices_to_enum = False
 
 
-SongsPaginatedType = GraphenePaginatedType('SongsPaginatedType', SongType)
-WritersPaginatedType = GraphenePaginatedType('WritersPaginatedType', WriterType)
-ArtistsPaginatedType = GraphenePaginatedType('ArtistsPaginatedType', ArtistType)
+SongsPaginatedType = utils.GraphenePaginatedType('SongsPaginatedType', SongType)
+WritersPaginatedType = utils.GraphenePaginatedType('WritersPaginatedType', WriterType)
+ArtistsPaginatedType = utils.GraphenePaginatedType('ArtistsPaginatedType', ArtistType)
 
 
 class Query(graphene.ObjectType):
@@ -128,7 +131,7 @@ class Query(graphene.ObjectType):
     @login_required
     def resolve_songs(root, info, q=None, page=1, ordering=(Lower('title'),)):
         songs = Song.objects.query(q).order_by(*ordering)
-        return get_paginator(songs, DEFAULT_PAGE_SIZE, page, SongsPaginatedType, q=q)
+        return utils.get_paginator(songs, DEFAULT_PAGE_SIZE, page, SongsPaginatedType, q=q)
 
     @staticmethod
     @login_required
@@ -140,7 +143,7 @@ class Query(graphene.ObjectType):
     @login_required
     def resolve_writers(root, info, q, page=1, ordering=None):
         writers = Writer.objects.query(q, ordering)
-        return get_paginator(writers, DEFAULT_PAGE_SIZE, page, WritersPaginatedType, q=q)
+        return utils.get_paginator(writers, DEFAULT_PAGE_SIZE, page, WritersPaginatedType, q=q)
 
     @staticmethod
     @login_required
@@ -153,7 +156,7 @@ class Query(graphene.ObjectType):
         artists = Artist.objects.prefetch_related('songs').order_by(*ordering)
         if q:
             artists = artists.filter(name__icontains=q)
-        return get_paginator(artists, DEFAULT_PAGE_SIZE, page, ArtistsPaginatedType, q=q)
+        return utils.get_paginator(artists, DEFAULT_PAGE_SIZE, page, ArtistsPaginatedType, q=q)
 
     @staticmethod
     @login_required

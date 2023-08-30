@@ -2,11 +2,14 @@
 
 import re
 import string
-import inflect
 from functools import lru_cache
-from songisms.utils.data import get_common_words, get_custom_variants, get_sim_sounds, get_misspellings
+from songisms import utils
 
-inflector = inflect.engine()
+
+@lru_cache(maxsize=None)
+def inflector():
+    import inflect
+    return inflect.engine()
 
 
 def tokenize_lyric(val):
@@ -60,25 +63,24 @@ def align_vals(val1, val2):
     return aligned_val1, aligned_val2, aligner
 
 
-@lru_cache(maxsize=500)
+@lru_cache(maxsize=1000)
 def make_variants(gram):
     '''Make a list of variants of a word or phrase for searching
     '''
     import pronouncing as pron
     from num2words import num2words
-    misspellings = get_misspellings()
 
     words = gram.split()
     if ' ' in gram:
         compound = re.sub(' ', '', gram)
-        if compound in get_common_words():
+        if compound in utils.data.common_words:
             words.append(compound)
 
     variants = []
     word = words[-1] # just using the last word works best for now
 
     # common misspellings
-    new_sp = misspellings.get(word, None)
+    new_sp = utils.data.misspellings.get(word, None)
     if new_sp:
         variants.append(new_sp)
         word = new_sp  # make variants of this
@@ -115,14 +117,14 @@ def make_variants(gram):
     # add plural/singular if it only involves adding/removing an s
     simple_plural = word + 's'
     simple_sing = word[:-1]
-    if simple_plural == inflector.plural(word):
+    if simple_plural == inflector().plural(word):
         variants.append(simple_plural)
-    elif simple_sing == inflector.singular_noun(word):
+    elif simple_sing == inflector().singular_noun(word):
         variants.append(simple_sing)
 
     # custom variants, mostly very songy kinda stuff
     match_w = word.lower().strip()
-    matches = [line for line in get_custom_variants() if match_w in line]
+    matches = [line for line in utils.data.custom_variants if match_w in line]
     for line in matches:
         for l in line:
             tok = l.lower().strip()
@@ -134,25 +136,25 @@ def make_variants(gram):
     for var in [gram] + variants:
         # add some stupid rhymes for lookup sake, seems to help
         rhymes = pron.rhymes(var)
-        variants += [r for r in rhymes if r in get_common_words()]
+        variants += [r for r in rhymes if r in utils.data.common_words]
         # compound word splits
         variants += get_word_splits(var)
         # similar sounding words, covers heterophones
-        variants += [ss.lower() for ss in get_sim_sounds().get(var, [])]
+        variants += [ss.lower() for ss in utils.data.sim_sounds.get(var, [])]
 
     variants = set(variants)
     return [var for var in variants if var != gram]
 
 
-@lru_cache(maxsize=500)
+@lru_cache(maxsize=1000)
 def get_word_splits(word):
-    '''Return possible splits of a word into two words'''
+    '''Return possible splits of a word into two words
+    '''
     splits = set()
-    common = get_common_words()
     for sp in range(1, len(word)):
         w1 = word[:sp]
         w2 = word[sp:]
-        if w1 in common and w2 in common:
+        if w1 in utils.data.common_words and w2 in utils.data.common_words:
             splits.add(' '.join([w1, w2]))
     return list(splits)
 
@@ -196,23 +198,21 @@ def make_homophones(w, ignore_stress=True, multi=True):
     all_words = list(hom.Words_from_cmudict_string(hom.ENTIRE_CMUDICT))
     words = list(hom.Word.from_string(w, all_words))
     results = []
-    common = get_common_words()
     for word in words:
         for h in hom.homophones(word, all_words, ignore_stress=ignore_stress):
-            if h.word.lower() != w and h.word.lower() in common:
+            if h.word.lower() != w and h.word.lower() in utils.data.common_words:
                 results.append(h.word.lower())
         if multi:
             for h in hom.dihomophones(word, all_words, ignore_stress=ignore_stress):
-                if all([x.word.lower() in common for x in h]):
+                if all([x.word.lower() in utils.data.common_words for x in h]):
                     results.append(' '.join([x.word.lower() for x in h]))
             for h in hom.trihomophones(word, all_words, ignore_stress=ignore_stress):
-                if all([x.word.lower() in common for x in h]):
+                if all([x.word.lower() in utils.data.common_words for x in h]):
                     results.append(' '.join([x.word.lower() for x in h]))
 
     return [r for r in results if '(' not in r]
 
 
-@lru_cache(maxsize=500)
 def get_mscore(text):
     '''Meaning score is a custom metric for how meaningful a lyric is based on part-of-speech.
     '''

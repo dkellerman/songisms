@@ -5,11 +5,11 @@ import json
 import multiprocessing as mp
 from django.core.management.base import BaseCommand
 from songs.models import Song
-from songisms.utils import normalize_lyric, tokenize_lyric, align_vals, fetch_workflow
+from songisms import utils
 
 
 class Command(BaseCommand):
-    help = 'Process transcripts'
+    help = 'Process lyric/audio transcripts'
 
     def add_arguments(self, parser):
         parser.add_argument('--id', '-i', type=str, default=None)
@@ -46,7 +46,7 @@ class Command(BaseCommand):
 def fetch_wrapper(song):
     try:
         print("==> Fetching", song.pk, song.title)
-        fetch_workflow('transcript', song)
+        utils.fetch_workflow('transcript', song)
         process_transcript(song)
     except Exception as err:
         print("Error fetching transcript", err, song.pk, song.title)
@@ -72,10 +72,10 @@ def process_transcript(song):
     transcript = json.loads(a.file.read())
     tr_words = [TSWord(data) for data in transcript if data['text'] not in ['<EOL>', '<SOL>']]
     for obj in tr_words:
-        obj.data['text'] = normalize_lyric(obj.data['text'])
-    song_words = sum([ tokenize_lyric(l) for l in song.lyrics.split('\n') if l.strip() ], [])
+        obj.data['text'] = utils.normalize_lyric(obj.data['text'])
+    song_words = sum([ utils.tokenize_lyric(l) for l in song.lyrics.split('\n') if l.strip() ], [])
 
-    aligned_song_words, aligned_tr_words, _ = align_vals(song_words, tr_words)
+    aligned_song_words, aligned_tr_words, _ = utils.align_vals(song_words, tr_words)
 
     slots = []
     slot = None

@@ -9,8 +9,7 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 from nltk import FreqDist
 from rhymes.models import NGram, Rhyme, SongNGram, Cache
-from songisms.utils import (get_vowel_vector, get_lyric_ngrams, get_rhyme_pairs, get_common_words,
-                            get_mscore, get_ipa_text, get_stresses_vector, fetch_datamuse_rhymes)
+from songisms import utils
 
 
 class Command(BaseCommand):
@@ -19,6 +18,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--dry-run', '-D', action=argparse.BooleanOptionalAction)
         parser.add_argument('--batch-size', '-b', type=int, default=1000)
+
 
     def handle(self, *args, **options):
         batch_size, dry_run = [options[k] for k in ('batch_size', 'dry_run',)]
@@ -40,7 +40,7 @@ class Command(BaseCommand):
 
         for song in tqdm(songs, desc='lyric ngrams'):
             # lyric ngrams
-            texts = get_lyric_ngrams(song.lyrics, range(5))
+            texts = utils.get_lyric_ngrams(song.lyrics, range(5))
             for text, n in texts:
                 ngrams[text] = ngrams.get(text, None) or dict(text=text, n=n)
                 song_ngram = song_ngrams.get((song.spotify_id, text), None)
@@ -56,7 +56,7 @@ class Command(BaseCommand):
 
             # song rhymes
             if song.rhymes_raw:
-                rhyme_pairs = get_rhyme_pairs(song.rhymes_raw)
+                rhyme_pairs = utils.get_rhyme_pairs(song.rhymes_raw)
                 for from_text, to_text in rhyme_pairs:
                     ngrams[from_text] = ngrams.get(from_text) or dict(text=from_text, n=len(from_text.split()))
                     ngrams[to_text] = ngrams.get(to_text) or dict(text=to_text, n=len(to_text.split()))
@@ -65,15 +65,14 @@ class Command(BaseCommand):
 
         # add some rhymes data from muse for common words
         single_words = [n for n in ngrams.values() if n['n'] == 1]
-        common_words = get_common_words()
         muse_rhymes = set()
 
         for from_ngram in tqdm(single_words, desc='datamuse rhymes'):
-            vals = datamuse_cache.get(from_ngram['text'], fetch_datamuse_rhymes)
+            vals = datamuse_cache.get(from_ngram['text'], utils.fetch_datamuse_rhymes)
             for val in vals:
                 to_text = val['word']
                 from_text = from_ngram['text']
-                if to_text in common_words and from_text in common_words:
+                if to_text in utils.data.common_words and from_text in utils.data.common_words:
                     ngrams[to_text] = ngrams.get(to_text) or dict(text=to_text, n=len(to_text.split()))
                     rkey = (from_text, to_text, None)
                     if rkey not in rhymes:
@@ -93,7 +92,7 @@ class Command(BaseCommand):
             n['text'] for n in tqdm(ngrams.values(), desc='prepping multi rhymes')
                 if (n.get('song_count', 0) > 2)
                 and (n['n'] in (2, 3,))
-                and (get_mscore(n['text']) > 3)
+                and (utils.get_mscore(n['text']) > 3)
                 and (not is_repeated(n['text']))]
 
         for ngram in tqdm(multirhyme_candidates, desc='making multi rhymes'):
@@ -108,7 +107,7 @@ class Command(BaseCommand):
                 entry = ngrams.get(val)
                 if (entry
                     and (entry.get('song_count', 0) > 2)
-                    and (get_mscore(val) > 3)
+                    and (utils.get_mscore(val) > 3)
                     and (not is_repeated(val))
                 ):
                     rkey = (ngram, val, None)
@@ -125,21 +124,21 @@ class Command(BaseCommand):
 
         # get feature vectors
         for ngram in tqdm(ngrams.values(), desc='ngram vectors'):
-            ngram['phones'] = vector_cache.get(ngram['text'], get_vowel_vector) or None
+            ngram['phones'] = vector_cache.get(ngram['text'], utils.get_vowel_vector) or None
 
         # get meaning scores
         for ngram in tqdm(ngrams.values(), desc='ngram mscores'):
-            ngram['mscore'] = get_mscore(ngram['text'])
+            ngram['mscore'] = utils.get_mscore(ngram['text'])
 
         # get IPA
         ipa_cache, _ = Cache.objects.get_or_create(key='ngram_ipa')
         for ngram in tqdm(ngrams.values(), desc='ngram ipa'):
-            ngram['ipa'] = ipa_cache.get(ngram['text'], get_ipa_text)
+            ngram['ipa'] = ipa_cache.get(ngram['text'], utils.get_ipa_text)
 
         # get stresses vector
         stresses_cache, _ = Cache.objects.get_or_create(key='ngram_stresses')
         for ngram in tqdm(ngrams.values(), desc='ngram stresses'):
-            ngram['stresses'] = stresses_cache.get(ngram['text'], get_stresses_vector)
+            ngram['stresses'] = stresses_cache.get(ngram['text'], utils.get_stresses_vector)
 
         # create an index counts per ngram length for use in the next step
         n_counts = [0 for _ in range(15)]
@@ -152,7 +151,7 @@ class Command(BaseCommand):
         single_word_ct = n_counts[0]
         song_ct = songs.count()
         # frequency of ngrams appearing in titles
-        title_ngrams = FreqDist(itertools.chain(*[n[0] for n in [get_lyric_ngrams(s.title) for s in songs]]))
+        title_ngrams = FreqDist(itertools.chain(*[n[0] for n in [utils.get_lyric_ngrams(s.title) for s in songs]]))
 
         # now calculate various ngram percentages
         # * pct = ngram count as percentage of all ngram occurrences (with same n)

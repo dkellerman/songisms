@@ -1,4 +1,5 @@
-'''GraphQL utilities'''
+'''GraphQL utilities
+'''
 
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 

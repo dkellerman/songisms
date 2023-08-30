@@ -29,6 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ['SISM_DJANGO_SECRET_KEY']
 
 IS_PROD = bool(os.environ.get('DYNO'))
+
 RHYMES_ONLY = IS_PROD
 
 DEBUG = not IS_PROD

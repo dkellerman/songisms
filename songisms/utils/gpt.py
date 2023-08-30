@@ -1,4 +1,5 @@
-'''GPT queries'''
+'''GPT queries
+'''
 
 import json
 
@@ -63,7 +64,7 @@ def gpt_fetch_ipa(text):
             %s
             ```
         """ % text,
-        model="gpt-3.5-turbo-16k-0613",
+        model="gpt-4",
         verbose=False
     )
 

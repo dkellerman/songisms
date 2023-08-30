@@ -3,11 +3,11 @@
 import multiprocessing as mp
 from django.core.management.base import BaseCommand
 from songs.models import Song
-from songisms.utils import fetch_workflow
+from songisms import utils
 
 
 class Command(BaseCommand):
-    help = 'Process stems'
+    help = 'Fetch and process audio stems'
 
     def add_arguments(self, parser):
         parser.add_argument('--id', '-i', type=str, default=None)
@@ -36,6 +36,6 @@ class Command(BaseCommand):
 def fetch_wrapper(song):
     try:
         print("==> Fetching stems", song.pk, song.title)
-        return fetch_workflow('stems', song)
+        return utils.fetch_workflow('stems', song)
     except Exception as err:
         print("Error fetching stems", err, song.pk, song.title)

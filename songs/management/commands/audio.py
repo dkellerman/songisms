@@ -3,14 +3,15 @@
 import multiprocessing as mp
 from django.core.management.base import BaseCommand
 from songs.models import Song
-from songisms.utils import fetch_audio
+from songisms import utils
 
 
 class Command(BaseCommand):
-    help = 'Process audio'
+    help = 'Fetch and process song audio'
 
     def add_arguments(self, parser):
         parser.add_argument('--id', '-i', type=str, default=None)
+
 
     def handle(self, *args, **options):
         songs = Song.objects.all()
@@ -32,11 +33,11 @@ class Command(BaseCommand):
                 with mp.Pool(mp.cpu_count()) as p:
                     p.map(fetch_audio_wrapper, audio_queue)
             else:
-                fetch_audio(audio_queue[0], convert=False)
+                utils.fetch_audio(audio_queue[0], convert=False)
 
 
 def fetch_audio_wrapper(song):
     try:
-        return fetch_audio(song, convert=False)
+        return utils.fetch_audio(song, convert=False)
     except:
         print("Error fetching audio", song.pk, song.title)

@@ -4,7 +4,7 @@ import sys
 import multiprocessing as mp
 from pprint import pprint
 from songs.models import Song
-from songisms.utils import *
+from songisms import utils
 import gensim.models
 import gensim.downloader
 from gensim.models import Word2Vec
@@ -29,7 +29,7 @@ def train():
         for line in text.split('\n'):
             if line.strip() == '':
                 continue
-            toks = [tok for tok in tokenize_lyric(line) if get_mscore(tok) > 3]
+            toks = [tok for tok in utils.tokenize_lyric(line) if utils.get_mscore(tok) > 3]
             docs.append(toks)
     model.build_vocab(docs, update=True)
 
