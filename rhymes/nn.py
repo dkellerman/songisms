@@ -15,9 +15,9 @@ from songisms import utils
 MODEL_FILE = './data/rhymes.torch'
 TRAIN_FILE = './data/rhymes_train.csv'
 DATA_TOTAL_SIZE = 20000
-ROWS = 5000
-BATCH_SIZE = 64
-EPOCHS = 12
+ROWS = 8000
+BATCH_SIZE = 128
+EPOCHS = 10
 WORKERS = 4
 THRESHOLD = 0.5
 DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
@@ -129,7 +129,7 @@ def train():
             optimizer.step()
             losses_cur_epoch.append(loss.item())
             all_losses[-1] = sum(losses_cur_epoch) / len(losses_cur_epoch)
-            loading.set_description(f"[E{epoch+1}-T] L={all_losses[-1]:.2f}")
+            loading.set_description(f"[E{epoch+1}-T] L={all_losses[-1]:.3f}")
 
         # validation data
         val_loading = tqdm(val_loader, f"[E{epoch+1}-v] L=...")
@@ -142,7 +142,7 @@ def train():
                 val_loss = criterion(anchor_out, pos_out, neg_out)
                 val_losses_cur_epoch.append(val_loss.item())
                 all_val_losses[-1] = sum(val_losses_cur_epoch) / len(val_losses_cur_epoch)
-                val_loading.set_description(f"[E{epoch+1}-v] L={all_val_losses[-1]:.2f}")
+                val_loading.set_description(f"[E{epoch+1}-v] L={all_val_losses[-1]:.3f}")
 
     # Save model
     torch.save(model.state_dict(), MODEL_FILE)
@@ -231,12 +231,12 @@ def test():
             wrong.append((text1, text2, pred, score))
 
     for text1, text2, pred, score in wrong:
-        print('[X]', f'[PRED={"Y" if pred else "N"}]', text1, '=>', text2, f'[{score:.2f}]')
+        print('[X]', f'[PRED={"Y" if pred else "N"}]', text1, '=>', text2, f'[{score:.3f}]')
 
     total = len(correct) + len(wrong)
     pct = (len(correct) / total) * 100
 
-    print("\n\nCorrect:", len(correct), "Wrong:", len(wrong), "Pct:", f"{pct:.2f}%")
+    print("\n\nCorrect:", len(correct), "Wrong:", len(wrong), "Pct:", f"{pct:.3f}%")
     print("Avg wrong score:", sum([x[2] for x in wrong]) / len(wrong))
     print("Min wrong score:", min([x[2] for x in wrong]))
     print("Max wrong score:", max([x[2] for x in wrong]))
@@ -290,11 +290,8 @@ def make_training_data():
             negative = rw.word()
 
         if anchor != negative:
-            entry = [anchor, positive, negative]
-            # occasionally remind it that the same word doesn't rhyme
-            if random.random() > .99:
-                entry[2] = anchor
-            lines.add(tuple(entry))
+            entry = (anchor, positive, negative,)
+            lines.add(entry)
 
         # add some variants
         pos_vars = utils.make_variants(positive)
