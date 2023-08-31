@@ -1,6 +1,7 @@
-from django.core.management.base import BaseCommand
+'''Rhyme-detecting neural net
+'''
+
 import random
-import argparse
 import torch
 from torch import nn
 import torch.nn.functional as F
@@ -16,7 +17,7 @@ TRAIN_FILE = './data/rhymes_train.csv'
 DATA_TOTAL_SIZE = 20000
 ROWS = 5000
 BATCH_SIZE = 64
-EPOCHS = 20
+EPOCHS = 10
 WORKERS = 4
 THRESHOLD = 0.5
 DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
@@ -34,28 +35,6 @@ SCORE_LABELS = [
     [.7, "Unlikely rhyme"],
     [1.0, "Not a rhyme"],
 ]
-
-
-class Command(BaseCommand):
-    help = 'Train rhyme-detecting neural net'
-
-    def add_arguments(self, parser):
-        parser.add_argument('--train', '-t', action=argparse.BooleanOptionalAction)
-        parser.add_argument('--test', '-T', action=argparse.BooleanOptionalAction)
-        parser.add_argument('--data', '-d', action=argparse.BooleanOptionalAction)
-        parser.add_argument('--predict', '-p', nargs=2)
-
-    def handle(self, *args, **options):
-        if options['train']:
-            train()
-        elif options['test']:
-            test()
-        elif options['data']:
-            make_training_data()
-        else:
-            text1, text2 = options['predict']
-            predict_with_info(text1, text2)
-
 
 class RhymesDataset(Dataset):
     def __init__(self, pad_to=MAX_LEN):
@@ -283,14 +262,6 @@ def predict(word1, word2):
             break
     return pred, distance, label
 
-
-def predict_with_info(text1, text2):
-    pred, score, label = predict(text1, text2)
-
-    print("IPA:", utils.get_ipa_text(text1), '|', utils.get_ipa_text(text2))
-    print("Tails:", utils.get_ipa_tail(text1), '|', utils.get_ipa_tail(text2))
-    print("Score:", score)
-    print("===>", label)
 
 
 def make_training_data():
