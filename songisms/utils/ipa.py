@@ -78,6 +78,30 @@ def get_ipa_features(ipa_letter):
     return f
 
 
+def get_ipa_features_vector(ipa, tail=True):
+    if type(ipa) == str:
+        val = get_ipa_tail(ipa) if tail else get_ipa_text(ipa)
+        vec = [c for c in val]
+    else:
+        vec = ipa
+
+    for i, char in enumerate(vec):
+        if char == '_':
+            vec[i] = utils.EMPTY_FEATURES + [0.0]
+        elif char == "ˈ":
+            vec[i] = utils.EMPTY_FEATURES + [2.0]
+        elif char == "ˌ":
+            vec[i] = utils.EMPTY_FEATURES + [1.0]
+        else:
+            features = utils.get_ipa_features(char)
+            if features is None:
+                vec[i] = utils.EMPTY_FEATURES + [0.0]
+            else:
+                vec[i] = features.numeric() + [0.0]
+
+    return vec
+
+
 def is_vowel(ipa_letter):
     return ipa_letter in IPA_VOWELS
 

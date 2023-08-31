@@ -11,6 +11,7 @@ TODO.md
 **/data/*
 **/data/fixtures/*
 !data/rhymes.json
+!data/rhymes_train.csv
 !data/simsounds.json
 !data/variants.txt
 !data/ipa_gpt.json

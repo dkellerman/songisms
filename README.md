@@ -43,3 +43,7 @@
 * `SISM_RHYMES_API_BASE_URL` (use 127.0.0.1 instead of localhost for dev due to ofetch bug)
 
 All apps deploy automatically when pushed to master branch.
+
+If you're training a neural net on a M1 Mac, you may want to run first:
+* `pip uninstall torch` (if it's installed)
+* `pip install --pre torch --extra-index-url https://download.pytorch.org/whl/nightly/cpu`
