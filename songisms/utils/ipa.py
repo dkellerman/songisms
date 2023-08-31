@@ -41,8 +41,14 @@ def get_ipa_words(text):
     ipa = []
     for w in words:
         if '*' in w or not w.strip():
-            w = w.replace('*', '').strip()
-            w = utils.data.gpt_ipa.get(w, get_g2p_word(w))
+            guess = w.replace('*', '').strip()
+            w = utils.data.gpt_ipa.get(guess, None)
+            w = w or get_g2p_word(guess)
+            w = w or guess
+            if not w:
+                # non-ideal behavior in the long-run, but for now I think
+                # it should always be able to return something here
+                raise Exception(f'ERROR! Could not translate IPA for "{text}"')
         ipa.append(fix_ipa_word(w))
     return ipa
 

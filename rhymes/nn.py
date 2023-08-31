@@ -17,7 +17,7 @@ TRAIN_FILE = './data/rhymes_train.csv'
 DATA_TOTAL_SIZE = 20000
 ROWS = 5000
 BATCH_SIZE = 64
-EPOCHS = 10
+EPOCHS = 12
 WORKERS = 4
 THRESHOLD = 0.5
 DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
@@ -53,7 +53,7 @@ class RhymesDataset(Dataset):
         return anchor, pos, neg
 
 
-class SiameseTripletNet(torch.nn.Module):
+class SiameseTripletNet(nn.Module):
     def __init__(self):
         super(SiameseTripletNet, self).__init__()
 
@@ -157,6 +157,9 @@ def train():
 
 
 def make_rhyme_tensors(anchor, pos, neg=None, pad_to=MAX_LEN):
+    '''Aligns IPA words and returns feature vectors for each IPA character.
+       Note: returns None if IPA can't be found for any word - should be filtered out
+    '''
     proc_fn = utils.get_ipa_tail if USE_TAILS else utils.get_ipa_text
 
     if neg is not None:
@@ -192,7 +195,7 @@ class RhymesTestDataset(Dataset):
 
         # add some random non-rhymes (probably)
         rw = RandomWord()
-        target_ct = (len(labeled_pairs) * 1.5)
+        target_ct = int(len(labeled_pairs) * 1.5)
         while len(labeled_pairs) < target_ct:
             w1, w2 = rw.word(), rw.word()
             if w1 == w2 or (utils.get_ipa_tail(w1) == utils.get_ipa_tail(w2)):
@@ -221,14 +224,14 @@ def test():
     loader = DataLoader(test_dataset, shuffle=True, num_workers=WORKERS)
 
     for text1, text2, label in tqdm(loader, "Test Rhymes"):
-        pred, score = predict(text1, text2)
+        pred, score, _ = predict(text1, text2)
         if (pred and label == 1.0) or (not pred and label == 0.0):
-            correct.append((text1, text2, score))
+            correct.append((text1, text2, pred, score))
         else:
-            wrong.append((text1, text2, score))
+            wrong.append((text1, text2, pred, score))
 
-    for text1, text2, score in wrong:
-        print('[X]', text1, '=>', text2, f"[{score}]")
+    for text1, text2, pred, score in wrong:
+        print('[X]', f'[PRED={"Y" if pred else "N"}]', text1, '=>', text2, f'[{score:.2f}]')
 
     total = len(correct) + len(wrong)
     pct = (len(correct) / total) * 100
@@ -242,11 +245,11 @@ def test():
     print("Max correct score:", max([x[2] for x in correct]))
 
 
-def predict(word1, word2):
+def predict(text1, text2):
     model = SiameseTripletNet()
     model.load_state_dict(torch.load(MODEL_FILE))
     model.eval()
-    anchor_vec, other_vec = make_rhyme_tensors(word1, word2)
+    anchor_vec, other_vec = make_rhyme_tensors(text1, text2)
     anchor_vec = anchor_vec.transpose(0, 1).unsqueeze(0)
     other_vec = other_vec.transpose(0, 1).unsqueeze(0)
     anchor_out, other_out = model(anchor_vec, other_vec)
@@ -263,17 +266,16 @@ def predict(word1, word2):
     return pred, distance, label
 
 
-
 def make_training_data():
     '''Output siamese neural net training data triples to CSV file
     '''
     from rhymes.models import Rhyme
+    rw = RandomWord()
 
     rhymes = list(Rhyme.objects.filter(level=1).prefetch_related('to_ngram', 'from_ngram'))
     random.shuffle(rhymes)
     lines = set()
     i = 0
-    rw = RandomWord()
 
     while len(lines) < DATA_TOTAL_SIZE:
         i += 1
@@ -281,15 +283,20 @@ def make_training_data():
         anchor = r.from_ngram.text
         positive = r.to_ngram.text
 
+        # for negative, alternate btw random song words and general random words
         if i % 2 == 0:
             negative = rhymes[random.randint(0, len(rhymes) - 1)].to_ngram.text
         else:
             negative = rw.word()
 
         if anchor != negative:
-            entry = (anchor, positive, negative)
-            lines.add(entry)
+            entry = [anchor, positive, negative]
+            # occasionally remind it that the same word doesn't rhyme
+            if random.random() > .99:
+                entry[2] = anchor
+            lines.add(tuple(entry))
 
+        # add some variants
         pos_vars = utils.make_variants(positive)
         neg_vars = utils.make_variants(negative)
         for pos_var, neg_var in zip(pos_vars[:2], neg_vars[:2]):
