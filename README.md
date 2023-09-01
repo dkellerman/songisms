@@ -33,18 +33,12 @@
 * Browse GraphQL: https://localhost:8000/songs/graphql/
 
 ## Setup rhymes client app
+* Requires Node v18: `nvm use 18`
+* Install yarn
 * `cd rhymes/client`
-* `nvm use 18`
-* `yarn`
-* `yarn dev` OR `vercel dev` (should have env vars setup)
-
-## Other env vars
-* `NEXT_PUBLIC_SISM_GOOGLE_CREDENTIALS` (base64 encoded json)
-* `NEXT_PUBLIC_SISM_API_BASE_URL` - default http://localhost:8000
-* `SISM_DJANGO_SECRET_KEY`
-* `SISM_RHYMES_API_BASE_URL` (use 127.0.0.1 instead of localhost for dev due to ofetch bug)
-
-All apps deploy automatically when pushed to master branch.
+* `yarn` - initial install
+* `yarn dev` - launch dev server
+* can also set `SISM_RHYMES_API_BASE_URL` (if Django isn't running locally on default port 8000)
 
 # Rhymes neural net
 
