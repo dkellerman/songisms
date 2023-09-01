@@ -48,6 +48,7 @@ autopep8 = "^2.0.0"
 gensim = "^4.2.0"
 numpy = "^1.22.4"
 wonderwords = "^2.2.0"
+positional-encodings = {extras = ["pytorch"], version = "^6.0.1"}
 
 
 [build-system]

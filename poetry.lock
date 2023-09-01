@@ -2029,6 +2029,25 @@ dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
+name = "positional-encodings"
+version = "6.0.1"
+description = "1D, 2D, and 3D Sinusodal Positional Encodings in PyTorch"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "positional_encodings-6.0.1-py3-none-any.whl", hash = "sha256:0675bdbe5d50e95bb43348c5fd234311e4b0a253474a30da89348949ad42c306"},
+    {file = "positional_encodings-6.0.1.tar.gz", hash = "sha256:01de4b788b7517cb22ba816974f9881e2901b5b1f83ef16476f18d2a1a4a9ce2"},
+]
+
+[package.dependencies]
+numpy = "*"
+torch = {version = "*", optional = true, markers = "extra == \"pytorch\""}
+
+[package.extras]
+pytorch = ["torch"]
+tensorflow = ["tensorflow"]
+
+[[package]]
 name = "promise"
 version = "2.3"
 description = "Promises/A+ implementation for Python"
@@ -3167,4 +3186,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "3.9.13"
-content-hash = "8e22b5e5fa76606a7c2e37a1c20e72db8b7c5835281d8f5f78b904c9d166fbcb"
+content-hash = "dfa211f0fe3d1f2f0a3466b430c9cc59114a1ed3466c05dc5c882c8ecff33d8b"

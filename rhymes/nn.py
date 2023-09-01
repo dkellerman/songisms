@@ -1,10 +1,10 @@
 '''Rhyme-detecting neural net
 
 Use with rhymesnet management command:
-    `./manage.py rhymesnet --data` - generate training data
-    `./manage.py rhymesnet --train` - train model
-    `./manage.py rhymesnet --test` - test model
-    `./manage.py rhymesnet --predict "word1" "word2"` - predict rhyme
+    `./manage.py rhymesnet --data` -> generate training data
+    `./manage.py rhymesnet --train` -> train model
+    `./manage.py rhymesnet --test` -> test model
+    `./manage.py rhymesnet --predict "word1" "word2"` -> predict rhyme
 '''
 
 import random
