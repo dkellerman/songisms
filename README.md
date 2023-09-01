@@ -2,7 +2,7 @@
 
 * Song lyric database
 * Rhymes search client (rhymes.vercel.app)
-* Song browser/admin
+* Rhymes neural net
 
 ## App layout
 * `songisms` -> main django project
