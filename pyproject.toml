@@ -27,11 +27,11 @@ redis = "^4.3.3"
 dj-database-url = "^2.1.0"
 google-auth = "^2.22.0"
 django-smuggler = "^1.0.4"
+django-graphql-jwt = "^0.3.4"
 
 
 [tool.poetry.group.dev.dependencies]
 graphene-django = "^3.0.0"
-django-graphql-jwt = "^0.3.4"
 tqdm = "^4.64.0"
 django-storages = {extras = ["google"], version = "^1.12.3"}
 pafy = "^0.5.5"
