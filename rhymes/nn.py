@@ -25,7 +25,7 @@ DATA_TOTAL_SIZE = 5000  # number of rows to generate
 ROWS = 5000  # number of rows to use for training/validation
 TEST_SIZE = 1000
 BATCH_SIZE = 64
-EPOCHS = 5
+EPOCHS = 10
 LR = 0.001
 WORKERS = 4
 POSITIONAL_ENCODING = False
@@ -34,7 +34,7 @@ DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
 # these can't change right now without also adjusting the network
 MAX_LEN = 20
-USE_TAILS = False
+USE_TAILS = False # IPA stress tails
 
 class RhymesDataset(Dataset):
     '''Loads training data triples (anchor/pos/neg)
@@ -298,23 +298,26 @@ def test():
 
     total = len(correct) + len(wrong)
     pct = (len(correct) / total) * 100
+    wrong_scores = [x[3] for x in wrong]
+    correct_scores = [x[3] for x in correct]
+
     print("\n\nCorrect:", len(correct), "Wrong:", len(wrong), "Pct:", f"{pct:.3f}%")
-    print("Avg wrong score:", sum([x[3] for x in wrong]) / len(wrong))
-    print("Min wrong score:", min([x[3] for x in wrong]))
-    print("Max wrong score:", max([x[3] for x in wrong]))
-    print("Avg correct score:", sum([x[3] for x in correct]) / len(correct) + 1)
-    print("Min correct score:", min([x[3] for x in correct]))
-    print("Max correct score:", max([x[3] for x in correct]))
+    print("Avg wrong score:", sum(wrong_scores) / len(wrong))
+    print("Min wrong score:", min(wrong_scores))
+    print("Max wrong score:", max(wrong_scores))
+    print("Avg correct score:", sum(correct_scores) / len(correct) + 1)
+    print("Min correct score:", min(correct_scores))
+    print("Max correct score:", max(correct_scores))
 
 
-SCORE_LABELS = [
-    [.1, "Perfect rhyme"],
-    [.3, "Slant rhyme"],
-    [.5, "Weak rhyme"],
-    [.6, "Near rhyme"],
-    [.7, "Unlikely rhyme"],
-    [1.0, "Not a rhyme"],
-]
+SCORE_LABELS = (
+    (.1, "Perfect rhyme"),
+    (.3, "Slant rhyme"),
+    (.5, "Weak rhyme"),
+    (.6, "Near rhyme"),
+    (.7, "Unlikely rhyme"),
+    (1.0, "Not a rhyme"),
+)
 
 def predict(text1, text2, model=None, distance_norm=1.0):
     if not model:

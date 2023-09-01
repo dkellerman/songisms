@@ -14,6 +14,8 @@
 # Setup
 
 ## Setup Python env
+* Requires python 3.9+
+* Install Poetry: `curl -sSL https://install.python-poetry.org | python3 -`
 * `poetry install`
 * `poetry shell`
 
