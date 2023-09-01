@@ -366,6 +366,8 @@ def make_training_data():
             if rhymes:
                 # get the lowest scoring result to encourage real-world-esque rhymes
                 pos = min(rhymes, key=lambda x: x.get('score', 1000))['word'] or None
+                if pos == anchor or (pos == anchor + 's'):
+                    pos = None
 
         pos = utils.normalize_lyric(pos)
         neg = utils.normalize_lyric(rw.word())
