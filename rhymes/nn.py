@@ -151,10 +151,7 @@ def train():
     val_loader = DataLoader(validation_data, batch_size=BATCH_SIZE, shuffle=True, num_workers=WORKERS)
     all_losses = []
     all_validation_losses = []
-
-    # min/max distances used by predictor for normalizing distances
-    min_distance = 0
-    max_distance = 0
+    distances = []  # track distances for norming later
 
     for epoch in range(EPOCHS):
         # training set
@@ -169,12 +166,8 @@ def train():
             optimizer.step()
             losses.append(loss.item())
             prog_bar.set_description(f"[E{epoch+1}-T]* L={sum(losses)/len(losses):.3f}")
-
-            # update min/max distances
-            distance_pos = pairwise_distance_ignore_batch_dim(anchor_out, pos_out)
-            distance_neg = pairwise_distance_ignore_batch_dim(anchor_out, neg_out)
-            min_distance = min(min_distance, min(distance_pos).item(), min(distance_neg).item())
-            max_distance = max(max_distance, max(distance_pos).item(), max(distance_neg).item())
+            distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, pos_out)]
+            distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, neg_out)]
 
         all_losses.append(losses)
 
@@ -187,10 +180,14 @@ def train():
                 val_loss = criterion(anchor_out, pos_out, neg_out)
                 losses.append(val_loss.item())
                 prog_bar.set_description(f"[E{epoch+1}-v] L={sum(losses)/len(losses):.3f}")
+                distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, pos_out)]
+                distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, neg_out)]
 
         all_validation_losses.append(losses)
 
     # Save model
+    min_distance = min(distances)
+    max_distance = max(distances)
     print('Saving model', MODEL_FILE, 'mindist:', min_distance, 'maxdist:', max_distance)
     torch.save({
         'model_state_dict': model.state_dict(),
@@ -306,7 +303,7 @@ def test():
     wrong_distances = [x[3] for x in wrong]
     correct_distances = [x[3] for x in correct]
 
-    print("\n\nCorrect:", len(correct), "Wrong:", len(wrong), "Pct:", f"{pct:.3f}%")
+    print("\n\nCorrect:", len(correct), "| Wrong:", len(wrong), "| Pct:", f"{pct:.3f}%")
     print("Avg wrong distance:", sum(wrong_distances) / len(wrong))
     print("Min wrong distance:", min(wrong_distances))
     print("Max wrong distance:", max(wrong_distances))
@@ -355,28 +352,28 @@ def make_training_data():
     lines = []
     for _ in tqdm(range(DATA_TOTAL_SIZE), "Generating rhyme triples"):
         anchor = None
-        pos = None
+        positive = None
 
         # lookup a positive value using datamuse
-        while pos is None:
+        while positive is None:
             anchor = utils.normalize_lyric(rw.word())
             if anchor in lines:
                 continue
             rhymes = utils.get_datamuse_rhymes(anchor, cache_only=DATAMUSE_CACHED_ONLY)
             if rhymes:
                 # get the lowest scoring result to encourage real-world-esque rhymes
-                pos = min(rhymes, key=lambda x: x.get('score', 1000))['word'] or None
-                if pos == anchor or (pos == anchor + 's'):
-                    pos = None
+                positive = min(rhymes, key=lambda x: x.get('score', 1000))['word'] or None
+                if positive == anchor or (positive == positive + 's'):
+                    positive = None
 
-        pos = utils.normalize_lyric(pos)
-        neg = utils.normalize_lyric(rw.word())
+        positive = utils.normalize_lyric(positive)
+        negative = utils.normalize_lyric(rw.word())
 
         # check IPA length doesn't exceed max length of net
-        if any([len(utils.get_ipa_text(w)) > MAX_LEN - 1 for w in [anchor, pos, neg]]):
+        if any([len(utils.get_ipa_text(w)) > MAX_LEN - 1 for w in [anchor, positive, negative]]):
             continue
 
-        lines.append((anchor, pos, neg))
+        lines.append((anchor, positive, negative))
 
     with open(TRAIN_FILE, 'w') as f:
         f.write('\n'.join(';'.join(l) for l in lines))
