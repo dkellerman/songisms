@@ -33,7 +33,6 @@ class Command(BaseCommand):
         rhymes = dict()
         song_ngrams = dict()
         vector_cache, _ = Cache.objects.get_or_create(key='ngram_vector')
-        datamuse_cache, _ = Cache.objects.get_or_create(key='datamuse')
 
         # loop through all songs with lyrics
         songs = Song.objects.filter(is_new=False).exclude(lyrics=None)
@@ -68,7 +67,7 @@ class Command(BaseCommand):
         muse_rhymes = set()
 
         for from_ngram in tqdm(single_words, desc='datamuse rhymes'):
-            vals = datamuse_cache.get(from_ngram['text'], utils.fetch_datamuse_rhymes)
+            vals = utils.get_datamuse_rhymes(from_ngram['text'], cache_only=False)
             for val in vals:
                 to_text = val['word']
                 from_text = from_ngram['text']
@@ -184,7 +183,8 @@ class Command(BaseCommand):
             return
 
         # save the db caches
-        for c in tqdm([datamuse_cache, vector_cache, ipa_cache, stresses_cache], desc='saving db caches'):
+        utils.get_datamuse_cache().save()
+        for c in tqdm([vector_cache, ipa_cache, stresses_cache], desc='saving db caches'):
             c.save()
             del c
         del title_ngrams

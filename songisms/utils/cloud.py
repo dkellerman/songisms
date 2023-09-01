@@ -7,6 +7,7 @@ import base64
 import requests
 import shutil
 import requests
+from functools import lru_cache
 from urllib.parse import urlencode
 from django.core.files import File
 from django.conf import settings
@@ -203,10 +204,23 @@ def fetch_workflow(workflow_id, song):
     return attachments
 
 
+@lru_cache(maxsize=None)
+def get_datamuse_cache():
+    from rhymes.models import Cache
+    cache, _ = Cache.objects.get_or_create(key='datamuse')
+    return cache
+
+
+def get_datamuse_rhymes(key, cache_only=False):
+    return get_datamuse_cache().get(key, fetch_datamuse_rhymes if not cache_only else None)
+
+
 def fetch_datamuse_rhymes(key):
     query = urlencode(dict(rel_rhy=key, max=50))
     query2 = urlencode(dict(rel_nry=key, max=50))
     vals = []
+
+    print("Fetch datamuse rhymes", query, "AND", query2)
     try:
         vals += requests.get(f'https://api.datamuse.com/words?{query}').json()
     except:
@@ -215,6 +229,5 @@ def fetch_datamuse_rhymes(key):
         vals += requests.get(f'https://api.datamuse.com/words?{query2}').json()
     except:
         print('error retrieving datamuse NRY for', key)
+
     return vals
-
-

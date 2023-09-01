@@ -64,7 +64,7 @@ def align_vals(val1, val2):
 
 
 @lru_cache(maxsize=1000)
-def make_variants(gram):
+def make_variants(gram, spelling=True):
     '''Make a list of variants of a word or phrase for searching
     '''
     import pronouncing as pron
@@ -80,10 +80,11 @@ def make_variants(gram):
     word = words[-1] # just using the last word works best for now
 
     # common misspellings
-    new_sp = utils.data.misspellings.get(word, None)
-    if new_sp:
-        variants.append(new_sp)
-        word = new_sp  # make variants of this
+    if spelling:
+        new_sp = utils.data.misspellings.get(word, None)
+        if new_sp:
+            variants.append(new_sp)
+            word = new_sp  # make variants of this
 
     # in' -> ing
     if len(word) >= 5:

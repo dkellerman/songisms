@@ -1,4 +1,10 @@
 '''Rhyme-detecting neural net
+
+Use with rhymesnet management command:
+    `./manage.py rhymesnet --data` - generate training data
+    `./manage.py rhymesnet --train` - train model
+    `./manage.py rhymesnet --test` - test model
+    `./manage.py rhymesnet --predict "word1" "word2"` - predict rhyme
 '''
 
 import random
@@ -7,49 +13,42 @@ from torch import nn
 import torch.nn.functional as F
 from tqdm import tqdm
 from torch.utils.data import Dataset, DataLoader, random_split
+from positional_encodings.torch_encodings import PositionalEncoding1D, Summer
 import matplotlib.pyplot as plt
 from wonderwords import RandomWord
 from songisms import utils
 
 # to be configurable later
-MODEL_FILE = './data/rhymes.torch'
+MODEL_FILE = './data/rhymes.pt'
 TRAIN_FILE = './data/rhymes_train.csv'
-DATA_TOTAL_SIZE = 20000
-ROWS = 8000
-BATCH_SIZE = 128
-EPOCHS = 10
+DATA_TOTAL_SIZE = 5000  # number of rows to generate
+ROWS = 5000  # number of rows to use for training/validation
+TEST_SIZE = 1000
+BATCH_SIZE = 64
+EPOCHS = 5
+LR = 0.001
 WORKERS = 4
-THRESHOLD = 0.5
+POSITIONAL_ENCODING = False
+DATAMUSE_CACHED_ONLY = True # set false for first few times generating training data
 DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
 # these can't change right now without also adjusting the network
-MAX_LEN = 30
+MAX_LEN = 20
 USE_TAILS = False
-NORM_SCORE = 11.5  # ???
-
-SCORE_LABELS = [
-    [.1, "Perfect Rhyme"],
-    [.3, "Slant rhyme"],
-    [.5, "Weak rhyme"],
-    [.6, "Near rhyme"],
-    [.7, "Unlikely rhyme"],
-    [1.0, "Not a rhyme"],
-]
 
 class RhymesDataset(Dataset):
+    '''Loads training data triples (anchor/pos/neg)
+    '''
     def __init__(self, pad_to=MAX_LEN):
         self.pad_to = pad_to
-        self.triplets = utils.data.rhymes_train
-        if ROWS:
-            self.triplets = self.triplets[:ROWS]
+        self.triples = utils.data.rhymes_train[:ROWS]
 
     def __len__(self):
-        return len(self.triplets)
+        return len(self.triples)
 
     def __getitem__(self, idx):
-        anchor, pos, neg = self.triplets[idx]
+        anchor, pos, neg = self.triples[idx]
         anchor, pos, neg = make_rhyme_tensors(anchor, pos, neg, pad_to=self.pad_to)
-        anchor, pos, neg = anchor.transpose(0, 1), pos.transpose(0, 1), neg.transpose(0, 1)
         return anchor, pos, neg
 
 
@@ -61,21 +60,21 @@ class SiameseTripletNet(nn.Module):
             nn.Conv1d(25, 64, kernel_size=3),
             nn.Tanh(),
             nn.BatchNorm1d(64),
-            nn.Dropout1d(p=.25),
+            nn.Dropout1d(p=.2),
 
             nn.Conv1d(64, 64, kernel_size=3),
             nn.Tanh(),
             nn.BatchNorm1d(64),
-            nn.Dropout1d(p=.25),
+            nn.Dropout1d(p=.2),
 
             nn.Conv1d(64, 32, kernel_size=3),
             nn.Tanh(),
             nn.BatchNorm1d(32),
-            nn.Dropout1d(p=.25),
+            nn.Dropout1d(p=.2),
         )
-        self.fc1 = nn.Linear(768, 1000)
+        self.fc1 = nn.Linear(448, 1000)
         self.fc2 = nn.Linear(1000, 500)
-        self.fc3 = nn.Linear(500, 100)
+        self.fc3 = nn.Linear(500, 50)
 
     def forward_once(self, x):
         z = self.cnn1(x)
@@ -104,52 +103,68 @@ class TripletMarginLoss(nn.Module):
 
 
 def train():
+    model = SiameseTripletNet()
+    criterion = TripletMarginLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=LR)
+
+    # prepare training and validation data loaders
     dataset = RhymesDataset()
     train_data, validation_data = random_split(dataset, [0.8, 0.2])
     loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True, num_workers=WORKERS)
     val_loader = DataLoader(validation_data, batch_size=BATCH_SIZE, shuffle=True, num_workers=WORKERS)
-
-    model = SiameseTripletNet()
-    criterion = TripletMarginLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     all_losses = []
-    all_val_losses = []
+    all_validation_losses = []
+
+    # min/max distances used by predictor for normalizing distance scores
+    min_distance = 0
+    max_distance = 0
 
     for epoch in range(EPOCHS):
-        # training data
-        loading = tqdm(loader, f"[E{epoch+1}-T] L=...")
-        losses_cur_epoch = []
-        all_losses.append(0)
+        # training set
+        prog_bar = tqdm(loader)
+        losses = []
 
-        for (anchor, pos, neg) in loading:
+        for (anchor, pos, neg) in prog_bar:
             anchor_out, pos_out, neg_out = model(anchor, pos, neg)
             loss = criterion(anchor_out, pos_out, neg_out)
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            losses_cur_epoch.append(loss.item())
-            all_losses[-1] = sum(losses_cur_epoch) / len(losses_cur_epoch)
-            loading.set_description(f"[E{epoch+1}-T] L={all_losses[-1]:.3f}")
+            losses.append(loss.item())
+            prog_bar.set_description(f"[E{epoch+1}-T]* L={sum(losses)/len(losses):.3f}")
 
-        # validation data
-        val_loading = tqdm(val_loader, f"[E{epoch+1}-v] L=...")
-        val_losses_cur_epoch = []
-        all_val_losses.append(0)
+            # update min/max distances
+            distance_pos = pairwise_distance_ignore_batch_dim(anchor_out, pos_out)
+            distance_neg = pairwise_distance_ignore_batch_dim(anchor_out, neg_out)
+            min_distance = min(min_distance, min(distance_pos).item(), min(distance_neg).item())
+            max_distance = max(max_distance, max(distance_pos).item(), max(distance_neg).item())
 
+        all_losses.append(losses)
+
+        # validation set
+        prog_bar = tqdm(val_loader)
+        losses = []
         with torch.no_grad():
-            for anchor, pos, neg in val_loading:
+            for anchor, pos, neg in prog_bar:
                 anchor_out, pos_out, neg_out = model(anchor, pos, neg)
                 val_loss = criterion(anchor_out, pos_out, neg_out)
-                val_losses_cur_epoch.append(val_loss.item())
-                all_val_losses[-1] = sum(val_losses_cur_epoch) / len(val_losses_cur_epoch)
-                val_loading.set_description(f"[E{epoch+1}-v] L={all_val_losses[-1]:.3f}")
+                losses.append(val_loss.item())
+                prog_bar.set_description(f"[E{epoch+1}-v] L={sum(losses)/len(losses):.3f}")
+
+        all_validation_losses.append(losses)
 
     # Save model
-    torch.save(model.state_dict(), MODEL_FILE)
+    print('Saving model', MODEL_FILE, 'mindist:', min_distance, 'maxdist:', max_distance)
+    torch.save({
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict(),
+        'min_distance': min_distance,
+        'max_distance': max_distance,
+    }, MODEL_FILE)
 
-    # plot train/validation losses
-    plt.plot(all_losses, label='Training Loss')
-    plt.plot(all_val_losses, label='Validation Loss')
+    # plot training/validation losses averaged per epoch
+    plt.plot([sum(epoch)/len(epoch) for epoch in all_losses], label='Training Loss')
+    plt.plot([sum(epoch)/len(epoch) for epoch in all_validation_losses], label='Validation Loss')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.legend()
@@ -158,45 +173,74 @@ def train():
 
 def make_rhyme_tensors(anchor, pos, neg=None, pad_to=MAX_LEN):
     '''Aligns IPA words and returns feature vectors for each IPA character.
-       Note: returns None if IPA can't be found for any word - should be filtered out
     '''
-    proc_fn = utils.get_ipa_tail if USE_TAILS else utils.get_ipa_text
+    ipa_conv_fn = utils.get_ipa_tail if USE_TAILS else utils.get_ipa_text
 
+    # align all 3 if neg is provided, otherwise just 2
     if neg is not None:
-        anchor_ipa, pos_ipa, neg_ipa = [proc_fn(text) for text in [anchor, pos, neg]]
+        anchor_ipa, pos_ipa, neg_ipa = [ipa_conv_fn(text) for text in [anchor, pos, neg]]
         anchor_vec, pos_vec, _ = utils.align_vals(anchor_ipa, pos_ipa)
         anchor_vec, neg_vec, _ = utils.align_vals(anchor_ipa, neg_ipa)
         vecs = [anchor_vec, pos_vec, neg_vec]
     else:
-        anchor_ipa, pos_ipa = [proc_fn(text) for text in [anchor, pos]]
+        anchor_ipa, pos_ipa = [ipa_conv_fn(text) for text in [anchor, pos]]
         anchor_vec, pos_vec, _ = utils.align_vals(anchor_ipa, pos_ipa)
         vecs = [anchor_vec, pos_vec]
 
     for i, vec in enumerate(vecs):
-        # pad
-        vec = (['_'] * (pad_to - len(vec))) + [str(c) for c in vec]
+        # pad, or chop if it's too long (but it shouldn't be)
+        vec = (['_'] * (pad_to - len(vec))) + [str(c) for c in vec][:MAX_LEN]
         # replace IPA characters with feature arrays
         vec = utils.get_ipa_features_vector(vec)
         # convert to tensor
-        vecs[i] = torch.tensor(vec, dtype=torch.float)
+        vec = torch.tensor(vec, dtype=torch.float)
+        vec = vec.transpose(0, 1)
+
+        if POSITIONAL_ENCODING:
+            encoder = Summer(PositionalEncoding1D(MAX_LEN))
+            vec = vec.unsqueeze(0) # encoder requires a batch dimension
+            vec = encoder(vec)
+            vec = vec.squeeze(0)
+
+        vecs[i] = vec
 
     return vecs
 
 
-class RhymesTestDataset(Dataset):
-    def __init__(self):
-        labeled_pairs = []
-        for rset in utils.data.rhymes:
-            pairs = utils.get_rhyme_pairs(';'.join(rset))
-            for w1, w2 in pairs:
-                if (w1, w2, 1.0) not in labeled_pairs and \
-                   (w2, w1, 1.0) not in labeled_pairs:
-                    labeled_pairs.append((w1, w2, 1.0))
+def pairwise_distance_ignore_batch_dim(tensor1, tensor2, *args, **kwargs):
+    # wish I could find a better way to do this
+    tensor1 = tensor1.squeeze(0)
+    tensor2 = tensor2.squeeze(0)
+    distance = F.pairwise_distance(tensor1, tensor2, *args, **kwargs)
+    tensor1 = tensor1.unsqueeze(0)
+    tensor2 = tensor2.unsqueeze(0)
+    return distance
 
-        # add some random non-rhymes (probably)
+
+class RhymesTestDataset(Dataset):
+    '''Slightly more real-world dataset for final testing, produces
+       pairs of words with labels (text, text, 1.0|0.0)
+    '''
+    def __init__(self):
+        song_rhyme_sets = utils.data.rhymes
+        random.shuffle(song_rhyme_sets)
+        labeled_pairs = []
+
+        # half of dataset is positive rhyme pairs
+        for rset in song_rhyme_sets:
+            pairs = utils.get_rhyme_pairs(';'.join(rset))
+            for text1, text2 in pairs:
+                if (text1, text2, 1.0) not in labeled_pairs and \
+                   (text2, text1, 1.0) not in labeled_pairs:
+                    labeled_pairs.append((text1, text2, 1.0))
+
+            if len(labeled_pairs) >= TEST_SIZE // 2:
+                labeled_pairs = labeled_pairs[:TEST_SIZE // 2]
+                break
+
+        # add some random negative non-rhymes (probably)
         rw = RandomWord()
-        target_ct = int(len(labeled_pairs) * 1.5)
-        while len(labeled_pairs) < target_ct:
+        while len(labeled_pairs) < TEST_SIZE:
             w1, w2 = rw.word(), rw.word()
             if w1 == w2 or (utils.get_ipa_tail(w1) == utils.get_ipa_tail(w2)):
                 continue
@@ -207,8 +251,8 @@ class RhymesTestDataset(Dataset):
                (w2, w1, 1.0) not in labeled_pairs:
                 labeled_pairs.append((w1, w2, 0.0))
 
-        print("Loaded/created", len(labeled_pairs), "rhymes")
-        self.labeled_pairs = labeled_pairs
+        print("Loaded/created", len(labeled_pairs), "test rhymes")
+        self.labeled_pairs = labeled_pairs[:TEST_SIZE]
 
     def __len__(self):
         return len(self.labeled_pairs)
@@ -217,92 +261,113 @@ class RhymesTestDataset(Dataset):
         return self.labeled_pairs[idx]
 
 
+def load_model():
+    model = SiameseTripletNet()
+    model_params = torch.load(MODEL_FILE)
+    model.load_state_dict(model_params.get('model_state_dict'))
+    min_distance = model_params.get('min_distance')
+    max_distance = model_params.get('max_distance')
+    model.eval()
+    distance_norm = max_distance - min_distance
+    print("model loaded, distance norm:", distance_norm)
+    return model, distance_norm
+
+
 def test():
     correct = []
     wrong = []
-    test_dataset = RhymesTestDataset()
-    loader = DataLoader(test_dataset, shuffle=True, num_workers=WORKERS)
+    dataset = RhymesTestDataset()
+    loader = DataLoader(dataset, shuffle=True, num_workers=WORKERS)
+    model, distance_norm = load_model()
+    prog_bar = tqdm(loader, "Test Rhymes")
 
-    for text1, text2, label in tqdm(loader, "Test Rhymes"):
-        pred, score, _ = predict(text1, text2)
+    for batch in prog_bar:
+        text1, text2, label = batch[0][0], batch[1][0], batch[2].item()
+        pred, score, _ = predict(text1, text2, model=model, distance_norm=distance_norm)
+
         if (pred and label == 1.0) or (not pred and label == 0.0):
             correct.append((text1, text2, pred, score))
         else:
             wrong.append((text1, text2, pred, score))
 
+        prog_bar.set_description(f"√: {len(correct)} X: {len(wrong)} "
+                                 f"%: {(len(correct)/(len(correct)+len(wrong))*100):.1f}")
+
+    # print stats and wrong predictions for inspection
     for text1, text2, pred, score in wrong:
         print('[X]', f'[PRED={"Y" if pred else "N"}]', text1, '=>', text2, f'[{score:.3f}]')
 
     total = len(correct) + len(wrong)
     pct = (len(correct) / total) * 100
-
     print("\n\nCorrect:", len(correct), "Wrong:", len(wrong), "Pct:", f"{pct:.3f}%")
-    print("Avg wrong score:", sum([x[2] for x in wrong]) / len(wrong))
-    print("Min wrong score:", min([x[2] for x in wrong]))
-    print("Max wrong score:", max([x[2] for x in wrong]))
-    print("Avg correct score:", sum([x[2] for x in correct]) / len(correct) + 1)
-    print("Min correct score:", min([x[2] for x in correct]))
-    print("Max correct score:", max([x[2] for x in correct]))
+    print("Avg wrong score:", sum([x[3] for x in wrong]) / len(wrong))
+    print("Min wrong score:", min([x[3] for x in wrong]))
+    print("Max wrong score:", max([x[3] for x in wrong]))
+    print("Avg correct score:", sum([x[3] for x in correct]) / len(correct) + 1)
+    print("Min correct score:", min([x[3] for x in correct]))
+    print("Max correct score:", max([x[3] for x in correct]))
 
 
-def predict(text1, text2):
-    model = SiameseTripletNet()
-    model.load_state_dict(torch.load(MODEL_FILE))
-    model.eval()
+SCORE_LABELS = [
+    [.1, "Perfect rhyme"],
+    [.3, "Slant rhyme"],
+    [.5, "Weak rhyme"],
+    [.6, "Near rhyme"],
+    [.7, "Unlikely rhyme"],
+    [1.0, "Not a rhyme"],
+]
+
+def predict(text1, text2, model=None, distance_norm=1.0):
+    if not model:
+        model, distance_norm = load_model()
+
     anchor_vec, other_vec = make_rhyme_tensors(text1, text2)
-    anchor_vec = anchor_vec.transpose(0, 1).unsqueeze(0)
-    other_vec = other_vec.transpose(0, 1).unsqueeze(0)
-    anchor_out, other_out = model(anchor_vec, other_vec)
-    anchor_out = anchor_out.squeeze(0)
-    other_out = other_out.squeeze(0)
-    distance = F.pairwise_distance(anchor_out, other_out, p=2).item() / NORM_SCORE
+    # fake a batch dimension here
+    anchor_vec = anchor_vec.unsqueeze(0)
+    other_vec = other_vec.unsqueeze(0)
 
-    pred = distance < THRESHOLD
+    anchor_out, other_out = model(anchor_vec, other_vec)
+    distance = pairwise_distance_ignore_batch_dim(anchor_out, other_out).item()
+    distance /= distance_norm
+
+    pred = distance < .5
     label = None
     for thresh, val in SCORE_LABELS:
-        if distance < thresh:
+        if distance <= thresh:
             label = val
             break
+
     return pred, distance, label
 
 
 def make_training_data():
     '''Output siamese neural net training data triples to CSV file
     '''
-    from rhymes.models import Rhyme
     rw = RandomWord()
 
-    rhymes = list(Rhyme.objects.filter(level=1).prefetch_related('to_ngram', 'from_ngram'))
-    random.shuffle(rhymes)
-    lines = set()
-    i = 0
+    lines = []
+    for _ in tqdm(range(DATA_TOTAL_SIZE), "Generating rhyme triples"):
+        anchor = None
+        pos = None
 
-    while len(lines) < DATA_TOTAL_SIZE:
-        i += 1
-        r = rhymes[i]
-        anchor = r.from_ngram.text
-        positive = r.to_ngram.text
+        # lookup a positive value using datamuse
+        while pos is None:
+            anchor = utils.normalize_lyric(rw.word())
+            if anchor in lines:
+                continue
+            rhymes = utils.get_datamuse_rhymes(anchor, cache_only=DATAMUSE_CACHED_ONLY)
+            if rhymes:
+                # get the lowest scoring result to encourage real-world-esque rhymes
+                pos = min(rhymes, key=lambda x: x.get('score', 1000))['word'] or None
 
-        # for negative, alternate btw random song words and general random words
-        if i % 2 == 0:
-            negative = rhymes[random.randint(0, len(rhymes) - 1)].to_ngram.text
-        else:
-            negative = rw.word()
+        pos = utils.normalize_lyric(pos)
+        neg = utils.normalize_lyric(rw.word())
 
-        if anchor != negative:
-            entry = (anchor, positive, negative,)
-            lines.add(entry)
+        # check IPA length doesn't exceed max length of net
+        if any([len(utils.get_ipa_text(w)) > MAX_LEN - 1 for w in [anchor, pos, neg]]):
+            continue
 
-        # add some variants
-        pos_vars = utils.make_variants(positive)
-        neg_vars = utils.make_variants(negative)
-        for pos_var, neg_var in zip(pos_vars[:2], neg_vars[:2]):
-            if anchor != pos_var:
-                entry = (anchor, pos_var, rw.word())
-                lines.add(entry)
-            if anchor != neg_var:
-                entry = (anchor, positive, neg_var)
-                lines.add(entry)
+        lines.append((anchor, pos, neg))
 
     with open(TRAIN_FILE, 'w') as f:
         f.write('\n'.join(';'.join(l) for l in lines))
