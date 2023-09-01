@@ -44,6 +44,15 @@
 
 All apps deploy automatically when pushed to master branch.
 
-If you're training a neural net on a M1 Mac, you may want to run first:
+# Rhymes neural net
+
+For M1 Mac, do this first:
 * `pip uninstall torch` (if it's installed)
 * `pip install --pre torch --extra-index-url https://download.pytorch.org/whl/nightly/cpu`
+
+## Train/use:
+* `./manage.py rhymesnet --train` - takes a while obv.
+* Maybe: `./manage.py rhymesnet --test`
+* `./manage.py rhymesnet --predict "phrase 1" "phrase 2"`
+
+See params in `rhymes/nn.py`
