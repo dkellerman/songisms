@@ -52,6 +52,41 @@ class RhymesDataset(Dataset):
         return anchor, pos, neg
 
 
+def make_rhyme_tensors(anchor, pos, neg=None, pad_to=MAX_LEN):
+    '''Aligns IPA words and returns feature vectors for each IPA character.
+    '''
+    ipa_conv_fn = utils.get_ipa_tail if USE_TAILS else utils.get_ipa_text
+
+    # align all 3 if neg is provided, otherwise just 2
+    if neg is not None:
+        anchor_ipa, pos_ipa, neg_ipa = [ipa_conv_fn(text) for text in [anchor, pos, neg]]
+        anchor_vec, pos_vec, _ = utils.align_vals(anchor_ipa, pos_ipa)
+        anchor_vec, neg_vec, _ = utils.align_vals(anchor_ipa, neg_ipa)
+        vecs = [anchor_vec, pos_vec, neg_vec]
+    else:
+        anchor_ipa, pos_ipa = [ipa_conv_fn(text) for text in [anchor, pos]]
+        anchor_vec, pos_vec, _ = utils.align_vals(anchor_ipa, pos_ipa)
+        vecs = [anchor_vec, pos_vec]
+
+    for i, vec in enumerate(vecs):
+        # pad, or chop if it's too long (but it shouldn't be)
+        vec = (['_'] * (pad_to - len(vec))) + [str(c) for c in vec][:MAX_LEN]
+        # replace IPA characters with feature arrays
+        vec = utils.get_ipa_features_vector(vec)
+        # convert to tensor
+        vec = torch.tensor(vec, dtype=torch.float)
+        vec = vec.transpose(0, 1)
+
+        if POSITIONAL_ENCODING:
+            encoder = Summer(PositionalEncoding1D(MAX_LEN))
+            vec = vec.unsqueeze(0) # encoder requires a batch dimension
+            vec = encoder(vec)
+            vec = vec.squeeze(0)
+
+        vecs[i] = vec
+
+    return vecs
+
 class SiameseTripletNet(nn.Module):
     def __init__(self):
         super(SiameseTripletNet, self).__init__()
@@ -169,42 +204,6 @@ def train():
     plt.ylabel('Loss')
     plt.legend()
     plt.show()
-
-
-def make_rhyme_tensors(anchor, pos, neg=None, pad_to=MAX_LEN):
-    '''Aligns IPA words and returns feature vectors for each IPA character.
-    '''
-    ipa_conv_fn = utils.get_ipa_tail if USE_TAILS else utils.get_ipa_text
-
-    # align all 3 if neg is provided, otherwise just 2
-    if neg is not None:
-        anchor_ipa, pos_ipa, neg_ipa = [ipa_conv_fn(text) for text in [anchor, pos, neg]]
-        anchor_vec, pos_vec, _ = utils.align_vals(anchor_ipa, pos_ipa)
-        anchor_vec, neg_vec, _ = utils.align_vals(anchor_ipa, neg_ipa)
-        vecs = [anchor_vec, pos_vec, neg_vec]
-    else:
-        anchor_ipa, pos_ipa = [ipa_conv_fn(text) for text in [anchor, pos]]
-        anchor_vec, pos_vec, _ = utils.align_vals(anchor_ipa, pos_ipa)
-        vecs = [anchor_vec, pos_vec]
-
-    for i, vec in enumerate(vecs):
-        # pad, or chop if it's too long (but it shouldn't be)
-        vec = (['_'] * (pad_to - len(vec))) + [str(c) for c in vec][:MAX_LEN]
-        # replace IPA characters with feature arrays
-        vec = utils.get_ipa_features_vector(vec)
-        # convert to tensor
-        vec = torch.tensor(vec, dtype=torch.float)
-        vec = vec.transpose(0, 1)
-
-        if POSITIONAL_ENCODING:
-            encoder = Summer(PositionalEncoding1D(MAX_LEN))
-            vec = vec.unsqueeze(0) # encoder requires a batch dimension
-            vec = encoder(vec)
-            vec = vec.squeeze(0)
-
-        vecs[i] = vec
-
-    return vecs
 
 
 def pairwise_distance_ignore_batch_dim(tensor1, tensor2, *args, **kwargs):
