@@ -30,8 +30,8 @@ LR = 0.001
 LOSS_MARGIN = 1.0
 WORKERS = 4
 POSITIONAL_ENCODING = False
-USE_TAILS = True # use IPA stress tails
-DATAMUSE_CACHED_ONLY = True # set false for first few times generating training data
+USE_TAILS = False  # use IPA stress tails
+DATAMUSE_CACHED_ONLY = True  # set false for first few times generating training data
 DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
 # this can't be changed right now without also adjusting the network
