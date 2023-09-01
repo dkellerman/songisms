@@ -27,14 +27,16 @@ TEST_SIZE = 1000
 BATCH_SIZE = 64
 EPOCHS = 10
 LR = 0.001
+LOSS_MARGIN = 1.0
 WORKERS = 4
 POSITIONAL_ENCODING = False
+USE_TAILS = True # use IPA stress tails
 DATAMUSE_CACHED_ONLY = True # set false for first few times generating training data
 DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
-# these can't change right now without also adjusting the network
+# this can't be changed right now without also adjusting the network
 MAX_LEN = 20
-USE_TAILS = False # IPA stress tails
+
 
 class RhymesDataset(Dataset):
     '''Loads training data triples (anchor/pos/neg)
@@ -55,16 +57,16 @@ class RhymesDataset(Dataset):
 def make_rhyme_tensors(anchor, pos, neg=None, pad_to=MAX_LEN):
     '''Aligns IPA words and returns feature vectors for each IPA character.
     '''
-    ipa_conv_fn = utils.get_ipa_tail if USE_TAILS else utils.get_ipa_text
+    ipa_conversion_fn = utils.get_ipa_tail if USE_TAILS else utils.get_ipa_text
 
     # align all 3 if neg is provided, otherwise just 2
     if neg is not None:
-        anchor_ipa, pos_ipa, neg_ipa = [ipa_conv_fn(text) for text in [anchor, pos, neg]]
+        anchor_ipa, pos_ipa, neg_ipa = [ipa_conversion_fn(text) for text in [anchor, pos, neg]]
         anchor_vec, pos_vec, _ = utils.align_vals(anchor_ipa, pos_ipa)
         anchor_vec, neg_vec, _ = utils.align_vals(anchor_ipa, neg_ipa)
         vecs = [anchor_vec, pos_vec, neg_vec]
     else:
-        anchor_ipa, pos_ipa = [ipa_conv_fn(text) for text in [anchor, pos]]
+        anchor_ipa, pos_ipa = [ipa_conversion_fn(text) for text in [anchor, pos]]
         anchor_vec, pos_vec, _ = utils.align_vals(anchor_ipa, pos_ipa)
         vecs = [anchor_vec, pos_vec]
 
@@ -129,7 +131,7 @@ class SiameseTripletNet(nn.Module):
 
 
 class TripletMarginLoss(nn.Module):
-    def __init__(self, margin=1.0):
+    def __init__(self, margin=LOSS_MARGIN):
         self.margin = margin
         super(TripletMarginLoss, self).__init__()
 
@@ -150,7 +152,7 @@ def train():
     all_losses = []
     all_validation_losses = []
 
-    # min/max distances used by predictor for normalizing distance scores
+    # min/max distances used by predictor for normalizing distances
     min_distance = 0
     max_distance = 0
 
@@ -217,8 +219,8 @@ def pairwise_distance_ignore_batch_dim(tensor1, tensor2, *args, **kwargs):
 
 
 class RhymesTestDataset(Dataset):
-    '''Slightly more real-world dataset for final testing, produces
-       pairs of words with labels (text, text, 1.0|0.0)
+    '''More real-world dataset for final testing, produces pairs of words and
+       a label => (text, text, 1.0|0.0)
     '''
     def __init__(self):
         song_rhyme_sets = utils.data.rhymes
@@ -237,10 +239,12 @@ class RhymesTestDataset(Dataset):
                 labeled_pairs = labeled_pairs[:TEST_SIZE // 2]
                 break
 
-        # add some random negative non-rhymes (probably)
+        # second half of dataset are random negatives (probably)
         rw = RandomWord()
         while len(labeled_pairs) < TEST_SIZE:
             w1, w2 = rw.word(), rw.word()
+
+            # spot check
             if w1 == w2 or (utils.get_ipa_tail(w1) == utils.get_ipa_tail(w2)):
                 continue
 
@@ -261,6 +265,7 @@ class RhymesTestDataset(Dataset):
 
 
 def load_model():
+    # TODO: use torch script instead of loading full model
     model = SiameseTripletNet()
     model_params = torch.load(MODEL_FILE)
     model.load_state_dict(model_params.get('model_state_dict'))
@@ -268,49 +273,49 @@ def load_model():
     max_distance = model_params.get('max_distance')
     model.eval()
     distance_norm = max_distance - min_distance
-    print("model loaded, distance norm:", distance_norm)
     return model, distance_norm
 
 
 def test():
-    correct = []
-    wrong = []
     dataset = RhymesTestDataset()
     loader = DataLoader(dataset, shuffle=True, num_workers=WORKERS)
     model, distance_norm = load_model()
     prog_bar = tqdm(loader, "Test Rhymes")
 
+    correct = []
+    wrong = []
+
     for batch in prog_bar:
         text1, text2, label = batch[0][0], batch[1][0], batch[2].item()
-        pred, score, _ = predict(text1, text2, model=model, distance_norm=distance_norm)
+        pred, distance, _ = predict(text1, text2, model=model, distance_norm=distance_norm)
 
         if (pred and label == 1.0) or (not pred and label == 0.0):
-            correct.append((text1, text2, pred, score))
+            correct.append((text1, text2, pred, distance))
         else:
-            wrong.append((text1, text2, pred, score))
+            wrong.append((text1, text2, pred, distance))
 
         prog_bar.set_description(f"√: {len(correct)} X: {len(wrong)} "
                                  f"%: {(len(correct)/(len(correct)+len(wrong))*100):.1f}")
 
     # print stats and wrong predictions for inspection
-    for text1, text2, pred, score in wrong:
-        print('[X]', f'[PRED={"Y" if pred else "N"}]', text1, '=>', text2, f'[{score:.3f}]')
+    for text1, text2, pred, distance in wrong:
+        print('[X]', f'[PRED={"Y" if pred else "N"}]', text1, '=>', text2, f'[{distance:.3f}]')
 
     total = len(correct) + len(wrong)
     pct = (len(correct) / total) * 100
-    wrong_scores = [x[3] for x in wrong]
-    correct_scores = [x[3] for x in correct]
+    wrong_distances = [x[3] for x in wrong]
+    correct_distances = [x[3] for x in correct]
 
     print("\n\nCorrect:", len(correct), "Wrong:", len(wrong), "Pct:", f"{pct:.3f}%")
-    print("Avg wrong score:", sum(wrong_scores) / len(wrong))
-    print("Min wrong score:", min(wrong_scores))
-    print("Max wrong score:", max(wrong_scores))
-    print("Avg correct score:", sum(correct_scores) / len(correct) + 1)
-    print("Min correct score:", min(correct_scores))
-    print("Max correct score:", max(correct_scores))
+    print("Avg wrong distance:", sum(wrong_distances) / len(wrong))
+    print("Min wrong distance:", min(wrong_distances))
+    print("Max wrong distance:", max(wrong_distances))
+    print("Avg correct distance:", sum(correct_distances) / len(correct) + 1)
+    print("Min correct distance:", min(correct_distances))
+    print("Max correct distance:", max(correct_distances))
 
 
-SCORE_LABELS = (
+DISTANCE_LABELS = (
     (.1, "Perfect rhyme"),
     (.3, "Slant rhyme"),
     (.5, "Weak rhyme"),
@@ -334,7 +339,7 @@ def predict(text1, text2, model=None, distance_norm=1.0):
 
     pred = distance < .5
     label = None
-    for thresh, val in SCORE_LABELS:
+    for thresh, val in DISTANCE_LABELS:
         if distance <= thresh:
             label = val
             break
