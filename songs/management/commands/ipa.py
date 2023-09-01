@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import argparse
 import multiprocessing as mp
 from django.core.management.base import BaseCommand

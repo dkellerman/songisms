@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import argparse
 from django.core.management.base import BaseCommand
 from songs.models import Song

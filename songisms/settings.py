@@ -21,11 +21,6 @@ import django_on_heroku
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ['SISM_DJANGO_SECRET_KEY']
 
 IS_PROD = bool(os.environ.get('DYNO'))
@@ -107,18 +102,10 @@ DATABASES = {
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    { 'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator' },
+    { 'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator' },
+    { 'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator' },
+    { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator' },
 ]
 
 
@@ -161,20 +148,23 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = not IS_PROD
+
 CORS_ALLOWED_ORIGINS = [
     'https://rhymes.vercel.app',
     'https://rhymes-davidk-davidk415.vercel.app',
     'https://songisms.vercel.app',
     'https://www.songrhymes.com',
 ]
+
 CORS_ALLOW_CREDENTIALS = True
 
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+
 GS_BUCKET_NAME = 'songisms.appspot.com'
 
-
-key = json.loads(base64.b64decode(os.environ['SISM_GOOGLE_CREDENTIALS']))
-GS_CREDENTIALS = service_account.Credentials.from_service_account_info(key)
+GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
+    json.loads(base64.b64decode(os.environ['SISM_GOOGLE_CREDENTIALS']))
+)
 
 REDIS_URL = os.environ.get('SISM_REDIS_URL', os.environ.get('REDIS_URL'))
 
