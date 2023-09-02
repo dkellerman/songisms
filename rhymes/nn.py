@@ -7,6 +7,7 @@ Use with rhymesnet management command:
     `./manage.py rhymesnet --predict "word1" "word2"` -> predict rhyme
 '''
 
+import time
 import random
 import torch
 from torch import nn
@@ -22,10 +23,10 @@ from songisms import utils
 # to be configurable later
 MODEL_FILE = './data/rhymes.pt'
 TRAIN_FILE = './data/rhymes_train.csv'
-DATA_TOTAL_SIZE = 2000  # number of rows to generate
+DATA_TOTAL_SIZE = 3000  # number of rows to generate
 ROWS = 2000  # number of rows to use for training/validation
 TEST_SIZE = 2000
-BATCH_SIZE = 32
+BATCH_SIZE = 128
 EPOCHS = 10
 LR = 0.001
 LOSS_MARGIN = 1.0
@@ -90,6 +91,7 @@ def make_rhyme_tensors(anchor, pos, neg=None, pad_to=MAX_LEN):
 
     return vecs
 
+
 class SiameseTripletNet(nn.Module):
     def __init__(self):
         super(SiameseTripletNet, self).__init__()
@@ -141,7 +143,7 @@ class TripletMarginLoss(nn.Module):
 
 
 def train():
-    model = SiameseTripletNet()
+    model = SiameseTripletNet().to(DEVICE)
     criterion = TripletMarginLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
 
@@ -153,6 +155,7 @@ def train():
     all_losses = []
     all_validation_losses = []
     distances = []  # track distances for norming later
+    start_time = time.time()
 
     for epoch in range(EPOCHS):
         # training set
@@ -160,7 +163,7 @@ def train():
         losses = []
 
         for anchor, pos, neg in prog_bar:
-            anchor_out, pos_out, neg_out = model(anchor, pos, neg)
+            anchor_out, pos_out, neg_out = model(anchor.to(DEVICE), pos.to(DEVICE), neg.to(DEVICE))
             loss = criterion(anchor_out, pos_out, neg_out)
             optimizer.zero_grad()
             loss.backward()
@@ -178,7 +181,7 @@ def train():
 
         with torch.no_grad():
             for anchor, pos, neg in prog_bar:
-                anchor_out, pos_out, neg_out = model(anchor, pos, neg)
+                anchor_out, pos_out, neg_out = model(anchor.to(DEVICE), pos.to(DEVICE), neg.to(DEVICE))
                 loss = criterion(anchor_out, pos_out, neg_out)
                 losses.append(loss.item())
                 prog_bar.set_description(f"[E{epoch+1}-v] L={sum(losses)/len(losses):.3f}")
@@ -186,6 +189,9 @@ def train():
                 distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, neg_out)]
 
         all_validation_losses.append(losses)
+
+    elapsed = time.time() - start_time
+    print(f"Training took {elapsed/60.0:.2f} mins | ~epoch: {elapsed/EPOCHS:.2f} secs")
 
     torch.save({
         'model_state_dict': model.state_dict(),
@@ -277,7 +283,7 @@ class RhymeScorer():
 
 def load_model():
     # TODO: use torch script instead of loading full model
-    model = SiameseTripletNet()
+    model = SiameseTripletNet().to(DEVICE)
     model_params = torch.load(MODEL_FILE)
     model.load_state_dict(model_params.get('model_state_dict'))
     model.eval()
@@ -339,7 +345,7 @@ def predict(text1, text2, model=None, scorer=lambda x: x):
     anchor_vec = anchor_vec.unsqueeze(0)
     other_vec = other_vec.unsqueeze(0)
 
-    anchor_out, other_out = model(anchor_vec, other_vec)
+    anchor_out, other_out = model(anchor_vec.to(DEVICE), other_vec.to(DEVICE))
     distance = pairwise_distance_ignore_batch_dim(anchor_out, other_out).item()
     score = scorer(distance)
 
