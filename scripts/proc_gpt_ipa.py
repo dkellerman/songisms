@@ -64,6 +64,7 @@ if __name__ == '__main__':
             if not val or (val == '_'):
                 continue
 
+            val = utils.normalize_ipa(val)
             cur_val = word2ipa.get(word, None)
             if cur_val == val:
                 continue
@@ -74,4 +75,5 @@ if __name__ == '__main__':
             else:
                 word2ipa[word] = val
 
-    print(json.dumps(word2ipa, indent=2, ensure_ascii=False))
+    with open('./data/ipa_gpt.json', 'w') as f:
+        f.write(json.dumps(word2ipa, indent=2, ensure_ascii=False))

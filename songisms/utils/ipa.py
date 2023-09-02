@@ -23,6 +23,8 @@ def normalize_ipa(ipa):
     '''Normalize IPA string
     '''
     ipa = ipa.strip().replace("ː", "")
+    if ipa.endswith("'") or ipa.endswith("ˌ"):
+        ipa = ipa[:-1]
     return utils.remove_non_lyric_punctuation(ipa)
 
 
@@ -32,25 +34,47 @@ def remove_stresses(text):
     return re.sub(r'\ˈ|\ˌ', '', text)
 
 
+# keeping track of where IPA comes from for now
+ipa_log = dict(eng2ipa=[], gpt=[], g2p=[], none=[])
+
+
+@lru_cache(maxsize=1000)
 def get_ipa_words(text):
     '''Translate to IPA, returns list of words
-       eng_to_ipa (lookup) -> custom lookup (via GPT) -> g2p (from sounds)
+       eng_to_ipa (lookup) -> custom lookup (via GPT) -> g2p (from letters)
     '''
     import eng_to_ipa
+    global ipa_log
+
+    # eng_to_ipa puts a * next to every word it can't translate
+    text = text.replace('-', ' ')
     words = eng_to_ipa.convert(text).split()
+
     ipa = []
     for w in words:
         if '*' in w or not w.strip():
-            guess = w.replace('*', '').strip()
-            w = utils.data.gpt_ipa.get(guess, None)
-            w = w or get_g2p_word(guess)
-            w = w or guess
-            if not w:
-                # non-ideal behavior in the long-run, but for now I think
-                # it should always be able to return something here
-                raise Exception(f'ERROR! Could not translate IPA for "{text}"')
+            plain_word = w.replace('*', '').strip()
+            w = utils.data.gpt_ipa.get(plain_word, None)
+            if w:
+                ipa_log['gpt'].append(plain_word)
+            else:
+                w = get_g2p_ipa(plain_word)
+                if w:
+                    ipa_log['g2p'].append(plain_word)
+                    if not w:
+                        ipa_log['none'].append(plain_word)
+                        # Non-ideal behavior in the long-run
+                        raise Exception(f'ERROR! Could not translate IPA for "{plain_word}"')
+        else:
+            ipa_log['eng2ipa'].append(text.split()[words.index(w)])
+
         ipa.append(fix_ipa_word(w))
     return ipa
+
+
+@property
+def ipa_log_counts():
+    return { k: len(v) for k, v in ipa_log.items() }
 
 
 def get_ipa_text(text):
@@ -69,12 +93,12 @@ def fix_ipa_word(w):
     return w.strip()
 
 
-def get_g2p_word(w):
-    '''Gets a IPA translation via g2p library (based on sounds, not lookup)
+def get_g2p_ipa(text):
+    '''Gets a IPA translation via g2p library (non-lookup)
     '''
-    if w[-1] == "'":
-        return re.sub(r'ŋ$', 'n', transducer()(w[:-1] + 'g').output_string)
-    return transducer()(w).output_string
+    if text[-1] == "'":
+        return re.sub(r'ŋ$', 'n', transducer()(text[:-1] + 'g').output_string)
+    return transducer()(text).output_string
 
 
 def get_ipa_features(ipa_letter):

@@ -16,19 +16,20 @@ from torch.utils.data import Dataset, DataLoader, random_split
 from positional_encodings.torch_encodings import PositionalEncoding1D, Summer
 import matplotlib.pyplot as plt
 from wonderwords import RandomWord
+from sklearn.preprocessing import RobustScaler, MinMaxScaler
 from songisms import utils
 
 # to be configurable later
 MODEL_FILE = './data/rhymes.pt'
 TRAIN_FILE = './data/rhymes_train.csv'
-DATA_TOTAL_SIZE = 5000  # number of rows to generate
-ROWS = 5000  # number of rows to use for training/validation
-TEST_SIZE = 1000
-BATCH_SIZE = 64
+DATA_TOTAL_SIZE = 2000  # number of rows to generate
+ROWS = 2000  # number of rows to use for training/validation
+TEST_SIZE = 2000
+BATCH_SIZE = 32
 EPOCHS = 10
 LR = 0.001
 LOSS_MARGIN = 1.0
-WORKERS = 4
+WORKERS = 2
 POSITIONAL_ENCODING = False
 USE_TAILS = False  # use IPA stress tails
 DATAMUSE_CACHED_ONLY = True  # set false for first few times generating training data
@@ -38,7 +39,7 @@ DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 MAX_LEN = 20
 
 
-class RhymesDataset(Dataset):
+class RhymesTrainDataset(Dataset):
     '''Loads training data triples (anchor/pos/neg)
     '''
     def __init__(self, pad_to=MAX_LEN):
@@ -145,10 +146,10 @@ def train():
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
 
     # prepare training and validation data loaders
-    dataset = RhymesDataset()
+    dataset = RhymesTrainDataset()
     train_data, validation_data = random_split(dataset, [0.8, 0.2])
     loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True, num_workers=WORKERS)
-    val_loader = DataLoader(validation_data, batch_size=BATCH_SIZE, shuffle=True, num_workers=WORKERS)
+    validation_loader = DataLoader(validation_data, batch_size=BATCH_SIZE, shuffle=True, num_workers=WORKERS)
     all_losses = []
     all_validation_losses = []
     distances = []  # track distances for norming later
@@ -158,7 +159,7 @@ def train():
         prog_bar = tqdm(loader)
         losses = []
 
-        for (anchor, pos, neg) in prog_bar:
+        for anchor, pos, neg in prog_bar:
             anchor_out, pos_out, neg_out = model(anchor, pos, neg)
             loss = criterion(anchor_out, pos_out, neg_out)
             optimizer.zero_grad()
@@ -172,28 +173,24 @@ def train():
         all_losses.append(losses)
 
         # validation set
-        prog_bar = tqdm(val_loader)
+        prog_bar = tqdm(validation_loader)
         losses = []
+
         with torch.no_grad():
             for anchor, pos, neg in prog_bar:
                 anchor_out, pos_out, neg_out = model(anchor, pos, neg)
-                val_loss = criterion(anchor_out, pos_out, neg_out)
-                losses.append(val_loss.item())
+                loss = criterion(anchor_out, pos_out, neg_out)
+                losses.append(loss.item())
                 prog_bar.set_description(f"[E{epoch+1}-v] L={sum(losses)/len(losses):.3f}")
                 distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, pos_out)]
                 distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, neg_out)]
 
         all_validation_losses.append(losses)
 
-    # Save model
-    min_distance = min(distances)
-    max_distance = max(distances)
-    print('Saving model', MODEL_FILE, 'mindist:', min_distance, 'maxdist:', max_distance)
     torch.save({
         'model_state_dict': model.state_dict(),
         'optimizer_state_dict': optimizer.state_dict(),
-        'min_distance': min_distance,
-        'max_distance': max_distance,
+        'distances': distances,
     }, MODEL_FILE)
 
     # plot training/validation losses averaged per epoch
@@ -236,7 +233,8 @@ class RhymesTestDataset(Dataset):
                 labeled_pairs = labeled_pairs[:TEST_SIZE // 2]
                 break
 
-        # second half of dataset are random negatives (probably)
+        # second half of dataset are random negatives, probably...
+        # quick sample showed me about 5% maybe-rhymes
         rw = RandomWord()
         while len(labeled_pairs) < TEST_SIZE:
             w1, w2 = rw.word(), rw.word()
@@ -261,22 +259,39 @@ class RhymesTestDataset(Dataset):
         return self.labeled_pairs[idx]
 
 
+class RhymeScorer():
+    '''Normalize distance into a ascore between 0 and 1,
+       where 0 is not a rhyme and 1 is a perfect rhyme
+    '''
+    def __init__(self, distances):
+        self.robust = RobustScaler()
+        scaled = self.robust.fit_transform([[d] for d in distances])
+        self.minmax = MinMaxScaler().fit(scaled)
+
+    def __call__(self, distance):
+        val = [[distance]]
+        val = self.robust.transform(val)
+        val = self.minmax.transform(val)
+        return 1.0 - val[0][0]
+
+
 def load_model():
     # TODO: use torch script instead of loading full model
     model = SiameseTripletNet()
     model_params = torch.load(MODEL_FILE)
     model.load_state_dict(model_params.get('model_state_dict'))
-    min_distance = model_params.get('min_distance')
-    max_distance = model_params.get('max_distance')
     model.eval()
-    distance_norm = max_distance - min_distance
-    return model, distance_norm
+
+    # make scorer using distances from training
+    scorer = RhymeScorer(model_params.get('distances'))
+
+    return model, scorer
 
 
 def test():
     dataset = RhymesTestDataset()
     loader = DataLoader(dataset, shuffle=True, num_workers=WORKERS)
-    model, distance_norm = load_model()
+    model, scorer = load_model()
     prog_bar = tqdm(loader, "Test Rhymes")
 
     correct = []
@@ -284,46 +299,40 @@ def test():
 
     for batch in prog_bar:
         text1, text2, label = batch[0][0], batch[1][0], batch[2].item()
-        pred, distance, _ = predict(text1, text2, model=model, distance_norm=distance_norm)
+        pred, score, _ = predict(text1, text2, model=model, scorer=scorer)
 
         if (pred and label == 1.0) or (not pred and label == 0.0):
-            correct.append((text1, text2, pred, distance))
+            correct.append((text1, text2, pred, score))
         else:
-            wrong.append((text1, text2, pred, distance))
+            wrong.append((text1, text2, pred, score))
 
         prog_bar.set_description(f"√: {len(correct)} X: {len(wrong)} "
                                  f"%: {(len(correct)/(len(correct)+len(wrong))*100):.1f}")
 
     # print stats and wrong predictions for inspection
-    for text1, text2, pred, distance in wrong:
-        print('[X]', f'[PRED={"Y" if pred else "N"}]', text1, '=>', text2, f'[{distance:.3f}]')
+    for text1, text2, pred, score in wrong:
+        print('[X]', f'[PRED={"Y" if pred else "N"}]', text1, '=>', text2, f'[{score:.3f}]')
 
     total = len(correct) + len(wrong)
     pct = (len(correct) / total) * 100
-    wrong_distances = [x[3] for x in wrong]
-    correct_distances = [x[3] for x in correct]
-
-    print("\n\nCorrect:", len(correct), "| Wrong:", len(wrong), "| Pct:", f"{pct:.3f}%")
-    print("Avg wrong distance:", sum(wrong_distances) / len(wrong))
-    print("Min wrong distance:", min(wrong_distances))
-    print("Max wrong distance:", max(wrong_distances))
-    print("Avg correct distance:", sum(correct_distances) / len(correct) + 1)
-    print("Min correct distance:", min(correct_distances))
-    print("Max correct distance:", max(correct_distances))
+    print("\nCorrect:", len(correct), "| Wrong:", len(wrong), "| Pct:", f"{pct:.3f}%")
+    print("Average wrong score:", sum([s[-1] for s in wrong]) / len(wrong))
+    print("Average correct score:", sum([s[-1] for s in correct]) / len(correct))
+    print("Tough calls:", len([s for s in wrong if s[-1] > .45 and s[-1] < .55]))
 
 
-DISTANCE_LABELS = (
-    (.1, "Perfect rhyme"),
-    (.3, "Slant rhyme"),
-    (.5, "Weak rhyme"),
-    (.6, "Near rhyme"),
-    (.7, "Unlikely rhyme"),
-    (1.0, "Not a rhyme"),
+SCORE_LABELS = (
+    (.2, "Not a rhyme"),
+    (.3, "Unlikely rhyme"),
+    (.5, "Near rhyme"),
+    (.6, "Weak rhyme"),
+    (.8, "Slant rhyme"),
+    (1.0, "Perfect rhyme"),
 )
 
-def predict(text1, text2, model=None, distance_norm=1.0):
+def predict(text1, text2, model=None, scorer=lambda x: x):
     if not model:
-        model, distance_norm = load_model()
+        model, scorer = load_model()
 
     anchor_vec, other_vec = make_rhyme_tensors(text1, text2)
     # fake a batch dimension here
@@ -332,45 +341,47 @@ def predict(text1, text2, model=None, distance_norm=1.0):
 
     anchor_out, other_out = model(anchor_vec, other_vec)
     distance = pairwise_distance_ignore_batch_dim(anchor_out, other_out).item()
-    distance /= distance_norm
+    score = scorer(distance)
 
-    pred = distance < .5
+    pred = score > .5
     label = None
-    for thresh, val in DISTANCE_LABELS:
-        if distance <= thresh:
+    for thresh, val in SCORE_LABELS:
+        if score <= thresh:
             label = val
             break
 
-    return pred, distance, label
+    return pred, score, label
 
 
 def make_training_data():
     '''Output siamese neural net training data triples to CSV file
     '''
     rw = RandomWord()
-
     lines = []
-    for _ in tqdm(range(DATA_TOTAL_SIZE), "Generating rhyme triples"):
+
+    for _ in tqdm(range(DATA_TOTAL_SIZE)):
         anchor = None
         positive = None
 
         # lookup a positive value using datamuse
         while positive is None:
             anchor = utils.normalize_lyric(rw.word())
-            if anchor in lines:
-                continue
             rhymes = utils.get_datamuse_rhymes(anchor, cache_only=DATAMUSE_CACHED_ONLY)
             if rhymes:
-                # get the lowest scoring result to encourage real-world-esque rhymes
-                positive = min(rhymes, key=lambda x: x.get('score', 1000))['word'] or None
-                if positive == anchor or (positive == positive + 's'):
-                    positive = None
+                positive = random.choice(rhymes)['word']
+                #if positive.endswith(anchor) or positive.endswith(anchor + 's'):
+                if positive == anchor + 's':
+                   positive = None
 
         positive = utils.normalize_lyric(positive)
-        negative = utils.normalize_lyric(rw.word())
 
+        # random negative
+        negative = utils.normalize_lyric(rw.word())
         # check IPA length doesn't exceed max length of net
         if any([len(utils.get_ipa_text(w)) > MAX_LEN - 1 for w in [anchor, positive, negative]]):
+             continue
+        # and quick spot check
+        if utils.get_ipa_tail(anchor) == utils.get_ipa_tail(negative):
             continue
 
         lines.append((anchor, positive, negative))

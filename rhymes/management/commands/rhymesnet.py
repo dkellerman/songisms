@@ -14,13 +14,13 @@ class Command(BaseCommand):
         parser.add_argument('--predict', '-p', nargs=2, help='Predict rhymes, with extra info')
 
     def handle(self, *args, **options):
+        if options['data']:
+            nn.make_training_data()
         if options['train']:
             nn.train()
-        elif options['test']:
+        if options['test']:
             nn.test()
-        elif options['data']:
-            nn.make_training_data()
-        else:
+        if options['predict']:
             text1, text2 = options['predict']
             self.predict_with_info(text1, text2)
 
