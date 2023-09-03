@@ -33,7 +33,7 @@ EPOCHS = 10
 LR = 0.001
 LOSS_MARGIN = 1.0
 WORKERS = 2
-POSITIONAL_ENCODING = False
+POSITIONAL_ENCODING = True
 EARLY_STOP_EPOCHS = 3  # stop training after n epochs of no validation improvement
 USE_TAILS = False  # use IPA stress tails
 DATAMUSE_CACHED_ONLY = True  # set false for first few times generating training data
@@ -190,14 +190,14 @@ def train():
                 anchor_out, pos_out, neg_out = model(anchor.to(DEVICE), pos.to(DEVICE), neg.to(DEVICE))
                 loss = criterion(anchor_out, pos_out, neg_out)
                 losses.append(loss.item())
-                prog_bar.set_description(f"[E{epoch+1}-v] L={mean(losses):.3f} ^{early_stop_counter}")
+                prog_bar.set_description(f"[E{epoch+1}-v] L={mean(losses):.3f} es:{early_stop_counter}")
                 distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, pos_out)]
                 distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, neg_out)]
 
         all_validation_losses.append(losses)
 
         # check for early stop
-        went_down = mean(losses) < mean(all_validation_losses[-2]) \
+        went_down = mean(all_validation_losses[-1]) < mean(all_validation_losses[-2]) \
             if len(all_validation_losses) > 1 else True
         early_stop_counter = 0 if went_down else early_stop_counter + 1
         if early_stop_counter >= EARLY_STOP_EPOCHS:
