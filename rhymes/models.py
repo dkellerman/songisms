@@ -37,6 +37,7 @@ class Rhyme(models.Model):
     to_ngram = models.ForeignKey(NGram, on_delete=models.CASCADE, related_name='rhymed_to')
     song_uid = models.SlugField(blank=True, null=True)
     level = models.PositiveIntegerField(default=1, db_index=True)
+    score = models.FloatField(blank=True, null=True, db_index=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = RhymeManager()

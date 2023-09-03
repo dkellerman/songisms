@@ -25,9 +25,9 @@ class Command(BaseCommand):
             self.predict_with_info(text1, text2)
 
     def predict_with_info(self, text1, text2):
-        pred, score, label = nn.predict(text1, text2)
+        score = nn.predict(text1, text2)
 
         print("IPA:", utils.get_ipa_text(text1), '|', utils.get_ipa_text(text2))
         print("Tails:", utils.get_ipa_tail(text1), '|', utils.get_ipa_tail(text2))
         print("Score:", score)
-        print("===>", label)
+        print("===>", nn.score_to_label(score))

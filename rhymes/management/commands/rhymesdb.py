@@ -14,12 +14,13 @@ class Command(BaseCommand):
     help = 'Process ngrams and rhymes'
 
     def add_arguments(self, parser):
+        parser.add_argument('--rescore', '-s', action=argparse.BooleanOptionalAction)
         parser.add_argument('--dry-run', '-D', action=argparse.BooleanOptionalAction)
         parser.add_argument('--batch-size', '-b', type=int, default=1000)
 
 
     def handle(self, *args, **options):
-        batch_size, dry_run = [options[k] for k in ('batch_size', 'dry_run',)]
+        batch_size, dry_run, rescore = [options[k] for k in ('batch_size', 'dry_run', 'rescore',)]
 
         try:
             from songs.models import Song  # songs app needs to be in INSTALLED_APPS
@@ -172,15 +173,34 @@ class Command(BaseCommand):
             ngram['title_pct'] = title_ngrams.freq(ngram['text'])
             ngram['song_pct'] = ngram.get('song_count', 0) / song_ct
 
+
+        # scores from nn model
+        scores_cache, _ = Cache.objects.get_or_create(key='rhyme_scores')
+        scores = []
+        if rescore:
+            scores_cache.clear()
+        for rhyme in tqdm(rhymes.values(),
+                          f"{'generating' if rescore else 'using cached'}"
+                          "rhyme scores"):
+            rfrom = rhyme['from_ngram']['text']
+            rto = rhyme['to_ngram']['text']
+            key = '_'.join(sorted([rfrom, rto]))
+            rhyme['score'] = scores_cache.get(key, get_score if rescore else None)
+            if rhyme['score']:
+                scores.append(rhyme['score'])
+
         # print some counts
         print('ngrams', len(ngrams.values()))
         print('rhymes', len(rhymes.values()))
         print('song_ngrams', len(song_ngrams.values()))
+        print('avg rhyme score', sum(scores) / len(scores))
 
         if dry_run:
             return
 
         # save the db caches
+        if rescore:
+            scores_cache.save()
         utils.get_datamuse_cache().save()
         for c in tqdm([vector_cache, ipa_cache, stresses_cache], desc='saving db caches'):
             c.save()
@@ -212,7 +232,8 @@ class Command(BaseCommand):
                 # write the reverse rhyme as well
                 revkey = (nto.text, nfrom.text, song_uid if song_uid else None)
                 if revkey not in rhymes:
-                    rhyme_objs.append(Rhyme(from_ngram=nto, to_ngram=nfrom, song_uid=song_uid, level=rhyme['level']))
+                    rhyme_objs.append(Rhyme(from_ngram=nto, to_ngram=nfrom, song_uid=song_uid,
+                                            level=rhyme['level'], score=rhyme['score']))
 
             print('writing rhymes', len(rhyme_objs))
             Rhyme.objects.bulk_create(rhyme_objs, batch_size=batch_size)
@@ -233,3 +254,14 @@ class Command(BaseCommand):
 
 def is_repeated(w):
     return len(set(w.split())) < len(w.split())
+
+
+_score_model, _scorer = None, None
+
+def get_score(key):
+    from rhymes.nn import predict, load_model
+    w1, w2 = key.split('_')
+    global _score_model, _scorer
+    if not _score_model:
+        _score_model, _scorer = load_model()
+    return predict(w1, w2, model=_score_model, scorer=_scorer)

@@ -100,7 +100,8 @@ class Command(BaseCommand):
         for rset in rhyme_sets:
             pairs = utils.get_rhyme_pairs(rset)
             for w1, w2 in pairs:
-                pred, score, _ = predict(w1, w2, model=self._model, scorer=self._scorer)
+                score = predict(w1, w2, model=self._model, scorer=self._scorer)
+                pred = score >= 0.5
                 if not pred:
                     suspect.append((w1, w2, score))
 

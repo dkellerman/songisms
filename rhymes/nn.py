@@ -332,7 +332,9 @@ def test():
 
     for batch in prog_bar:
         text1, text2, label = batch[0][0], batch[1][0], batch[2].item()
-        pred, score, _ = predict(text1, text2, model=model, scorer=scorer)
+        score = predict(text1, text2, model=model, scorer=scorer)
+        pred = score >= .5
+        label = score_to_label(score)
 
         if (pred and label == 1.0) or (not pred and label == 0.0):
             correct.append((text1, text2, pred, score))
@@ -384,14 +386,16 @@ def predict(text1, text2, model=None, scorer=lambda x: x):
     distance = pairwise_distance_ignore_batch_dim(anchor_out, other_out).item()
     score = scorer(distance)
 
-    pred = score > .5
+    return score
+
+
+def score_to_label(score):
     label = None
     for thresh, val in SCORE_LABELS:
         if score <= thresh:
             label = val
             break
-
-    return pred, score, label
+    return label
 
 
 def make_training_data():
