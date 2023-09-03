@@ -108,26 +108,30 @@ def get_ipa_features(ipa_letter):
     return f
 
 
-def get_ipa_features_vector(ipa, tail=True):
+def get_ipa_features_vector(ipa):
     if type(ipa) == str:
-        val = get_ipa_tail(ipa) if tail else get_ipa_text(ipa)
-        vec = [c for c in val]
+        vec = [c for c in ipa]
     else:
         vec = ipa
 
+    implicit_stress = "ˈ" not in vec and "ˌ" not in vec
+
     for i, char in enumerate(vec):
         if char == '_':
-            vec[i] = utils.EMPTY_FEATURES + [0.0]
+            vec[i] = [0.0] + utils.EMPTY_FEATURES
         elif char == "ˈ":
-            vec[i] = utils.EMPTY_FEATURES + [2.0]
+            vec[i] = [2.0] + utils.EMPTY_FEATURES
         elif char == "ˌ":
-            vec[i] = utils.EMPTY_FEATURES + [1.0]
+            vec[i] = [1.0] + utils.EMPTY_FEATURES
         else:
             features = utils.get_ipa_features(char)
             if features is None:
-                vec[i] = utils.EMPTY_FEATURES + [0.0]
+                vec[i] = [0.0] + utils.EMPTY_FEATURES
             else:
-                vec[i] = features.numeric() + [0.0]
+                vec[i] = [0.0] + features.numeric()
+
+    if implicit_stress:
+        vec[0][0] = 2.0
 
     return vec
 
