@@ -35,7 +35,7 @@ class Config:
     test_size: int = 2000  # number of rows to use for testing
     batch_size: int = 128
     epochs: int = 10
-    lr: float = 0.001
+    lr: float = 0.0005
     loss_margin: float = 1.0
     workers: int = 2
     positional_encoding: bool = False
