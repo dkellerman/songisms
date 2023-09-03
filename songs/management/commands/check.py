@@ -1,6 +1,7 @@
 import argparse
 from django.core.management.base import BaseCommand
 from songs.models import Song
+from songisms import utils
 
 
 class Command(BaseCommand):
@@ -13,6 +14,7 @@ class Command(BaseCommand):
         parser.add_argument('--lyrics', '-l', action=argparse.BooleanOptionalAction)
         parser.add_argument('--writers', '-w', action=argparse.BooleanOptionalAction)
         parser.add_argument('--rhymes', '-r', action=argparse.BooleanOptionalAction)
+        parser.add_argument('--rhymes-ok', '-R', action=argparse.BooleanOptionalAction)
         parser.add_argument('--style', '-S', action=argparse.BooleanOptionalAction)
         parser.add_argument('--metadata', '-m', action=argparse.BooleanOptionalAction)
         parser.add_argument('--transcripts', '-t', action=argparse.BooleanOptionalAction)
@@ -20,9 +22,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         songs = Song.objects.all()
         check_new, check_audio, check_stems, check_lyrics, check_writers, check_rhymes, \
-        check_style, check_metadata, check_transcript = \
+        check_rhymes_ok, check_style, check_metadata, check_transcript = \
             [options[k] for k in ('new', 'audio', 'stems', 'lyrics', 'writers', \
-                                  'rhymes', 'style', 'metadata', 'transcripts')]
+                                  'rhymes', 'rhymes_ok', 'style', 'metadata',
+                                  'transcripts')]
 
         for idx, song in enumerate(songs):
             if check_transcript:
@@ -50,6 +53,8 @@ class Command(BaseCommand):
             if check_rhymes:
                 if not song.rhymes_raw.strip():
                     print("[NO RHYMES]", song.spotify_id, song.title)
+            if check_rhymes_ok:
+                self._check_rhymes_ok(song)
             if check_lyrics or check_style:
                 if not song.lyrics.strip():
                     print("[NO LYRICS]", song.spotify_id, song.title)
@@ -83,3 +88,24 @@ class Command(BaseCommand):
                         print('\t[INVALID AUDIO]', song.spotify_id)
                     else:
                         print('\t[NO YOUTUBE ID]', song.spotify_id)
+
+
+    def _check_rhymes_ok(self, song):
+        from rhymes.nn import predict, load_model
+        if not getattr(self, '_model', None):
+            self._model, self._scorer = load_model()
+
+        suspect = []
+        rhyme_sets = song.rhymes_raw.split('\n')
+        for rset in rhyme_sets:
+            pairs = utils.get_rhyme_pairs(rset)
+            for w1, w2 in pairs:
+                pred, score, _ = predict(w1, w2, model=self._model, scorer=self._scorer)
+                if not pred:
+                    suspect.append((w1, w2, score))
+
+        if len(suspect):
+            print("\n[SUSPECT RHYMES]", song.spotify_id, song.title)
+            for w1, w2, score in suspect:
+                print("\t*", w1, '/', w2, f"[{score:.2f}]",
+                      f"({utils.get_ipa_text(w1)} / {utils.get_ipa_text(w2)})")
