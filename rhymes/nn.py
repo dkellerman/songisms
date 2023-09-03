@@ -32,6 +32,7 @@ LR = 0.001
 LOSS_MARGIN = 1.0
 WORKERS = 2
 POSITIONAL_ENCODING = False
+EARLY_STOP_EPOCHS = 3  # stop training after n epochs of no validation improvement
 USE_TAILS = False  # use IPA stress tails
 DATAMUSE_CACHED_ONLY = True  # set false for first few times generating training data
 DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
@@ -97,24 +98,24 @@ class SiameseTripletNet(nn.Module):
         super(SiameseTripletNet, self).__init__()
 
         self.cnn1 = nn.Sequential(
-            nn.Conv1d(25, 64, kernel_size=3),
+            nn.Conv1d(25, 64, kernel_size=3, padding=2),
             nn.Tanh(),
             nn.BatchNorm1d(64),
             nn.Dropout1d(p=.2),
 
-            nn.Conv1d(64, 64, kernel_size=3),
+            nn.Conv1d(64, 64, kernel_size=3, padding=2),
             nn.Tanh(),
             nn.BatchNorm1d(64),
             nn.Dropout1d(p=.2),
 
-            nn.Conv1d(64, 32, kernel_size=3),
+            nn.Conv1d(64, 32, kernel_size=3, padding=2),
             nn.Tanh(),
             nn.BatchNorm1d(32),
             nn.Dropout1d(p=.2),
         )
-        self.fc1 = nn.Linear(448, 1000)
-        self.fc2 = nn.Linear(1000, 500)
-        self.fc3 = nn.Linear(500, 50)
+        self.fc1 = nn.Linear(832, 1024)
+        self.fc2 = nn.Linear(1024, 512)
+        self.fc3 = nn.Linear(512, 256)
 
     def forward_once(self, x):
         z = self.cnn1(x)
@@ -152,6 +153,7 @@ def train():
     train_data, validation_data = random_split(dataset, [0.8, 0.2])
     loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True, num_workers=WORKERS)
     validation_loader = DataLoader(validation_data, batch_size=BATCH_SIZE, shuffle=True, num_workers=WORKERS)
+    early_stop_counter = 0
     all_losses = []
     all_validation_losses = []
     distances = []  # track distances for norming later
@@ -169,7 +171,7 @@ def train():
             loss.backward()
             optimizer.step()
             losses.append(loss.item())
-            prog_bar.set_description(f"[E{epoch+1}-T]* L={sum(losses)/len(losses):.3f}")
+            prog_bar.set_description(f"[E{epoch+1}-T] L={sum(losses)/len(losses):.3f}")
             distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, pos_out)]
             distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, neg_out)]
 
@@ -184,11 +186,17 @@ def train():
                 anchor_out, pos_out, neg_out = model(anchor.to(DEVICE), pos.to(DEVICE), neg.to(DEVICE))
                 loss = criterion(anchor_out, pos_out, neg_out)
                 losses.append(loss.item())
-                prog_bar.set_description(f"[E{epoch+1}-v] L={sum(losses)/len(losses):.3f}")
+                went_down = losses[-1] < losses[-2] if len(losses) > 1 else False
+                prog_bar.set_description(f"[E{epoch+1}-v] L={sum(losses)/len(losses):.3f}"
+                                         f"{'-' if went_down else '+'}")
                 distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, pos_out)]
                 distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, neg_out)]
 
         all_validation_losses.append(losses)
+        early_stop_counter = 0 if went_down else early_stop_counter + 1
+        if early_stop_counter >= EARLY_STOP_EPOCHS:
+            print("Early stopping")
+            break
 
     elapsed = time.time() - start_time
     print(f"Training took {elapsed/60.0:.2f} mins | ~epoch: {elapsed/EPOCHS:.2f} secs")
@@ -371,7 +379,8 @@ def make_training_data():
 
         # lookup a positive value using datamuse
         while positive is None:
-            anchor = utils.normalize_lyric(rw.word())
+            anchor = rw.word()
+            anchor = utils.normalize_lyric(anchor)
             rhymes = utils.get_datamuse_rhymes(anchor, cache_only=DATAMUSE_CACHED_ONLY)
             if rhymes:
                 positive = random.choice(rhymes)['word']
