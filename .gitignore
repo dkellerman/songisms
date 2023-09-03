@@ -25,7 +25,6 @@ TODO.md
 scripts/**/*
 !scripts/load_data.py
 !scripts/lyric_sim.py
-!scripts/output_rhymes.py
 !scripts/proc_gpt_ipa.py
 
 # dependencies
