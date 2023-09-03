@@ -142,6 +142,7 @@ def get_stress_tail_for_ipa(ipa_phrase):
     '''
     if not ipa_phrase.strip():
         return ''
+
     stress_index = ipa_phrase.find("ˈ") + 1
     while not is_vowel(ipa_phrase[stress_index]):
         stress_index += 1

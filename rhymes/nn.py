@@ -37,8 +37,9 @@ USE_TAILS = False  # use IPA stress tails
 DATAMUSE_CACHED_ONLY = True  # set false for first few times generating training data
 DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
-# this can't be changed right now without also adjusting the network
-MAX_LEN = 20
+# these can't be changed right now without also adjusting the network
+MAX_LEN = 15  # width (ipa characters)
+IPA_FEATURE_LEN = 25  # channels
 
 
 class RhymesTrainDataset(Dataset):
@@ -98,7 +99,7 @@ class SiameseTripletNet(nn.Module):
         super(SiameseTripletNet, self).__init__()
 
         self.cnn1 = nn.Sequential(
-            nn.Conv1d(25, 64, kernel_size=3, padding=2),
+            nn.Conv1d(IPA_FEATURE_LEN, 64, kernel_size=3, padding=2),
             nn.Tanh(),
             nn.BatchNorm1d(64),
             nn.Dropout1d(p=.2),
@@ -113,13 +114,14 @@ class SiameseTripletNet(nn.Module):
             nn.BatchNorm1d(32),
             nn.Dropout1d(p=.2),
         )
-        self.fc1 = nn.Linear(832, 512)
+        self.fc1 = nn.Linear(672, 512)
         self.fc2 = nn.Linear(512, 256)
         self.fc3 = nn.Linear(256, 128)
 
     def forward_once(self, x):
         z = self.cnn1(x)
         z = z.view(z.size()[0], -1)
+        # print(z.shape)
         z = F.tanh(self.fc1(z))
         z = F.tanh(self.fc2(z))
         z = self.fc3(z)
@@ -186,7 +188,7 @@ def train():
                 anchor_out, pos_out, neg_out = model(anchor.to(DEVICE), pos.to(DEVICE), neg.to(DEVICE))
                 loss = criterion(anchor_out, pos_out, neg_out)
                 losses.append(loss.item())
-                went_down = losses[-1] < losses[-2] if len(losses) > 1 else False
+                went_down = losses[-1] < losses[-2] if len(losses) > 1 else True
                 prog_bar.set_description(f"[E{epoch+1}-v] L={sum(losses)/len(losses):.3f}"
                                          f"{'-' if went_down else '+'}")
                 distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, pos_out)]
@@ -339,8 +341,8 @@ SCORE_LABELS = (
     (.2, "Not a rhyme"),
     (.3, "Unlikely rhyme"),
     (.5, "Near rhyme"),
-    (.6, "Weak rhyme"),
-    (.8, "Slant rhyme"),
+    (.7, "Weak rhyme"),
+    (.9, "Slant rhyme"),
     (1.0, "Perfect rhyme"),
 )
 
@@ -384,8 +386,7 @@ def make_training_data():
             rhymes = utils.get_datamuse_rhymes(anchor, cache_only=DATAMUSE_CACHED_ONLY)
             if rhymes:
                 positive = random.choice(rhymes)['word']
-                #if positive.endswith(anchor) or positive.endswith(anchor + 's'):
-                if positive == anchor + 's':
+                if positive.endswith(anchor) or positive.endswith(anchor + 's'):
                    positive = None
 
         positive = utils.normalize_lyric(positive)
