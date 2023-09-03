@@ -10,6 +10,7 @@ Use with rhymesnet management command:
 import time
 import random
 import torch
+import numpy as np
 from statistics import mean
 from dataclasses import dataclass
 from tqdm import tqdm
@@ -49,6 +50,9 @@ class Config:
 
 config = Config()
 
+torch.manual_seed(config.random_seed)
+random.seed(config.random_seed)
+
 
 class RhymesTrainDataset(Dataset):
     '''Loads training data triples (anchor/pos/neg)
@@ -86,7 +90,7 @@ def make_rhyme_tensors(anchor, pos, neg=None, pad_to=config.max_len):
         # pad, or chop if it's too long (but it shouldn't be)
         vec = (['_'] * (pad_to - len(vec))) + [str(c) for c in vec][:config.max_len]
         # replace IPA characters with feature arrays
-        vec = utils.get_ipa_features_vector(vec)
+        vec = np.array(utils.get_ipa_features_vector(vec))
         # convert to tensor
         vec = torch.tensor(vec, dtype=torch.float)
         vec = vec.transpose(0, 1)
@@ -107,17 +111,17 @@ class SiameseTripletNet(nn.Module):
         super(SiameseTripletNet, self).__init__()
 
         self.cnn1 = nn.Sequential(
-            nn.Conv1d(config.ipa_feature_len, 64, kernel_size=4, padding=2),
+            nn.Conv1d(config.ipa_feature_len, 64, kernel_size=4, padding=2, stride=1),
             nn.Tanh(),
             nn.BatchNorm1d(64),
             nn.Dropout1d(p=.2),
 
-            nn.Conv1d(64, 64, kernel_size=4, padding=2),
+            nn.Conv1d(64, 64, kernel_size=4, padding=2, stride=1),
             nn.Tanh(),
             nn.BatchNorm1d(64),
             nn.Dropout1d(p=.2),
 
-            nn.Conv1d(64, 32, kernel_size=4, padding=2),
+            nn.Conv1d(64, 32, kernel_size=4, padding=2, stride=1),
             nn.Tanh(),
             nn.BatchNorm1d(32),
             nn.Dropout1d(p=.2),
@@ -156,7 +160,6 @@ def train():
     model = SiameseTripletNet().to(config.device)
     criterion = TripletMarginLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=config.lr)
-    torch.manual_seed(config.random_seed)
 
     # prepare training and validation data loaders
     dataset = RhymesTrainDataset()
@@ -220,7 +223,7 @@ def train():
     torch.save({
         'model_state_dict': model.state_dict(),
         'optimizer_state_dict': optimizer.state_dict(),
-        'distances': distances,
+        'distances': np.array(distances),
     }, config.model_file)
 
     # plot training/validation losses averaged per epoch
@@ -295,11 +298,11 @@ class RhymeScorer():
     '''
     def __init__(self, distances):
         self.robust = RobustScaler()
-        scaled = self.robust.fit_transform([[d] for d in distances])
+        scaled = self.robust.fit_transform(distances.reshape(-1, 1))
         self.minmax = MinMaxScaler().fit(scaled)
 
     def __call__(self, distance):
-        val = [[distance]]
+        val = np.array([[distance]])
         val = self.robust.transform(val)
         val = self.minmax.transform(val)
         return 1.0 - val[0][0]
@@ -372,11 +375,12 @@ def predict(text1, text2, model=None, scorer=lambda x: x):
         model, scorer = load_model()
 
     anchor_vec, other_vec = make_rhyme_tensors(text1, text2)
-    # fake a batch dimension here
-    anchor_vec = anchor_vec.unsqueeze(0)
-    other_vec = other_vec.unsqueeze(0)
 
-    anchor_out, other_out = model(anchor_vec.to(config.device), other_vec.to(config.device))
+    # fake a batch dimension here
+    anchor_vec = anchor_vec.unsqueeze(0).to(config.device)
+    other_vec = other_vec.unsqueeze(0).to(config.device)
+
+    anchor_out, other_out = model(anchor_vec, other_vec)
     distance = pairwise_distance_ignore_batch_dim(anchor_out, other_out).item()
     score = scorer(distance)
 
@@ -408,7 +412,6 @@ def make_training_data():
             if rhymes:
                 positive = random.choice(rhymes)['word']
                 if positive.endswith(anchor) or positive.endswith(anchor + 's'):
-                # if positive == anchor + 's':
                    positive = None
 
         positive = utils.normalize_lyric(positive)
