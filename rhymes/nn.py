@@ -113,9 +113,9 @@ class SiameseTripletNet(nn.Module):
             nn.BatchNorm1d(32),
             nn.Dropout1d(p=.2),
         )
-        self.fc1 = nn.Linear(832, 1024)
-        self.fc2 = nn.Linear(1024, 512)
-        self.fc3 = nn.Linear(512, 256)
+        self.fc1 = nn.Linear(832, 512)
+        self.fc2 = nn.Linear(512, 256)
+        self.fc3 = nn.Linear(256, 128)
 
     def forward_once(self, x):
         z = self.cnn1(x)
