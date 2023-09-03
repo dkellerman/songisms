@@ -24,7 +24,6 @@ class Command(BaseCommand):
             text1, text2 = options['predict']
             self.predict_with_info(text1, text2)
 
-
     def predict_with_info(self, text1, text2):
         pred, score, label = nn.predict(text1, text2)
 

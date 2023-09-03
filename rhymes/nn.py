@@ -11,9 +11,10 @@ import time
 import random
 import torch
 from statistics import mean
+from dataclasses import dataclass
+from tqdm import tqdm
 from torch import nn
 import torch.nn.functional as F
-from tqdm import tqdm
 from torch.utils.data import Dataset, DataLoader, random_split
 from positional_encodings.torch_encodings import PositionalEncoding1D, Summer
 import matplotlib.pyplot as plt
@@ -21,35 +22,40 @@ from wonderwords import RandomWord
 from sklearn.preprocessing import RobustScaler, MinMaxScaler
 from songisms import utils
 
-# to be configurable later
-MODEL_FILE = './data/rhymes.pt'
-TRAIN_FILE = './data/rhymes_train.csv'
-TEST_MISSES_FILE = './data/rhymes_test_misses.csv'
-DATA_TOTAL_SIZE = 3000  # number of rows to generate
-ROWS = 2000  # number of rows to use for training/validation
-TEST_SIZE = 2000
-BATCH_SIZE = 128
-EPOCHS = 10
-LR = 0.001
-LOSS_MARGIN = 1.0
-WORKERS = 2
-POSITIONAL_ENCODING = True
-EARLY_STOP_EPOCHS = 3  # stop training after n epochs of no validation improvement
-USE_TAILS = False  # use IPA stress tails
-DATAMUSE_CACHED_ONLY = True  # set false for first few times generating training data
-DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
-# these can't be changed right now without also adjusting the network
-MAX_LEN = 15  # width (ipa characters)
-IPA_FEATURE_LEN = 25  # channels
+@dataclass
+class Config:
+    random_seed: int = 4242
+    model_file: str = './data/rhymes.pt'
+    train_file: str = './data/rhymes_train.csv'
+    test_misses_file: str = './data/rhymes_test_misses.csv'
+    data_total_size: int = 3000  # number of rows to generate
+    rows: int = 2000  # number of rows to use for training/validation
+    test_size: int = 2000  # number of rows to use for testing
+    batch_size: int = 128
+    epochs: int = 10
+    lr: float = 0.001
+    loss_margin: float = 1.0
+    workers: int = 2
+    positional_encoding: bool = False
+    early_stop_epochs: int = 3  # stop training after n epochs of no validation improvement
+    use_tails: bool = False  # use IPA stress tails
+    datamuse_cached_only: bool = True  # set false for first few times generating training data
+    device: str = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+
+    # these can't be changed right now without also adjusting the network
+    max_len: int = 15  # width (ipa characters)
+    ipa_feature_len: int = 25  # channels
+
+config = Config()
 
 
 class RhymesTrainDataset(Dataset):
     '''Loads training data triples (anchor/pos/neg)
     '''
-    def __init__(self, pad_to=MAX_LEN):
+    def __init__(self, pad_to=config.max_len):
         self.pad_to = pad_to
-        self.triples = utils.data.rhymes_train[:ROWS]
+        self.triples = utils.data.rhymes_train[:config.rows]
 
     def __len__(self):
         return len(self.triples)
@@ -60,10 +66,10 @@ class RhymesTrainDataset(Dataset):
         return anchor, pos, neg
 
 
-def make_rhyme_tensors(anchor, pos, neg=None, pad_to=MAX_LEN):
+def make_rhyme_tensors(anchor, pos, neg=None, pad_to=config.max_len):
     '''Aligns IPA words and returns feature vectors for each IPA character.
     '''
-    ipa_conversion_fn = utils.get_ipa_tail if USE_TAILS else utils.get_ipa_text
+    ipa_conversion_fn = utils.get_ipa_tail if config.use_tails else utils.get_ipa_text
 
     # align all 3 if neg is provided, otherwise just 2
     if neg is not None:
@@ -78,15 +84,15 @@ def make_rhyme_tensors(anchor, pos, neg=None, pad_to=MAX_LEN):
 
     for i, vec in enumerate(vecs):
         # pad, or chop if it's too long (but it shouldn't be)
-        vec = (['_'] * (pad_to - len(vec))) + [str(c) for c in vec][:MAX_LEN]
+        vec = (['_'] * (pad_to - len(vec))) + [str(c) for c in vec][:config.max_len]
         # replace IPA characters with feature arrays
         vec = utils.get_ipa_features_vector(vec)
         # convert to tensor
         vec = torch.tensor(vec, dtype=torch.float)
         vec = vec.transpose(0, 1)
 
-        if POSITIONAL_ENCODING:
-            encoder = Summer(PositionalEncoding1D(MAX_LEN))
+        if config.positional_encoding:
+            encoder = Summer(PositionalEncoding1D(config.max_len))
             vec = vec.unsqueeze(0) # encoder requires a batch dimension
             vec = encoder(vec)
             vec = vec.squeeze(0)
@@ -101,29 +107,28 @@ class SiameseTripletNet(nn.Module):
         super(SiameseTripletNet, self).__init__()
 
         self.cnn1 = nn.Sequential(
-            nn.Conv1d(IPA_FEATURE_LEN, 64, kernel_size=3, padding=2),
+            nn.Conv1d(config.ipa_feature_len, 64, kernel_size=4, padding=2),
             nn.Tanh(),
             nn.BatchNorm1d(64),
             nn.Dropout1d(p=.2),
 
-            nn.Conv1d(64, 64, kernel_size=3, padding=2),
+            nn.Conv1d(64, 64, kernel_size=4, padding=2),
             nn.Tanh(),
             nn.BatchNorm1d(64),
             nn.Dropout1d(p=.2),
 
-            nn.Conv1d(64, 32, kernel_size=3, padding=2),
+            nn.Conv1d(64, 32, kernel_size=4, padding=2),
             nn.Tanh(),
             nn.BatchNorm1d(32),
             nn.Dropout1d(p=.2),
         )
-        self.fc1 = nn.Linear(672, 512)
+        self.fc1 = nn.Linear(576, 512)
         self.fc2 = nn.Linear(512, 256)
         self.fc3 = nn.Linear(256, 128)
 
     def forward_once(self, x):
         z = self.cnn1(x)
         z = z.view(z.size()[0], -1)
-        # print(z.shape)
         z = F.tanh(self.fc1(z))
         z = F.tanh(self.fc2(z))
         z = self.fc3(z)
@@ -139,7 +144,7 @@ class SiameseTripletNet(nn.Module):
 
 
 class TripletMarginLoss(nn.Module):
-    def __init__(self, margin=LOSS_MARGIN):
+    def __init__(self, margin=config.loss_margin):
         self.margin = margin
         super(TripletMarginLoss, self).__init__()
 
@@ -148,28 +153,32 @@ class TripletMarginLoss(nn.Module):
 
 
 def train():
-    model = SiameseTripletNet().to(DEVICE)
+    model = SiameseTripletNet().to(config.device)
     criterion = TripletMarginLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=LR)
+    optimizer = torch.optim.Adam(model.parameters(), lr=config.lr)
+    torch.manual_seed(config.random_seed)
 
     # prepare training and validation data loaders
     dataset = RhymesTrainDataset()
     train_data, validation_data = random_split(dataset, [0.8, 0.2])
-    loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True, num_workers=WORKERS)
-    validation_loader = DataLoader(validation_data, batch_size=BATCH_SIZE, shuffle=True, num_workers=WORKERS)
+    loader = DataLoader(train_data, batch_size=config.batch_size,
+                        shuffle=True, num_workers=config.workers)
+    validation_loader = DataLoader(validation_data, batch_size=config.batch_size,
+                                   shuffle=True, num_workers=config.workers)
     early_stop_counter = 0
     all_losses = []
     all_validation_losses = []
     distances = []  # track distances for norming later
     start_time = time.time()
 
-    for epoch in range(EPOCHS):
+    for epoch in range(config.epochs):
         # training set
         prog_bar = tqdm(loader)
         losses = []
 
-        for anchor, pos, neg in prog_bar:
-            anchor_out, pos_out, neg_out = model(anchor.to(DEVICE), pos.to(DEVICE), neg.to(DEVICE))
+        for batch in prog_bar:
+            anchor, pos, neg = [b.to(config.device) for b in batch]
+            anchor_out, pos_out, neg_out = model(anchor, pos, neg)
             loss = criterion(anchor_out, pos_out, neg_out)
             optimizer.zero_grad()
             loss.backward()
@@ -186,8 +195,9 @@ def train():
         losses = []
 
         with torch.no_grad():
-            for anchor, pos, neg in prog_bar:
-                anchor_out, pos_out, neg_out = model(anchor.to(DEVICE), pos.to(DEVICE), neg.to(DEVICE))
+            for batch in prog_bar:
+                anchor, pos, neg = [b.to(config.device) for b in batch]
+                anchor_out, pos_out, neg_out = model(anchor, pos, neg)
                 loss = criterion(anchor_out, pos_out, neg_out)
                 losses.append(loss.item())
                 prog_bar.set_description(f"[E{epoch+1}-v] L={mean(losses):.3f} es:{early_stop_counter}")
@@ -200,18 +210,18 @@ def train():
         went_down = mean(all_validation_losses[-1]) < mean(all_validation_losses[-2]) \
             if len(all_validation_losses) > 1 else True
         early_stop_counter = 0 if went_down else early_stop_counter + 1
-        if early_stop_counter >= EARLY_STOP_EPOCHS:
+        if early_stop_counter >= config.early_stop_epochs:
             print("Early stopping")
             break
 
     elapsed = time.time() - start_time
-    print(f"Training took {elapsed/60.0:.2f} mins | ~epoch: {elapsed/EPOCHS:.2f} secs")
+    print(f"Training took {elapsed/60.0:.2f} mins | ~epoch: {elapsed/config.epochs:.2f} secs")
 
     torch.save({
         'model_state_dict': model.state_dict(),
         'optimizer_state_dict': optimizer.state_dict(),
         'distances': distances,
-    }, MODEL_FILE)
+    }, config.model_file)
 
     # plot training/validation losses averaged per epoch
     plt.plot([mean(epoch) for epoch in all_losses], label='Training Loss')
@@ -249,14 +259,14 @@ class RhymesTestDataset(Dataset):
                    (text2, text1, 1.0) not in labeled_pairs:
                     labeled_pairs.append((text1, text2, 1.0))
 
-            if len(labeled_pairs) >= TEST_SIZE // 2:
-                labeled_pairs = labeled_pairs[:TEST_SIZE // 2]
+            if len(labeled_pairs) >= config.test_size // 2:
+                labeled_pairs = labeled_pairs[:config.test_size // 2]
                 break
 
         # second half of dataset are random negatives, probably...
         # quick sample showed me about 5% maybe-rhymes
         rw = RandomWord()
-        while len(labeled_pairs) < TEST_SIZE:
+        while len(labeled_pairs) < config.test_size:
             w1, w2 = rw.word(), rw.word()
 
             # spot check
@@ -270,7 +280,7 @@ class RhymesTestDataset(Dataset):
                 labeled_pairs.append((w1, w2, 0.0))
 
         print("Loaded/created", len(labeled_pairs), "test rhymes")
-        self.labeled_pairs = labeled_pairs[:TEST_SIZE]
+        self.labeled_pairs = labeled_pairs[:config.test_size]
 
     def __len__(self):
         return len(self.labeled_pairs)
@@ -297,8 +307,8 @@ class RhymeScorer():
 
 def load_model():
     # TODO: use torch script instead of loading full model
-    model = SiameseTripletNet().to(DEVICE)
-    model_params = torch.load(MODEL_FILE)
+    model = SiameseTripletNet().to(config.device)
+    model_params = torch.load(config.model_file)
     model.load_state_dict(model_params.get('model_state_dict'))
     model.eval()
 
@@ -310,7 +320,7 @@ def load_model():
 
 def test():
     dataset = RhymesTestDataset()
-    loader = DataLoader(dataset, shuffle=True, num_workers=WORKERS)
+    loader = DataLoader(dataset, shuffle=True, num_workers=config.workers)
     model, scorer = load_model()
     prog_bar = tqdm(loader, "Test Rhymes")
 
@@ -340,7 +350,7 @@ def test():
     print("Average correct score:", mean([s[-1] for s in correct]))
     print("Tough calls:", len([s for s in wrong if s[-1] > .45 and s[-1] < .55]))
 
-    with open(TEST_MISSES_FILE, 'w') as f:
+    with open(config.test_misses_file, 'w') as f:
         f.write('text1,text2,ipa1,ipa2,pred,score\n')
         for vals in wrong:
             f.write(f"{vals[0]},{vals[1]},"
@@ -366,7 +376,7 @@ def predict(text1, text2, model=None, scorer=lambda x: x):
     anchor_vec = anchor_vec.unsqueeze(0)
     other_vec = other_vec.unsqueeze(0)
 
-    anchor_out, other_out = model(anchor_vec.to(DEVICE), other_vec.to(DEVICE))
+    anchor_out, other_out = model(anchor_vec.to(config.device), other_vec.to(config.device))
     distance = pairwise_distance_ignore_batch_dim(anchor_out, other_out).item()
     score = scorer(distance)
 
@@ -386,7 +396,7 @@ def make_training_data():
     rw = RandomWord()
     lines = []
 
-    for _ in tqdm(range(DATA_TOTAL_SIZE)):
+    for _ in tqdm(range(config.data_total_size)):
         anchor = None
         positive = None
 
@@ -394,7 +404,7 @@ def make_training_data():
         while positive is None:
             anchor = rw.word()
             anchor = utils.normalize_lyric(anchor)
-            rhymes = utils.get_datamuse_rhymes(anchor, cache_only=DATAMUSE_CACHED_ONLY)
+            rhymes = utils.get_datamuse_rhymes(anchor, cache_only=config.datamuse_cached_only)
             if rhymes:
                 positive = random.choice(rhymes)['word']
                 if positive.endswith(anchor) or positive.endswith(anchor + 's'):
@@ -406,7 +416,7 @@ def make_training_data():
         # random negative
         negative = utils.normalize_lyric(rw.word())
         # check IPA length doesn't exceed max length of net
-        if any([len(utils.get_ipa_text(w)) > MAX_LEN - 1 for w in [anchor, positive, negative]]):
+        if any([len(utils.get_ipa_text(w)) > config.max_len - 1 for w in [anchor, positive, negative]]):
              continue
         # and quick spot check
         if utils.get_ipa_tail(anchor) == utils.get_ipa_tail(negative):
@@ -414,6 +424,17 @@ def make_training_data():
 
         lines.append((anchor, positive, negative))
 
-    with open(TRAIN_FILE, 'w') as f:
+    with open(config.train_file, 'w') as f:
         f.write('\n'.join(';'.join(l) for l in lines))
 
+
+def calc_cnn_output_size():
+    model = SiameseTripletNet()
+    dummy_input = torch.randn((1, config.ipa_feature_len, config.max_len))
+    output = model.cnn1(dummy_input)
+    output = output.view(output.size()[0], -1)
+    return output.size(1)
+
+
+if __name__ == '__main__':
+    print(calc_cnn_output_size())
