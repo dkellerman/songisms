@@ -10,6 +10,7 @@ Use with rhymesnet management command:
 import time
 import random
 import torch
+from statistics import mean
 from torch import nn
 import torch.nn.functional as F
 from tqdm import tqdm
@@ -23,6 +24,7 @@ from songisms import utils
 # to be configurable later
 MODEL_FILE = './data/rhymes.pt'
 TRAIN_FILE = './data/rhymes_train.csv'
+TEST_MISSES_FILE = './data/rhymes_test_misses.csv'
 DATA_TOTAL_SIZE = 3000  # number of rows to generate
 ROWS = 2000  # number of rows to use for training/validation
 TEST_SIZE = 2000
@@ -173,7 +175,7 @@ def train():
             loss.backward()
             optimizer.step()
             losses.append(loss.item())
-            prog_bar.set_description(f"[E{epoch+1}-T] L={sum(losses)/len(losses):.3f}")
+            prog_bar.set_description(f"[E{epoch+1}-T] L={mean(losses):.3f}")
             distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, pos_out)]
             distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, neg_out)]
 
@@ -188,13 +190,15 @@ def train():
                 anchor_out, pos_out, neg_out = model(anchor.to(DEVICE), pos.to(DEVICE), neg.to(DEVICE))
                 loss = criterion(anchor_out, pos_out, neg_out)
                 losses.append(loss.item())
-                went_down = losses[-1] < losses[-2] if len(losses) > 1 else True
-                prog_bar.set_description(f"[E{epoch+1}-v] L={sum(losses)/len(losses):.3f}"
-                                         f"{'-' if went_down else '+'}")
+                prog_bar.set_description(f"[E{epoch+1}-v] L={mean(losses):.3f} ^{early_stop_counter}")
                 distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, pos_out)]
                 distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, neg_out)]
 
         all_validation_losses.append(losses)
+
+        # check for early stop
+        went_down = mean(losses) < mean(all_validation_losses[-2]) \
+            if len(all_validation_losses) > 1 else True
         early_stop_counter = 0 if went_down else early_stop_counter + 1
         if early_stop_counter >= EARLY_STOP_EPOCHS:
             print("Early stopping")
@@ -210,8 +214,8 @@ def train():
     }, MODEL_FILE)
 
     # plot training/validation losses averaged per epoch
-    plt.plot([sum(epoch)/len(epoch) for epoch in all_losses], label='Training Loss')
-    plt.plot([sum(epoch)/len(epoch) for epoch in all_validation_losses], label='Validation Loss')
+    plt.plot([mean(epoch) for epoch in all_losses], label='Training Loss')
+    plt.plot([mean(epoch) for epoch in all_validation_losses], label='Validation Loss')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.legend()
@@ -332,9 +336,16 @@ def test():
     total = len(correct) + len(wrong)
     pct = (len(correct) / total) * 100
     print("\nCorrect:", len(correct), "| Wrong:", len(wrong), "| Pct:", f"{pct:.3f}%")
-    print("Average wrong score:", sum([s[-1] for s in wrong]) / len(wrong))
-    print("Average correct score:", sum([s[-1] for s in correct]) / len(correct))
+    print("Average wrong score:", mean([s[-1] for s in wrong]))
+    print("Average correct score:", mean([s[-1] for s in correct]))
     print("Tough calls:", len([s for s in wrong if s[-1] > .45 and s[-1] < .55]))
+
+    with open(TEST_MISSES_FILE, 'w') as f:
+        f.write('text1,text2,ipa1,ipa2,pred,score\n')
+        for vals in wrong:
+            f.write(f"{vals[0]},{vals[1]},"
+                    f"{utils.get_ipa_text(vals[0])},{utils.get_ipa_text(vals[1])},"
+                    f"{'Y' if vals[2] else 'N'},{vals[3]:.3f}\n")
 
 
 SCORE_LABELS = (
@@ -387,6 +398,7 @@ def make_training_data():
             if rhymes:
                 positive = random.choice(rhymes)['word']
                 if positive.endswith(anchor) or positive.endswith(anchor + 's'):
+                # if positive == anchor + 's':
                    positive = None
 
         positive = utils.normalize_lyric(positive)
@@ -404,3 +416,4 @@ def make_training_data():
 
     with open(TRAIN_FILE, 'w') as f:
         f.write('\n'.join(';'.join(l) for l in lines))
+
