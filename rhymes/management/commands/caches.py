@@ -39,7 +39,7 @@ def reset_caches():
 
     for ngram in tqdm(top, desc='queries & completions cache'):
         val = ngram['ngram']
-        Rhyme.objects.query(q=val, limit=qsize)
+        Rhyme.objects.query(val, 0, qsize)
         for i in range(0, len(val) + 1):
             qsug = val[:i]
             NGram.objects.completions(qsug, sug_size)
