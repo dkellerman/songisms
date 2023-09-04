@@ -334,7 +334,6 @@ def test():
         text1, text2, label = batch[0][0], batch[1][0], batch[2].item()
         score = predict(text1, text2, model=model, scorer=scorer)
         pred = score >= .5
-        label = score_to_label(score)
 
         if (pred and label == 1.0) or (not pred and label == 0.0):
             correct.append((text1, text2, pred, score))
