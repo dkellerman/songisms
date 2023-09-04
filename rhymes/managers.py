@@ -40,6 +40,7 @@ class RhymeManager(BaseManager):
                 rto.text AS ngram,
                 rto.n AS n,
                 r.level AS level,
+                r.score AS score,
                 COUNT(r.song_uid) AS frequency,
                 0 AS vec_distance,
                 {f'CUBE(%(stresses)s) <-> CUBE(n.stresses) AS stresses_distance' if len(stresses)
@@ -61,7 +62,8 @@ class RhymeManager(BaseManager):
             WHERE
                 UPPER(n.text) = ANY(%(q)s)
                 AND NOT (UPPER(rto.text) = ANY(%(q)s))
-            GROUP BY ngram, rto.n, level, vec_distance, stresses_distance,
+                -- AND (r.level != 2 OR r.score >= 0.4)
+            GROUP BY ngram, rto.n, level, score, vec_distance, stresses_distance,
                      n.adj_pct, n.song_pct, n.title_pct, ndiff, n.mscore, n.song_count
         '''
 
@@ -70,6 +72,7 @@ class RhymeManager(BaseManager):
                 n.text AS ngram,
                 n.n AS n,
                 CAST(NULL AS bigint) AS level,
+                CAST(NULL AS float) AS score,
                 CAST(NULL AS bigint) AS frequency,
                 CUBE(%(vec)s) <-> CUBE(n.phones) AS vec_distance,
                 CUBE(%(stresses)s) <-> CUBE(n.stresses) AS stresses_distance,
@@ -102,6 +105,7 @@ class RhymeManager(BaseManager):
                     SELECT
                         ngram,
                         frequency,
+                        score,
                         CASE
                             WHEN level = 1 THEN 'rhyme'
                             WHEN level = 2 THEN 'rhyme-l2'

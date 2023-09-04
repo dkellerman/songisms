@@ -180,7 +180,7 @@ class Command(BaseCommand):
         if rescore:
             scores_cache.clear()
         for rhyme in tqdm(rhymes.values(),
-                          f"{'generating' if rescore else 'using cached'}"
+                          f"{'generating' if rescore else 'using cached'} "
                           "rhyme scores"):
             rfrom = rhyme['from_ngram']['text']
             rto = rhyme['to_ngram']['text']
@@ -228,7 +228,8 @@ class Command(BaseCommand):
                 nfrom = ngrams[rhyme['from_ngram']['text']]
                 nto = ngrams[rhyme['to_ngram']['text']]
                 song_uid = rhyme['song_uid']
-                rhyme_objs.append(Rhyme(from_ngram=nfrom, to_ngram=nto, song_uid=song_uid, level=rhyme['level']))
+                rhyme_objs.append(Rhyme(from_ngram=nfrom, to_ngram=nto, song_uid=song_uid,
+                                        level=rhyme['level'], score=rhyme['score']))
                 # write the reverse rhyme as well
                 revkey = (nto.text, nfrom.text, song_uid if song_uid else None)
                 if revkey not in rhymes:
@@ -260,8 +261,10 @@ _score_model, _scorer = None, None
 
 def get_score(key):
     from rhymes.nn import predict, load_model
-    w1, w2 = key.split('_')
     global _score_model, _scorer
+
     if not _score_model:
         _score_model, _scorer = load_model()
+
+    w1, w2 = key.split('_')
     return predict(w1, w2, model=_score_model, scorer=_scorer)

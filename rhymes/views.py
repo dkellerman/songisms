@@ -16,7 +16,8 @@ def rhymes(request):
                 {
                     "text": hit['ngram'],
                     "type": hit['type'],
-                    "frequency": hit['frequency']
+                    "frequency": hit['frequency'],
+                    "score": hit['score'],
                 }
                 for hit in hits
             ]
