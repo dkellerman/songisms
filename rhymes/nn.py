@@ -407,17 +407,14 @@ def make_training_data():
         # lookup a positive value using datamuse
         while positive is None:
             anchor = rw.word()
-            anchor = utils.normalize_lyric(anchor)
             rhymes = utils.get_datamuse_rhymes(anchor, cache_only=config.datamuse_cached_only)
             if rhymes:
                 positive = random.choice(rhymes)['word']
                 if positive.endswith(anchor) or positive.endswith(anchor + 's'):
                    positive = None
 
-        positive = utils.normalize_lyric(positive)
-
         # random negative
-        negative = utils.normalize_lyric(rw.word())
+        negative = rw.word()
 
         if config.use_tails:
             aipa, pipa, nipa = [utils.get_ipa_tail(w) for w in [anchor, positive, negative]]
