@@ -418,14 +418,6 @@
 {
   "model": "songs.artist",
   "fields": {
-    "name": "Niko Moon",
-    "created": "2022-05-28T00:17:24.116Z",
-    "updated": "2022-05-28T00:17:24.116Z"
-  }
-},
-{
-  "model": "songs.artist",
-  "fields": {
     "name": "Chris Janson",
     "created": "2022-05-28T00:17:24.604Z",
     "updated": "2022-05-28T00:17:24.604Z"
@@ -1677,22 +1669,6 @@
     "name": "The Police",
     "created": "2022-05-28T00:18:32.290Z",
     "updated": "2022-05-28T00:18:32.290Z"
-  }
-},
-{
-  "model": "songs.artist",
-  "fields": {
-    "name": "Gary Jules",
-    "created": "2022-05-28T00:18:32.580Z",
-    "updated": "2022-05-28T00:18:32.580Z"
-  }
-},
-{
-  "model": "songs.artist",
-  "fields": {
-    "name": "Michael Andrews",
-    "created": "2022-05-28T00:18:32.581Z",
-    "updated": "2022-05-28T00:18:32.581Z"
   }
 },
 {

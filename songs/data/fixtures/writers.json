@@ -5411,15 +5411,6 @@
 {
   "model": "songs.writer",
   "fields": {
-    "name": "Roland Orzabal",
-    "alt_names": "[]",
-    "created": "2022-05-28T00:18:32.585Z",
-    "updated": "2022-05-28T00:18:32.585Z"
-  }
-},
-{
-  "model": "songs.writer",
-  "fields": {
     "name": "Barry Gibb",
     "alt_names": "[]",
     "created": "2022-05-28T00:18:33Z",
@@ -6108,15 +6099,6 @@
     "alt_names": "[]",
     "created": "2022-05-28T00:18:49.445Z",
     "updated": "2022-05-28T00:18:49.445Z"
-  }
-},
-{
-  "model": "songs.writer",
-  "fields": {
-    "name": "Linda Perry",
-    "alt_names": "[]",
-    "created": "2022-05-28T00:18:49.709Z",
-    "updated": "2022-05-28T00:18:49.709Z"
   }
 },
 {
