@@ -30,7 +30,6 @@
 * `./manage.py createsuperuser`
 * `./manage.py runserver`
 * Browse admin: https://localhost:8000/admin/
-* Browse GraphQL: https://localhost:8000/songs/graphql/
 
 ## Setup rhymes client app
 * Requires Node v18: `nvm use 18`
