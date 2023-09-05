@@ -18,9 +18,9 @@ if __name__ == '__main__':
     word2ipa = {}
 
     if len(args) == 1:
-        songs = Song.objects.filter(title__iexact=args[0])
+        songs = Song.objects.filter(title__iexact=args[0], is_new=False)
     else:
-        songs = tqdm(Song.objects.all())
+        songs = tqdm(Song.objects.filter(is_new=False))
 
     for song in songs:
         lines = [utils.normalize_lyric(l) for l in song.lyrics.split('\n') if l.strip()]

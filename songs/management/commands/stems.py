@@ -12,7 +12,7 @@ class Command(BaseCommand):
         parser.add_argument('--limit', '-l', type=int, default=10)
 
     def handle(self, *args, **options):
-        songs = Song.objects.all()
+        songs = Song.objects.filter(is_new=False)
         if options['id']:
             songs = songs.filter(spotify_id__in=options['id'].split(','))
         limit = options['limit']

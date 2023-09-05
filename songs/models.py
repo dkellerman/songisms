@@ -120,6 +120,10 @@ class Song(models.Model):
     def natural_key(self):
         return self.spotify_id,
 
+    def clean(self):
+        self.lyrics = self.lyrics.replace('\r\n', '\n')
+        self.rhymes_raw = self.lyrics.replace('\r\n', '\n')
+
     @property
     def audio_file_path(self):
         return f'data/audio/{self.spotify_id}.webm'

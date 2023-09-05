@@ -59,9 +59,11 @@ class Command(BaseCommand):
                 if not song.lyrics.strip():
                     print("[NO LYRICS]", song.spotify_id, song.title)
                 if check_style:
+                    if "\r" in song.lyrics:
+                        print("[STYLE: CRs]", song.spotify_id, song.title)
                     if "\n\n" not in song.lyrics:
                         print("[STYLE: NO SECTIONS?]", song.spotify_id, song.title)
-                    if "." in song.lyrics or "..." in song.lyrics:
+                    if "..." in song.lyrics:
                         print("[STYLE: BAD PUNCTUATION?]", song.spotify_id, song.title)
                     if song.lyrics.count("-") > 3:
                         print("[STYLE: DASHED VOX?]", song.spotify_id, song.title)
