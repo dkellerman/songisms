@@ -325,3 +325,34 @@ PHONE_TO_FORMANTS = {
     u'b': [350, 0, 2250, 0],
     # ??? u'a': [],
 }
+
+def get_syllables(ipa):
+    invalid_onsets = ["pt", "pb", "tk", "td", "kg", "kd", "pf", "bv", "kf", "dg"]
+    syllables = []
+    i = 0
+    prev_end = 0
+    while i < len(ipa):
+        while i < len(ipa) and ipa[i] not in IPA_VOWELS:
+            i += 1
+        if i == len(ipa):
+            break
+        # Build the onset by working backward
+        onset_end = i
+        onset_start = i - 1
+        while onset_start >= prev_end and (ipa[onset_start:onset_end] not in invalid_onsets):
+            onset_start -= 1
+
+        onset = ipa[onset_start+1:onset_end]
+
+        # Find the end of the nucleus
+        nucleus_end = i + 1
+        while nucleus_end < len(ipa) and ipa[nucleus_end] not in IPA_VOWELS:
+            nucleus_end += 1
+
+        syllable = onset + ipa[i:nucleus_end]
+        syllables.append(syllable)
+
+        prev_end = nucleus_end
+        i = nucleus_end
+
+    return syllables

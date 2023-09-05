@@ -15,9 +15,13 @@
 
 ## Setup Python env
 * Requires python 3.9+
-* Install Poetry: `curl -sSL https://install.python-poetry.org | python3 -`
-* `poetry install`
-* `poetry shell`
+
+(From root directory):
+* `pip install virtualenv`
+* `python -m virtualenv -p python3.11 env`
+* `source env/bin/activate`
+* `pip install -r requirements.txt`
+* `pip install -r requirements-dev.txt`
 
 ## Setup DB
 * Create Postgresql DB/user and set `SISM_DATABASE_URL` env var

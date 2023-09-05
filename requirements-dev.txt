@@ -1,0 +1,12 @@
+tqdm
+django-storages[google]
+pafy
+youtube_dl
+ffmpeg
+scikit-learn
+openai
+gensim
+numpy
+wonderwords
+torch
+positional-encodings[pytorch]
