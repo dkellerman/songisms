@@ -98,7 +98,7 @@ class Command(BaseCommand):
             self._model, self._scorer = load_model()
 
         suspect = []
-        rhyme_sets = song.rhymes_raw.split('\n')
+        rhyme_sets = song.rhymes_raw and song.rhymes_raw.split('\n') or []
         for rset in rhyme_sets:
             pairs = utils.get_rhyme_pairs(rset)
             for w1, w2 in pairs:
