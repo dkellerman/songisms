@@ -416,9 +416,6 @@ def make_training_data():
 
         positive = utils.normalize_lyric(positive)
 
-        if random.random() > .5:
-            anchor, positive = positive, anchor
-
         # random negative
         negative = utils.normalize_lyric(rw.word())
 
@@ -437,8 +434,10 @@ def make_training_data():
         if utils.get_ipa_tail(anchor) == utils.get_ipa_tail(negative):
             continue
 
-        if random.random() < .2:
-            pipa = utils.chop_tail(pipa)
+        if pipa[-2:] == "ɪŋ" and random.random() < .2:
+            pipa = pipa[:-1] + 'n'
+        if pipa[-2:] == "ər" and random.random() < .2:
+            pipa = pipa[:-1]
 
         lines.append((anchor, positive, negative, aipa, pipa, nipa))
         prog_bar.update()

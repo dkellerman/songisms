@@ -156,8 +156,10 @@ def get_stress_tail_for_ipa(ipa_phrase):
 
 
 def chop_tail(ipa_phrase):
+    if ipa_phrase[-1] == "ŋ":
+        return ipa_phrase[:-1] + "n"
     index = len(ipa_phrase) - 1
-    while not is_vowel(ipa_phrase[index]):
+    while not is_vowel(ipa_phrase[index]) and not ipa_phrase[index] == "n":
         index -= 1
         if index <= 0:
             return ipa_phrase
