@@ -26,14 +26,14 @@ from songisms import utils
 
 @dataclass
 class Config:
-    random_seed: int = 4242
+    random_seed: int = 5050
     model_file: str = './data/rhymes.pt'
     train_file: str = './data/rhymes_train.csv'
     test_misses_file: str = './data/rhymes_test_misses.csv'
     data_total_size: int = 3000  # number of rows to generate
     rows: int = 3000  # number of rows to use for training/validation
     test_size: int = 2000  # number of rows to use for testing
-    batch_size: int = 128
+    batch_size: int = 64
     epochs: int = 10
     lr: float = 0.0005
     loss_margin: float = 1.0
@@ -106,22 +106,22 @@ class SiameseTripletNet(nn.Module):
         super(SiameseTripletNet, self).__init__()
 
         self.cnn1 = nn.Sequential(
-            nn.Conv1d(config.ipa_feature_len, 64, kernel_size=4, padding=2, stride=1),
+            nn.Conv1d(config.ipa_feature_len, 64, kernel_size=4, padding=2, dilation=2),
             nn.Tanh(),
             nn.BatchNorm1d(64),
             nn.Dropout1d(p=.2),
 
-            nn.Conv1d(64, 64, kernel_size=4, padding=2, stride=1),
+            nn.Conv1d(64, 64, kernel_size=4, padding=2, dilation=2),
             nn.Tanh(),
             nn.BatchNorm1d(64),
             nn.Dropout1d(p=.2),
 
-            nn.Conv1d(64, 32, kernel_size=4, padding=2, stride=1),
+            nn.Conv1d(64, 32, kernel_size=4, padding=2, dilation=2),
             nn.Tanh(),
             nn.BatchNorm1d(32),
             nn.Dropout1d(p=.2),
         )
-        self.fc1 = nn.Linear(576, 512)
+        self.fc1 = nn.Linear(288, 512)
         self.fc2 = nn.Linear(512, 256)
         self.fc3 = nn.Linear(256, 128)
 
@@ -423,6 +423,7 @@ def make_training_data():
         # random negative
         negative = rw.word()
 
+        # convert to IPA
         if config.use_tails:
             aipa, pipa, nipa = [utils.get_ipa_tail(w) for w in [anchor, positive, negative]]
         else:
@@ -437,7 +438,7 @@ def make_training_data():
         # and quick spot check negative doesn't rhyme with anchor
         if utils.get_ipa_tail(anchor) == utils.get_ipa_tail(negative):
             continue
-
+        # misc
         if pipa[-2:] == "ɪŋ" and random.random() < .2:
             pipa = pipa[:-1] + 'n'
         if pipa[-2:] == "ər" and random.random() < .2:
