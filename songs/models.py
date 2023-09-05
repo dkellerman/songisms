@@ -122,7 +122,7 @@ class Song(models.Model):
 
     def clean(self):
         self.lyrics = self.lyrics.replace('\r\n', '\n')
-        self.rhymes_raw = self.lyrics.replace('\r\n', '\n')
+        self.rhymes_raw = self.rhymes_raw.replace('\r\n', '\n')
 
     @property
     def audio_file_path(self):
