@@ -183,8 +183,10 @@ def train():
             optimizer.step()
             losses.append(loss.item())
             prog_bar.set_description(f"[E{epoch+1}-T] L={mean(losses):.3f}")
-            distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, pos_out)]
-            distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, neg_out)]
+            distances += [d.item() for d in F.pairwise_distance(anchor_out.squeeze(0),
+                                                                pos_out.squeeze(0))]
+            distances += [d.item() for d in F.pairwise_distance(anchor_out.squeeze(0),
+                                                                neg_out.squeeze(0))]
 
         prog_bar.close()
         all_losses.append(losses)
@@ -200,8 +202,10 @@ def train():
                 loss = criterion(anchor_out, pos_out, neg_out)
                 losses.append(loss.item())
                 prog_bar.set_description(f"[E{epoch+1}-v] L={mean(losses):.3f} es:{early_stop_counter}")
-                distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, pos_out)]
-                distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, neg_out)]
+                distances += [d.item() for d in F.pairwise_distance(anchor_out.squeeze(0),
+                                                                    pos_out.squeeze(0))]
+                distances += [d.item() for d in F.pairwise_distance(anchor_out.squeeze(0),
+                                                                    neg_out.squeeze(0))]
 
         prog_bar.close()
         all_validation_losses.append(losses)
@@ -230,16 +234,6 @@ def train():
     plt.ylabel('Loss')
     plt.legend()
     plt.show()
-
-
-def pairwise_distance_ignore_batch_dim(tensor1, tensor2, *args, **kwargs):
-    # wish I could find a better way to do this
-    tensor1 = tensor1.squeeze(0)
-    tensor2 = tensor2.squeeze(0)
-    distance = F.pairwise_distance(tensor1, tensor2, *args, **kwargs)
-    tensor1 = tensor1.unsqueeze(0)
-    tensor2 = tensor2.unsqueeze(0)
-    return distance
 
 
 class RhymesTestDataset(Dataset):
@@ -380,7 +374,8 @@ def predict(text1, text2, model=None, scorer=lambda x: x):
     other_vec = other_vec.unsqueeze(0).to(config.device)
 
     anchor_out, other_out = model(anchor_vec, other_vec)
-    distance = pairwise_distance_ignore_batch_dim(anchor_out, other_out).item()
+    distance = F.pairwise_distance(anchor_out.squeeze(0),
+                                   other_out.squeeze(0)).item()
     score = scorer(distance)
 
     return score
