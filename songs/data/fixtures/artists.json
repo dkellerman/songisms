@@ -2382,5 +2382,133 @@
     "created": "2022-05-28T00:19:25.277Z",
     "updated": "2022-11-12T02:38:11.778Z"
   }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "Tears For Fears",
+    "created": "2023-09-05T02:40:37.798Z",
+    "updated": "2023-09-05T02:40:37.798Z"
+  }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "John Mellencamp",
+    "created": "2023-09-05T03:44:11.448Z",
+    "updated": "2023-09-05T03:44:11.448Z"
+  }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "Journey",
+    "created": "2023-09-05T03:44:11.691Z",
+    "updated": "2023-09-05T03:44:11.691Z"
+  }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "The Chicks",
+    "created": "2023-09-05T03:44:11.821Z",
+    "updated": "2023-09-05T03:44:11.821Z"
+  }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "Rick Springfield",
+    "created": "2023-09-05T03:56:07.966Z",
+    "updated": "2023-09-05T03:56:07.966Z"
+  }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "Tracy Chapman",
+    "created": "2023-09-05T03:56:08.096Z",
+    "updated": "2023-09-05T03:56:08.096Z"
+  }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "Counting Crows",
+    "created": "2023-09-05T03:56:08.252Z",
+    "updated": "2023-09-05T03:56:08.252Z"
+  }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "June Carter Cash",
+    "created": "2023-09-05T03:56:08.650Z",
+    "updated": "2023-09-05T03:56:08.650Z"
+  }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "Marc Cohn",
+    "created": "2023-09-05T03:56:09.269Z",
+    "updated": "2023-09-05T03:56:09.269Z"
+  }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "Bryan Adams",
+    "created": "2023-09-05T03:56:09.723Z",
+    "updated": "2023-09-05T03:56:09.723Z"
+  }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "Bill Withers",
+    "created": "2023-09-05T03:56:09.850Z",
+    "updated": "2023-09-05T03:56:09.850Z"
+  }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "The Foundations",
+    "created": "2023-09-05T03:56:09.972Z",
+    "updated": "2023-09-05T03:56:09.972Z"
+  }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "Dexys Midnight Runners",
+    "created": "2023-09-05T03:56:10.097Z",
+    "updated": "2023-09-05T03:56:10.097Z"
+  }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "Deana Carter",
+    "created": "2023-09-05T03:56:10.477Z",
+    "updated": "2023-09-05T03:56:10.477Z"
+  }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "Don Henley",
+    "created": "2023-09-05T03:56:10.747Z",
+    "updated": "2023-09-05T03:56:10.747Z"
+  }
+},
+{
+  "model": "songs.artist",
+  "fields": {
+    "name": "Allman Brothers Band",
+    "created": "2023-09-05T03:56:10.986Z",
+    "updated": "2023-09-05T03:56:10.986Z"
+  }
 }
 ]
