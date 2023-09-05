@@ -275,6 +275,8 @@ def get_formants_vector(q, vowels_only=False, include_stresses=False):
 IPA_VOWELS = [u'i', u'y', u'e', u'ø', u'ɛ', u'œ', u'a', u'ɶ', u'ɑ', u'ɒ', u'ɔ',
               u'ʌ', u'ɤ', u'o', u'ɯ', u'u', u'ɪ', u'ʊ', u'ə', u'æ']
 
+IPA_DIPTHONGS = ['eɪ', 'oʊ', 'aʊ', 'ɪə', 'eə', 'ɔɪ', 'aɪ', 'ʊə' ]
+
 PHONE_TO_FORMANTS = {
     u'i': [240, 2400, 2160, 0],
     u'y': [235, 2100, 1865, 0],
@@ -326,33 +328,78 @@ PHONE_TO_FORMANTS = {
     # ??? u'a': [],
 }
 
-def get_syllables(ipa):
-    invalid_onsets = ["pt", "pb", "tk", "td", "kg", "kd", "pf", "bv", "kf", "dg"]
+def is_valid_onset(onset):
+    # https://en.wikipedia.org/wiki/English_phonology#Syllable_structure
+    return (
+        (onset != "ŋ")  # All single-consonant phonemes except /ŋ/
+
+        or onset in [
+            # Stop plus approximant other than /j/
+            'pl', 'bl', 'kl', 'ɡl', 'pr', 'br', 'tr', 'dr', 'kr',
+            'ɡr', 'tw', 'dw', 'ɡw', 'kw', 'pw',
+            # Voiceless fricative or /v/ plus approximant other than /j/
+            'fl', 'sl', 'θl', 'ʃl', 'fr', 'θr', 'ʃr', 'hw', 'sw', 'θw', 'vw',
+            # Consonant other than /r/ or /w/ plus /j/ (before /uː/ or its modified/reduced forms)
+            'pj', 'bj', 'tj', 'dj', 'kj', 'ɡj', 'mj', 'nj', 'fj', 'vj', 'θj',
+            'sj', 'zj', 'hj', 'lj',
+            # /s/ plus voiceless stop
+            'sp', 'st', 'sk',
+            # /s/ plus nasal other than /ŋ/
+            'sm', 'sn',
+            # /s/ plus voiceless non-sibilant fricative
+            'sf', 'sθ',
+            # /s/ plus voiceless stop plus approximant
+            'spl', 'skl', 'spr', 'str', 'skr', 'skw', 'spj', 'stj', 'skj',
+            # /s/ plus nasal plus approximant
+            'smj',
+            # /s/ plus voiceless non-sibilant fricative plus approximant
+            'sfr',
+            # ???
+        ]
+    )
+
+
+def get_syllables(ipa, as_str=False):
     syllables = []
-    i = 0
-    prev_end = 0
-    while i < len(ipa):
-        while i < len(ipa) and ipa[i] not in IPA_VOWELS:
-            i += 1
-        if i == len(ipa):
-            break
-        # Build the onset by working backward
-        onset_end = i
-        onset_start = i - 1
-        while onset_start >= prev_end and (ipa[onset_start:onset_end] not in invalid_onsets):
-            onset_start -= 1
+    ipa = [c for c in normalize_ipa(ipa)]
 
-        onset = ipa[onset_start+1:onset_end]
+    while len(ipa):  # per-word
+        char = None
+        onset = []
+        coda = []
+        nucleus = []
 
-        # Find the end of the nucleus
-        nucleus_end = i + 1
-        while nucleus_end < len(ipa) and ipa[nucleus_end] not in IPA_VOWELS:
-            nucleus_end += 1
+        while len(ipa) and char != ' ':  # per-syllable
+            char = ipa.pop()
 
-        syllable = onset + ipa[i:nucleus_end]
-        syllables.append(syllable)
+            if onset and not is_valid_onset(char + ''.join(onset)):
+                print('invalid', char + ''.join(onset))
+                ipa.append(char)
+                ipa += onset
+                onset = []
+                break
+            elif nucleus:
+                if (char in IPA_VOWELS or char in ["ŋ"]) \
+                    and (char + (''.join(nucleus)) not in IPA_DIPTHONGS
+                ):
+                    ipa.append(char)
+                    break
+                else:
+                    onset.insert(0, char)
+            else:
+                if char in IPA_VOWELS:
+                    nucleus = [char]
+                else:
+                    coda.insert(0, char)
 
-        prev_end = nucleus_end
-        i = nucleus_end
+        syl = [''.join(onset), ''.join(nucleus), ''.join(coda)]
+        syllables.insert(0, syl)
+
+    if as_str:
+        return '.'.join([''.join(syl) for syl in syllables])
 
     return syllables
+
+
+def get_syllabified_ipa(text, as_str=True):
+    return get_syllables(get_ipa_text(text), as_str=True)

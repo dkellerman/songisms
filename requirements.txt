@@ -12,8 +12,6 @@ g2p
 minineedle
 django-cors-headers
 django-debug-toolbar
-requests
-requests-cache
 hiredis
 redis
 dj-database-url

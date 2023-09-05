@@ -40,7 +40,6 @@ class Config:
     workers: int = 1
     positional_encoding: bool = False
     early_stop_epochs: int = 3  # stop training after n epochs of no validation improvement
-    use_tails: bool = False  # use IPA stress tails
     datamuse_cached_only: bool = True  # set false for first few times generating training data
     device: str = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
@@ -419,10 +418,7 @@ def make_training_data():
         negative = rw.word()
 
         # convert to IPA
-        if config.use_tails:
-            aipa, pipa, nipa = [utils.get_ipa_tail(w) for w in [anchor, positive, negative]]
-        else:
-            aipa, pipa, nipa = [utils.get_ipa_text(w) for w in [anchor, positive, negative]]
+        aipa, pipa, nipa = [utils.get_ipa_text(w) for w in [anchor, positive, negative]]
 
         # check IPA is available
         if any([not ipa or not ipa.strip() for ipa in [aipa, pipa, nipa]]):
