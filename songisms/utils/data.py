@@ -54,7 +54,7 @@ class Data:
     @cached_property
     def rhymes_train(self):
         with open('./data/rhymes_train.csv', 'r') as f:
-            return [l.strip().split(';') for l in f.read().split('\n')]
+            return [l.strip().split(',') for l in f.read().split('\n')[1:]]
 
 
 data = Data()

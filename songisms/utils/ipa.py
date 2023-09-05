@@ -155,6 +155,15 @@ def get_stress_tail_for_ipa(ipa_phrase):
     return ipa_phrase[stress_index:]
 
 
+def chop_tail(ipa_phrase):
+    index = len(ipa_phrase) - 1
+    while not is_vowel(ipa_phrase[index]):
+        index -= 1
+        if index <= 0:
+            return ipa_phrase
+    return ipa_phrase[:index + 1]
+
+
 def get_ipa_tail(text, stresses=False):
     '''Convert word to IPA and return the stress tail only
     '''

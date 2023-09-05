@@ -31,13 +31,13 @@ class Config:
     train_file: str = './data/rhymes_train.csv'
     test_misses_file: str = './data/rhymes_test_misses.csv'
     data_total_size: int = 3000  # number of rows to generate
-    rows: int = 2000  # number of rows to use for training/validation
+    rows: int = 3000  # number of rows to use for training/validation
     test_size: int = 2000  # number of rows to use for testing
     batch_size: int = 128
     epochs: int = 10
     lr: float = 0.0005
     loss_margin: float = 1.0
-    workers: int = 2
+    workers: int = 1
     positional_encoding: bool = False
     early_stop_epochs: int = 3  # stop training after n epochs of no validation improvement
     use_tails: bool = False  # use IPA stress tails
@@ -65,24 +65,19 @@ class RhymesTrainDataset(Dataset):
         return len(self.triples)
 
     def __getitem__(self, idx):
-        anchor, pos, neg = self.triples[idx]
-        anchor, pos, neg = make_rhyme_tensors(anchor, pos, neg, pad_to=self.pad_to)
-        return anchor, pos, neg
+        _, _, _, anchor_ipa, pos_ipa, neg_ipa = self.triples[idx]
+        return make_rhyme_tensors(anchor_ipa, pos_ipa, neg_ipa, pad_to=self.pad_to)
 
 
-def make_rhyme_tensors(anchor, pos, neg=None, pad_to=config.max_len):
+def make_rhyme_tensors(anchor_ipa, pos_ipa, neg_ipa=None, pad_to=config.max_len):
     '''Aligns IPA words and returns feature vectors for each IPA character.
     '''
-    ipa_conversion_fn = utils.get_ipa_tail if config.use_tails else utils.get_ipa_text
-
     # align all 3 if neg is provided, otherwise just 2
-    if neg is not None:
-        anchor_ipa, pos_ipa, neg_ipa = [ipa_conversion_fn(text) for text in [anchor, pos, neg]]
+    if neg_ipa is not None:
         anchor_vec, pos_vec, _ = utils.align_vals(anchor_ipa, pos_ipa)
         anchor_vec, neg_vec, _ = utils.align_vals(anchor_ipa, neg_ipa)
         vecs = [anchor_vec, pos_vec, neg_vec]
     else:
-        anchor_ipa, pos_ipa = [ipa_conversion_fn(text) for text in [anchor, pos]]
         anchor_vec, pos_vec, _ = utils.align_vals(anchor_ipa, pos_ipa)
         vecs = [anchor_vec, pos_vec]
 
@@ -375,7 +370,8 @@ def predict(text1, text2, model=None, scorer=lambda x: x):
     if not model:
         model, scorer = load_model()
 
-    anchor_vec, other_vec = make_rhyme_tensors(text1, text2)
+    ipa1, ipa2 = utils.get_ipa_text(text1), utils.get_ipa_text(text2)
+    anchor_vec, other_vec = make_rhyme_tensors(ipa1, ipa2)
 
     # fake a batch dimension here
     anchor_vec = anchor_vec.unsqueeze(0).to(config.device)
@@ -402,8 +398,9 @@ def make_training_data():
     '''
     rw = RandomWord()
     lines = []
+    prog_bar = tqdm(total=config.data_total_size)
 
-    for _ in tqdm(range(config.data_total_size)):
+    while len(lines) < config.data_total_size:
         anchor = None
         positive = None
 
@@ -419,19 +416,38 @@ def make_training_data():
 
         positive = utils.normalize_lyric(positive)
 
+        if random.random() > .5:
+            anchor, positive = positive, anchor
+
         # random negative
         negative = utils.normalize_lyric(rw.word())
+
+        if config.use_tails:
+            aipa, pipa, nipa = [utils.get_ipa_tail(w) for w in [anchor, positive, negative]]
+        else:
+            aipa, pipa, nipa = [utils.get_ipa_text(w) for w in [anchor, positive, negative]]
+
+        # check IPA is available
+        if any([not ipa or not ipa.strip() for ipa in [aipa, pipa, nipa]]):
+            continue
         # check IPA length doesn't exceed max length of net
-        if any([len(utils.get_ipa_text(w)) > config.max_len - 1 for w in [anchor, positive, negative]]):
+        if any([len(ipa) > config.max_len - 1 for ipa in [aipa, pipa, nipa]]):
              continue
-        # and quick spot check
+        # and quick spot check negative doesn't rhyme with anchor
         if utils.get_ipa_tail(anchor) == utils.get_ipa_tail(negative):
             continue
 
-        lines.append((anchor, positive, negative))
+        if random.random() < .2:
+            pipa = utils.chop_tail(pipa)
+
+        lines.append((anchor, positive, negative, aipa, pipa, nipa))
+        prog_bar.update()
+
+    prog_bar.close()
 
     with open(config.train_file, 'w') as f:
-        f.write('\n'.join(';'.join(l) for l in lines))
+        f.write('anchor,positive,negative,anchor_ipa,positive_ipa,negative_ipa\n')
+        f.write('\n'.join(','.join(l) for l in lines))
 
 
 def calc_cnn_output_size():
