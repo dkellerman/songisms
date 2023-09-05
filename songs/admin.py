@@ -22,7 +22,6 @@ class SongAdmin(admin.ModelAdmin):
     list_filter = ('is_new', 'tags',)
     autocomplete_fields = ('artists', 'tags', 'writers',)
     inlines = [AttachmentInline]
-    change_list_template = 'smuggler/change_list.html'
 
     def queryset(self, request, queryset):
         return queryset.prefetch_related('artists', 'writers', 'tags')
@@ -82,21 +81,18 @@ class SongAdmin(admin.ModelAdmin):
 @admin.register(Artist)
 class ArtistAdmin(admin.ModelAdmin):
     search_fields = ('name',)
-    change_list_template = 'smuggler/change_list.html'
 
 
 @admin.register(Writer)
 class WriterAdmin(admin.ModelAdmin):
     search_fields = ('name', 'alt_names',)
     list_display = ('name', 'alt_names',)
-    change_list_template = 'smuggler/change_list.html'
 
 
 @admin.register(TaggedText)
 class TaggedTextAdmin(admin.ModelAdmin):
     list_display = ('tag', 'song', 'snip',)
     autocomplete_fields = ('tag', 'song',)
-    change_list_template = 'smuggler/change_list.html'
 
     def snip(self, obj):
         return obj.text[0:50] + ('...' if len(obj.text) > 50 else '')
@@ -106,7 +102,6 @@ class TaggedTextAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     list_display = ('value', 'label', 'category',)
     search_fields = ('value', 'label', 'category',)
-    change_list_template = 'smuggler/change_list.html'
 
 
 @admin.register(Attachment)

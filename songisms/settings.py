@@ -45,10 +45,7 @@ INSTALLED_APPS = [app for app in [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    'graphene_django' if not RHYMES_ONLY else None,
     'corsheaders',
-    'graphql_jwt.refresh_token.apps.RefreshTokenConfig' if not RHYMES_ONLY else None,
-    'smuggler',
     'songs.apps.SongsConfig' if not RHYMES_ONLY else None,
     'rhymes.apps.RhymesConfig',
 ] if app]
@@ -131,19 +128,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-GRAPHENE = {
-    "SCHEMA": "songs.schema.schema",
-    "MIDDLEWARE": [
-        "graphql_jwt.middleware.JSONWebTokenMiddleware",
-    ],
-}
-
-GRAPHQL_JWT = {
-    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
-}
-
 AUTHENTICATION_BACKENDS = [
-    "graphql_jwt.backends.JSONWebTokenBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
 
@@ -176,8 +161,6 @@ CACHES = {
         'TIMEOUT': None,
     }
 }
-
-SMUGGLER_FIXTURE_DIR = BASE_DIR / 'data' / 'fixtures'
 
 USE_QUERY_CACHE = IS_PROD
 

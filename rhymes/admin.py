@@ -40,6 +40,5 @@ class RhymeAdmin(admin.ModelAdmin):
 
 @admin.register(Cache)
 class CacheAdmin(admin.ModelAdmin):
-    change_list_template = 'smuggler/change_list.html'
     list_display = ('key', 'version', 'updated')
 

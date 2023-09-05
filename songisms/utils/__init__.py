@@ -5,5 +5,4 @@ from .cloud import *
 from .data import *
 from .lyrics import *
 from .ipa import *
-from .gql import *
 from .gpt import *
