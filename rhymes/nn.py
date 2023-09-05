@@ -186,6 +186,7 @@ def train():
             distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, pos_out)]
             distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, neg_out)]
 
+        prog_bar.close()
         all_losses.append(losses)
 
         # validation set
@@ -202,6 +203,7 @@ def train():
                 distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, pos_out)]
                 distances += [d.item() for d in pairwise_distance_ignore_batch_dim(anchor_out, neg_out)]
 
+        prog_bar.close()
         all_validation_losses.append(losses)
 
         # check for early stop
@@ -321,7 +323,6 @@ def test():
     loader = DataLoader(dataset, shuffle=True, num_workers=config.workers)
     model, scorer = load_model()
     prog_bar = tqdm(loader, "Test Rhymes")
-
     correct = []
     wrong = []
 
@@ -337,6 +338,7 @@ def test():
 
         prog_bar.set_description(f"√: {len(correct)} X: {len(wrong)} "
                                  f"%: {(len(correct)/(len(correct)+len(wrong))*100):.1f}")
+    prog_bar.close()
 
     # print stats and wrong predictions for inspection
     for text1, text2, pred, score in wrong:
@@ -404,9 +406,14 @@ def make_training_data():
         anchor = None
         positive = None
 
-        # lookup a positive value using datamuse
         while positive is None:
-            anchor = rw.word()
+            # get random anchor word using special blend
+            if random.random() < .1:
+                anchor = random.choice(random.choice(utils.data.lines).split())
+            else:
+                anchor = rw.word()
+
+            # lookup a positive value using datamuse
             rhymes = utils.get_datamuse_rhymes(anchor, cache_only=config.datamuse_cached_only)
             if rhymes:
                 positive = random.choice(rhymes)['word']

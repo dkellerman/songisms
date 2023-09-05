@@ -16,7 +16,7 @@ class Data:
     def custom_variants(self):
         with open('./data/variants.txt', 'r') as f:
             return [
-                [l.strip() for l in line.split(';')]
+                [l.strip() for l in line.split(';') if l.strip()]
                 for line in f.readlines()
             ]
 
@@ -39,12 +39,12 @@ class Data:
     @cached_property
     def idioms(self):
         with open('./data/idioms.txt', 'r') as f:
-            return [l.strip() for l in f.read().split('\n')]
+            return [l.strip() for l in f.read().split('\n') if l.strip()]
 
     @cached_property
-    def mine(self):
-        with open('./data/mine.txt', 'r') as f:
-            return [l.strip() for l in f.read().split('\n')]
+    def lines(self):
+        with open('./data/lines.txt', 'r') as f:
+            return [l.strip() for l in f.read().split('\n') if l.strip()]
 
     @cached_property
     def rhymes(self):

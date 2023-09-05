@@ -62,7 +62,7 @@ class RhymeManager(BaseManager):
             WHERE
                 UPPER(n.text) = ANY(%(q)s)
                 AND NOT (UPPER(rto.text) = ANY(%(q)s))
-                -- AND (r.level != 2 OR r.score >= 0.4)
+                AND (r.level != 2 OR r.score >= 0.4)
             GROUP BY ngram, rto.n, level, score, vec_distance, stresses_distance,
                      n.adj_pct, n.song_pct, n.title_pct, ndiff, n.mscore, n.song_count
         '''

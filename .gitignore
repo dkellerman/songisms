@@ -17,6 +17,7 @@ TODO.md
 !data/variants.txt
 !data/ipa_gpt.json
 !data/misspellings.txt
+!data/lines.txt
 !songs/data/fixtures/artists.json
 !songs/data/fixtures/writers.json
 
