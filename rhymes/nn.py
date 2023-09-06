@@ -36,7 +36,7 @@ class Config:
     test_size: int = 2000  # number of rows to use for testing
     batch_size: int = 64
     epochs: int = 10
-    lr: float = 0.0005
+    lr: float = 0.001
     loss_margin: float = 1.0
     workers: int = 1
     positional_encoding: bool = False
@@ -55,17 +55,17 @@ random.seed(config.random_seed)
 
 
 class RhymesTrainDataset(Dataset):
-    '''Loads training data triples (anchor/pos/neg)
+    '''Loads training data triplets (anchor/pos/neg)
     '''
     def __init__(self, pad_to=config.max_len):
         self.pad_to = pad_to
-        self.triples = utils.data.rhymes_train[:config.rows]
+        self.triplets = utils.data.rhymes_train[:config.rows]
 
     def __len__(self):
-        return len(self.triples)
+        return len(self.triplets)
 
     def __getitem__(self, idx):
-        _, _, _, anchor_ipa, pos_ipa, neg_ipa = self.triples[idx]
+        _, _, _, anchor_ipa, pos_ipa, neg_ipa = self.triplets[idx]
         return make_rhyme_tensors(anchor_ipa, pos_ipa, neg_ipa, pad_to=self.pad_to)
 
 
@@ -409,7 +409,7 @@ def score_to_label(score):
 
 
 def make_training_data():
-    '''Output siamese neural net training data triples to CSV file
+    '''Output siamese neural net training data triplets to CSV file
     '''
     rw = RandomWord()
     lines = []
