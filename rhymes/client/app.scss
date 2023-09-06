@@ -156,11 +156,13 @@ main {
           i.fa-remove:hover {
             color: red;
           }
-          i.fa-thumbs-up, i.fa-thumbs-down {
-            &, &:hover {
-              color: lightgreen;
-              cursor: default;
-            }
+          i.fa-thumbs-up, i.fa-thumbs-up:hover {
+            color: lightgreen;
+            cursor: default;
+          }
+          i.fa-thumbs-down, i.fa-thumbs-down:hover {
+            color: red;
+            cursor: default;
           }
         }
       }
