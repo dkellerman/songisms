@@ -20,6 +20,7 @@ from torch.utils.data import Dataset, DataLoader, random_split
 from positional_encodings.torch_encodings import PositionalEncoding1D, Summer
 import matplotlib.pyplot as plt
 from wonderwords import RandomWord
+from sklearn import metrics
 from sklearn.preprocessing import RobustScaler, MinMaxScaler
 from songisms import utils
 
@@ -316,33 +317,48 @@ def test():
     loader = DataLoader(dataset, shuffle=True, num_workers=config.workers)
     model, scorer = load_model()
     prog_bar = tqdm(loader, "Test Rhymes")
+
+    true_labels = []
+    predicted_scores = []
     correct = []
     wrong = []
 
     for batch in prog_bar:
         text1, text2, label = batch[0][0], batch[1][0], batch[2].item()
         score = predict(text1, text2, model=model, scorer=scorer)
-        pred = score >= .5
-
-        if (pred and label == 1.0) or (not pred and label == 0.0):
-            correct.append((text1, text2, pred, score))
+        predicted = score >= .5
+        true_labels.append(label)
+        predicted_scores.append(score)
+        if (predicted and label == 1.0) or (not predicted and label == 0.0):
+            correct.append((text1, text2, predicted, score))
         else:
-            wrong.append((text1, text2, pred, score))
+            wrong.append((text1, text2, predicted, score))
 
         prog_bar.set_description(f"√: {len(correct)} X: {len(wrong)} "
                                  f"%: {(len(correct)/(len(correct)+len(wrong))*100):.1f}")
     prog_bar.close()
 
-    # print stats and wrong predictions for inspection
-    for text1, text2, pred, score in wrong:
-        print('[X]', f'[PRED={"Y" if pred else "N"}]', text1, '=>', text2, f'[{score:.3f}]')
+    # metrics
+    predicted_labels = [1.0 if s >= .5 else 0.0 for s in predicted_scores]
+    acc = metrics.accuracy_score(true_labels, predicted_labels)
+    prec = metrics.precision_score(true_labels, predicted_labels)
+    recall = metrics.recall_score(true_labels, predicted_labels)
+    f1 = metrics.f1_score(true_labels, predicted_labels)
+    auc = metrics.roc_auc_score(true_labels, predicted_scores)
+    loss = metrics.log_loss(true_labels, predicted_scores)
 
-    total = len(correct) + len(wrong)
-    pct = (len(correct) / total) * 100
-    print("\nCorrect:", len(correct), "| Wrong:", len(wrong), "| Pct:", f"{pct:.3f}%")
-    print("Average wrong score:", mean([s[-1] for s in wrong]))
-    print("Average correct score:", mean([s[-1] for s in correct]))
-    print("Tough calls:", len([s for s in wrong if s[-1] > .45 and s[-1] < .55]))
+    print("\n* Correct:", len(correct), "| Wrong:", len(wrong))
+    print("* Avg wrong score:", mean([s[-1] for s in wrong]))
+    print("* Avg correct score:", mean([s[-1] for s in correct]))
+    print("* Tough calls:", len([s for s in wrong if s[-1] > .45 and s[-1] < .55]))
+    print("\n" + "=" * 40 + "\n")
+    print("* Accuracy:", f"{acc:.3f}")
+    print("* Precision:", f"{prec:.3f}")
+    print("* Recall:", f"{recall:.3f}")
+    print("* F1:", f"{f1:.3f}")
+    print("* AUC:", f"{auc:.3f}")
+    print("* Log Loss:", f"{loss:.3f}")
+    print("\nWritng misses to:", config.test_misses_file)
 
     with open(config.test_misses_file, 'w') as f:
         f.write('text1,text2,ipa1,ipa2,pred,score\n')
