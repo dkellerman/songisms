@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db.models import Sum, Count
-from .models import NGram, Rhyme, Cache
+from .models import NGram, Rhyme, Cache, Vote
 
 
 @admin.register(NGram)
@@ -42,3 +42,10 @@ class RhymeAdmin(admin.ModelAdmin):
 class CacheAdmin(admin.ModelAdmin):
     list_display = ('key', 'version', 'updated')
 
+
+@admin.register(Vote)
+class VoteAdmin(admin.ModelAdmin):
+    list_display = ('anchor', 'alt1', 'alt2', 'label', 'voter_uid', 'created',)
+    readonly_fields = ('anchor', 'alt1', 'alt2', 'voter_uid', 'created',)
+    search_fields = ('anchor', 'alt1', 'alt2', 'voter_uid',)
+    list_filter = ('label',)

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-from .managers import NGramManager, RhymeManager, CacheManager
+from .managers import NGramManager, RhymeManager, CacheManager, VoteManager
 
 
 class NGram(models.Model):
@@ -60,6 +60,40 @@ class SongNGram(models.Model):
 
     def __str__(self):
         return f'{self.ngram.text} [{self.count}x IN {self.song.title}]'
+
+
+class Vote(models.Model):
+    '''User feedback from RLHF or straight up/down voting
+    '''
+    LABEL_CHOICES = (
+        # for RLHF
+        ('alt1', 'Alt1'),
+        ('alt2', 'Alt2'),
+        ('both', 'Both'),
+        ('neither', 'Neither'),
+        ('flagged', 'Flagged'),
+        # for straight voting
+        ('good', 'Good'),
+        ('bad', 'Bad'),
+    )
+
+    anchor = models.CharField(max_length=200)
+    alt1 = models.CharField(max_length=200, blank=True, null=True)
+    alt2 = models.CharField(max_length=200, blank=True, null=True)
+    voter_uid = models.SlugField()
+    label = models.CharField(max_length=20, choices=LABEL_CHOICES)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True, blank=True, null=True)
+    objects = VoteManager()
+
+    class Meta:
+        unique_together = [['voter_uid', 'created']]
+
+    def __str__(self):
+        return f'{self.text} [{self.label}]]'
+
+    def natural_key(self):
+        return self.voter_uid, self.created
 
 
 class Cache(models.Model):

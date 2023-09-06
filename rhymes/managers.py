@@ -212,3 +212,8 @@ class NGramManager(BaseManager):
 class CacheManager(BaseManager):
     def get_by_natural_key(self, key, version):
         return self.get(key=key, version=version)
+
+
+class VoteManager(BaseManager):
+    def get_by_natural_key(self, voter_uid, created):
+        return self.get(voter_uid=voter_uid, created=created)
