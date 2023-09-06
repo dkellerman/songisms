@@ -90,7 +90,7 @@ class Vote(models.Model):
         unique_together = [['voter_uid', 'created']]
 
     def __str__(self):
-        return f'{self.text} [{self.label}]]'
+        return f'{self.anchor} [{self.label}]]'
 
     def natural_key(self):
         return self.voter_uid, self.created

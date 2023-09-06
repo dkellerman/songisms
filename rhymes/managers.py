@@ -13,7 +13,7 @@ class RhymeManager(BaseManager):
     HARD_LIMIT = 100
     USE_SUGGESTIONS = True
 
-    def query(self, q, offset, limit):
+    def query(self, q, offset, limit, voter_uid=None):
         '''Main rhymes query, handles rhymes and suggestions
         '''
         if not q:
@@ -23,7 +23,7 @@ class RhymeManager(BaseManager):
         qkey = re.sub(' ', '_', q)
         cache_key = f'query_{qkey}'
 
-        if settings.USE_QUERY_CACHE:
+        if settings.USE_QUERY_CACHE and not voter_uid:
             vals = cache.get(cache_key)
             if vals:
                 return vals[offset:min(self.HARD_LIMIT, offset+limit)]
@@ -96,6 +96,17 @@ class RhymeManager(BaseManager):
                      adj_pct, song_pct, title_pct, ndiff, mscore, song_count
         ''' if self.USE_SUGGESTIONS and vec and len(vec) and stresses and len(stresses) else ''
 
+        vote_sql = f'''
+            SELECT
+                label
+            FROM
+                rhymes_vote v
+            WHERE (
+                v.anchor = %(qstr)s AND v.alt1 = ngram
+                OR (v.anchor = ngram AND v.alt1 = %(qstr)s)
+            ) AND v.voter_uid = %(voter_uid)s
+        ''' if voter_uid else ''
+
         with connection.cursor() as cursor:
             cursor.execute(f'''
                 WITH results AS (
@@ -106,6 +117,7 @@ class RhymeManager(BaseManager):
                         ngram,
                         frequency,
                         score,
+                        {f'({vote_sql})' if vote_sql else 'NULL'} AS vote,
                         CASE
                             WHEN level = 1 THEN 'rhyme'
                             WHEN level = 2 THEN 'rhyme-l2'
@@ -125,7 +137,8 @@ class RhymeManager(BaseManager):
                     OFFSET 0
                     LIMIT %(limit)s
                 ;
-            ''', dict(q=all_q, n=n, vec=vec, stresses=stresses, limit=self.HARD_LIMIT))
+            ''', dict(qstr=q, q=all_q, n=n, vec=vec, stresses=stresses,
+                      limit=self.HARD_LIMIT, voter_uid=voter_uid))
 
             columns = [col[0] for col in cursor.description]
             vals = [

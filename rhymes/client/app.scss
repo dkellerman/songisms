@@ -136,6 +136,33 @@ main {
           color: #666;
           margin-left: 5px;
         }
+
+        .vote, .unvote {
+          display: inline-block;
+          white-space: nowrap;
+          i {
+            font-size: 20px;
+            margin-left: 20px;
+            vertical-align: 1px;
+            color: #ccc;
+            &:hover {
+              color: #999;
+              cursor: pointer;
+            }
+          }
+        }
+
+        .unvote {
+          i.fa-remove:hover {
+            color: red;
+          }
+          i.fa-thumbs-up, i.fa-thumbs-down {
+            &, &:hover {
+              color: lightgreen;
+              cursor: default;
+            }
+          }
+        }
       }
     }
   }
@@ -160,6 +187,15 @@ footer {
 
   .links {
     display: none; /* hide on small screens */
+  }
+
+  .vote {
+    font-size: small;
+    position: absolute;
+    right: 20px;
+    a {
+      cursor: pointer;
+    }
   }
 }
 

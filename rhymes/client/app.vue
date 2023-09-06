@@ -6,15 +6,15 @@ import ListenButton from './ListenButton.vue';
 const route = useRoute();
 const router = useRouter();
 const config = useRuntimeConfig();
-const apiBaseUrl = (config.public.apiBaseUrl ?? 'http://localhost:8000')
-  // workaround node 18 ofetch bug for SSR by using 127.0.0.1 for dev
-  .replaceAll('localhost', '127.0.0.1');
-
-const searchQuery = ref((route.query.q ?? '') as string);
+// workaround node 18 ofetch bug for SSR by using 127.0.0.1 for dev
+const apiBaseUrl = config.public.apiBaseUrl.replaceAll('localhost', '127.0.0.1');
+const searchQuery = ref((route.query?.q ?? '') as string);
 const completionsQuery = ref('');
 const searchInput = ref();
 const showListenTip = ref(false);
 const partialSpeechResult = ref<string>();
+const voteMode = ref(false);
+const voterUid = ref<string>();
 
 // completions fetch
 const { data: completionsData } = await useFetch<CompletionsResponse>(`${apiBaseUrl}/rhymes/completions/`, {
@@ -25,11 +25,24 @@ const completions = computed<string[]>(() => completionsData.value?.hits.map(h =
 const fetchCompletions = debounce((q: string) => completionsQuery.value = q, 200);
 
 // rhymes fetch
+const rhymesQuery = computed(() => ({
+  q: searchQuery.value,
+  limit: 100,
+  voter_uid: voterUid.value ?? undefined,
+}));
 const { data: rhymesData, pending } = await useFetch<RhymesResponse>(`${apiBaseUrl}/rhymes/`, {
-  query: { q: searchQuery, limit: 100 },
+  query: rhymesQuery,
   immediate: true,
 });
 const rhymes = computed<Rhyme[]>(() => rhymesData.value?.hits ?? []);
+
+// vote fetch
+const voteQuery = ref();
+await useFetch(`${apiBaseUrl}/rhymes/vote/`, {
+  method: 'POST',
+  body: voteQuery,
+  immediate: false,
+});
 
 // computed
 const counts = computed(() => ({
@@ -55,6 +68,11 @@ watchEffect(() => {
   }
 });
 
+// watch for URL query param changes
+watch(() => [route?.query.q], () => {
+  searchQuery.value = (route?.query.q ?? '') as string;
+});
+
 // additional things to do on search
 watch([searchQuery], () => {
   track('engagement', 'search', searchQuery.value);
@@ -65,9 +83,16 @@ watch([searchQuery], () => {
   router.push({ query });
 });
 
-// watch for URL query param changes
-watch(() => [route?.query.q], () => {
-  searchQuery.value = (route?.query.q ?? '') as string;
+// activate vote mode
+watch(() => voteMode.value, (val: boolean) => {
+  if (val) {
+    import('get-browser-fingerprint').then(({ default: getBrowserFingerprint }) => {
+      voterUid.value = String(getBrowserFingerprint());
+    });
+  } else {
+    voterUid.value = undefined;
+  }
+  window.scrollTo(0, 0);
 });
 
 function onSelectItem(val: string) {
@@ -129,6 +154,27 @@ function ct2str(ct: number, singularWord: string, pluralWord?: string) {
 function formatText(text: string) {
   return text.replace(/\bi\b/g, 'I');
 }
+
+function castVote(rhyme: Rhyme, vote: 'good' | 'bad') {
+  voteQuery.value = {
+    voter_uid: voterUid.value,
+    anchor: searchQuery.value,
+    alt1: rhyme.text,
+    label: vote,
+  };
+  rhyme.vote = vote;
+}
+
+function uncastVote(rhyme: Rhyme) {
+  voteQuery.value = {
+    voter_uid: voterUid.value,
+    anchor: searchQuery.value,
+    alt1: rhyme.text,
+    remove: 'all',
+  };
+  rhyme.vote = undefined;
+}
+
 </script>
 
 <template>
@@ -196,11 +242,29 @@ function formatText(text: string) {
         <label v-else-if="searchQuery" v-html="searchInfoLabel" />
 
         <ul v-if="rhymes">
-          <li v-for="rhyme of rhymes" :key="rhyme.text" :class="`hit ${rhyme.type}`">
+          <li v-for="rhyme of rhymes" :key="`${rhyme.text}`" :class="`hit ${rhyme.type}`">
             <a @click="() => onLink(rhyme.text)">
               {{ formatText(rhyme.text) }}
             </a>
-            <span v-if="!!rhyme.frequency && rhyme.type === 'rhyme'" class="freq">
+
+            <span v-if="voteMode && searchQuery">
+              <ClientOnly>
+                <div v-if="!rhyme.vote" class="vote">
+                  <i class="fa fa-thumbs-up" @click="() => castVote(rhyme, 'good')" />
+                  <i class="fa fa-thumbs-down" @click="() => castVote(rhyme, 'bad')" />
+                </div>
+                <div v-else class="unvote">
+                  <i :class="{
+                    fa: true,
+                    'fa-thumbs-up': rhyme.vote === 'good',
+                    'fa-thumbs-down': rhyme.vote === 'bad' }"
+                  />
+                  <i class="fa fa-remove" @click="() => uncastVote(rhyme)" />
+                </div>
+              </ClientOnly>
+            </span>
+
+            <span v-else-if="!!rhyme.frequency && rhyme.type === 'rhyme'" class="freq">
               ({{ rhyme.frequency }})
             </span>
           </li>
@@ -227,6 +291,10 @@ function formatText(text: string) {
           Music
         </a>
       </div>
+      <span class="vote">[
+        <a v-if="voteMode" @click.prevent="voteMode=false">Exit vote mode</a>
+        <a v-else @click.prevent="voteMode=true">Vote mode</a>
+      ]</span>
     </footer>
   </div>
 </template>

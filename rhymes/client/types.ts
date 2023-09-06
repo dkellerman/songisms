@@ -1,7 +1,8 @@
 export interface Rhyme {
   text: string;
-  frequency?: number;
   type: 'rhyme'|'rhyme-l2'|'suggestion';
+  frequency?: number;
+  vote?: string;
 }
 
 export interface Completion {
@@ -13,7 +14,14 @@ export interface RhymesResponse {
   hits: Rhyme[];
 }
 
-
 export interface CompletionsResponse {
   hits: Completion[];
+}
+
+export interface VoteRequest {
+  anchor: string;
+  alt1: string;
+  label: string;
+  voter_uid: string;
+  remove?: string;
 }
