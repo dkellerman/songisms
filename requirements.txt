@@ -16,3 +16,4 @@ hiredis
 redis
 dj-database-url
 google-auth
+wonderwords

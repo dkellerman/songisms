@@ -8,7 +8,6 @@ openai
 gensim
 numpy
 matplotlib
-wonderwords
 requests
 requests-cache
 torch
