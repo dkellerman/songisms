@@ -24,6 +24,7 @@ def rhymes(request):
                     "frequency": hit['frequency'],
                     "score": hit['score'],
                     "vote": hit.get('vote', None),
+                    "source": hit.get('source', None),
                 }
                 for hit in hits
             ]

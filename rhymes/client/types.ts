@@ -3,6 +3,7 @@ export interface Rhyme {
   type: 'rhyme'|'rhyme-l2'|'suggestion';
   frequency?: number;
   vote?: string;
+  source?: string;
 }
 
 export interface Completion {

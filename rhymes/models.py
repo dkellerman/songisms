@@ -38,6 +38,7 @@ class Rhyme(models.Model):
     song_uid = models.SlugField(blank=True, null=True)
     level = models.PositiveIntegerField(default=1, db_index=True)
     score = models.FloatField(blank=True, null=True, db_index=True)
+    source = models.SlugField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = RhymeManager()

@@ -11,6 +11,7 @@ class BaseManager(models.Manager):
 
 class RhymeManager(BaseManager):
     HARD_LIMIT = 100
+    USE_L2 = True
     USE_SUGGESTIONS = True
 
     def query(self, q, offset, limit, voter_uid=None):
@@ -42,6 +43,7 @@ class RhymeManager(BaseManager):
                 rto.n AS n,
                 r.level AS level,
                 r.score AS score,
+                r.source AS source,
                 COUNT(r.song_uid) AS frequency,
                 0 AS vec_distance,
                 {f'CUBE(%(stresses)s) <-> CUBE(n.stresses) AS stresses_distance' if len(stresses)
@@ -64,7 +66,7 @@ class RhymeManager(BaseManager):
                 UPPER(n.text) = ANY(%(q)s)
                 AND NOT (UPPER(rto.text) = ANY(%(q)s))
                 -- AND (r.level != 2 OR r.score >= 0.4)
-            GROUP BY ngram, rto.n, level, score, vec_distance, stresses_distance,
+            GROUP BY ngram, rto.n, level, score, source, vec_distance, stresses_distance,
                      n.adj_pct, n.song_pct, n.title_pct, ndiff, n.mscore, n.song_count
         '''
 
@@ -74,6 +76,7 @@ class RhymeManager(BaseManager):
                 n.n AS n,
                 CAST(NULL AS bigint) AS level,
                 CAST(NULL AS float) AS score,
+                'suggestion' AS source,
                 CAST(NULL AS bigint) AS frequency,
                 CUBE(%(vec)s) <-> CUBE(n.phones) AS vec_distance,
                 CUBE(%(stresses)s) <-> CUBE(n.stresses) AS stresses_distance,
@@ -118,6 +121,7 @@ class RhymeManager(BaseManager):
                         ngram,
                         frequency,
                         score,
+                        source,
                         {f'({votes_sql})' if votes_sql else 'NULL'} AS vote,
                         CASE
                             WHEN level = 1 THEN 'rhyme'
@@ -125,6 +129,7 @@ class RhymeManager(BaseManager):
                             ELSE 'suggestion'
                         END AS type
                     FROM (SELECT DISTINCT ON (ngram) * FROM results ORDER BY ngram, level) uniq_results
+                    {f'WHERE level = 1' if not self.USE_L2 else ''}
                     ORDER BY
                         level NULLS LAST,
                         frequency DESC NULLS LAST,
