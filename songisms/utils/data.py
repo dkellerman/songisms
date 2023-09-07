@@ -56,5 +56,10 @@ class Data:
         with open('./data/rhymes_train.csv', 'r') as f:
             return [l.strip().split(',') for l in f.read().split('\n')[1:]]
 
+    @cached_property
+    def gpt_negatives(self):
+        with open('./data/gpt_negatives.json', 'r') as f:
+            return json.loads(f.read())
+
 
 data = Data()

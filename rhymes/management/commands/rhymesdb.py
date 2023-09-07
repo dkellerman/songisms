@@ -6,7 +6,7 @@ from tqdm import tqdm
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from nltk import FreqDist
-from rhymes.models import NGram, Rhyme, SongNGram, Cache
+from rhymes.models import NGram, Rhyme, SongNGram, Cache, Vote
 from songisms import utils
 
 
@@ -33,6 +33,17 @@ class Command(BaseCommand):
         song_ngrams = dict()
         vector_cache, _ = Cache.objects.get_or_create(key='ngram_vector')
 
+        # prep rhyme votes reference
+        votes = Vote.objects.filter(label__in=['good', 'bad'])
+        positive = dict()
+        negative = dict()
+        for vote in tqdm(votes, desc='creating votes index'):
+            ukey = '_'.join(sorted([vote.anchor, vote.alt1]))
+            if vote.label == 'good':
+                positive[ukey] = positive.get(ukey, 0) + 1
+            else:
+                negative[ukey] = negative.get(ukey, 0) + 1
+
         # loop through all songs with lyrics
         songs = Song.objects.filter(is_new=False).exclude(lyrics=None)
 
@@ -46,7 +57,8 @@ class Command(BaseCommand):
                 if song_ngram:
                     song_ngram['count'] += 1
                 else:
-                    song_ngrams[(song.spotify_id, text)] = dict(ngram=ngrams[text], song_uid=song.spotify_id, count=1)
+                    song_ngrams[(song.spotify_id, text)] = dict(ngram=ngrams[text],
+                                                                song_uid=song.spotify_id, count=1)
 
             # update song_count for unique ngrams
             for text, _ in list(set(texts)):
@@ -56,10 +68,14 @@ class Command(BaseCommand):
             if song.rhymes_raw:
                 rhyme_pairs = utils.get_rhyme_pairs(song.rhymes_raw)
                 for from_text, to_text in rhyme_pairs:
+                    ukey = '_'.join(sorted([from_text, to_text]))
+                    if ukey in negative:
+                        continue
                     ngrams[from_text] = ngrams.get(from_text) or dict(text=from_text, n=len(from_text.split()))
                     ngrams[to_text] = ngrams.get(to_text) or dict(text=to_text, n=len(to_text.split()))
                     rhymes[(from_text, to_text, song.spotify_id)] = \
-                        dict(from_ngram=ngrams[from_text], to_ngram=ngrams[to_text], song_uid=song.spotify_id, level=1)
+                        dict(from_ngram=ngrams[from_text], to_ngram=ngrams[to_text],
+                             song_uid=song.spotify_id, level=1, ukey=ukey)
 
         # add some rhymes data from muse for common words
         single_words = [n for n in ngrams.values() if n['n'] == 1]
@@ -74,7 +90,9 @@ class Command(BaseCommand):
                     ngrams[to_text] = ngrams.get(to_text) or dict(text=to_text, n=len(to_text.split()))
                     rkey = (from_text, to_text, None)
                     if rkey not in rhymes:
-                        rhymes[rkey] = dict(from_ngram=ngrams[from_text], to_ngram=ngrams[to_text], song_uid=None, level=1)
+                        ukey = '_'.join(sorted([from_text, to_text]))
+                        rhymes[rkey] = dict(from_ngram=ngrams[from_text], to_ngram=ngrams[to_text],
+                                            song_uid=None, level=1, ukey=ukey)
                         muse_rhymes.add(to_text)
 
         # create rhymes lookup index for later
@@ -110,7 +128,9 @@ class Command(BaseCommand):
                 ):
                     rkey = (ngram, val, None)
                     if rkey not in rhymes:
-                        rhymes[rkey] = dict(from_ngram=ngrams[ngram], to_ngram=ngrams[val], song_uid=None, level=3)
+                        ukey = '_'.join(sorted([ngram, val]))
+                        rhymes[rkey] = dict(from_ngram=ngrams[ngram], to_ngram=ngrams[val],
+                                            song_uid=None, level=3, ukey=ukey)
 
         # make level 2 rhymes (aka rhymes of rhymes)
         level1_rhymes = list(rhymes.values())
@@ -118,7 +138,9 @@ class Command(BaseCommand):
             for l2 in [r for r in level1_rhymes if r['from_ngram']['text'] == l1['to_ngram']['text']]:
                 rkey = (l1['from_ngram']['text'], l2['to_ngram']['text'], None)
                 if rkey not in rhymes:
-                    rhymes[rkey] = dict(from_ngram=l1['from_ngram'], to_ngram=l2['to_ngram'], song_uid=None, level=2)
+                    ukey = '_'.join(sorted([l1['from_ngram']['text'], l2['to_ngram']['text']]))
+                    rhymes[rkey] = dict(from_ngram=l1['from_ngram'], to_ngram=l2['to_ngram'],
+                                        song_uid=None, level=2, ukey=ukey)
 
         # get feature vectors
         for ngram in tqdm(ngrams.values(), desc='ngram vectors'):
@@ -179,15 +201,22 @@ class Command(BaseCommand):
         scores = []
         if rescore:
             scores_cache.clear()
+        to_del = set()
         for rhyme in tqdm(rhymes.values(),
                           f"{'generating' if rescore else 'using cached'} "
                           "rhyme scores"):
             rfrom = rhyme['from_ngram']['text']
             rto = rhyme['to_ngram']['text']
-            key = '_'.join(sorted([rfrom, rto]))
-            rhyme['score'] = scores_cache.get(key, get_score if rescore else None)
+            ukey = '_'.join(sorted([rfrom, rto]))
+            if ukey in negative:
+                to_del.add(ukey)
+                continue
+            rhyme['score'] = scores_cache.get(ukey, get_score if rescore else None)
             if rhyme['score']:
                 scores.append(rhyme['score'])
+
+        # remove flagged rhymes
+        rhymes = {key: obj for key, obj in rhymes.items() if obj['ukey'] not in to_del}
 
         # print some counts
         print('ngrams', len(ngrams.values()))

@@ -97,7 +97,7 @@ class RhymeManager(BaseManager):
                      adj_pct, song_pct, title_pct, ndiff, mscore, song_count
         ''' if self.USE_SUGGESTIONS and vec and len(vec) and stresses and len(stresses) else ''
 
-        vote_sql = f'''
+        votes_sql = f'''
             SELECT
                 label
             FROM
@@ -118,7 +118,7 @@ class RhymeManager(BaseManager):
                         ngram,
                         frequency,
                         score,
-                        {f'({vote_sql})' if vote_sql else 'NULL'} AS vote,
+                        {f'({votes_sql})' if votes_sql else 'NULL'} AS vote,
                         CASE
                             WHEN level = 1 THEN 'rhyme'
                             WHEN level = 2 THEN 'rhyme-l2'
@@ -162,7 +162,7 @@ class RhymeManager(BaseManager):
         use_cache = not q and settings.USE_QUERY_CACHE
 
         if use_cache:
-            qs = cache.get(cache_key) if settings.USE_QUERY_CACHE else None
+            qs = cache.get(cache_key, None)
             if qs:
                 return qs
 

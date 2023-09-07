@@ -252,8 +252,11 @@ class RhymesTestDataset(Dataset):
         prog_bar = tqdm(total=config.test_size // 2, desc="Prepping positive rhymes")
         for rset in positives:
             text1, text2 = random.choices(rset, k=2)
-            if (text1, text2, 1.0) not in labeled_pairs and \
-                (text2, text1, 1.0) not in labeled_pairs:
+            if ((text1, text2, 1.0) not in labeled_pairs and \
+                (text2, text1, 1.0) not in labeled_pairs and \
+                 bool(utils.get_ipa_text(text1).strip()) and \
+                 bool(utils.get_ipa_text(text2).strip())
+            ):
                 labeled_pairs.append((text1, text2, 1.0))
                 prog_bar.update()
 
@@ -269,12 +272,14 @@ class RhymesTestDataset(Dataset):
                         desc="Prepping negative rhymes")
 
         while len(labeled_pairs) < config.test_size:
-            if len(negatives) and random.random() < .5:
+            if len(negatives):
                 w1, w2 = negatives.pop()
             else:
                 w1, w2 = rw.word(), rw.word()
 
             # spot check
+            if not utils.get_ipa_text(w1).strip() or not utils.get_ipa_text(w2).strip():
+                continue
             if w1 == w2 or (utils.get_ipa_tail(w1) == utils.get_ipa_tail(w2)):
                 continue
 
@@ -431,11 +436,15 @@ def make_training_data():
         anchor = None
         positive = None
         negative = None
+        negatives = utils.data.gpt_negatives
+        random.shuffle(negatives)
 
         while positive is None:
             # get random anchor word using special blend
             if random.random() < .1:
                 anchor = random.choice(random.choice(utils.data.lines).split())
+            elif len(negatives) and random.random() < .2:
+                anchor, negative = negatives.pop()
             else:
                 anchor = rw.word()
 
