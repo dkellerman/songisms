@@ -4,6 +4,7 @@ export interface Rhyme {
   frequency?: number;
   vote?: string;
   source?: string;
+  score?: number;
 }
 
 export interface Completion {

@@ -243,7 +243,7 @@ function uncastVote(rhyme: Rhyme) {
 
         <ul v-if="rhymes">
           <li v-for="rhyme of rhymes" :key="`${rhyme.text}`" :class="`hit ${rhyme.type}`">
-            <a @click="() => onLink(rhyme.text)" :title="rhyme.source">
+            <a @click="() => onLink(rhyme.text)" :title="`${rhyme.source} [${rhyme.score}]`">
               {{ formatText(rhyme.text) }}
             </a>
 
