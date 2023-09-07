@@ -333,6 +333,7 @@ def test():
     dataset = RhymesTestDataset()
     loader = DataLoader(dataset, shuffle=True, num_workers=config.workers)
     model, scorer = load_model()
+    prediction_times = []
     prog_bar = tqdm(loader, "Test Rhymes")
 
     true_labels = []
@@ -342,7 +343,9 @@ def test():
 
     for batch in prog_bar:
         text1, text2, label = batch[0][0], batch[1][0], batch[2].item()
+        start_time = time.time()
         score = predict(text1, text2, model=model, scorer=scorer)
+        prediction_times.append(time.time() - start_time)
         predicted = score >= .5
         true_labels.append(label)
         predicted_scores.append(score)
@@ -370,6 +373,7 @@ def test():
     print("\n* Correct:", len(correct), "| Wrong:", len(wrong))
     print("* Avg wrong score:", mean([s[-1] for s in wrong]))
     print("* Avg correct score:", mean([s[-1] for s in correct]))
+    print("* Avg prediction time:", f"{mean(prediction_times)*1000.0:.2f}ms")
     print("* Tough calls:", len([s for s in wrong if s[-1] > .45 and s[-1] < .55]))
     print("\n" + "=" * 40 + "\n")
     print("* Accuracy:", f"{acc:.3f}")
