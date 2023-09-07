@@ -241,27 +241,38 @@ class RhymesTestDataset(Dataset):
        a label => (text, text, 1.0|0.0)
     '''
     def __init__(self):
-        song_rhyme_sets = utils.data.rhymes
-        random.shuffle(song_rhyme_sets)
+        positives = utils.data.rhymes['positive']
+        negatives = utils.data.rhymes['negative']
+        random.shuffle(positives)
+        random.shuffle(negatives)
+        print("Loaded:", len(positives), "positive /", len(negatives), "negative")
         labeled_pairs = []
 
         # half of dataset is positive rhyme pairs
-        for rset in song_rhyme_sets:
-            pairs = utils.get_rhyme_pairs(';'.join(rset))
-            for text1, text2 in pairs:
-                if (text1, text2, 1.0) not in labeled_pairs and \
-                   (text2, text1, 1.0) not in labeled_pairs:
-                    labeled_pairs.append((text1, text2, 1.0))
+        prog_bar = tqdm(total=config.test_size // 2, desc="Prepping positive rhymes")
+        for rset in positives:
+            text1, text2 = random.choices(rset, k=2)
+            if (text1, text2, 1.0) not in labeled_pairs and \
+                (text2, text1, 1.0) not in labeled_pairs:
+                labeled_pairs.append((text1, text2, 1.0))
+                prog_bar.update()
 
             if len(labeled_pairs) >= config.test_size // 2:
                 labeled_pairs = labeled_pairs[:config.test_size // 2]
                 break
 
+        prog_bar.close()
+
         # second half of dataset are random negatives, probably...
-        # quick sample showed me about 5% maybe-rhymes
         rw = RandomWord()
+        prog_bar = tqdm(total=config.test_size - len(labeled_pairs),
+                        desc="Prepping negative rhymes")
+
         while len(labeled_pairs) < config.test_size:
-            w1, w2 = rw.word(), rw.word()
+            if len(negatives) and random.random() < .5:
+                w1, w2 = negatives.pop()
+            else:
+                w1, w2 = rw.word(), rw.word()
 
             # spot check
             if w1 == w2 or (utils.get_ipa_tail(w1) == utils.get_ipa_tail(w2)):
@@ -272,8 +283,9 @@ class RhymesTestDataset(Dataset):
                (w1, w2, 1.0) not in labeled_pairs and \
                (w2, w1, 1.0) not in labeled_pairs:
                 labeled_pairs.append((w1, w2, 0.0))
+                prog_bar.update()
 
-        print("Loaded/created", len(labeled_pairs), "test rhymes")
+        prog_bar.close()
         self.labeled_pairs = labeled_pairs[:config.test_size]
 
     def __len__(self):
@@ -418,6 +430,7 @@ def make_training_data():
     while len(lines) < config.data_total_size:
         anchor = None
         positive = None
+        negative = None
 
         while positive is None:
             # get random anchor word using special blend
@@ -431,10 +444,9 @@ def make_training_data():
             if rhymes:
                 positive = random.choice(rhymes)['word']
                 if positive.endswith(anchor) or positive.endswith(anchor + 's'):
-                   positive = None
+                    positive = None
 
-        # random negative
-        negative = rw.word()
+        negative = negative or rw.word()
 
         # convert to IPA
         aipa, pipa, nipa = [utils.get_ipa_text(w) for w in [anchor, positive, negative]]
