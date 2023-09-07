@@ -22,8 +22,9 @@ class RhymeManager(BaseManager):
         offset = offset
         qkey = re.sub(' ', '_', q)
         cache_key = f'query_{qkey}'
+        use_cache = settings.USE_QUERY_CACHE and not voter_uid
 
-        if settings.USE_QUERY_CACHE and not voter_uid:
+        if use_cache:
             vals = cache.get(cache_key)
             if vals:
                 return vals[offset:min(self.HARD_LIMIT, offset+limit)]
@@ -145,10 +146,11 @@ class RhymeManager(BaseManager):
                 dict(zip(columns, row))
                 for row in cursor.fetchall()
             ]
-            if settings.USE_QUERY_CACHE:
-                cache.set(cache_key, vals)
-            vals = vals[offset:min(self.HARD_LIMIT, offset+limit)]
 
+            if use_cache:
+                cache.set(cache_key, vals)
+
+            vals = vals[offset:min(self.HARD_LIMIT, offset+limit)]
             return vals
 
 
@@ -157,8 +159,9 @@ class RhymeManager(BaseManager):
         '''
         offset = offset
         cache_key = f'top_rhymes_{offset}_{offset + limit}'
+        use_cache = not q and settings.USE_QUERY_CACHE
 
-        if not q and settings.USE_QUERY_CACHE:
+        if use_cache:
             qs = cache.get(cache_key) if settings.USE_QUERY_CACHE else None
             if qs:
                 return qs
@@ -184,8 +187,10 @@ class RhymeManager(BaseManager):
             .values('ngram', 'frequency', 'type')
 
         qs = qs[offset:min(self.HARD_LIMIT, offset+limit)]
-        if not q and settings.USE_QUERY_CACHE:
+
+        if use_cache:
             cache.set(cache_key, qs)
+
         return qs
 
 
@@ -201,15 +206,18 @@ class NGramManager(BaseManager):
 
         qkey = re.sub(' ', '_', q)
         cache_key = f'completion_{qkey}'
-        qs = cache.get(cache_key) if settings.USE_QUERY_CACHE else None
+        use_cache = settings.USE_QUERY_CACHE
+        qs = cache.get(cache_key) if use_cache else None
 
         if not qs:
             from rhymes.models import NGram
             qs = NGram.objects.filter(text__istartswith=q)
             qs = qs.annotate(rhyme_ct=models.Count('rhymes')).filter(rhyme_ct__gt=0)
             qs = qs.order_by('n', '-rhyme_ct')[:limit]
-            if settings.USE_QUERY_CACHE:
+
+            if use_cache:
                 cache.set(cache_key, qs)
+
         return qs
 
     def by_query(self, q):
