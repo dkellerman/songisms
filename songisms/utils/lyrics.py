@@ -4,6 +4,7 @@
 import re
 import string
 from functools import lru_cache
+from typing import List
 from songisms import utils
 
 
@@ -32,6 +33,8 @@ def normalize_lyric(val):
 
 
 def strip_periods_preserve_acronyms(s):
+    if len(s) <= 2:
+        return s.replace('.', '')
     if re.match(r'([A-Za-z](\.|$)+)+$', s) and not re.match(r'[A-Za-z]\.$', s):
         return '.'.join([ch for ch in s if ch != '.']) + '.'
     return s.replace('.', '')
@@ -46,6 +49,9 @@ def test_normalize_lyric():
     assert(strip_periods_preserve_acronyms("la...") == "la")
     assert(strip_periods_preserve_acronyms("l.a...") == "l.a.")
     assert(strip_periods_preserve_acronyms("l.") == "l")
+    assert(strip_periods_preserve_acronyms("i") == "i")
+    assert(strip_periods_preserve_acronyms(".") == "")
+    assert(strip_periods_preserve_acronyms("...") == "")
     assert(normalize_lyric("la-la-la-la") == "la-la-la-la")
     assert(normalize_lyric("v.") == "v")
     assert(normalize_lyric("C-O-L-A Cola") == "c-o-l-a cola")
@@ -213,31 +219,6 @@ def get_rhyme_pairs(val=''):
     return list(set(pairs))
 
 
-def get_homophones(w, ignore_stress=True, multi=True):
-    '''Get homophones
-    '''
-    # currently needs to be installed via `pip install homophones``
-    from homophones import homophones as hom
-
-    w = re.sub(r'in\'', 'ing', w)
-    all_words = list(hom.Words_from_cmudict_string(hom.ENTIRE_CMUDICT))
-    words = list(hom.Word.from_string(w, all_words))
-    results = []
-    for word in words:
-        for h in hom.homophones(word, all_words, ignore_stress=ignore_stress):
-            if h.word.lower() != w and h.word.lower() in utils.data.common_words:
-                results.append(h.word.lower())
-        if multi:
-            for h in hom.dihomophones(word, all_words, ignore_stress=ignore_stress):
-                if all([x.word.lower() in utils.data.common_words for x in h]):
-                    results.append(' '.join([x.word.lower() for x in h]))
-            for h in hom.trihomophones(word, all_words, ignore_stress=ignore_stress):
-                if all([x.word.lower() in utils.data.common_words for x in h]):
-                    results.append(' '.join([x.word.lower() for x in h]))
-
-    return [r for r in results if '(' not in r]
-
-
 def get_mscore(text):
     '''Meaning score is a custom metric for how meaningful a lyric is based on part-of-speech.
     '''
@@ -245,7 +226,7 @@ def get_mscore(text):
 
     toks = tokenize_lyric(text)
     pos = nltk.pos_tag(toks)
-    mscore = [POS_TO_MSCORE.get(tok[1], 0) for tok in pos if tok[1]]
+    mscore: List[float] = [POS_TO_MSCORE.get(tok[1], 0) for tok in pos if tok[1]]
     if len(toks) > 1:
         mscore[-1] *= 1.3
     return sum(mscore) / len(mscore)
