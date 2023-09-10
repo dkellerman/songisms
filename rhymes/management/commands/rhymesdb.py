@@ -32,7 +32,11 @@ class Command(BaseCommand):
         rhymes = dict()
         song_ngrams = dict()
         vector_cache, _ = Cache.objects.get_or_create(key='ngram_vector')
-        negative = utils.data.rhymes['negative']
+
+        negative = set()
+        for neg in Vote.objects.filter(alt2=None, label='bad'):
+            key = '_'.join(sorted([neg.anchor, neg.alt1]))
+            negative.add(key)
 
         # loop through all songs with lyrics to make ngrams
         songs = Song.objects.filter(is_new=False).exclude(lyrics=None)
@@ -149,7 +153,7 @@ class Command(BaseCommand):
         # get IPA
         ipa_cache, _ = Cache.objects.get_or_create(key='ngram_ipa')
         for ngram in tqdm(ngrams.values(), desc='ngram ipa'):
-            ngram['ipa'] = ipa_cache.get(ngram['text'], utils.to_syllabified_ipa)
+            ngram['ipa'] = ipa_cache.get(ngram['text'], utils.to_ipa)
 
         # get stresses vector
         stresses_cache, _ = Cache.objects.get_or_create(key='ngram_stresses')
@@ -162,8 +166,8 @@ class Command(BaseCommand):
             n = sn['ngram']['n']
             ct = sn['count']
             n_counts[n - 1] = (n_counts[n - 1] or 0) + ct
-            ngram['count'] = (sn['ngram'].get('count') or 0) + ct
-            ngrams[sn['ngram']['text']]['count'] = ngram['count']
+            sn['ngram']['count'] = (sn['ngram'].get('count') or 0) + ct
+            ngrams[sn['ngram']['text']]['count'] = sn['ngram']['count']
         single_word_ct = n_counts[0]
         song_ct = songs.count()
         # frequency of ngrams appearing in titles

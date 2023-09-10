@@ -59,12 +59,7 @@ ipa_cache = None
 
 @lru_cache(maxsize=None)
 def to_ipa(text):
-    # global ipa_cache
-    # if ipa_cache is None:
-    #     from rhymes.models import Cache
-    #     ipa_cache, _ = Cache.objects.get_or_create(key='ipa')
-    # return ipa_cache.get(text, utils.to_syllabified_ipa)
-    return utils.to_syllabified_ipa(text)
+    return utils.to_ipa(text)
 
 
 class RhymesTrainDataset(Dataset):
