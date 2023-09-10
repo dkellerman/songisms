@@ -3,6 +3,8 @@
 
 import json
 from functools import cached_property
+from songisms import utils
+
 
 class Data:
     @cached_property
@@ -47,19 +49,32 @@ class Data:
             return [l.strip() for l in f.read().split('\n') if l.strip()]
 
     @cached_property
-    def rhymes(self):
-        with open('./data/rhymes.json', 'r') as f:
-            return json.loads(f.read())
-
-    @cached_property
     def rhymes_train(self):
         with open('./data/rhymes_train.csv', 'r') as f:
-            return [l.strip().split(',') for l in f.read().split('\n')[1:]]
+            all = []
+            for line in f.read().split('\n'):
+                line = line.strip()
+                if not line:
+                    continue
+                vals = line.split(',')
+                score = vals[0]
+                rhymes = utils.get_rhyme_pairs(';'.join(vals[1:]))
+                for r1, r2 in rhymes:
+                    all.append((float(score), r1, r2))
+            return all
+
 
     @cached_property
-    def gpt_negatives(self):
-        with open('./data/gpt_negatives.json', 'r') as f:
-            return json.loads(f.read())
+    def rhymes_test(self):
+        with open('./data/rhymes_test.csv', 'r') as f:
+            all = []
+            for line in f.read().split('\n')[1:]:
+                line = line.strip()
+                if not line:
+                    continue
+                score, anc, oth, _ = line.split(',')
+                all.append((float(score), anc, oth))
+            return all
 
 
 data = Data()

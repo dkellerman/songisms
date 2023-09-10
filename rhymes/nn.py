@@ -1,27 +1,29 @@
 '''Rhyme-detecting neural net
 
 Use with rhymesnet management command:
-    `./manage.py rhymesnet --data` -> generate training data
     `./manage.py rhymesnet --train` -> train model
     `./manage.py rhymesnet --test` -> test model
     `./manage.py rhymesnet --predict "word1" "word2"` -> predict rhyme
 '''
 
+from functools import lru_cache
 import time
 import random
+from typing import List
 import torch
+from torch import nn
+import torch.nn.functional as F
+from torch.utils.data import Dataset
 import numpy as np
 from statistics import mean
 from dataclasses import dataclass
 from tqdm import tqdm
-from torch import nn
-import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader, random_split
-from positional_encodings.torch_encodings import PositionalEncoding1D, Summer
+from torch.utils.data import DataLoader, random_split
 import matplotlib.pyplot as plt
 from wonderwords import RandomWord
 from sklearn import metrics
 from sklearn.preprocessing import RobustScaler, MinMaxScaler
+from positional_encodings.torch_encodings import PositionalEncoding1D, Summer
 from songisms import utils
 
 
@@ -32,7 +34,7 @@ class Config:
     train_file: str = './data/rhymes_train.csv'
     test_misses_file: str = './data/rhymes_test_misses.csv'
     data_total_size: int = 3000  # number of rows to generate
-    rows: int = 3000  # number of rows to use for training/validation
+    rows: int = 2000  # number of rows to use for training/validation
     test_size: int = 2000  # number of rows to use for testing
     batch_size: int = 64
     epochs: int = 10
@@ -42,34 +44,66 @@ class Config:
     positional_encoding: bool = False
     early_stop_epochs: int = 3  # stop training after n epochs of no validation improvement
     datamuse_cached_only: bool = True  # set false for first few times generating training data
-    device: str = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+    device: str = str(torch.device("mps" if torch.backends.mps.is_available() else "cpu"))
 
     # these can't be changed right now without also adjusting the network
     max_len: int = 15  # width (ipa characters)
     ipa_feature_len: int = 25  # channels
 
-config = Config()
 
+config = Config()
 torch.manual_seed(config.random_seed)
 random.seed(config.random_seed)
+ipa_cache = None
+
+
+@lru_cache(maxsize=None)
+def to_ipa(text):
+    # global ipa_cache
+    # if ipa_cache is None:
+    #     from rhymes.models import Cache
+    #     ipa_cache, _ = Cache.objects.get_or_create(key='ipa')
+    # return ipa_cache.get(text, utils.to_syllabified_ipa)
+    return utils.to_syllabified_ipa(text)
 
 
 class RhymesTrainDataset(Dataset):
-    '''Loads training data triplets (anchor/pos/neg)
-    '''
     def __init__(self, pad_to=config.max_len):
         self.pad_to = pad_to
-        self.triplets = utils.data.rhymes_train[:config.rows]
+        self.rw = RandomWord()
+
+        data = utils.data.rhymes_train
+        random.shuffle(data)
+        self.positive = [vals for vals in data if vals[0] >= .5]
 
     def __len__(self):
-        return len(self.triplets)
+        return config.rows
 
     def __getitem__(self, idx):
-        _, _, _, anchor_ipa, pos_ipa, neg_ipa = self.triplets[idx]
-        return make_rhyme_tensors(anchor_ipa, pos_ipa, neg_ipa, pad_to=self.pad_to)
+        score, anc_ipa, pos_ipa, neg_ipa = None, None, None, None
+        while len(self.positive) and (not anc_ipa or not pos_ipa or not neg_ipa):
+            score, anchor, pos = self.positive.pop()
+            neg = self.rw.word()
+            anc_ipa, pos_ipa, neg_ipa = to_ipa(anchor), to_ipa(pos), to_ipa(neg)
+        return score, *make_rhyme_tensors(anc_ipa, pos_ipa, neg_ipa, pad_to=self.pad_to)
 
 
-def make_rhyme_tensors(anchor_ipa, pos_ipa, neg_ipa=None, pad_to=config.max_len):
+class RhymesTestDataset(Dataset):
+    '''More real-world dataset for final testing
+    '''
+    def __init__(self):
+        self.data = utils.data.rhymes_test
+        random.shuffle(self.data)
+
+    def __len__(self):
+        return config.test_size
+
+    def __getitem__(self, idx):
+        score, anchor, other = self.data.pop()
+        return score, anchor, other
+
+
+def make_rhyme_tensors(anchor_ipa, pos_ipa, neg_ipa=None, pad_to=config.max_len) -> List[torch.Tensor]:
     '''Aligns IPA words and returns feature vectors for each IPA character.
     '''
     # align all 3 if neg is provided, otherwise just 2
@@ -81,24 +115,25 @@ def make_rhyme_tensors(anchor_ipa, pos_ipa, neg_ipa=None, pad_to=config.max_len)
         anchor_vec, pos_vec, _ = utils.align_vals(anchor_ipa, pos_ipa)
         vecs = [anchor_vec, pos_vec]
 
-    for i, vec in enumerate(vecs):
+    tensors: List[torch.Tensor] = []
+    for vec in vecs:
         # pad, or chop if it's too long (but it shouldn't be)
         vec = (['_'] * (pad_to - len(vec))) + [str(c) for c in vec][:config.max_len]
         # replace IPA characters with feature arrays
         vec = np.array(utils.get_ipa_features_vector(vec))
         # convert to tensor
-        vec = torch.tensor(vec, dtype=torch.float)
-        vec = vec.transpose(0, 1)
+        tensor = torch.tensor(vec, dtype=torch.float32)
+        tensor = tensor.transpose(0, 1)
 
         if config.positional_encoding:
             encoder = Summer(PositionalEncoding1D(config.max_len))
-            vec = vec.unsqueeze(0) # encoder requires a batch dimension
-            vec = encoder(vec)
-            vec = vec.squeeze(0)
+            tensor = tensor.unsqueeze(0) # encoder requires a batch dimension
+            tensor = encoder(tensor)
+            tensor = tensor.squeeze(0)
 
-        vecs[i] = vec
+        tensors.append(tensor)
 
-    return vecs
+    return tensors
 
 
 class SiameseTripletNet(nn.Module):
@@ -175,7 +210,7 @@ def train():
         losses = []
 
         for batch in prog_bar:
-            anchor, pos, neg = [b.to(config.device) for b in batch]
+            anchor, pos, neg = [b.to(config.device) for b in batch[1:]]
             anchor_out, pos_out, neg_out = model(anchor, pos, neg)
             loss = criterion(anchor_out, pos_out, neg_out)
             optimizer.zero_grad()
@@ -197,7 +232,7 @@ def train():
 
         with torch.no_grad():
             for batch in prog_bar:
-                anchor, pos, neg = [b.to(config.device) for b in batch]
+                anchor, pos, neg = [b.to(config.device) for b in batch[1:]]
                 anchor_out, pos_out, neg_out = model(anchor, pos, neg)
                 loss = criterion(anchor_out, pos_out, neg_out)
                 losses.append(loss.item())
@@ -236,70 +271,6 @@ def train():
     plt.show()
 
 
-class RhymesTestDataset(Dataset):
-    '''More real-world dataset for final testing, produces pairs of words and
-       a label => (text, text, 1.0|0.0)
-    '''
-    def __init__(self):
-        positives = utils.data.rhymes['positive']
-        negatives = utils.data.rhymes['negative']
-        random.shuffle(positives)
-        random.shuffle(negatives)
-        print("Loaded:", len(positives), "positive /", len(negatives), "negative")
-        labeled_pairs = []
-
-        # half of dataset is positive rhyme pairs
-        prog_bar = tqdm(total=config.test_size // 2, desc="Prepping positive rhymes")
-        for rset in positives:
-            text1, text2 = random.choices(rset, k=2)
-            if ((text1, text2, 1.0) not in labeled_pairs and \
-                (text2, text1, 1.0) not in labeled_pairs and \
-                 bool(utils.get_ipa_text(text1).strip()) and \
-                 bool(utils.get_ipa_text(text2).strip())
-            ):
-                labeled_pairs.append((text1, text2, 1.0))
-                prog_bar.update()
-
-            if len(labeled_pairs) >= config.test_size // 2:
-                labeled_pairs = labeled_pairs[:config.test_size // 2]
-                break
-
-        prog_bar.close()
-
-        # second half of dataset are random negatives, probably...
-        rw = RandomWord()
-        prog_bar = tqdm(total=config.test_size - len(labeled_pairs),
-                        desc="Prepping negative rhymes")
-
-        while len(labeled_pairs) < config.test_size:
-            if len(negatives):
-                w1, w2 = negatives.pop()
-            else:
-                w1, w2 = rw.word(), rw.word()
-
-            # spot check
-            if not utils.get_ipa_text(w1).strip() or not utils.get_ipa_text(w2).strip():
-                continue
-            if w1 == w2 or (utils.get_ipa_tail(w1) == utils.get_ipa_tail(w2)):
-                continue
-
-            if (w1, w2, 0.0) not in labeled_pairs and \
-               (w2, w1, 0.0) not in labeled_pairs and \
-               (w1, w2, 1.0) not in labeled_pairs and \
-               (w2, w1, 1.0) not in labeled_pairs:
-                labeled_pairs.append((w1, w2, 0.0))
-                prog_bar.update()
-
-        prog_bar.close()
-        self.labeled_pairs = labeled_pairs[:config.test_size]
-
-    def __len__(self):
-        return len(self.labeled_pairs)
-
-    def __getitem__(self, idx):
-        return self.labeled_pairs[idx]
-
-
 class RhymeScorer():
     '''Normalize distance into a ascore between 0 and 1,
        where 0 is not a rhyme and 1 is a perfect rhyme
@@ -335,24 +306,23 @@ def test():
     model, scorer = load_model()
     prediction_times = []
     prog_bar = tqdm(loader, "Test Rhymes")
-
     true_labels = []
     predicted_scores = []
     correct = []
     wrong = []
 
     for batch in prog_bar:
-        text1, text2, label = batch[0][0], batch[1][0], batch[2].item()
+        label, anchor, other = batch[0].item(), batch[1][0], batch[2][0]
         start_time = time.time()
-        score = predict(text1, text2, model=model, scorer=scorer)
+        score = predict(anchor, other, model=model, scorer=scorer)
         prediction_times.append(time.time() - start_time)
         predicted = score >= .5
         true_labels.append(label)
         predicted_scores.append(score)
         if (predicted and label == 1.0) or (not predicted and label == 0.0):
-            correct.append((text1, text2, predicted, score))
+            correct.append((anchor, other, predicted, score))
         else:
-            wrong.append((text1, text2, predicted, score))
+            wrong.append((anchor, other, predicted, score))
 
         prog_bar.set_description(f"√: {len(correct)} X: {len(wrong)} "
                                  f"%: {(len(correct)/(len(correct)+len(wrong))*100):.1f}")
@@ -362,11 +332,11 @@ def test():
     predicted_labels = [1.0 if s >= .5 else 0.0 for s in predicted_scores]
     acc = metrics.accuracy_score(true_labels, predicted_labels)
     prec = metrics.precision_score(true_labels, predicted_labels)
-    nprec = metrics.precision_score(true_labels, predicted_labels, pos_label=0.0)
+    nprec = metrics.precision_score(true_labels, predicted_labels, pos_label=0)
     recall = metrics.recall_score(true_labels, predicted_labels)
-    nrecall = metrics.recall_score(true_labels, predicted_labels, pos_label=0.0)
+    nrecall = metrics.recall_score(true_labels, predicted_labels, pos_label=0)
     f1 = metrics.f1_score(true_labels, predicted_labels)
-    nf1 = metrics.f1_score(true_labels, predicted_labels, pos_label=0.0)
+    nf1 = metrics.f1_score(true_labels, predicted_labels, pos_label=0)
     auc = metrics.roc_auc_score(true_labels, predicted_scores)
     loss = metrics.log_loss(true_labels, predicted_scores)
 
@@ -388,7 +358,7 @@ def test():
         f.write('text1,text2,ipa1,ipa2,pred,score\n')
         for vals in wrong:
             f.write(f"{vals[0]},{vals[1]},"
-                    f"{utils.get_ipa_text(vals[0])},{utils.get_ipa_text(vals[1])},"
+                    f"{to_ipa(vals[0])},{to_ipa(vals[1])},"
                     f"{'Y' if vals[2] else 'N'},{vals[3]:.3f}\n")
 
 
@@ -405,16 +375,15 @@ def predict(text1, text2, model=None, scorer=lambda x: x):
     if not model:
         model, scorer = load_model()
 
-    ipa1, ipa2 = utils.get_ipa_text(text1), utils.get_ipa_text(text2)
-    anchor_vec, other_vec = make_rhyme_tensors(ipa1, ipa2)
+    anchor_ipa, other_ipa = to_ipa(text1), to_ipa(text2)
+    anchor, other = make_rhyme_tensors(anchor_ipa, other_ipa)
 
     # fake a batch dimension here
-    anchor_vec = anchor_vec.unsqueeze(0).to(config.device)
-    other_vec = other_vec.unsqueeze(0).to(config.device)
+    anchor = anchor.unsqueeze(0).to(config.device)
+    other = other.unsqueeze(0).to(config.device)
 
-    anchor_out, other_out = model(anchor_vec, other_vec)
-    distance = F.pairwise_distance(anchor_out.squeeze(0),
-                                   other_out.squeeze(0)).item()
+    anchor_out, other_out = model(anchor, other)
+    distance = F.pairwise_distance(anchor_out.squeeze(0), other_out.squeeze(0)).item()
     score = scorer(distance)
 
     return score
@@ -427,66 +396,6 @@ def score_to_label(score):
             label = val
             break
     return label
-
-
-def make_training_data():
-    '''Output siamese neural net training data triplets to CSV file
-    '''
-    rw = RandomWord()
-    lines = []
-    prog_bar = tqdm(total=config.data_total_size)
-
-    while len(lines) < config.data_total_size:
-        anchor = None
-        positive = None
-        negative = None
-        negatives = utils.data.gpt_negatives
-        random.shuffle(negatives)
-
-        while positive is None:
-            # get random anchor word using special blend
-            if random.random() < .1:
-                anchor = random.choice(random.choice(utils.data.lines).split())
-            elif len(negatives) and random.random() < .2:
-                anchor, negative = negatives.pop()
-            else:
-                anchor = rw.word()
-
-            # lookup a positive value using datamuse
-            rhymes = utils.get_datamuse_rhymes(anchor, cache_only=config.datamuse_cached_only)
-            if rhymes:
-                positive = random.choice(rhymes)['word']
-                if positive.endswith(anchor) or positive.endswith(anchor + 's'):
-                    positive = None
-
-        negative = negative or rw.word()
-
-        # convert to IPA
-        aipa, pipa, nipa = [utils.get_ipa_text(w) for w in [anchor, positive, negative]]
-
-        # check IPA is available
-        if any([not ipa or not ipa.strip() for ipa in [aipa, pipa, nipa]]):
-            continue
-        # check IPA length doesn't exceed max length of net
-        if any([len(ipa) > config.max_len - 1 for ipa in [aipa, pipa, nipa]]):
-             continue
-        # and quick spot check negative doesn't rhyme with anchor
-        if utils.get_ipa_tail(anchor) == utils.get_ipa_tail(negative):
-            continue
-        # misc
-        if pipa[-2:] == "ɪŋ" and random.random() < .2:
-            pipa = pipa[:-1] + 'n'
-        if pipa[-2:] == "ər" and random.random() < .2:
-            pipa = pipa[:-1]
-
-        lines.append((anchor, positive, negative, aipa, pipa, nipa))
-        prog_bar.update()
-
-    prog_bar.close()
-
-    with open(config.train_file, 'w') as f:
-        f.write('anchor,positive,negative,anchor_ipa,positive_ipa,negative_ipa\n')
-        f.write('\n'.join(','.join(l) for l in lines))
 
 
 def calc_cnn_output_size():

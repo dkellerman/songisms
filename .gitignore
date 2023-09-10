@@ -11,7 +11,7 @@ TODO.md
 
 **/data/*
 **/data/fixtures/*
-!data/rhymes.json
+!data/rhymes_test.csv
 !data/rhymes_train.csv
 !data/simsounds.json
 !data/variants.txt
@@ -28,6 +28,7 @@ scripts/**/*
 !scripts/load_data.py
 !scripts/lyric_sim.py
 !scripts/proc_gpt_ipa.py
+!scripts/make_rhymes_test.py
 
 # dependencies
 node_modules

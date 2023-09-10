@@ -5,6 +5,7 @@ from django.core.cache import cache
 from django.conf import settings
 from songisms import utils
 
+
 class BaseManager(models.Manager):
     pass
 
@@ -32,8 +33,8 @@ class RhymeManager(BaseManager):
 
         q = utils.normalize_lyric(q)
         n = len(q.split())
-        variants = utils.make_variants(q)
-        vec = utils.get_vowel_vector(q) or None
+        variants = utils.get_variants(q)
+        vec = utils.get_ipa_vowel_vector(q) or None
         stresses = utils.get_stresses_vector(q)
         all_q = [q.upper()] + [v.upper() for v in variants]
 

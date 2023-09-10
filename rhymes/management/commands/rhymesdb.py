@@ -32,19 +32,9 @@ class Command(BaseCommand):
         rhymes = dict()
         song_ngrams = dict()
         vector_cache, _ = Cache.objects.get_or_create(key='ngram_vector')
+        negative = utils.data.rhymes['negative']
 
-        # prep rhyme votes reference
-        votes = Vote.objects.filter(label__in=['good', 'bad'])
-        positive = dict()
-        negative = dict()
-        for vote in tqdm(votes, desc='creating votes index'):
-            ukey = '_'.join(sorted([vote.anchor, vote.alt1]))
-            if vote.label == 'good':
-                positive[ukey] = positive.get(ukey, 0) + 1
-            else:
-                negative[ukey] = negative.get(ukey, 0) + 1
-
-        # loop through all songs with lyrics
+        # loop through all songs with lyrics to make ngrams
         songs = Song.objects.filter(is_new=False).exclude(lyrics=None)
 
         for song in tqdm(songs, desc='lyric ngrams'):
@@ -68,6 +58,8 @@ class Command(BaseCommand):
             if song.rhymes_raw:
                 rhyme_pairs = utils.get_rhyme_pairs(song.rhymes_raw)
                 for from_text, to_text in rhyme_pairs:
+                    from_text = utils.normalize_lyric(from_text)
+                    to_text = utils.normalize_lyric(to_text)
                     ukey = '_'.join(sorted([from_text, to_text]))
                     if ukey in negative:
                         continue
@@ -148,7 +140,7 @@ class Command(BaseCommand):
 
         # get feature vectors
         for ngram in tqdm(ngrams.values(), desc='ngram vectors'):
-            ngram['phones'] = vector_cache.get(ngram['text'], utils.get_vowel_vector) or None
+            ngram['phones'] = vector_cache.get(ngram['text'], utils.get_ipa_vowel_vector) or None
 
         # get meaning scores
         for ngram in tqdm(ngrams.values(), desc='ngram mscores'):
@@ -157,14 +149,14 @@ class Command(BaseCommand):
         # get IPA
         ipa_cache, _ = Cache.objects.get_or_create(key='ngram_ipa')
         for ngram in tqdm(ngrams.values(), desc='ngram ipa'):
-            ngram['ipa'] = ipa_cache.get(ngram['text'], utils.get_ipa_text)
+            ngram['ipa'] = ipa_cache.get(ngram['text'], utils.to_syllabified_ipa)
 
         # get stresses vector
         stresses_cache, _ = Cache.objects.get_or_create(key='ngram_stresses')
         for ngram in tqdm(ngrams.values(), desc='ngram stresses'):
             ngram['stresses'] = stresses_cache.get(ngram['text'], utils.get_stresses_vector)
 
-        # create an index counts per ngram length for use in the next step
+        # create an index with counts per ngram length for use in the next step
         n_counts = [0 for _ in range(15)]
         for sn in tqdm(song_ngrams.values(), desc='index ngram counts'):
             n = sn['ngram']['n']
@@ -226,7 +218,8 @@ class Command(BaseCommand):
         print('ngrams', len(ngrams.values()))
         print('rhymes', len(rhymes.values()))
         print('song_ngrams', len(song_ngrams.values()))
-        print('avg rhyme score', sum(scores) / len(scores))
+        if len(scores):
+            print('avg rhyme score', sum(scores) / len(scores))
 
         if dry_run:
             return

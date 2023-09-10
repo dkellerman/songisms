@@ -8,14 +8,11 @@ class Command(BaseCommand):
     help = '''Rhyme-detecting neural net'''
 
     def add_arguments(self, parser):
-        parser.add_argument('--data', '-d', action=argparse.BooleanOptionalAction, help='Make training data')
         parser.add_argument('--train', '-t', action=argparse.BooleanOptionalAction, help='Train model')
         parser.add_argument('--test', '-T', action=argparse.BooleanOptionalAction, help='Test model')
         parser.add_argument('--predict', '-p', nargs=2, help='Predict rhymes, with extra info')
 
     def handle(self, *args, **options):
-        if options['data']:
-            nn.make_training_data()
         if options['train']:
             nn.train()
         if options['test']:
@@ -27,7 +24,7 @@ class Command(BaseCommand):
     def predict_with_info(self, text1, text2):
         score = nn.predict(text1, text2)
 
-        print("IPA:", utils.get_ipa_text(text1), '|', utils.get_ipa_text(text2))
-        print("Tails:", utils.get_ipa_tail(text1), '|', utils.get_ipa_tail(text2))
+        print("IPA:", utils.to_syllabified_ipa(text1), '|', utils.to_syllabified_ipa(text2))
+        print("Tails:", utils.to_syllabified_ipa(text1), '|', utils.to_syllabified_ipa(text2))
         print("Score:", score)
         print("===>", nn.score_to_label(score))

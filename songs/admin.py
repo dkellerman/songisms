@@ -15,7 +15,7 @@ class SongAdmin(admin.ModelAdmin):
     fields = ('is_new', 'title', 'spotify_id', 'spotify_player', 'artists',
               'writers', 'tags', 'lyrics', 'rhymes_raw', 'jaxsta_id', 'jaxsta_link',
               'youtube_id', 'youtube_link', 'audio_file', 'metadata',)
-    search_fields = ('title', 'spotify_id', 'lyrics',)
+    search_fields = ('title', 'spotify_id', 'lyrics', 'rhymes_raw',)
     list_display = ('title', 'artists_display', 'spotify_link', 'is_new_check', 'has_lyrics',
                     'has_audio', 'has_metadata', 'has_jaxsta_id',)
     readonly_fields = ('spotify_player', 'jaxsta_link', 'youtube_link',)

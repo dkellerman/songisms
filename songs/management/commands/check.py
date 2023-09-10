@@ -20,15 +20,16 @@ class Command(BaseCommand):
         parser.add_argument('--metadata', '-m', action=argparse.BooleanOptionalAction)
         parser.add_argument('--transcripts', '-t', action=argparse.BooleanOptionalAction)
         parser.add_argument('--duplicates', '-d', action=argparse.BooleanOptionalAction)
+        parser.add_argument('--ipa', '-i', action=argparse.BooleanOptionalAction)
 
     def handle(self, *args, **options):
         songs = Song.objects.all()
         check_new, check_audio, check_stems, check_lyrics, check_writers, check_rhymes, \
         check_rhymes_ok, check_style, check_metadata, check_transcript, \
-        check_duplicates = \
+        check_duplicates, check_ipa = \
             [options[k] for k in ('new', 'audio', 'stems', 'lyrics', 'writers', \
                                   'rhymes', 'rhymes_ok', 'style', 'metadata',
-                                  'transcripts', 'duplicates')]
+                                  'transcripts', 'duplicates', 'ipa',)]
 
         for idx, song in enumerate(songs):
             if check_transcript:
@@ -103,6 +104,13 @@ class Command(BaseCommand):
                     print('\t[DUPLICATES?]', song.spotify_id, song.title)
                     for dup in dups:
                         print('\t\t', dup.spotify_id, dup.title, dup.artists.all())
+            if check_ipa and song.lyrics:
+                print("[CHECK IPA]", song.title, song.spotify_id)
+                lines = [l for l in song.lyrics.split('\n') if l and l.strip()]
+                for l in lines:
+                    ipa = utils.to_ipa(l)
+                    _ = utils.get_syllables_from_ipa(ipa)
+
 
     def _check_rhymes_ok(self, song):
         from rhymes.nn import predict, load_model

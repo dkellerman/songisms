@@ -17,24 +17,47 @@ def tokenize_lyric(val):
     '''Split lyric into normalized tokens
     '''
     val = val.lower().strip()
-    val = re.sub(r'[\,\"]', '', val)
-    val = re.sub(r'[\,\"]', '', val)
-    val = re.sub(r'\)', '', val)
-    val = re.sub(r'\(', '', val)
-    val = re.sub(r'\.+(\s|$)', ' ', val)
-    val = re.sub(r'[^\w\s\'-.]', '', val)
-    val = re.sub(r'(\w+in)\'[^\w]', r'\1g ', val)
-    val = re.sub(r'\s+', ' ', val)
-    toks = [t for t in val.split() if t not in string.punctuation]
-    toks = [t + ('.' if '.' in t else '') for t in toks]
-    toks = [re.sub(r'\.+', '.', t) for t in toks]
+    val = re.sub(r'\s+', ' ', val)  # multiple spaces to one
+    val = val.replace('&', 'and')
+    val = remove_non_lyric_punctuation(val)
+    toks = [t for t in val.split()]
+    toks = [strip_periods_preserve_acronyms(t) for t in toks]
     return toks
 
 
 def normalize_lyric(val):
-    '''Normalize lyric without tokenizing
+    '''Normalize lyric without returning tokens array
     '''
     return ' '.join(tokenize_lyric(val))
+
+
+def strip_periods_preserve_acronyms(s):
+    if re.match(r'([A-Za-z](\.|$)+)+$', s) and not re.match(r'[A-Za-z]\.$', s):
+        return '.'.join([ch for ch in s if ch != '.']) + '.'
+    return s.replace('.', '')
+
+
+def test_normalize_lyric():
+    assert(strip_periods_preserve_acronyms("L.A.") == "L.A.")
+    assert(strip_periods_preserve_acronyms("L.A") == "L.A.")
+    assert(strip_periods_preserve_acronyms("LA.") == "LA")
+    assert(strip_periods_preserve_acronyms("LA...") == "LA")
+    assert(strip_periods_preserve_acronyms("L.A...") == "L.A.")
+    assert(strip_periods_preserve_acronyms("la...") == "la")
+    assert(strip_periods_preserve_acronyms("l.a...") == "l.a.")
+    assert(strip_periods_preserve_acronyms("l.") == "l")
+    assert(normalize_lyric("la-la-la-la") == "la-la-la-la")
+    assert(normalize_lyric("v.") == "v")
+    assert(normalize_lyric("C-O-L-A Cola") == "c-o-l-a cola")
+    assert(normalize_lyric("Another Day in L.A.!") == "another day in l.a.")
+    assert(normalize_lyric("Another Day in L.A....") == "another day in l.a.")
+    assert(normalize_lyric("  Another Day in L.A.... hi just chillin' ") ==
+                           "another day in l.a. hi just chillin'")
+    assert(normalize_lyric("Another Day in LA...") == "another day in la")
+    assert(normalize_lyric("'cause we won't be gettin' a-goin'! (ok?) [**]") ==
+                           "'cause we won't be gettin' a-goin' ok")
+    assert(normalize_lyric("Here we go!!   Lotsa punctuation & spacing... ok?!?!") ==
+                           "here we go lotsa punctuation and spacing ok")
 
 
 def remove_all_punctuation(text):
@@ -46,7 +69,7 @@ def remove_all_punctuation(text):
 def remove_non_lyric_punctuation(text):
     '''Remove punctuation not critical to lyrics
     '''
-    return ''.join([t for t in text if t not in r"""!"#$%&()*+,./:;<=>?@[\]^_`{|}~"""])
+    return ''.join([t for t in text if t not in r"""!"#$%&()*+,/:;<=>?@[\]^_`{|}~"""])
 
 
 def align_vals(val1, val2):
@@ -64,7 +87,7 @@ def align_vals(val1, val2):
 
 
 @lru_cache(maxsize=1000)
-def make_variants(gram, spelling=True):
+def get_variants(gram, spelling=True):
     '''Make a list of variants of a word or phrase for searching
     '''
     import pronouncing as pron
@@ -184,13 +207,13 @@ def get_rhyme_pairs(val=''):
     for line in lines:
         grams = line.split(';')
         pairs += [
-            tuple(sorted((a.strip().lower(), b.strip().lower(),)))
+            tuple(sorted((normalize_lyric(a), normalize_lyric(b))))
             for idx, a in enumerate(grams) for b in grams[idx + 1:]
         ]
     return list(set(pairs))
 
 
-def make_homophones(w, ignore_stress=True, multi=True):
+def get_homophones(w, ignore_stress=True, multi=True):
     '''Get homophones
     '''
     # currently needs to be installed via `pip install homophones``
@@ -228,9 +251,11 @@ def get_mscore(text):
     return sum(mscore) / len(mscore)
 
 
-POS_TO_MSCORE = dict(CC=2, CD=1, DT=1, EX=1, IN=2, JJ=4, JJR=4, JJS=4, LS=1, MD=2, NN=4, NNP=3, NNPS=3,
-                     NNS=3, PDT=2, POS=0, PRP=2, RB=4, RBR=4, RBS=4, RP=3, TO=1, UH=3, VB=4,
-                     VBD=4, VBG=4, VBN=4, VBP=4, VBZ=4, WDT=2, WP=2, WRB=2, SYM=0)
+POS_TO_MSCORE = dict(CC=2, CD=1, DT=1, EX=1, IN=2, JJ=4, JJR=4, JJS=4, LS=1, MD=2, NN=4, NNP=3,
+                     NNPS=3, NNS=3, PDT=2, POS=0, PRP=2, RB=4, RBR=4, RBS=4, RP=3, TO=1, UH=3,
+                     VB=4, VBD=4, VBG=4, VBN=4, VBP=4, VBZ=4, WDT=2, WP=2, WRB=2, SYM=0)
 POS_TO_MSCORE['PRP$'] = 2
 POS_TO_MSCORE['WP$'] = 2
 POS_TO_MSCORE["''"] = 2
+
+test_normalize_lyric()

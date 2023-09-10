@@ -4,6 +4,7 @@
 import re
 from functools import lru_cache, cached_property
 from collections import defaultdict
+from typing import Any
 from . import utils
 
 
@@ -22,74 +23,55 @@ def transducer():
 def normalize_ipa(ipa):
     '''Normalize IPA string
     '''
-    ipa = ipa.strip().replace("ː", "")
     if ipa.endswith("'") or ipa.endswith("ˌ"):
         ipa = ipa[:-1]
-    return utils.remove_non_lyric_punctuation(ipa)
+    # TODO? return utils.remove_non_lyric_punctuation(ipa)
+    return ipa
 
 
 def remove_stresses(text):
-    '''Remove IPA stress marks
-    '''
     return re.sub(r'\ˈ|\ˌ', '', text)
 
 
-# keeping track of where IPA comes from for now
-ipa_log = dict(eng2ipa=[], gpt=[], g2p=[], none=[])
-
-
-@lru_cache(maxsize=1000)
-def get_ipa_words(text):
+@lru_cache(maxsize=3000)
+def to_ipa_tokens(text):
     '''Translate to IPA, returns list of words
        eng_to_ipa (lookup) -> custom lookup (via GPT) -> g2p (from letters)
     '''
     import eng_to_ipa
-    global ipa_log
 
     # eng_to_ipa puts a * next to every word it can't translate
-    text = text.replace('-', ' ')
-    words = eng_to_ipa.convert(text).split()
+    text = utils.normalize_lyric(text)
+    words: Any = eng_to_ipa.convert(text)
 
     ipa = []
-    for w in words:
+    for w in words.split():
         if '*' in w or not w.strip():
             plain_word = w.replace('*', '').strip()
             w = utils.data.gpt_ipa.get(plain_word, None)
-            if w:
-                ipa_log['gpt'].append(plain_word)
-            else:
+            if not w:
                 w = get_g2p_ipa(plain_word)
-                if w:
-                    ipa_log['g2p'].append(plain_word)
-                    if not w:
-                        ipa_log['none'].append(plain_word)
-                        # Non-ideal behavior in the long-run
-                        raise Exception(f'ERROR! Could not translate IPA for "{plain_word}"')
-        else:
-            ipa_log['eng2ipa'].append(text.split()[words.index(w)])
-
+                if not w:
+                    print(f'WARNING! Could not get IPA for "{plain_word}" '
+                          f'while translating "{text}"')
+                    return ''
         ipa.append(fix_ipa_word(w))
     return ipa
 
 
-@property
-def ipa_log_counts():
-    return { k: len(v) for k, v in ipa_log.items() }
-
-
-def get_ipa_text(text):
+def to_ipa(text):
     '''Translate to IPA, returns string
     '''
-    return ' '.join(get_ipa_words(text))
+    return ' '.join(to_ipa_tokens(text))
 
 
 def fix_ipa_word(w):
     '''Fixes some miscellanous IPA translation issues
     '''
-    if w is None:
+    if not w:
         return ''
     w = re.sub(r"'ɛs$", "s", w)
-    w = re.sub(r"'", "", w)
+    w = re.sub(r"'", "", w)  # remove apostraphe (not stress)
     return w.strip()
 
 
@@ -101,7 +83,7 @@ def get_g2p_ipa(text):
     return transducer()(text).output_string
 
 
-def get_ipa_features(ipa_letter):
+def get_ipa_features(ipa_letter) -> Any:
     '''Get feature table for IPA character
     '''
     f = ftable().fts(ipa_letter)
@@ -110,28 +92,25 @@ def get_ipa_features(ipa_letter):
 
 def get_ipa_features_vector(ipa):
     if type(ipa) == str:
-        vec = [c for c in ipa]
+        chars = [c for c in ipa]
     else:
-        vec = ipa
+        chars = ipa
 
-    implicit_stress = "ˈ" not in vec and "ˌ" not in vec
-
-    for i, char in enumerate(vec):
-        if char == '_':
-            vec[i] = [0.0] + utils.EMPTY_FEATURES
+    vec = []
+    for char in chars:
+        if char in ['_', ' ', '.']:
+            features = [0.0] + utils.EMPTY_IPA_FEATURES
         elif char == "ˈ":
-            vec[i] = [2.0] + utils.EMPTY_FEATURES
+            features = [2.0] + utils.EMPTY_IPA_FEATURES
         elif char == "ˌ":
-            vec[i] = [1.0] + utils.EMPTY_FEATURES
+            features = [1.0] + utils.EMPTY_IPA_FEATURES
         else:
-            features = utils.get_ipa_features(char)
-            if features is None:
-                vec[i] = [0.0] + utils.EMPTY_FEATURES
+            ft = utils.get_ipa_features(char)
+            if ft is None:
+                features = [0.0] + utils.EMPTY_IPA_FEATURES
             else:
-                vec[i] = [0.0] + features.numeric()
-
-    if implicit_stress:
-        vec[0][0] = 2.0
+                features = [0.0] + ft.numeric()
+        vec.append(features)
 
     return vec
 
@@ -140,7 +119,7 @@ def is_vowel(ipa_letter):
     return ipa_letter in IPA_VOWELS
 
 
-def get_stress_tail_for_ipa(ipa_phrase):
+def get_ipa_stress_tail(ipa_phrase):
     '''Stress tail is basically the primary stressed vowel and everything after, so
        include stress markers in the input string if possible.
     '''
@@ -155,7 +134,7 @@ def get_stress_tail_for_ipa(ipa_phrase):
     return ipa_phrase[stress_index:]
 
 
-def chop_tail(ipa_phrase):
+def chop_ipa_tail(ipa_phrase):
     if ipa_phrase[-1] == "ŋ":
         return ipa_phrase[:-1] + "n"
     index = len(ipa_phrase) - 1
@@ -166,79 +145,24 @@ def chop_tail(ipa_phrase):
     return ipa_phrase[:index + 1]
 
 
-def get_ipa_tail(text, stresses=False):
-    '''Convert word to IPA and return the stress tail only
-    '''
-    text = text.lower().strip()
-    ipa = get_ipa_text(text)
-    tail = get_stress_tail_for_ipa(ipa)
-    val = ''.join(tail.split(' '))
-    if not stresses:
-        val = remove_stresses(val)
-    return val
-
-
 @lru_cache(maxsize=1000)
-def get_vowel_vector(text, max_len=100):
-    '''DB comparison vector for vowels in a word
+def get_ipa_vowel_vector(text, max_len=100):
+    '''DB comparison vector for all vowels in a phrase
     '''
-    ipa = get_ipa_tail(text)
+    ipa = to_ipa(text)
     vec = []
     for c in ipa:
         if is_vowel(c):
             ft = ftable().word_array([
-                'syl', 'son', 'cons', 'voi', 'long',
+                'son', 'cons', 'voi', 'long',
                 'round', 'back', 'lo', 'hi', 'tense'
-            ], c).tolist() or ([0.0] * 10)
+            ], c).tolist() or ([0.0] * 9)
             vec += ft
     vec = [item for sublist in vec for item in sublist][-max_len:]
     return vec
 
 
-FULL_IPA_FEATURE_LEN = len(get_ipa_features('a').numeric())
-EMPTY_FEATURES = [0.0] * FULL_IPA_FEATURE_LEN
-
-def get_rhyme_vectors(text1, text2):
-    '''Aligns IPA stress tails and returns full feature vectors for each
-    '''
-    ipa1 = get_ipa_tail(text1)
-    ipa2 = get_ipa_tail(text2)
-    seq1, seq2, _ = utils.align_vals(ipa1, ipa2)
-    vec1, vec2 = [], []
-
-    for idx, c in enumerate(seq1):
-        if c == '-' or seq2[idx] == '-' or c == '' or seq2[idx] == '':
-            vec1 += EMPTY_FEATURES
-            vec2 += EMPTY_FEATURES
-        else:
-            ft1 = get_ipa_features(c)
-            ft2 = get_ipa_features(seq2[idx])
-            if ft1 is None or ft2 is None:
-                vec1 += EMPTY_FEATURES
-                vec2 += EMPTY_FEATURES
-            else:
-                vec1 += [float(f) for f in ft1.numeric()]
-                vec2 += [float(f) for f in ft2.numeric()]
-    return vec1, vec2
-
-
-def score_rhyme(text1, text2):
-    from scipy.spatial import distance
-    vec1, vec2 = get_rhyme_vectors(text1, text2)
-    score = distance.cosine(vec1, vec2)
-    return score
-
-
-ipa_token_dict = defaultdict(lambda: len(ipa_token_dict))
-
-def ipa_to_unique_tokens(text):
-    return [ipa_token_dict[c] for c in text]
-
-
-@lru_cache(maxsize=1000)
 def get_stresses_vector(q):
-    '''Get stresses vector
-    '''
     import pronouncing as pron
     stresses = []
     for word in q.split():
@@ -253,80 +177,21 @@ def get_stresses_vector(q):
     return [int(s) for s in (''.join(stresses))]
 
 
-@lru_cache(maxsize=1000)
-def get_formants_vector(q, vowels_only=False, include_stresses=False):
-    ipa = get_ipa_text(q).split()
-    formants = []
+FULL_IPA_FEATURE_LEN = len(get_ipa_features('a').numeric())
 
-    for ch in ipa:
-        if not include_stresses:
-            ch = re.sub(r'[\ˈˌ]', '', ch)
-        if ch in IPA_VOWELS or not vowels_only:
-            f = PHONE_TO_FORMANTS.get(ch, [0, 0, 0, 0])
-            formants.append(f)
-
-    if len([f for f in formants if f != [0, 0, 0, 0]]) < (len(formants) / 2):
-        return None
-
-    return formants
-
-
+EMPTY_IPA_FEATURES = [0.0] * FULL_IPA_FEATURE_LEN
 
 IPA_VOWELS = [u'i', u'y', u'e', u'ø', u'ɛ', u'œ', u'a', u'ɶ', u'ɑ', u'ɒ', u'ɔ',
               u'ʌ', u'ɤ', u'o', u'ɯ', u'u', u'ɪ', u'ʊ', u'ə', u'æ']
 
 IPA_DIPTHONGS = ['eɪ', 'oʊ', 'aʊ', 'ɪə', 'eə', 'ɔɪ', 'aɪ', 'ʊə' ]
 
-PHONE_TO_FORMANTS = {
-    u'i': [240, 2400, 2160, 0],
-    u'y': [235, 2100, 1865, 0],
-    u'e': [390, 2300, 1910, 0],
-    u'ø': [370, 1900, 1530, 0],
-    u'ɛ': [610, 1900, 1290, 0],
-    u'œ': [585, 1710, 1125, 0],
-    u'a': [850, 1610, 760, 0],
-    u'ɶ': [820, 1530, 710, 0],
-    u'ɑ': [750, 940, 190, 0],
-    u'ɒ': [700, 760, 60, 0],
-    u'ɔ': [500, 700, 200, 0],
-    u'ʌ': [600, 1170, 570, 0],
-    u'ɤ': [460, 1310, 850, 0],
-    u'o': [360, 640, 280, 0],
-    u'ɯ': [300, 1390, 1090, 0],
-    u'u': [250, 595, 345, 0],
 
-    # https://www.jobilize.com/course/section/formant-analysis-lab-9a-speech-processing-part-1-by-openstax#uid32
-    u'ɪ': [390, 1990, 2550, 0],
-    u'ʊ': [300, 870, 2240, 0],
-    u'ə': [520, 1190, 2390, 0],
-    u'æ': [660, 1720, 2410, 0],
+ipa_token_dict = defaultdict(lambda: len(ipa_token_dict))
 
-    # https://www.advancedbionics.com/content/dam/advancedbionics/Documents/libraries/Tools-for-Schools/Educational_Support/Tools-for-Learning-about-Hearing-loss-and-Cochlear-Implants/ToolsforSchools-Sounds-of-Speech-Flyer.pdf
-    u'ŋ': [325, 1250, 2500, 0],
-    u'ʧ': [0, 0, 1750, 4500],
-    u'θ': [0, 0, 0, 6000],
-    u'ð': [300, 0, 0, 5250],
-    u'ʤ': [250, 0, 2500, 0],
-    u'ʃ': [0, 0, 1750, 5000],
-    u'w': [525, 0, 0, 0],
-    u'n': [300, 1250, 2500, 0],
-    u'm': [300, 1250, 3000, 0],
-    u'r': [700, 2250, 2100, 0],
-    u'g': [250, 0, 2000, 0],
-    u'j': [250, 0, 2500, 0],
-    u'l': [325, 0, 2500, 0],
-    u'd': [350, 0, 2750, 0],  # ???
-    u'z': [250, 0, 0, 4500],
-    u'v': [350, 0, 0, 4000],
-    u'h': [0, 0, 1750, 0],
-    u'p': [0, 0, 1750, 0],
-    u'k': [0, 0, 2250, 0],
-    u't': [0, 0, 3000, 0],
-    u's': [0, 0, 0, 5500],
-    u'f': [0, 0, 0, 4500],
-    u'b': [350, 0, 2250, 0],
-    # ??? u'a': [],
-}
+def ipa_to_unique_tokens(text):
+    return [ipa_token_dict[c] for c in text]
+
 
 def is_valid_onset(onset):
     # https://en.wikipedia.org/wiki/English_phonology#Syllable_structure
@@ -359,9 +224,9 @@ def is_valid_onset(onset):
     )
 
 
-def get_syllables(ipa, as_str=False):
+def get_syllables_from_ipa(ipa, as_str=False, spaces=False):
     syllables = []
-    ipa = [c for c in normalize_ipa(ipa)]
+    ipa = [c for c in ipa]
 
     while len(ipa):  # per-word
         char = None
@@ -393,6 +258,9 @@ def get_syllables(ipa, as_str=False):
                     coda.insert(0, char)
 
         syl = [''.join(onset), ''.join(nucleus), ''.join(coda)]
+        if not spaces:
+            syl = [s.strip() for s in syl]
+
         syllables.insert(0, syl)
 
     if as_str:
@@ -401,5 +269,6 @@ def get_syllables(ipa, as_str=False):
     return syllables
 
 
-def get_syllabified_ipa(text, as_str=True):
-    return get_syllables(get_ipa_text(text), as_str=True)
+def to_syllabified_ipa(text, as_str=True, spaces=False):
+    ipa = to_ipa(text)
+    return get_syllables_from_ipa(ipa, as_str=as_str, spaces=spaces)
