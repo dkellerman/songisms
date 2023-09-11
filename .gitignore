@@ -18,8 +18,8 @@ TODO.md
 !data/ipa_gpt.json
 !data/misspellings.txt
 !data/lines.txt
-!songs/data/fixtures/artists.json
-!songs/data/fixtures/writers.json
+!data/fixtures/artists.json
+!data/fixtures/writers.json
 
 **/client/**/dist
 **/client/**/dist
