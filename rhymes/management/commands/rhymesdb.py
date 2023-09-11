@@ -88,10 +88,11 @@ class Command(BaseCommand):
                     rkey = (from_text, to_text, None)
                     if rkey not in rhymes:
                         ukey = '_'.join(sorted([from_text, to_text]))
-                        rhymes[rkey] = dict(from_ngram=ngrams[from_text], to_ngram=ngrams[to_text],
-                                            song_uid=None, level=1, ukey=ukey,
-                                            source='MU:' + from_text)
-                        muse_rhymes.add(to_text)
+                        if ukey not in negative:
+                            rhymes[rkey] = dict(from_ngram=ngrams[from_text], to_ngram=ngrams[to_text],
+                                                song_uid=None, level=2, ukey=ukey,
+                                                source='MU:' + from_text)
+                            muse_rhymes.add(to_text)
 
         # create rhymes lookup index for later
         rhymes_index = dict()
@@ -127,9 +128,10 @@ class Command(BaseCommand):
                     rkey = (ngram, val, None)
                     if rkey not in rhymes:
                         ukey = '_'.join(sorted([ngram, val]))
-                        rhymes[rkey] = dict(from_ngram=ngrams[ngram], to_ngram=ngrams[val],
-                                            song_uid=None, level=3, ukey=ukey,
-                                            source='MULTI:' + val)
+                        if ukey not in negative:
+                            rhymes[rkey] = dict(from_ngram=ngrams[ngram], to_ngram=ngrams[val],
+                                                song_uid=None, level=3, ukey=ukey,
+                                                source='MULTI:' + val)
 
         # make level 2 rhymes (aka rhymes of rhymes)
         level1_rhymes = list(rhymes.values())
@@ -137,10 +139,13 @@ class Command(BaseCommand):
             for l2 in [r for r in level1_rhymes if r['from_ngram']['text'] == l1['to_ngram']['text']]:
                 rkey = (l1['from_ngram']['text'], l2['to_ngram']['text'], None)
                 if rkey not in rhymes:
-                    ukey = '_'.join(sorted([l1['from_ngram']['text'], l2['to_ngram']['text']]))
+                    ukey = '_'.join(sorted([l1['to_ngram']['text'], l2['to_ngram']['text']]))
+                    ukey2 = '_'.join(sorted([l1['from_ngram']['text'], l2['to_ngram']['text']]))
+                    if ukey in negative or ukey2 in negative:
+                        continue
                     rhymes[rkey] = dict(from_ngram=l1['from_ngram'], to_ngram=l2['to_ngram'],
                                         song_uid=None, level=2, ukey=ukey,
-                                        source='L2:' + l1['to_ngram']['text'])
+                                        source='L2:' + l2['to_ngram']['text'])
 
         # get feature vectors
         for ngram in tqdm(ngrams.values(), desc='ngram vectors'):
@@ -259,13 +264,13 @@ class Command(BaseCommand):
                 nto = ngrams[rhyme['to_ngram']['text']]
                 song_uid = rhyme['song_uid']
                 rhyme_objs.append(Rhyme(from_ngram=nfrom, to_ngram=nto, song_uid=song_uid,
-                                        level=rhyme['level'], score=rhyme['score'],
+                                        level=rhyme['level'], score=rhyme.get('score'),
                                         source=rhyme['source']))
                 # write the reverse rhyme as well
                 revkey = (nto.text, nfrom.text, song_uid if song_uid else None)
                 if revkey not in rhymes:
                     rhyme_objs.append(Rhyme(from_ngram=nto, to_ngram=nfrom, song_uid=song_uid,
-                                            level=rhyme['level'], score=rhyme['score'],
+                                            level=rhyme['level'], score=rhyme.get('score'),
                                             source=rhyme['source']))
 
             print('writing rhymes', len(rhyme_objs))
