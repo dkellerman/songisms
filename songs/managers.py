@@ -17,7 +17,9 @@ class SongManager(BaseManager):
         'artist': ('artists__name__icontains', None),
         'tag': ('tags__value__iexact', None),
         'title': ('title__icontains', None),
+        'id': ('spotify_id__icontains', None),
         'is_new': ('is_new', None),
+        'ipa': ('metadata__ipa__icontains', None),
     }
 
     def get_by_natural_key(self, spotify_id):

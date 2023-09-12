@@ -27,7 +27,9 @@
         <input name="q" type="text" placeholder="Search" value="{{ q }}"/>
         <button>Go</button>
       </fieldset>
+      <em>{{ hits|length }} results</em>
     </form>
+
     <table>
       <thead>
         <th>Title</th>
