@@ -1,7 +1,15 @@
-from django.http import HttpResponse
-from django.views.decorators.http import require_GET
+import json
+from django import http
+from django.views.decorators.http import require_http_methods
+from django.shortcuts import render
+from django.forms.models import model_to_dict
+from .models import Song
 
 
-@require_GET
+@require_http_methods(["GET"])
 def home(request):
-    return HttpResponse("Hello songs")
+    q = request.GET.get("q", "")
+    hits = [model_to_dict(s, fields=['id', 'title', 'spotify_id', 'artists'])
+            for s in Song.objects.query(q or None)]
+    context = dict(hits=hits, q=q)
+    return render(request, "songs.html", context=context)

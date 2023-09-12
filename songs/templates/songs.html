@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+  <title>Songs</title>
+  <style>
+    html, body {
+      padding: 20px;
+    }
+    fieldset {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+      width: 80vw;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h2>Songs</h2>
+    <form>
+      <fieldset>
+        <input name="q" type="text" placeholder="Search" value="{{ q }}"/>
+        <button>Go</button>
+      </fieldset>
+    </form>
+    <table>
+      <thead>
+        <th>Title</th>
+        <th>Artists</th>
+        <th>SpotID</th>
+      </thead>
+      {% for hit in hits %}
+      <tbody>
+        <tr>
+          <td>
+            <a href="/admin/songs/song/{{ hit.id }}/change" target="_blank">
+              {{ hit.title }}
+            </a>
+          </td>
+          <td>{{ hit.artists|join:', ' }}</td>
+          <td>{{ hit.spotify_id }}</td>
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+  </div>
+</body>
+</html>
