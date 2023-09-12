@@ -68,8 +68,10 @@ main {
         background: #9b4dca;
       }
       &.listen {
-        margin-left: 5px;
-        background: green;
+        margin-left: 25px;
+        background: #777;
+        border-radius: 50%;
+        padding: 5px 15px;
         &.is-listening {
           background: red;
         }

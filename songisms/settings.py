@@ -139,6 +139,7 @@ CORS_ALLOWED_ORIGINS = [
     'https://rhymes-davidk-davidk415.vercel.app',
     'https://songisms.vercel.app',
     'https://www.songrhymes.com',
+    'https://songisms.ngrok.io',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -161,6 +162,10 @@ CACHES = {
         'TIMEOUT': None,
     }
 }
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://songisms.ngrok.io',
+]
 
 USE_QUERY_CACHE = IS_PROD
 

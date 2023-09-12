@@ -12,3 +12,5 @@ requests
 requests-cache
 torch
 positional-encodings[pytorch]
+spotipy
+sh

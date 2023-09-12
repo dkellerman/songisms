@@ -7,6 +7,7 @@ import base64
 import requests
 import shutil
 import requests
+import math
 from functools import lru_cache
 from urllib.parse import urlencode
 from django.core.files import File
@@ -231,3 +232,39 @@ def fetch_datamuse_rhymes(key):
         print('error retrieving datamuse NRY for', key)
 
     return vals
+
+
+@lru_cache(maxsize=None)
+def get_spotify_client():
+    import spotipy
+    from spotipy.oauth2 import SpotifyOAuth
+    spot = spotipy.Spotify(auth_manager=SpotifyOAuth(scope='playlist-modify-private'))
+    return spot
+
+
+def get_playlist_track_ids(playlist_id, limit=1000):
+    spot = get_spotify_client()
+    existing_playlist_ids = []
+    for i in range(0, math.ceil(limit / 100)):
+        tracks = spot.playlist_tracks(playlist_id, offset=i * 100, limit=100)
+        existing_playlist_ids += [track['track']['id'] for track in tracks['items']]
+        if len(tracks['items']) < 100:
+            break
+
+    return existing_playlist_ids
+
+
+def add_songs_to_playlist(playlist_id, song_ids):
+    spot = get_spotify_client()
+    spot.playlist_add_items(playlist_id, song_ids)
+
+
+def remove_songs_from_playlist(playlist_id, song_ids):
+    spot = get_spotify_client()
+    spot.playlist_remove_all_occurrences_of_items(playlist_id, song_ids)
+
+
+def get_track(id):
+    spot = get_spotify_client()
+    track = spot.track(id)
+    return track
