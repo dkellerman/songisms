@@ -65,7 +65,7 @@ def rlhf(request):
         hit = dict(anchor=r['rfrom'], alt1=r['rto'], alt2=r2['rto'])
         if hit['alt1'] == hit['anchor']:
             hit['alt1'] = r2['rto2']
-        elif hit['alt2'] == hit['anchor']:
+        elif hit['alt2'] == hit['anchor'] or (hit['alt1'] == hit['alt2']):
             hit['alt2'] = r2['rto2']
         if random.random() > 0.5:
             hit['alt1'], hit['alt2'] = hit['alt2'], hit['alt1']
