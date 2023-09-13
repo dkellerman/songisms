@@ -108,7 +108,6 @@ onMounted(() => {
 nav {
   background: aliceblue;
   text-align: center;
-  padding: 5px;
   h1 {
     font-size: 30px;
   }
@@ -122,7 +121,7 @@ main {
   &.instructions {
     text-align: center;
     button {
-      zoom: 1.5;
+      zoom: 2;
     }
   }
   .anchor {
