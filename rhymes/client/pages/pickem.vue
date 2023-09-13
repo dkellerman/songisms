@@ -26,11 +26,9 @@ function pick(label: string) {
     <Head>
       <Title>PickEm Rhymes</Title>
     </Head>
-
     <nav>
-      <h1><router-link to="/pickem">PickEm</router-link></h1>
+      <h1>Pick ’em</h1>
     </nav>
-
     <main v-if="cur">
       <div class="anchor">
         <label>
@@ -81,6 +79,10 @@ function pick(label: string) {
 </template>
 
 <style lang="scss" scoped>
+nav {
+  background: aliceblue;
+  text-align: center;
+}
 main {
   display: flex;
   flex-direction: column;
@@ -95,7 +97,7 @@ main {
   .alts {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     gap: 100px;
     label {
       font-size: 28px;
