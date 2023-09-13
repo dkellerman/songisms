@@ -87,7 +87,10 @@ onMounted(() => {
     <main v-else class="instructions">
       <div>
         A word will be shown, along with two possible rhymes.
-        <strong>Pick the best one by clicking/tapping on it.</strong>
+        <strong>
+          Pick the one that feels like the <em>closer</em> rhyme
+          by clicking/tapping on the word.
+        </strong>
       </div>
       <div>
         Don't think too much about it, just go with your gut - there are no
@@ -95,7 +98,7 @@ onMounted(() => {
       </div>
       <div>
         <p>
-          If necessary you may also pick one of the options below the rhymes.
+          You may also pick one of the options below the rhymes.
           <strong>If there's anything confusing, just click Skip and go the next one.</strong>
         </p>
       </div>
