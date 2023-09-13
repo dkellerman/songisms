@@ -291,10 +291,11 @@ function uncastVote(rhyme: Rhyme) {
           Music
         </a>
       </div>
-      <span class="vote">[
-        <a v-if="voteMode" @click.prevent="voteMode=false">Exit vote mode</a>
-        <a v-else @click.prevent="voteMode=true">Vote mode</a>
-      ]</span>
+      <span class="vote">
+        <span class="pickem">[<NuxtLink to="/pickem">Pick ’em</NuxtLink>]&nbsp;&nbsp;</span>
+        [<a v-if="voteMode" @click.prevent="voteMode=false">Exit vote mode</a>
+        <a v-else @click.prevent="voteMode=true">Vote mode</a>]
+      </span>
     </footer>
   </div>
 </template>

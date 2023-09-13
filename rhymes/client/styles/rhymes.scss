@@ -200,12 +200,15 @@ footer {
     a {
       cursor: pointer;
     }
+    .pickem {
+      display: none;
+    }
   }
 }
 
 @media screen and (min-width: 640px) {
-  footer .links {
-    display: initial;
+  footer .links, .vote .pickem {
+    display: initial !important;
   }
 }
 

@@ -85,7 +85,6 @@ onMounted(() => {
     </main>
 
     <main v-else class="instructions">
-      <h1>Pick the best rhyme</h1>
       <div>
         A word will be shown, along with two possible rhymes.
         <strong>Pick the best one by clicking/tapping on it.</strong>
@@ -95,13 +94,10 @@ onMounted(() => {
         right or wrong answers.
       </div>
       <div>
-        <p>If necessary you may also pick one of the options below the rhymes:</p>
-        <ul>
-          <li><strong>Equally bad</strong> - Neither word rhymes at all</li>
-          <li><strong>Equally good</strong> - Both words rhyme about the same amount</li>
-          <li><strong>WTF?!</strong> - This is stupid</li>
-          <li><strong>Skip</strong> - If unsure for any reason, just skip and move on</li>
-        </ul>
+        <p>
+          If necessary you may also pick one of the options below the rhymes.
+          <strong>If there's anything confusing, just click Skip and go the next one.</strong>
+        </p>
       </div>
       <button @click="next">Start</button>
     </main>
@@ -112,16 +108,20 @@ onMounted(() => {
 nav {
   background: aliceblue;
   text-align: center;
+  h1 {
+    font-size: 24px;
+  }
 }
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20px;
   gap: 20px;
   &.instructions {
     text-align: center;
-    ul {
-      text-align: justify;
+    button {
+      font-size: 18px;
     }
   }
   .anchor {
@@ -164,7 +164,7 @@ main {
   }
 
   .option {
-    font-size: 14px;
+    font-size: 16px;
     text-align: center;
     text-decoration: underline;
     color: #999;
