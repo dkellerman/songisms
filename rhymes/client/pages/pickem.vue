@@ -123,6 +123,7 @@ main {
   gap: 20px;
   &.instructions {
     text-align: center;
+    font-size: 18px;
     button {
       zoom: 1.5;
     }
