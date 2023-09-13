@@ -12,7 +12,8 @@ def make_vals():
         vals.add((0.0, neg.anchor, neg.alt1, ''),)
 
     target_ct = len(vals) * 2
-    for s in tqdm(Song.objects.filter(is_new=False).exclude(rhymes_raw=None), "Song rhymes"):
+    prog_bar = tqdm(total=target_ct / 2, desc="Song rhymes")
+    for s in Song.objects.filter(is_new=False).exclude(rhymes_raw=None):
         for line in s.rhymes_raw.split('\n'):
             line = line.strip()
             rsets = utils.get_rhyme_pairs(line)
@@ -20,6 +21,7 @@ def make_vals():
                 if (0.0, anc, pos) in vals or (0.0, pos, anc) in vals:
                     continue
                 vals.add((1.0, anc, pos, s.spotify_id))
+                prog_bar.update()
                 if len(vals) >= target_ct:
                     return vals
 

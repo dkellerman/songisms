@@ -9,6 +9,7 @@ class Command(BaseCommand):
     help = 'Check stuff'
 
     def add_arguments(self, parser):
+        parser.add_argument('--id', '-i', type=str, default=None)
         parser.add_argument('--audio', '-a', action=argparse.BooleanOptionalAction)
         parser.add_argument('--stems', '-s', action=argparse.BooleanOptionalAction)
         parser.add_argument('--new', '-n', action=argparse.BooleanOptionalAction)
@@ -20,16 +21,18 @@ class Command(BaseCommand):
         parser.add_argument('--metadata', '-m', action=argparse.BooleanOptionalAction)
         parser.add_argument('--transcripts', '-t', action=argparse.BooleanOptionalAction)
         parser.add_argument('--duplicates', '-d', action=argparse.BooleanOptionalAction)
-        parser.add_argument('--ipa', '-i', action=argparse.BooleanOptionalAction)
+        parser.add_argument('--ipa', '-I', action=argparse.BooleanOptionalAction)
 
     def handle(self, *args, **options):
         songs = Song.objects.all()
-        check_new, check_audio, check_stems, check_lyrics, check_writers, check_rhymes, \
-        check_rhymes_ok, check_style, check_metadata, check_transcript, \
+        id, check_new, check_audio, check_stems, check_lyrics, check_writers, \
+        check_rhymes, check_rhymes_ok, check_style, check_metadata, check_transcript, \
         check_duplicates, check_ipa = \
-            [options[k] for k in ('new', 'audio', 'stems', 'lyrics', 'writers', \
+            [options[k] for k in ('id', 'new', 'audio', 'stems', 'lyrics', 'writers', \
                                   'rhymes', 'rhymes_ok', 'style', 'metadata',
                                   'transcripts', 'duplicates', 'ipa',)]
+        if id:
+            songs = songs.filter(spotify_id__in=id.split(','))
 
         for idx, song in enumerate(songs):
             if check_transcript:
@@ -87,8 +90,7 @@ class Command(BaseCommand):
                         elif song.audio_file.size < 100 * 1024:
                             print('\t[EMPTY AUDIO?]', song.spotify_id)
                     else:
-                        if not song.audio_file:
-                            print('\t[UNDOWNLOADED AUDIO]', song.spotify_id)
+                        print('\t[UNDOWNLOADED AUDIO]', song.spotify_id)
                 else:
                     if song.audio_file:
                         print('\t[INVALID AUDIO]', song.spotify_id)
@@ -133,4 +135,4 @@ class Command(BaseCommand):
             print("\n[SUSPECT RHYMES]", song.spotify_id, song.title)
             for w1, w2, score in suspect:
                 print("\t*", w1, '/', w2, f"[{score:.2f}]",
-                      f"({utils.get_ipa_text(w1)} / {utils.get_ipa_text(w2)})")
+                      f"({utils.to_ipa(w1)} / {utils.to_ipa(w2)})")

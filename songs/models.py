@@ -136,7 +136,8 @@ class Song(models.Model):
         return utils.get_storage_blob(self.audio_file_path)
 
     def audio_file_exists(self):
-        return self.audio_blob().exists()
+        blob = self.audio_blob()
+        return blob and blob.exists()
 
     def has_attachment(self, t):
         return self.attachments.filter(attachment_type=t).exists()

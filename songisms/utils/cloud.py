@@ -30,6 +30,7 @@ def get_cloud_storage():
 
 
 def get_storage_blob(fname):
+    _, bucket = get_cloud_storage()
     if bucket is None:
         return None
     return bucket.blob(fname)

@@ -19,6 +19,7 @@ class Command(BaseCommand):
             self.prune()
             return
         elif not options['fetch'] and not options['force_fetch']:
+            print("specify --fetch or --force-fetch")
             return
 
         songs = Song.objects.exclude(youtube_id=None)
@@ -28,7 +29,7 @@ class Command(BaseCommand):
         audio_queue = []
 
         for song in songs:
-            if not song.audio_file or options['force_fetch']:
+            if not song.audio_file_exists() or options['force_fetch']:
                 audio_queue.append(song)
 
         if options['limit']:
@@ -36,15 +37,9 @@ class Command(BaseCommand):
         print("=> Queued:", len(audio_queue))
 
         if len(audio_queue):
-            # can't get pytube to work yet with multiprocessing...
-            # import multiprocessing as mp
-            # if len(audio_queue) > 0:
-            #     mp.set_start_method('fork')
-            #     with mp.Pool(mp.cpu_count()) as p:
-            #         p.map(fetch_audio_wrapper, audio_queue)
             for song in audio_queue:
                 print("\nNext up:", song.title, song.spotify_id)
-                fetch_audio_wrapper(song)
+                fetch_wrapper(song)
 
     def prune(self):
         _, bucket = utils.get_cloud_storage()
@@ -59,5 +54,10 @@ class Command(BaseCommand):
                     blob.delete()
 
 
-def fetch_audio_wrapper(song):
-    return utils.fetch_audio(song)
+def fetch_wrapper(song):
+    try:
+        return utils.fetch_audio(song)
+    except Exception as err:
+        print("Error fetching audio", err, song.pk, song.title)
+        return None
+

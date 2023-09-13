@@ -71,15 +71,31 @@ class RhymesTrainDataset(Dataset):
         random.shuffle(data)
         self.positive = [vals for vals in data if vals[0] >= .5]
 
+        from rhymes.models import Vote
+        votes = Vote.objects.exclude(alt2=None).filter(label__in=['alt1', 'alt2'])
+        rlhf = []
+        for v in votes:
+            pos = v.alt1 if v.label == 'alt1' else v.alt2
+            neg = v.alt1 if v.label == 'alt2' else v.alt2
+            rlhf.append((0.8, v.anchor, pos, neg))
+        random.shuffle(rlhf)
+        self.rlhf = rlhf
+        print("* train counts:", 'RLHF =>', len(self.rlhf), 'REAL =>', len(self.positive))
+
     def __len__(self):
         return config.rows
 
     def __getitem__(self, idx):
         score, anc_ipa, pos_ipa, neg_ipa = None, None, None, None
         while len(self.positive) and (not anc_ipa or not pos_ipa or not neg_ipa):
-            score, anchor, pos = self.positive.pop()
-            neg = self.rw.word()
-            anc_ipa, pos_ipa, neg_ipa = to_ipa(anchor), to_ipa(pos), to_ipa(neg)
+            if random.random() > .5 and len(self.rlhf):
+                score, anchor, pos, neg = self.rlhf.pop()
+                anc_ipa, pos_ipa, neg_ipa = to_ipa(anchor), to_ipa(pos), to_ipa(neg)
+            else:
+                score, anchor, pos = self.positive.pop()
+                neg = self.rw.word()
+                # neg = random.choice(random.choice(utils.data.lines).split())
+                anc_ipa, pos_ipa, neg_ipa = to_ipa(anchor), to_ipa(pos), to_ipa(neg)
         return score, *make_rhyme_tensors(anc_ipa, pos_ipa, neg_ipa, pad_to=self.pad_to)
 
 
