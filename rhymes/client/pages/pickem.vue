@@ -58,7 +58,7 @@ onMounted(() => {
       <Title>PickEm Rhymes</Title>
     </Head>
     <nav>
-      <h1>Pick ’em</h1>
+      <h1>Rhymes Pick ’em</h1>
     </nav>
     <main v-if="cur">
       <div class="anchor">
