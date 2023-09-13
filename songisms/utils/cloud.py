@@ -35,65 +35,47 @@ def get_storage_blob(fname):
     return bucket.blob(fname)
 
 
-def fetch_audio(song, convert=False):
-    '''Fetch audio for a song from youtube. Convert to mp3 if convert=True, requires ffmpeg
+def fetch_audio(song):
+    '''Fetch audio for a song from youtube
     '''
-    import pafy
+    from pytube import YouTube
 
     yt_id = song.youtube_id
-    print("***** fetching video", song.id, song.title, yt_id)
+    print("***** fetching audio", song.id, song.title, yt_id)
 
-    video = pafy.new(f'https://www.youtube.com/watch?v={yt_id}')
+    yt = YouTube(f'https://www.youtube.com/watch?v={yt_id}')
+    audio = yt.streams.filter(only_audio=True).first()
+
     yt_meta = dict(
         id=yt_id,
-        song_id=song.id,
+        song_id=song.spotify_id,
         created=time.time(),
-        author=video.author,
-        bigthumb=video.bigthumb,
-        bigthumbhd=video.bigthumbhd,
-        category=video.category,
-        dislikes=video.dislikes,
-        duration=video.duration,
-        expiry=video.expiry,
-        likes=video.likes,
-        thumb=video.thumb,
-        title=video.title,
-        viewcount=video.viewcount,
-        watchv_url=video.watchv_url,
-        # description=video.description,
-        # keywords
+        author=yt.author,
+        duration=yt.length,
+        thumb=yt.thumbnail_url,
+        title=yt.title,
+        viewcount=yt.views,
+        watchv_url=yt.watch_url,
+        description=yt.description,
+        keywords=yt.keywords,
     )
 
     md = song.metadata or dict()
     md['youtube'] = yt_meta
     song.metadata = md
 
-    audio = video.getbestaudio()
-    fname = f'{song.spotify_id}.{audio.extension}'
+    ext = audio.get_file_path().split('.')[-1]
+    fname = f'{song.spotify_id}.{ext}'
     tmpfile = f'/tmp/{fname}'
-    tmpfile_mp3 = None
 
     if not os.path.exists(tmpfile):
         print('download', tmpfile)
-        audio.download(filepath=tmpfile, quiet=False)
+        audio.download(filename=fname, output_path='/tmp/')
     else:
-        print('webm file exists')
+        print('audio file exists', tmpfile)
 
-    if convert:
-        import ffmpeg
-        fname_mp3 = f'{yt_id}.mp3'
-        tmpfile_mp3 = f'/tmp/{fname_mp3}'
-        if not os.path.exists(tmpfile_mp3):
-            print('convert to mp3...')
-            ffmpeg.input(tmpfile).output(
-                tmpfile_mp3, ac=1, audio_bitrate='128k').run()
-        else:
-            print('mp3 exists')
-        fname_upload = fname_mp3
-        tmpfile_upload = tmpfile_mp3
-    else:
-        fname_upload = fname
-        tmpfile_upload = tmpfile
+    fname_upload = fname
+    tmpfile_upload = tmpfile
 
     if os.path.exists(tmpfile_upload):
         print('uploading audio', tmpfile_upload)
@@ -106,10 +88,8 @@ def fetch_audio(song, convert=False):
     try:
         if tmpfile and os.path.exists(tmpfile):
             os.remove(tmpfile)
-        if tmpfile_mp3 and os.path.exists(tmpfile_mp3):
-            os.remove(tmpfile_mp3)
     except:
-        print("problem removing temp files", tmpfile, tmpfile_mp3)
+        print("problem removing temp files", tmpfile)
 
     print("done")
 

@@ -1,8 +1,5 @@
 tqdm
 django-storages[google]
-pafy
-youtube_dl
-ffmpeg
 scikit-learn
 openai
 gensim
@@ -12,5 +9,6 @@ requests
 requests-cache
 torch
 positional-encodings[pytorch]
+pytube
 spotipy
 sh

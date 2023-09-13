@@ -101,9 +101,11 @@ class Command(BaseCommand):
                     Q(is_new=True)
                 ).exclude(id=song.id)
                 if dups.exists():
-                    print('\t[DUPLICATES?]', song.spotify_id, song.title)
+                    print('\t[DUPLICATES?]\n\t', song.spotify_id, song.title, '-',
+                          ', '.join([a.name for a in song.artists.all()]))
                     for dup in dups:
-                        print('\t\t', dup.spotify_id, dup.title, dup.artists.all())
+                        print('\t', dup.spotify_id, dup.title, '-',
+                              ', '.join([a.name for a in dup.artists.all()]))
             if check_ipa and song.lyrics:
                 print("[CHECK IPA]", song.title, song.spotify_id)
                 lines = [l for l in song.lyrics.split('\n') if l and l.strip()]

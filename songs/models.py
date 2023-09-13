@@ -126,7 +126,7 @@ class Song(models.Model):
 
     @property
     def audio_file_path(self):
-        return f'data/audio/{self.spotify_id}.webm'
+        return f'data/audio/{self.spotify_id}.mp4'
 
     @property
     def audio_file_url(self):
