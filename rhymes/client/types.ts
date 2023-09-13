@@ -24,16 +24,24 @@ export interface VoteRequest {
   anchor: string;
   alt1: string;
   label: string;
-  voter_uid: string;
+  voterUid: string;
   remove?: string;
 }
 
-export type RLHF = {
+export interface RLHFVoteRequest {
+  anchor: string;
+  alt1: string;
+  alt2: string;
+  label: string;
+  voterUid: string;
+}
+
+export interface RLHF {
   anchor: string;
   alt1: string;
   alt2: string;
 };
 
-export type RLHFResponse = {
+export interface RLHFResponse {
   hits: RLHF[];
 };

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RLHF, RLHFResponse } from '../types';
+import type { RLHF, RLHFResponse, RLHFVoteRequest } from '../types';
 
 const config = useRuntimeConfig();
 const apiBaseUrl = config.public.apiBaseUrl.replaceAll('localhost', '127.0.0.1');
@@ -17,7 +17,7 @@ const queue: Ref<RLHF[]> = computed(() => [
 const cur = ref();
 
 // vote fetch
-const voteQuery = ref();
+const voteQuery = ref<RLHFVoteRequest>();
 const voterUid = ref<string>();
 await useFetch(`${apiBaseUrl}/rhymes/vote/`, {
   method: 'POST',
@@ -31,11 +31,12 @@ function next() {
 }
 
 function pick(label: string) {
+  if (!voterUid.value) return;
   voteQuery.value = {
     anchor: cur.value.anchor,
     alt1: cur.value.alt1,
     alt2: cur.value.alt2,
-    voter_uid: voterUid.value,
+    voterUid: voterUid.value,
     label,
   };
   next();
@@ -110,75 +111,5 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-nav {
-  background: aliceblue;
-  text-align: center;
-  h1 {
-    font-size: 30px;
-  }
-}
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  gap: 20px;
-  &.instructions {
-    text-align: center;
-    font-size: 18px;
-    button {
-      zoom: 1.5;
-    }
-  }
-  .anchor {
-    label {
-      font-size: 36px;
-      text-align: center;
-    }
-  }
-  .alts {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 100px;
-    label {
-      font-size: 28px;
-      text-align: center;
-      color: blue;
-      &:hover, &:active, &:focus {
-        cursor: pointer;
-        color: blue;
-      }
-    }
-  }
-
-  .actions {
-    margin-top: 60px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    button {
-      font-size: 18px;
-      color: #aaa;
-      &:hover {
-        cursor: pointer;
-        color: blue;
-        text-decoration: underline;
-      }
-    }
-  }
-
-  .option {
-    font-size: 16px;
-    text-align: center;
-    text-decoration: underline;
-    color: #999;
-  }
-}
-
-@media screen and (min-width: 640px) {
-  .actions {
-    flex-direction: row !important;
-  }
-}
+@import "../styles/pickem.scss";
 </style>

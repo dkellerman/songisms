@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { debounce } from 'lodash-es';
-import type { Rhyme, CompletionsResponse, RhymesResponse } from '../types';
+import { type Rhyme, type CompletionsResponse, type RhymesResponse, VoteRequest } from '../types';
 import ListenButton from '../components/ListenButton.vue';
 
 const route = useRoute();
@@ -28,7 +28,7 @@ const fetchCompletions = debounce((q: string) => completionsQuery.value = q, 200
 const rhymesQuery = computed(() => ({
   q: searchQuery.value,
   limit: 100,
-  voter_uid: voterUid.value ?? undefined,
+  voterUid: voterUid.value ?? undefined,
 }));
 const { data: rhymesData, pending } = await useFetch<RhymesResponse>(`${apiBaseUrl}/rhymes/`, {
   query: rhymesQuery,
@@ -37,7 +37,7 @@ const { data: rhymesData, pending } = await useFetch<RhymesResponse>(`${apiBaseU
 const rhymes = computed<Rhyme[]>(() => rhymesData.value?.hits ?? []);
 
 // vote fetch
-const voteQuery = ref();
+const voteQuery = ref<VoteRequest>();
 await useFetch(`${apiBaseUrl}/rhymes/vote/`, {
   method: 'POST',
   body: voteQuery,
@@ -156,8 +156,9 @@ function formatText(text: string) {
 }
 
 function castVote(rhyme: Rhyme, vote: 'good' | 'bad') {
+  if (!voterUid.value) return;
   voteQuery.value = {
-    voter_uid: voterUid.value,
+    voterUid: voterUid.value,
     anchor: searchQuery.value,
     alt1: rhyme.text,
     label: vote,
@@ -166,10 +167,12 @@ function castVote(rhyme: Rhyme, vote: 'good' | 'bad') {
 }
 
 function uncastVote(rhyme: Rhyme) {
+  if (!voterUid.value) return;
   voteQuery.value = {
-    voter_uid: voterUid.value,
+    voterUid: voterUid.value,
     anchor: searchQuery.value,
     alt1: rhyme.text,
+    label: '',
     remove: 'all',
   };
   rhyme.vote = undefined;

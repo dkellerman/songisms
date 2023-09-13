@@ -11,7 +11,7 @@ from wonderwords import RandomWord
 def rhymes(request):
     q = request.GET.get("q", "")
     limit = min(200, int(request.GET.get("limit", 10)))
-    voter_uid = request.GET.get("voter_uid", None)
+    voter_uid = request.GET.get("voterUid", None)
 
     if q:
         hits = Rhyme.objects.query(q, 0, limit, voter_uid=voter_uid)
@@ -82,7 +82,7 @@ def vote(request):
     data = json.loads(request.body)
     anchor = data.get("anchor")  # required
     label = data.get("label")  # required
-    voter_uid = data.get("voter_uid")  # required for now
+    voter_uid = data.get("voterUid")  # required for now
     remove = data.get("remove", False)
     alt1 = data.get("alt1", None)
     alt2 = data.get("alt2", None)

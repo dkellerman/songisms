@@ -1,0 +1,74 @@
+nav {
+  background: aliceblue;
+  text-align: center;
+  h1 {
+    font-size: 30px;
+  }
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+  &.instructions {
+    text-align: center;
+    font-size: 18px;
+    button {
+      zoom: 1.5;
+    }
+  }
+
+  .anchor {
+    label {
+      font-size: 36px;
+      text-align: center;
+    }
+  }
+
+  .alts {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 100px;
+    label {
+      font-size: 28px;
+      text-align: center;
+      color: blue;
+      &:hover, &:active, &:focus {
+        cursor: pointer;
+        color: blue;
+      }
+    }
+  }
+
+  .actions {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    button {
+      font-size: 18px;
+      color: #aaa;
+      &:hover {
+        cursor: pointer;
+        color: blue;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .option {
+    font-size: 16px;
+    text-align: center;
+    text-decoration: underline;
+    color: #999;
+  }
+}
+
+@media screen and (min-width: 640px) {
+  .actions {
+    flex-direction: row !important;
+  }
+}
