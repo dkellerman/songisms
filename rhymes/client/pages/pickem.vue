@@ -1,24 +1,54 @@
 <script setup lang="ts">
-const route = useRoute();
-const router = useRouter();
+import type { RLHF, RLHFResponse } from '../types';
+
 const config = useRuntimeConfig();
 const apiBaseUrl = config.public.apiBaseUrl.replaceAll('localhost', '127.0.0.1');
 
-const { data, refresh } = await useFetch<any>(`${apiBaseUrl}/rhymes/rlhf/`, {
+const { data, refresh } = await useFetch<RLHFResponse>(`${apiBaseUrl}/rhymes/rlhf/`, {
   query: { limit: 10 },
   immediate: true,
 });
-const queue = computed<string[]>(() => data.value?.hits ?? []);
+
+const queue: Ref<RLHF[]> = computed(() => [
+  ...(queue.value ?? []),
+  ...(data.value?.hits ?? [])
+]);
+
 const cur = ref();
+
+// vote fetch
+const voteQuery = ref();
+const voterUid = ref<string>();
+await useFetch(`${apiBaseUrl}/rhymes/vote/`, {
+  method: 'POST',
+  body: voteQuery,
+  immediate: false,
+});
 
 function next() {
   if (queue.value.length) cur.value = queue.value.shift();
-  if (queue.value.length === 0) refresh();
+  if (queue.value.length < 3) refresh();
 }
 
 function pick(label: string) {
-  alert(label);
+  voteQuery.value = {
+    anchor: cur.value.anchor,
+    alt1: cur.value.alt1,
+    alt2: cur.value.alt2,
+    voter_uid: voterUid.value,
+    label,
+  };
+  next();
 }
+
+onMounted(() => {
+  import('get-browser-fingerprint').then(({ default: getBrowserFingerprint }) => {
+    voterUid.value = String(getBrowserFingerprint());
+    if (!voterUid.value) {
+      alert('Hmmm, something went wrong, your votes will not be registered currently');
+    }
+  });
+});
 </script>
 
 <template>
@@ -54,7 +84,7 @@ function pick(label: string) {
       </div>
     </main>
 
-    <main v-else>
+    <main v-else class="instructions">
       <h1>Pick the best rhyme</h1>
       <div>
         A word will be shown, along with two possible rhymes.
@@ -88,6 +118,12 @@ main {
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  &.instructions {
+    text-align: center;
+    ul {
+      text-align: justify;
+    }
+  }
   .anchor {
     label {
       font-size: 36px;
@@ -114,7 +150,7 @@ main {
   .actions {
     margin-top: 60px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 20px;
     button {
       font-size: 18px;
@@ -132,6 +168,12 @@ main {
     text-align: center;
     text-decoration: underline;
     color: #999;
+  }
+}
+
+@media screen and (min-width: 640px) {
+  .actions {
+    flex-direction: row !important;
   }
 }
 </style>

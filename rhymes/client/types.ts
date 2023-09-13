@@ -27,3 +27,13 @@ export interface VoteRequest {
   voter_uid: string;
   remove?: string;
 }
+
+export type RLHF = {
+  anchor: string;
+  alt1: string;
+  alt2: string;
+};
+
+export type RLHFResponse = {
+  hits: RLHF[];
+};
