@@ -99,7 +99,9 @@ onMounted(() => {
       <div>
         <p>
           You may also pick one of the options below the rhymes.
-          <strong>If there's anything confusing, just click Skip and go the next one.</strong>
+          <strong>
+            If it's confusing or too hard to answer, just click Skip and go the next one.
+          </strong>
         </p>
       </div>
       <button @click="next">Start</button>
