@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { debounce } from 'lodash-es';
-import type { Rhyme, CompletionsResponse, RhymesResponse } from './types';
-import ListenButton from './ListenButton.vue';
+import type { Rhyme, CompletionsResponse, RhymesResponse } from '../types';
+import ListenButton from '../components/ListenButton.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -299,8 +299,6 @@ function uncastVote(rhyme: Rhyme) {
   </div>
 </template>
 
-<style lang="scss" scoped>
-section {
-  display: initial;
-}
+<style lang="scss">
+@import '../styles/rhymes.scss';
 </style>

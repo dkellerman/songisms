@@ -31,6 +31,5 @@ export default defineNuxtConfig({
   css: [
     "vue3-simple-typeahead/dist/vue3-simple-typeahead.css",
     "milligram/dist/milligram.min.css",
-    "@/app.scss",
   ],
 });

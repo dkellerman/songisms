@@ -55,7 +55,7 @@ function onSpeechEnded(event: any) {
   }
 }
 
-function onSpeechResult(event: SpeechRecognitionEvent) {
+function onSpeechResult(event: any) {
   let hasFinal = false;
   let partialResult;
 
