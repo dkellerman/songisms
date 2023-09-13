@@ -1,4 +1,5 @@
 import json
+import random
 from django import http
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -52,14 +53,26 @@ def completions(request):
 @require_http_methods(["GET"])
 def rlhf(request):
     limit = min(20, int(request.GET.get("limit", 10)))
-    rw = RandomWord()
+    rhymes = Rhyme.objects.filter(level__in=[2]).order_by('?')
+
+    all = []
+    for r in rhymes[:limit * 2]:
+        all.append(dict(rfrom=r.from_ngram.text, rto=r.to_ngram.text, rto2=r.from_ngram.text))
+
+    hits = []
+    for i in range(0, len(all), 2):
+        r, r2 = all[i], all[i + 1]
+        hit = dict(anchor=r['rfrom'], alt1=r['rto'], alt2=r2['rto'])
+        if hit['alt1'] == hit['anchor']:
+            hit['alt1'] = r2['rto2']
+        elif hit['alt2'] == hit['anchor']:
+            hit['alt2'] = r2['rto2']
+        if random.random() > 0.5:
+            hit['alt1'], hit['alt2'] = hit['alt2'], hit['alt1']
+        hits.append(hit)
 
     return http.JsonResponse({
-        "hits": [{
-            "anchor": rw.word(),
-            "alt1": rw.word(),
-            "alt2": rw.word(),
-        } for _ in range(limit)]
+        "hits": hits
     })
 
 
