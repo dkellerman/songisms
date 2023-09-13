@@ -1,3 +1,4 @@
+import os
 import sh
 import datetime
 import argparse
@@ -11,6 +12,7 @@ class Command(BaseCommand):
         SPOTIPY_CLIENT_ID
         SPOTIPY_CLIENT_SECRET
         SPOTIPY_REDIRECT_URI (?)
+        SISM_DB_URL (for backup)
 
         Usage:
         ./manage.py playlist --sync --pid PLAYLIST_ID
@@ -87,7 +89,7 @@ class Command(BaseCommand):
 
     def backup(self):
         sh.mkdir('-p', './data/backup')
-        sh.pg_dump('-a', '-d', 'songisms2', '-f', f'./data/backup/songisms__{self.ts}.sql')
+        sh.pg_dump(os.environ['SISM_DB_URL'], '-a', '-f', f'./data/backup/songisms__{self.ts}.sql')
 
     def confirm_tracks(self, action, track_ids):
         all = self.yes
