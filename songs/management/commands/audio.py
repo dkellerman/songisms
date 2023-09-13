@@ -21,16 +21,15 @@ class Command(BaseCommand):
         elif not options['fetch'] and not options['force_fetch']:
             return
 
-        songs = Song.objects.filter(is_new=False)
+        songs = Song.objects.exclude(youtube_id=None)
         if options['id']:
             songs = songs.filter(spotify_id__in=options['id'].split(','))
 
         audio_queue = []
 
         for song in songs:
-            if song.youtube_id:
-                if not song.audio_file or options['force_fetch']:
-                    audio_queue.append(song)
+            if not song.audio_file or options['force_fetch']:
+                audio_queue.append(song)
 
         if options['limit']:
             audio_queue = audio_queue[:options['limit']]
