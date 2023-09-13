@@ -144,11 +144,10 @@ main {
     label {
       font-size: 28px;
       text-align: center;
-      &:hover {
-        &:hover {
-         cursor: pointer;
-          color: blue;
-        }
+      color: blue;
+      &:hover, &:active, &:focus {
+        cursor: pointer;
+        color: blue;
       }
     }
   }
