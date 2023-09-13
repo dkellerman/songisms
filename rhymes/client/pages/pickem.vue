@@ -108,6 +108,7 @@ onMounted(() => {
 nav {
   background: aliceblue;
   text-align: center;
+  padding-bottom: 3px;
   h1 {
     font-size: 30px;
   }
