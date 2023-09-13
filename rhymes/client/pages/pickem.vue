@@ -108,9 +108,9 @@ onMounted(() => {
 nav {
   background: aliceblue;
   text-align: center;
-  padding: 10px;
+  padding: 5px;
   h1 {
-    font-size: 28px;
+    font-size: 30px;
   }
 }
 main {
@@ -121,6 +121,9 @@ main {
   gap: 20px;
   &.instructions {
     text-align: center;
+    button {
+      zoom: 1.5;
+    }
   }
   .anchor {
     label {
