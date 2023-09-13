@@ -25,9 +25,11 @@ class Command(BaseCommand):
         parser.add_argument('--sync', '-s', action=argparse.BooleanOptionalAction)
         parser.add_argument('--restore', '-r', type=str, default=None)
         parser.add_argument('--pid', '-p', type=str, default="35EttZV5qLKtQZgxxOmSGN")
+        parser.add_argument('--yes', '-Y', action=argparse.BooleanOptionalAction)
 
     def handle(self, *args, **options):
         self.playlist_id = options['pid']
+        self.yes = options['yes']
         if options['sync']:
             self.backup()
             self.sync_playlist()
@@ -68,7 +70,8 @@ class Command(BaseCommand):
             song.save()
 
         if len(rm_from_playlist) > 0:
-            resp = input(f"Remove {len(rm_from_playlist)} song(s) from playlist? (Y/n): ")
+            resp = input(f"Remove {len(rm_from_playlist)} song(s) from playlist? (Y/n): ") \
+                if not self.yes else 'Y'
             if resp == 'Y':
                 utils.remove_songs_from_playlist(self.playlist_id, list(rm_from_playlist))
 
@@ -78,7 +81,7 @@ class Command(BaseCommand):
         print("Existing tracks on playlist:", len(existing_playlist_ids))
         to_add = list(set(ids) - set(existing_playlist_ids))
         print("New tracks for playlist:", len(to_add))
-        resp = input("Ok? (Y/n): ")
+        resp = input("Ok? (Y/n): ") if not self.yes else 'Y'
         if resp == 'Y':
             utils.add_songs_to_playlist(self.playlist_id, to_add)
 
@@ -87,7 +90,7 @@ class Command(BaseCommand):
         sh.pg_dump('-a', '-d', 'songisms2', '-f', f'./data/backup/songisms__{self.ts}.sql')
 
     def confirm_tracks(self, action, track_ids):
-        all = False
+        all = self.yes
         confirmed = []
         for id in track_ids:
             track = utils.get_track(id)
