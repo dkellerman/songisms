@@ -26,18 +26,18 @@ class Command(BaseCommand):
         if options['id']:
             songs = songs.filter(spotify_id__in=options['id'].split(','))
 
-        audio_queue = []
+        queue = []
 
         for song in songs:
             if not song.audio_file_exists() or options['force_fetch']:
-                audio_queue.append(song)
+                queue.append(song)
+                if options['limit'] and len(queue) >= options['limit']:
+                    break
 
-        if options['limit']:
-            audio_queue = audio_queue[:options['limit']]
-        print("=> Queued:", len(audio_queue))
+        print("=> Queued:", len(queue))
 
-        if len(audio_queue):
-            for song in audio_queue:
+        if len(queue):
+            for song in queue:
                 print("\nNext up:", song.title, song.spotify_id)
                 fetch_wrapper(song)
 

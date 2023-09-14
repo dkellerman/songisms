@@ -125,15 +125,11 @@ class Song(models.Model):
         self.rhymes_raw = self.rhymes_raw.replace('\r\n', '\n')
 
     @property
-    def audio_file_path(self):
-        return f'data/audio/{self.spotify_id}.mp4'
-
-    @property
     def audio_file_url(self):
         return self.audio_file.url if self.audio_file else None
 
     def audio_blob(self):
-        return utils.get_storage_blob(self.audio_file_path)
+        return utils.get_storage_blob(self.audio_file.name)
 
     def audio_file_exists(self):
         blob = self.audio_blob()
