@@ -45,7 +45,7 @@ class Config:
     workers: int = 1
     positional_encoding: bool = False
     early_stop_epochs: int = 3  # stop training after n epochs of no validation improvement
-    device: str = str(torch.device("mps" if torch.backends.mps.is_available() else "cpu"))
+    device: str = "cpu" # str(torch.device("mps" if torch.backends.mps.is_available() else "cpu"))
 
     # these can't be changed right now without also adjusting the network
     max_len: int = 15  # width (ipa characters)

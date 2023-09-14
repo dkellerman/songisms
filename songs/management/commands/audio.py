@@ -29,7 +29,7 @@ class Command(BaseCommand):
         queue = []
 
         for song in songs:
-            if not song.audio_file_exists() or options['force_fetch']:
+            if not song.audio_file or not song.audio_file_exists() or options['force_fetch']:
                 queue.append(song)
                 if options['limit'] and len(queue) >= options['limit']:
                     break
