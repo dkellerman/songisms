@@ -239,14 +239,19 @@
 0.9,knee,greed,weep,defeat,speak
 0.9,me,speed,asleep,deceit,weak
 0.9,see,seed,cheap,bittersweet,bleak
+0.9,alley,tallied
 0.7,tree,belief,peace
+0.7,scream,reef,lease
 0.7,feeble,easel,evil,steeple
+0.7,stable,hazel,naval,april
+0.6,labeler,appraisal for,grave alert,stapler
 0.7,fee,relief,police
 0.7,she,thief,release
 0.9,goodbye,lies,pride,i've
 0.9,quiet,eyes it,implied it,drive it
 0.9,cry,stride,pies,hive
 0.7,cry,aisle,fine
+0.7,island,aisle ten,alignment
 0.7,crying,i'll sing,whining
 0.7,lie,pile,pine
 0.9,erase,paste
@@ -266,20 +271,81 @@
 0.8,love,bluffs
 0.8,trip,risk
 0.8,ache,saint
+0.6,love,hunt
+0.6,tide,afterlife,life,aisle,climb,brine,lifeline,rise,survive,revive
+0.6,race,great,praise,fail,feign,fade,vape
+0.6,plan,plaque,splat,flag
+0.6,french,flint,pink,lent,temp
+0.6,treat,freak,peel,preen,belief,scream
+0.6,file,stride,sign,strike,fright
+0.6,trip,asprin,trick,strict,twit
+0.6,robbed,rocked,prom,bought
 0.8,hush,lust,dusk,loves,nudged,clutched
 0.9,fast,class,brat,clasp,draft,dash,
 0.9,last,mass,aristocrat,ask,laughed,laugh
 0.9,mast,sat,mask,raft,graph
 0.7,treat,free,streak,street,leased,pleased,leafed
+0.8,adobe,disrobing,approaching
+0.8,approaching,probing,toady,trophy,solely,snowy,blowing,yogi,pokey,boldly,holy,lowly,coyote
+0.8,coyote,slowly,consoling,alimony,voting,nosy
 0.9,tricks,strips,bricked
 0.7,simply,quit me,dimly,in me,gimme,nimbly,wendy,skin deep
+0.7,lonely,hold me,close me
+0.7,save me,baking,faintly,trailing,staging,pay me,crazy
+0.4,save,leave
+0.4,sin,won
+0.4,word,card
+0.4,cramming,teaming
+0.4,rubber,fibber
+0.4,scare,fear
+0.4,pull,fall
+0.4,snarl,curl
+0.4,ranch,lynch
+0.4,fast,rest
+0.4,crypt,slept
+0.4,stun,ran
+0.4,came,scream
+0.4,song,ring
+0.4,grieve,reprieve
+0.4,rage,badge
+0.4,love,have,leave,thrive,forgive,rove,groove
+0.4,refusal,diesel,appraisal,proposal,reprisal
+0.4,forgiven,dove in,oven,even,haven
+0.4,torch,arch,perch
+0.4,trance,once,flaunts,pints
+0.4,grasp,lisp,wasp
+0.4,cause,whiz
+0.5,moving,you
+0.5,striking,night
+0.5,lover,one
+0.5,closing,rose
+0.5,like,hiking
+0.5,streamer,cream
+0.5,bashful,jazz
+0.5,dazzle,laugh
+0.5,wrathful,path
+0.5,glass full,dash
+0.5,satchel,dash
+0.5,fragile,crash
+0.5,love,kudgel
+0.5,love,nuzzle
+0.5,love,befuddle
+0.5,serving,swerve
+0.5,serving,bird
+0.5,serving,hers
+0.5,play,save me
+0.5,play,shaving
+0.5,play,stately
+0.5,hinting,glint
+0.5,hinting,is
+0.5,hinting,quit
 0.1,hag,hat
 0.1,egg,ebb
 0.1,big,bid
 0.1,log,lob
 0.5,wind,friend
-0.4,attention,detention,intention,pretention,tension
-0.4,left out,knockout,look out
+0.3,attention,detention,intention,pretention,tension
+0.3,left out,knockout,look out
 0.3,used to be,up on me
 0.7,mind,life
 1.0,be,me
@@ -314,5 +380,5 @@
 0.7,alarm,storm,warm
 1.0,past,aghast
 0.0,tack,tack
-0.4,attack,tack
+0.3,attack,tack
 0.6,burn,furnace

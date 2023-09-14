@@ -30,11 +30,13 @@ from songisms import utils
 @dataclass
 class Config:
     random_seed: int = 5050
-    model_file: str = './data/rhymes.pt'
+    model_file_full: str = './data/rhymes_full.pt'
+    model_file_script: str = './data/rhymes.pt'
+    distances_file: str = './data/rhymes_distances.pt'
     train_file: str = './data/rhymes_train.csv'
     test_misses_file: str = './data/rhymes_test_misses.csv'
     data_total_size: int = 3000  # number of rows to generate
-    rows: int = 2000  # number of rows to use for training/validation
+    rows: int = 3000  # number of rows to use for training/validation
     test_size: int = 2000  # number of rows to use for testing
     batch_size: int = 64
     epochs: int = 10
@@ -43,7 +45,6 @@ class Config:
     workers: int = 1
     positional_encoding: bool = False
     early_stop_epochs: int = 3  # stop training after n epochs of no validation improvement
-    datamuse_cached_only: bool = True  # set false for first few times generating training data
     device: str = str(torch.device("mps" if torch.backends.mps.is_available() else "cpu"))
 
     # these can't be changed right now without also adjusting the network
@@ -80,7 +81,7 @@ class RhymesTrainDataset(Dataset):
             rlhf.append((0.8, v.anchor, pos, neg))
         random.shuffle(rlhf)
         self.rlhf = rlhf
-        print("* train counts:", 'RLHF =>', len(self.rlhf), 'REAL =>', len(self.positive))
+        print("*counts:", 'RLHF =>', len(self.rlhf), 'TRAIN =>', len(self.positive))
 
     def __len__(self):
         return config.rows
@@ -93,8 +94,7 @@ class RhymesTrainDataset(Dataset):
                 anc_ipa, pos_ipa, neg_ipa = to_ipa(anchor), to_ipa(pos), to_ipa(neg)
             else:
                 score, anchor, pos = self.positive.pop()
-                neg = self.rw.word()
-                # neg = random.choice(random.choice(utils.data.lines).split())
+                neg = random.choice(list(utils.data.gpt_ipa.keys()))
                 anc_ipa, pos_ipa, neg_ipa = to_ipa(anchor), to_ipa(pos), to_ipa(neg)
         return score, *make_rhyme_tensors(anc_ipa, pos_ipa, neg_ipa, pad_to=self.pad_to)
 
@@ -174,8 +174,8 @@ class SiameseTripletNet(nn.Module):
     def forward_once(self, x):
         z = self.cnn1(x)
         z = z.view(z.size()[0], -1)
-        z = F.tanh(self.fc1(z))
-        z = F.tanh(self.fc2(z))
+        z = torch.tanh(self.fc1(z))
+        z = torch.tanh(self.fc2(z))
         z = self.fc3(z)
         return z
 
@@ -267,11 +267,8 @@ def train():
     elapsed = time.time() - start_time
     print(f"Training took {elapsed/60.0:.2f} mins | ~epoch: {elapsed/config.epochs:.2f} secs")
 
-    torch.save({
-        'model_state_dict': model.state_dict(),
-        'optimizer_state_dict': optimizer.state_dict(),
-        'distances': np.array(distances),
-    }, config.model_file)
+    save_full_model(model, optimizer, distances)
+    save_script_model(model, list(distances))
 
     # plot training/validation losses averaged per epoch
     plt.plot([mean(epoch) for epoch in all_losses], label='Training Loss')
@@ -298,23 +295,49 @@ class RhymeScorer():
         return 1.0 - val[0][0]
 
 
-def load_model():
-    # TODO: use torch script instead of loading full model
+def save_full_model(model, optimizer, distances):
+    torch.save({
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict(),
+        'distances': tuple(distances),
+    }, config.model_file_full)
+
+
+def load_full_model():
     model = SiameseTripletNet().to(config.device)
-    model_params = torch.load(config.model_file)
+    model_params = torch.load(config.model_file_full)
     model.load_state_dict(model_params.get('model_state_dict'))
     model.eval()
-
     # make scorer using distances from training
-    scorer = RhymeScorer(model_params.get('distances'))
+    scorer = RhymeScorer(np.array(model_params.get('distances')))
+    return model, scorer
 
+
+def save_script_model(model, distances):
+    model.eval()
+    inp1 = torch.randn((1, config.ipa_feature_len, config.max_len))
+    inp2 = torch.randn((1, config.ipa_feature_len, config.max_len))
+    traced_model = torch.jit.trace(model, (inp1, inp2))
+    torch.jit.save(traced_model, config.model_file_script)
+    torch.save({
+        'distances': tuple(distances),
+    }, config.distances_file)
+
+
+def load_script_model():
+    model = torch.jit.load(config.model_file_script)
+    model.to(config.device)
+    model.eval()
+    distances = torch.load(config.distances_file)['distances']
+    # make scorer using distances from training
+    scorer = RhymeScorer(np.array(distances))
     return model, scorer
 
 
 def test():
     dataset = RhymesTestDataset()
     loader = DataLoader(dataset, shuffle=True, num_workers=config.workers)
-    model, scorer = load_model()
+    model, scorer = load_script_model()
     prediction_times = []
     prog_bar = tqdm(loader, "Test Rhymes")
     true_labels = []
@@ -384,7 +407,7 @@ SCORE_LABELS = (
 
 def predict(text1, text2, model=None, scorer=lambda x: x):
     if not model:
-        model, scorer = load_model()
+        model, scorer = load_script_model()
 
     anchor_ipa, other_ipa = to_ipa(text1), to_ipa(text2)
     anchor, other = make_rhyme_tensors(anchor_ipa, other_ipa)
