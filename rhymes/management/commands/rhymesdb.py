@@ -37,6 +37,10 @@ class Command(BaseCommand):
         for neg in Vote.objects.filter(alt2=None, label='bad'):
             key = '_'.join(sorted([neg.anchor, neg.alt1]))
             negative.add(key)
+        for neg in Vote.objects.filter(label='neither'):
+            for alt in [neg.alt1, neg.alt2]:
+                key = '_'.join(sorted([neg.anchor, alt]))
+                negative.add(key)
 
         # loop through all songs with lyrics to make ngrams
         songs = Song.objects.filter(is_new=False).exclude(lyrics=None)
