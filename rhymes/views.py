@@ -53,7 +53,7 @@ def completions(request):
 @require_http_methods(["GET"])
 def rlhf(request):
     limit = min(20, int(request.GET.get("limit", 10)))
-    rhymes = Rhyme.objects.filter(level__in=[2]).order_by('?')
+    rhymes = Rhyme.objects.exclude(level=1).order_by('?')
 
     all = []
     for r in rhymes[:limit * 2]:

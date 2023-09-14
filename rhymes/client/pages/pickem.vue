@@ -63,7 +63,6 @@ onMounted(() => {
     <main v-if="cur">
       <div class="anchor">
         <label>
-          <div class="option">Word</div>
           {{ cur.anchor }}
         </label>
       </div>

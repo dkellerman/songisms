@@ -35,8 +35,12 @@ class Data:
 
     @cached_property
     def gpt_ipa(self):
+        vals = dict()
         with open('./data/ipa_gpt.json', 'r') as f:
-            return json.loads(f.read())
+            vals.update(json.loads(f.read()))
+        with open('./data/ipa_gpt_custom.json', 'r') as f:
+            vals.update(json.loads(f.read()))
+        return vals
 
     @cached_property
     def idioms(self):
