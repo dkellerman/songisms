@@ -16,6 +16,7 @@ class RhymeManager(BaseManager):
 
         q = utils.normalize_lyric(q)
         variants = utils.get_variants(q)
+        print("*variants", variants)
         all_q = [q] + variants
 
         target_ngram = '''
@@ -30,10 +31,12 @@ class RhymeManager(BaseManager):
                 label
             FROM
                 rhymes_vote v
-            WHERE (
-                v.anchor = %(qstr)s AND v.alt1 = {target_ngram}
-                OR (v.anchor = {target_ngram} AND v.alt1 = %(qstr)s)
-            ) AND v.voter_uid = %(voter_uid)s
+            WHERE
+                v.voter_uid = %(voter_uid)s AND
+                v.alt2 IS NULL AND (
+                    (v.anchor = %(qstr)s AND v.alt1 = {target_ngram}) OR
+                    (v.anchor = {target_ngram} AND v.alt1 = %(qstr)s)
+                )
             ORDER BY v.created DESC
             LIMIT 1
         '''
@@ -48,6 +51,7 @@ class RhymeManager(BaseManager):
                 END AS frequency,
                 rhyme.score AS score,
                 rhyme.source AS source,
+                rhyme.uscore AS uscore,
                 {f'({votes_sql})' if voter_uid else 'NULL'} AS vote,
                 'rhyme' AS type
             FROM
@@ -57,8 +61,8 @@ class RhymeManager(BaseManager):
             INNER JOIN
                 rhymes_ngram nto ON rhyme.to_ngram_id = nto.id
             WHERE
-                nfrom.text = ANY(%(q)s)
-                OR nto.text = ANY(%(q)s)
+                (nfrom.text = ANY(%(q)s) OR nto.text = ANY(%(q)s))
+                AND uscore >= 0
         '''
 
         with connection.cursor() as cursor:

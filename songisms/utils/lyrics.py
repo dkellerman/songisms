@@ -120,15 +120,20 @@ def get_variants(gram, spelling=True):
         if word.endswith('in\''):
             variants.append(re.sub(r"'$", "g", word))
             variants.append(word[:-1])
+            variants.append(word[:-3] + ' in')
+            variants.append(word[:-3] + 'en')
         elif word.endswith('ing'):
             variants.append(re.sub(r'g$', '\'', word))
             variants.append(word[:-1])
         elif word.endswith('in'):
             variants.append(word + 'g')
             variants.append(word + "'")
+        elif word.endswith('en'):
+            variants.append(word[:-2] + 'ing')
+            variants.append(word[:-2] + "in'")
 
     # froggie went a-courtin'
-    if word.startswith('a-'):
+    if word.startswith('a-') and len(word) > 5:
         variants.append(word[2:])
         variants.append('a' + word[2:])
 
@@ -152,6 +157,15 @@ def get_variants(gram, spelling=True):
     elif simple_sing == inflector().singular_noun(word):
         variants.append(simple_sing)
 
+    # more additive/subtractive variants
+    if len(word) > 3:
+        if word.endswith('e'):
+            variants.append(word + 'd')
+        elif word.endswith('ed'):
+            variants.append(word[:-1])
+        elif word.endswith('et'):
+            variants.append(word[:-1] + 'd')
+
     # custom variants, mostly very songy kinda stuff
     match_w = word.lower().strip()
     matches = [line for line in utils.data.custom_variants if match_w in line]
@@ -173,7 +187,10 @@ def get_variants(gram, spelling=True):
         variants += [ss.lower() for ss in utils.data.sim_sounds.get(var, [])]
 
     variants = set(variants)
-    return [var for var in variants if var != gram]
+    return [var for var in variants
+            if var != gram
+            # avoid homographs, e.g. "read"
+            and len(pron.phones_for_word(var)) == 1]
 
 
 @lru_cache(maxsize=1000)

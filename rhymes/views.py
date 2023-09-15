@@ -22,7 +22,7 @@ def rhymes(request):
             "hits": [
                 {
                     "text": hit['ngram'],
-                    "type": hit['type'],
+                    "type": 'rhyme-l2' if hit['frequency'] == 0 else 'rhyme',
                     "frequency": hit['frequency'],
                     "score": hit['score'],
                     "vote": hit.get('vote', None),
