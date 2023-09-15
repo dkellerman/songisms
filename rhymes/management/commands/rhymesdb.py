@@ -12,12 +12,11 @@ class Command(BaseCommand):
     help = 'Process ngrams and rhymes'
 
     def add_arguments(self, parser):
-        parser.add_argument('--rescore', '-s', action=argparse.BooleanOptionalAction)
         parser.add_argument('--dry-run', '-D', action=argparse.BooleanOptionalAction)
 
 
     def handle(self, *args, **options):
-        dry_run, rescore = [options[k] for k in ('dry_run', 'rescore',)]
+        dry_run = [options[k] for k in ('dry_run',)]
 
         try:
             from songs.models import Song  # songs app needs to be in INSTALLED_APPS
