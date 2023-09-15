@@ -1,3 +1,4 @@
+import time
 import json
 import random
 from django import http
@@ -9,14 +10,14 @@ from wonderwords import RandomWord
 
 @require_http_methods(["GET"])
 def rhymes(request):
+    ts = time.time()
     q = request.GET.get("q", "")
     limit = min(200, int(request.GET.get("limit", 10)))
     voter_uid = request.GET.get("voterUid", None)
 
     if q:
         hits = Rhyme.objects.query(q, 0, limit, voter_uid=voter_uid)
-
-        return http.JsonResponse({
+        resp = http.JsonResponse({
             "isTop": False,
             "hits": [
                 {
@@ -30,13 +31,21 @@ def rhymes(request):
                 for hit in hits
             ]
         })
+        print(f'rhymes query {q} took {(time.time() - ts) * 1000} ms')
+        return resp
 
 
     hits = Rhyme.objects.top_rhymes(0, limit)
-    return http.JsonResponse({
+    resp = http.JsonResponse({
         "isTop": True,
-        "hits": [{ "text": hit['ngram'], "type": "rhyme" } for hit in hits]
+        "hits": [{
+            "text": hit['ngram'],
+            "type": "rhyme",
+            "frequency": hit['rfrequency']
+        } for hit in hits]
     })
+    print(f'rhymes top took {(time.time() - ts) * 1000} ms')
+    return resp
 
 
 @require_http_methods(["GET"])

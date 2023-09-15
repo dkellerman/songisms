@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 from .managers import NGramManager, RhymeManager, CacheManager, VoteManager
 
 
@@ -7,16 +6,12 @@ class NGram(models.Model):
     text = models.CharField(max_length=500, unique=True)
     n = models.PositiveIntegerField(db_index=True)
     rhymes = models.ManyToManyField('self', through='Rhyme')
-    ipa = models.CharField(max_length=500, blank=True, null=True)
-    phones = ArrayField(ArrayField(models.FloatField()), null=True, blank=True, db_index=True)
-    stresses = ArrayField(models.IntegerField(), null=True, blank=True, db_index=True)
-    mscore = models.FloatField(blank=True, null=True, db_index=True)
-    count = models.PositiveIntegerField(blank=True, null=True, db_index=True)
-    song_count = models.PositiveIntegerField(blank=True, null=True, db_index=True)
-    pct = models.FloatField(blank=True, null=True, db_index=True)
-    adj_pct = models.FloatField(blank=True, null=True, db_index=True)
-    song_pct = models.FloatField(blank=True, null=True, db_index=True)
-    title_pct = models.FloatField(blank=True, null=True, db_index=True)
+    frequency = models.PositiveIntegerField(db_index=True)
+    pct = models.FloatField(db_index=True)
+    adj_pct = models.FloatField(db_index=True)
+    song_pct = models.FloatField(db_index=True)
+    title_pct = models.FloatField(db_index=True)
+    mscore = models.FloatField(db_index=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = NGramManager()
@@ -33,34 +28,23 @@ class NGram(models.Model):
 
 
 class Rhyme(models.Model):
+    uid = models.SlugField(primary_key=True)
     from_ngram = models.ForeignKey(NGram, on_delete=models.CASCADE, related_name='rhymed_from')
     to_ngram = models.ForeignKey(NGram, on_delete=models.CASCADE, related_name='rhymed_to')
-    song_uid = models.SlugField(blank=True, null=True)
-    level = models.PositiveIntegerField(default=1, db_index=True)
-    score = models.FloatField(blank=True, null=True, db_index=True)
-    source = models.SlugField(blank=True, null=True)
+    frequency = models.PositiveIntegerField(db_index=True)
+    song_ct = models.PositiveIntegerField(db_index=True)
+    score = models.FloatField(db_index=True)
+    uscore = models.FloatField(db_index=True)
+    source = models.SlugField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True)
     objects = RhymeManager()
 
     class Meta:
-        unique_together = [['from_ngram', 'to_ngram', 'song_uid']]
+        unique_together = [['from_ngram', 'to_ngram',]]
 
     def __str__(self):
-        return f'{self.from_ngram.text} => {self.to_ngram.text} [L{self.level}]'
-
-
-class SongNGram(models.Model):
-    ngram = models.ForeignKey('NGram', on_delete=models.CASCADE, related_name='song_ngrams')
-    song_uid = models.SlugField()
-    count = models.PositiveIntegerField(db_index=True)
-    objects = RhymeManager()
-
-    class Meta:
-        unique_together = [['ngram', 'song_uid']]
-
-    def __str__(self):
-        return f'{self.ngram.text} [{self.count}x IN {self.song.title}]'
+        return self.uid
 
 
 class Vote(models.Model):

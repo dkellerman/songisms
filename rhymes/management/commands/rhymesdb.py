@@ -1,12 +1,10 @@
 import argparse
 import itertools
-import gc
-from itertools import product
 from tqdm import tqdm
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from nltk import FreqDist
-from rhymes.models import NGram, Rhyme, SongNGram, Cache, Vote
+from rhymes.models import NGram, Rhyme, Vote
 from songisms import utils
 
 
@@ -16,11 +14,10 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--rescore', '-s', action=argparse.BooleanOptionalAction)
         parser.add_argument('--dry-run', '-D', action=argparse.BooleanOptionalAction)
-        parser.add_argument('--batch-size', '-b', type=int, default=1000)
 
 
     def handle(self, *args, **options):
-        batch_size, dry_run, rescore = [options[k] for k in ('batch_size', 'dry_run', 'rescore',)]
+        dry_run, rescore = [options[k] for k in ('dry_run', 'rescore',)]
 
         try:
             from songs.models import Song  # songs app needs to be in INSTALLED_APPS
@@ -30,282 +27,141 @@ class Command(BaseCommand):
 
         ngrams = dict()
         rhymes = dict()
-        song_ngrams = dict()
-        vector_cache, _ = Cache.objects.get_or_create(key='ngram_vector')
+        up_votes = dict()
+        down_votes = dict()
 
-        negative = set()
-        for neg in Vote.objects.filter(alt2=None, label='bad'):
-            key = '_'.join(sorted([neg.anchor, neg.alt1]))
-            negative.add(key)
-        for neg in Vote.objects.filter(label='neither'):
-            for alt in [neg.alt1, neg.alt2]:
-                key = '_'.join(sorted([neg.anchor, alt]))
-                negative.add(key)
+        # gather votes
+        for vote in Vote.objects.all():
+            uid1 = '_'.join(sorted([vote.anchor, vote.alt1]))
+            uid2 = '_'.join(sorted([vote.anchor, vote.alt2])) if vote.alt2 else None
+            if vote.label == 'good':
+                up_votes[uid1] = up_votes.get(uid1, 0) + 1
+            elif vote.label == 'bad':
+                down_votes[uid1] = down_votes.get(uid1, 0) + 1
+            elif vote.label == 'both':
+                up_votes[uid1] = up_votes.get(uid1, 0) + 1
+                up_votes[uid2] = up_votes.get(uid2, 0) + 1
+            elif vote.label == 'neither':
+                down_votes[uid1] = down_votes.get(uid1, 0) + 1
+                down_votes[uid2] = down_votes.get(uid2, 0) + 1
 
-        # loop through all songs with lyrics to make ngrams
-        songs = Song.objects.filter(is_new=False).exclude(lyrics=None)
+        # loop through all songs
+        songs = Song.objects.filter(is_new=False).exclude(rhymes_raw=None)
 
-        for song in tqdm(songs, desc='lyric ngrams'):
+        song_ngrams = set()
+        for song in tqdm(songs, desc='parse ngrams'):
             # lyric ngrams
             texts = utils.get_lyric_ngrams(song.lyrics, range(5))
             for text, n in texts:
-                ngrams[text] = ngrams.get(text, None) or dict(text=text, n=n)
-                song_ngram = song_ngrams.get((song.spotify_id, text), None)
-                # update song_ngrams and count
-                if song_ngram:
-                    song_ngram['count'] += 1
-                else:
-                    song_ngrams[(song.spotify_id, text)] = dict(ngram=ngrams[text],
-                                                                song_uid=song.spotify_id, count=1)
+                ngrams[text] = ngrams.get(text, None) or make_ngram(text)
+                ngrams[text].frequency += 1
+                song_ngrams.add((text, song.pk))
 
-            # update song_count for unique ngrams
-            for text, _ in list(set(texts)):
-                ngrams[text]['song_count'] = ngrams[text].get('song_count', 0) + 1
-
+        song_rhymes = set()
+        for song in tqdm(songs.exclude(rhymes_raw=None), desc='parse rhymes'):
             # song rhymes
-            if song.rhymes_raw:
-                rhyme_pairs = utils.get_rhyme_pairs(song.rhymes_raw)
-                for from_text, to_text in rhyme_pairs:
-                    from_text = utils.normalize_lyric(from_text)
-                    to_text = utils.normalize_lyric(to_text)
-                    ukey = '_'.join(sorted([from_text, to_text]))
-                    if ukey in negative:
-                        continue
-                    ngrams[from_text] = ngrams.get(from_text) or dict(text=from_text, n=len(from_text.split()))
-                    ngrams[to_text] = ngrams.get(to_text) or dict(text=to_text, n=len(to_text.split()))
-                    rhymes[(from_text, to_text, song.spotify_id)] = \
-                        dict(from_ngram=ngrams[from_text], to_ngram=ngrams[to_text],
-                             song_uid=song.spotify_id, level=1, ukey=ukey,
-                             source='ID:' + song.spotify_id)
+            rhyme_pairs = utils.get_rhyme_pairs(song.rhymes_raw)
+            for from_text, to_text in rhyme_pairs:
+                from_text = utils.normalize_lyric(from_text)
+                to_text = utils.normalize_lyric(to_text)
+                uid = '_'.join(sorted([from_text, to_text]))
+                ngrams[from_text] = ngrams.get(from_text) or make_ngram(from_text)
+                ngrams[to_text] = ngrams.get(to_text) or make_ngram(to_text)
+                rhymes[uid] = rhymes.get(uid) or Rhyme(
+                    uid=uid,
+                    from_ngram=ngrams[from_text],
+                    to_ngram=ngrams[to_text],
+                    source='song',
+                    score=get_score(uid),
+                    uscore=up_votes.get(uid, 0) - down_votes.get(uid, 0),
+                    frequency=0,
+                    song_ct=0)
+                rhymes[uid].frequency += 1
+                song_rhymes.add((uid, song.pk))
 
-        # add some rhymes data from muse for common words
-        single_words = [n for n in ngrams.values() if n['n'] == 1]
-        muse_rhymes = set()
+        for uid, _ in list(song_rhymes):
+            rhymes[uid].song_ct += 1
 
-        for from_ngram in tqdm(single_words, desc='datamuse rhymes'):
-            vals = utils.get_datamuse_rhymes(from_ngram['text'], cache_only=False)
-            for val in vals:
-                to_text = val['word']
-                from_text = from_ngram['text']
-                if to_text in utils.data.common_words and from_text in utils.data.common_words:
-                    ngrams[to_text] = ngrams.get(to_text) or dict(text=to_text, n=len(to_text.split()))
-                    rkey = (from_text, to_text, None)
-                    if rkey not in rhymes:
-                        ukey = '_'.join(sorted([from_text, to_text]))
-                        if ukey not in negative:
-                            rhymes[rkey] = dict(from_ngram=ngrams[from_text], to_ngram=ngrams[to_text],
-                                                song_uid=None, level=2, ukey=ukey,
-                                                source='MU:' + from_text)
-                            muse_rhymes.add(to_text)
+        add_ngram_stats(ngrams, songs, song_ngrams)
 
-        # create rhymes lookup index for later
-        rhymes_index = dict()
-        for r in tqdm(rhymes.values(), desc='indexing rhymes'):
-            rhymes_index[r['from_ngram']['text']] = list(set(
-                [ r2['to_ngram']['text'] for r2 in rhymes.values()
-                  if r2['from_ngram']['text'] == r['from_ngram']['text'] ]
-            ))
-
-        # imply some multi-word rhymes
-        multirhyme_candidates = [
-            n['text'] for n in tqdm(ngrams.values(), desc='prepping multi rhymes')
-                if (n.get('song_count', 0) > 2)
-                and (n['n'] in (2, 3,))
-                and (utils.get_mscore(n['text']) > 3)
-                and (not is_repeated(n['text']))]
-
-        for ngram in tqdm(multirhyme_candidates, desc='making multi rhymes'):
-            grams = ngram.split()
-            lists = []
-            for gram in grams:
-                to_rhymes = rhymes_index.get(gram, [])
-                lists.append(to_rhymes)
-            combos = [p for p in product(*lists)]
-            for combo in combos:
-                val = ' '.join(combo)
-                entry = ngrams.get(val)
-                if (entry
-                    and (entry.get('song_count', 0) > 2)
-                    and (utils.get_mscore(val) > 3)
-                    and (not is_repeated(val))
-                ):
-                    rkey = (ngram, val, None)
-                    if rkey not in rhymes:
-                        ukey = '_'.join(sorted([ngram, val]))
-                        if ukey not in negative:
-                            rhymes[rkey] = dict(from_ngram=ngrams[ngram], to_ngram=ngrams[val],
-                                                song_uid=None, level=3, ukey=ukey,
-                                                source='MULTI:' + val)
-
-        # make level 2 rhymes (aka rhymes of rhymes)
-        level1_rhymes = list(rhymes.values())
-        for l1 in tqdm(level1_rhymes, desc='level 2 rhymes'):
-            for l2 in [r for r in level1_rhymes if r['from_ngram']['text'] == l1['to_ngram']['text']]:
-                rkey = (l1['from_ngram']['text'], l2['to_ngram']['text'], None)
-                if rkey not in rhymes:
-                    ukey = '_'.join(sorted([l1['to_ngram']['text'], l2['to_ngram']['text']]))
-                    ukey2 = '_'.join(sorted([l1['from_ngram']['text'], l2['to_ngram']['text']]))
-                    if ukey in negative or ukey2 in negative:
-                        continue
-                    rhymes[rkey] = dict(from_ngram=l1['from_ngram'], to_ngram=l2['to_ngram'],
-                                        song_uid=None, level=2, ukey=ukey,
-                                        source='L2:' + l2['to_ngram']['text'])
-
-        # get feature vectors
-        for ngram in tqdm(ngrams.values(), desc='ngram vectors'):
-            ngram['phones'] = vector_cache.get(ngram['text'], utils.get_ipa_vowel_vector) or None
-
-        # get meaning scores
-        for ngram in tqdm(ngrams.values(), desc='ngram mscores'):
-            ngram['mscore'] = utils.get_mscore(ngram['text'])
-
-        # get IPA
-        ipa_cache, _ = Cache.objects.get_or_create(key='ngram_ipa')
-        for ngram in tqdm(ngrams.values(), desc='ngram ipa'):
-            ngram['ipa'] = ipa_cache.get(ngram['text'], utils.to_ipa)
-
-        # get stresses vector
-        stresses_cache, _ = Cache.objects.get_or_create(key='ngram_stresses')
-        for ngram in tqdm(ngrams.values(), desc='ngram stresses'):
-            ngram['stresses'] = stresses_cache.get(ngram['text'], utils.get_stresses_vector)
-
-        # create an index with counts per ngram length for use in the next step
-        n_counts = [0 for _ in range(15)]
-        for sn in tqdm(song_ngrams.values(), desc='index ngram counts'):
-            n = sn['ngram']['n']
-            ct = sn['count']
-            n_counts[n - 1] = (n_counts[n - 1] or 0) + ct
-            sn['ngram']['count'] = (sn['ngram'].get('count') or 0) + ct
-            ngrams[sn['ngram']['text']]['count'] = sn['ngram']['count']
-        single_word_ct = n_counts[0]
-        song_ct = songs.count()
-        # frequency of ngrams appearing in titles
-        title_ngrams = FreqDist(itertools.chain(*[n[0] for n in [utils.get_lyric_ngrams(s.title) for s in songs]]))
-
-        # now calculate various ngram percentages
-        # * pct = ngram count as percentage of all ngram occurrences (with same n)
-        # * adj_pct = percentage of a multiword phrase appearing above chance
-        # * song_pct = percentage of songs with this ngram
-        # * title_pct = percentage of song titles this ngram appears in
-        for ngram in tqdm(ngrams.values(), desc='ngrams pct'):
-            if ngram['n'] > 1:
-                subgrams = [ngrams[gram] for gram in ngram['text'].split() if gram and (gram in ngrams)]
-                total_with_same_n = n_counts[ngram['n'] - 1]
-                ngram_pct = float((ngram.get('count') or 0.0) / total_with_same_n)
-                chance_pct = 1.0
-                for gram in subgrams:
-                    gram_pct = float((gram.get('count') or 0.0) / single_word_ct)
-                    chance_pct *= gram_pct
-                ngram['pct'] = ngram_pct
-                ngram['adj_pct'] = ngram_pct - chance_pct
-            else:
-                ngram['pct'] = float((ngram.get('count') or 0.0) / single_word_ct)
-                ngram['adj_pct'] = ngram['pct']
-            ngram['title_pct'] = title_ngrams.freq(ngram['text'])
-            ngram['song_pct'] = ngram.get('song_count', 0) / song_ct
-
-
-        # scores from nn model
-        scores_cache, _ = Cache.objects.get_or_create(key='rhyme_scores')
-        scores = []
-        if rescore:
-            scores_cache.clear()
-        to_del = set()
-        for rhyme in tqdm(rhymes.values(),
-                          f"{'generating' if rescore else 'using cached'} "
-                          "rhyme scores"):
-            rfrom = rhyme['from_ngram']['text']
-            rto = rhyme['to_ngram']['text']
-            ukey = '_'.join(sorted([rfrom, rto]))
-            if ukey in negative:
-                to_del.add(ukey)
-                continue
-            rhyme['score'] = scores_cache.get(ukey, get_score if rescore else None)
-            if rhyme['score']:
-                scores.append(rhyme['score'])
-
-        # remove flagged rhymes
-        rhymes = {key: obj for key, obj in rhymes.items() if obj['ukey'] not in to_del}
-
-        # print some counts
-        print('ngrams', len(ngrams.values()))
-        print('rhymes', len(rhymes.values()))
-        print('song_ngrams', len(song_ngrams.values()))
-        if len(scores):
-            print('avg rhyme score', sum(scores) / len(scores))
+        print('rhymes', len(rhymes))
+        print('ngrams', len(ngrams))
+        print('up votes', len(up_votes))
+        print('down votes', len(down_votes))
 
         if dry_run:
             return
 
-        # save the db caches
-        if rescore:
-            scores_cache.save()
-        utils.get_datamuse_cache().save()
-        for c in tqdm([vector_cache, ipa_cache, stresses_cache], desc='saving db caches'):
-            c.save()
-            del c
-        del title_ngrams
-        gc.collect()
-
         # begin the DB writes
         with transaction.atomic():
-            print('deleting...')
-            Rhyme.objects.all().delete()
+            print('writing ngrams...')
             NGram.objects.all().delete()
-            SongNGram.objects.all().delete()
+            ngrams = NGram.objects.bulk_create(ngrams.values())
 
-            # NGram (rhymes_ngram)
-            ngrams = [NGram(**{k: v for k, v in n.items()})
-                      for n in tqdm(ngrams.values(), desc='prepping ngrams')]
-            print('writing ngrams', len(ngrams))
-            ngrams = NGram.objects.bulk_create(ngrams, batch_size=batch_size)
-            ngrams = dict([(n.text, n) for n in ngrams])
+            print('writing rhymes...')
+            Rhyme.objects.all().delete()
+            Rhyme.objects.bulk_create(rhymes.values())
 
-            # Rhyme (rhymes_rhyme)
-            rhyme_objs = []
-            for rhyme in tqdm(rhymes.values(), desc='prepping rhymes'):
-                nfrom = ngrams[rhyme['from_ngram']['text']]
-                nto = ngrams[rhyme['to_ngram']['text']]
-                song_uid = rhyme['song_uid']
-                rhyme_objs.append(Rhyme(from_ngram=nfrom, to_ngram=nto, song_uid=song_uid,
-                                        level=rhyme['level'], score=rhyme.get('score'),
-                                        source=rhyme['source']))
-                # write the reverse rhyme as well
-                revkey = (nto.text, nfrom.text, song_uid if song_uid else None)
-                if revkey not in rhymes:
-                    rhyme_objs.append(Rhyme(from_ngram=nto, to_ngram=nfrom, song_uid=song_uid,
-                                            level=rhyme['level'], score=rhyme.get('score'),
-                                            source=rhyme['source']))
-
-            print('writing rhymes', len(rhyme_objs))
-            Rhyme.objects.bulk_create(rhyme_objs, batch_size=batch_size)
-            del rhyme_objs
-            gc.collect()
-
-            # SongNGram (rhymes_songngram)
-            sn_objs = []
-            for sn in tqdm(song_ngrams.values(), desc='prepping song_ngrams'):
-                n = ngrams[sn['ngram']['text']]
-                sn_objs.append(SongNGram(song_uid=sn['song_uid'], ngram=n, count=sn['count']))
-            print('creating song_ngrams', len(sn_objs))
-            SongNGram.objects.bulk_create(sn_objs, batch_size=batch_size)
-
-            print('finishing transaction')
+            print('finishing transaction...')
         print('done')
 
 
-def is_repeated(w):
-    return len(set(w.split())) < len(w.split())
+def add_ngram_stats(ngrams, songs, song_ngrams):
+    # create an index with counts per ngram length
+    n_counts = [0 for _ in range(15)]
+    for ngram in ngrams.values():
+        n_counts[ngram.n - 1] = n_counts[ngram.n] + ngram.frequency
+    single_word_ct = n_counts[0]
+
+    # ngram song counts
+    song_cts = dict()
+    for text, _ in song_ngrams:
+        song_cts[text] = song_cts.get(text, 0) + 1
+
+    # frequency of ngrams appearing in titles
+    title_ngrams = FreqDist(itertools.chain(*[n[0] for n in [utils.get_lyric_ngrams(s.title)
+                                                             for s in songs]]))
+    total_song_ct = len(songs)
+
+    # now calculate various ngram percentages
+    # * pct = ngram count as percentage of all ngram occurrences (with same n)
+    # * adj_pct = percentage of a multiword phrase appearing above chance
+    # * song_pct = percentage of songs with this ngram
+    # * title_pct = percentage of song titles this ngram appears in
+    for ngram in tqdm(ngrams.values(), desc='ngram stats'):
+        if ngram.n > 1:
+            subgrams = [ngrams[gram] for gram in ngram.text.split() if gram and (gram in ngrams)]
+            total_with_same_n = n_counts[ngram.n - 1]
+            ngram.pct = float(ngram.frequency / total_with_same_n)
+            chance_pct = 1.0
+            for subgram in subgrams:
+                gram_pct = float(subgram.frequency / single_word_ct)
+                chance_pct *= gram_pct
+            ngram.adj_pct = ngram.pct - chance_pct
+        else:
+            ngram.pct = float(ngram.frequency / single_word_ct)
+            ngram.adj_pct = ngram.pct
+        ngram.title_pct = title_ngrams.freq(ngram.text)
+        ngram.song_pct = float(song_cts.get(ngram.text, 0) / total_song_ct)
 
 
 _score_model, _scorer = None, None
 
 def get_score(key):
-    from rhymes.nn import predict, load_model
+    from rhymes.nn import predict, load_script_model
     global _score_model, _scorer
 
     if not _score_model:
-        _score_model, _scorer = load_model()
+        _score_model, _scorer = load_script_model()
 
     w1, w2 = key.split('_')
     return predict(w1, w2, model=_score_model, scorer=_scorer)
+
+
+def make_ngram(text):
+    return NGram(
+        text=text,
+        n=len(text.split()),
+        mscore=utils.get_mscore(text),
+        frequency=0,
+    )

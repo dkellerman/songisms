@@ -1,41 +1,25 @@
 from django.contrib import admin
-from django.db.models import Sum, Count
 from .models import NGram, Rhyme, Cache, Vote
 
 
 @admin.register(NGram)
 class NGramAdmin(admin.ModelAdmin):
     search_fields = ('text',)
-    list_display = ('text', 'n', 'song_ct', 'total_ct', 'ipa', 'mscore',)
-    fields = ('text', 'n', 'song_ct', 'total_ct', 'ipa', 'phones', 'mscore',)
-    readonly_fields = ('song_ct', 'total_ct',)
-
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        return queryset.annotate(
-            song_ct=Count('song_ngrams'),
-            total_ct=Sum('song_ngrams__count'),
-        ).order_by('-n', '-song_ct',)
-
-    def song_ct(self, obj):
-        return obj.song_ct
-
-    def total_ct(self, obj):
-        return obj.total_ct
+    list_display = ('text', 'n', 'pct', 'adj_pct', 'title_pct', 'song_pct', 'mscore',)
 
 
 @admin.register(Rhyme)
 class RhymeAdmin(admin.ModelAdmin):
-    fields = ('from_ngram', 'to_ngram', 'song_uid', 'level',)
-    search_fields = ('from_ngram__text', 'to_ngram__text', 'song_uid',)
-    list_display = ('from_ngram', 'to_ngram', 'level', 'song_uid',)
+    search_fields = ('from_ngram__text', 'to_ngram__text',)
+    list_display = ('from_ngram', 'to_ngram', 'score', 'source',)
+    list_filter = ('source',)
     autocomplete_fields = ('to_ngram', 'from_ngram',)
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         return queryset \
             .select_related('from_ngram', 'to_ngram') \
-            .order_by('level', 'song_uid', 'from_ngram', 'to_ngram')
+            .order_by('frequency', 'source', 'from_ngram', 'to_ngram')
 
 
 @admin.register(Cache)
