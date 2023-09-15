@@ -1,11 +1,10 @@
 import re
 from django.contrib.contenttypes.models import ContentTypeManager
-from django.db.models import Q, F, Count
-from django_pandas.managers import DataFrameManager
+from django.db.models import Q, F, Count, Manager
 from songisms import utils
 
 
-class BaseManager(DataFrameManager):
+class BaseManager(Manager):
     pass
 
 
