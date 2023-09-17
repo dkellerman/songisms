@@ -1,20 +1,21 @@
 '''Rhyme-detecting neural net
 
 Use with rhymesnet management command:
-    `./manage.py rhymesnet --train` -> train model
-    `./manage.py rhymesnet --test` -> test model
-    `./manage.py rhymesnet --predict "word1" "word2"` -> predict rhyme
+    `./manage.py rhymesnet --train`
+    `./manage.py rhymesnet --test`
+    `./manage.py rhymesnet --predict "word1" "word2"`
 '''
 
-from functools import lru_cache
 import time
+import re
 import random
-from typing import List
 import torch
+import numpy as np
+from typing import List
+from functools import lru_cache
 from torch import nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset
-import numpy as np
 from statistics import mean
 from dataclasses import dataclass
 from tqdm import tqdm
@@ -25,6 +26,7 @@ from sklearn import metrics
 from sklearn.preprocessing import RobustScaler, MinMaxScaler
 from positional_encodings.torch_encodings import PositionalEncoding1D, Summer
 from songisms import utils
+import pronouncing as pron
 
 
 @dataclass
@@ -41,11 +43,11 @@ class Config:
     batch_size: int = 64
     epochs: int = 10
     lr: float = 0.001
-    loss_margin: float = 1.0
+    loss_margin: float = 1.5
     workers: int = 1
     positional_encoding: bool = False
     early_stop_epochs: int = 3  # stop training after n epochs of no validation improvement
-    device: str = "cpu" # str(torch.device("mps" if torch.backends.mps.is_available() else "cpu"))
+    device: str = "cpu"  # str(torch.device("mps" if torch.backends.mps.is_available() else "cpu"))
 
     # these can't be changed right now without also adjusting the network
     max_len: int = 15  # width (ipa characters)
@@ -60,17 +62,15 @@ ipa_cache = None
 
 @lru_cache(maxsize=None)
 def to_ipa(text):
-    return utils.to_ipa(text)
+    return re.sub(r'[\s.ː]+', '', utils.to_ipa(text))
 
 
 class RhymesTrainDataset(Dataset):
     def __init__(self, pad_to=config.max_len):
         self.pad_to = pad_to
         self.rw = RandomWord()
-
-        data = utils.data.rhymes_train
-        random.shuffle(data)
-        self.positive = [vals for vals in data if vals[0] >= .5]
+        self.train_data = utils.data.rhymes_train
+        random.shuffle(self.train_data)
 
         from rhymes.models import Vote
         votes = Vote.objects.exclude(alt2=None).filter(label__in=['alt1', 'alt2'])
@@ -81,22 +81,32 @@ class RhymesTrainDataset(Dataset):
             rlhf.append((0.8, v.anchor, pos, neg))
         random.shuffle(rlhf)
         self.rlhf = rlhf
-        print("*counts:", 'RLHF =>', len(self.rlhf), 'TRAIN =>', len(self.positive))
+        print("*counts:", 'RLHF =>', len(self.rlhf), 'TRAIN =>', len(self.train_data))
 
     def __len__(self):
         return config.rows
 
     def __getitem__(self, idx):
         score, anc_ipa, pos_ipa, neg_ipa = None, None, None, None
-        while len(self.positive) and (not anc_ipa or not pos_ipa or not neg_ipa):
-            if random.random() > .5 and len(self.rlhf):
+        while len(self.train_data) and (not anc_ipa or not pos_ipa or not neg_ipa):
+            if random.random() > .1 and len(self.rlhf):
                 score, anchor, pos, neg = self.rlhf.pop()
                 anc_ipa, pos_ipa, neg_ipa = to_ipa(anchor), to_ipa(pos), to_ipa(neg)
             else:
-                score, anchor, pos = self.positive.pop()
-                neg = random.choice(list(utils.data.gpt_ipa.keys()))
+                score, anchor, other = self.train_data.pop()
+                if score > .5:
+                    pos = other
+                    neg = random.choice(list(utils.data.gpt_ipa.keys()))
+                else:
+                    neg = other
+                    rhymes = pron.rhymes(anchor)
+                    if not rhymes or not len(rhymes):
+                        continue
+                    pos = random.choice(rhymes)
                 anc_ipa, pos_ipa, neg_ipa = to_ipa(anchor), to_ipa(pos), to_ipa(neg)
-        return score, *make_rhyme_tensors(anc_ipa, pos_ipa, neg_ipa, pad_to=self.pad_to)
+
+        label = torch.tensor(score, dtype=torch.float32)
+        return label, *make_rhyme_tensors(anc_ipa, pos_ipa, neg_ipa, pad_to=self.pad_to)
 
 
 class RhymesTestDataset(Dataset):
@@ -188,18 +198,17 @@ class SiameseTripletNet(nn.Module):
         return anchor_out, pos_out, neg_out
 
 
-class TripletMarginLoss(nn.Module):
-    def __init__(self, margin=config.loss_margin):
-        self.margin = margin
-        super(TripletMarginLoss, self).__init__()
+class WeightedDistance:
+    def __init__(self, weight=1.0):
+        self.weight = weight
 
-    def forward(self, anchor, pos, neg):
-        return nn.functional.triplet_margin_loss(anchor, pos, neg, margin=self.margin)
+    def __call__(self, x1, x2):
+        distance = torch.norm(x1 - x2, p=2, dim=1)
+        return distance * self.weight
 
 
 def train():
     model = SiameseTripletNet().to(config.device)
-    criterion = TripletMarginLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=config.lr)
 
     # prepare training and validation data loaders
@@ -221,18 +230,21 @@ def train():
         losses = []
 
         for batch in prog_bar:
-            anchor, pos, neg = [b.to(config.device) for b in batch[1:]]
+            weight, anchor, pos, neg = [b.to(config.device) for b in batch]
             anchor_out, pos_out, neg_out = model(anchor, pos, neg)
+
+            distance_fn = WeightedDistance(weight=weight)
+            criterion = nn.TripletMarginWithDistanceLoss(distance_function=distance_fn,
+                                                         margin=config.loss_margin)
             loss = criterion(anchor_out, pos_out, neg_out)
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
             losses.append(loss.item())
             prog_bar.set_description(f"[E{epoch+1}-T] L={mean(losses):.3f}")
-            distances += [d.item() for d in F.pairwise_distance(anchor_out.squeeze(0),
-                                                                pos_out.squeeze(0))]
-            distances += [d.item() for d in F.pairwise_distance(anchor_out.squeeze(0),
-                                                                neg_out.squeeze(0))]
+
+            distances += [d.item() for d in distance_fn(anchor_out.squeeze(0), pos_out.squeeze(0))]
+            distances += [d.item() for d in distance_fn(anchor_out.squeeze(0), neg_out.squeeze(0))]
 
         prog_bar.close()
         all_losses.append(losses)
@@ -243,15 +255,17 @@ def train():
 
         with torch.no_grad():
             for batch in prog_bar:
-                anchor, pos, neg = [b.to(config.device) for b in batch[1:]]
+                weight, anchor, pos, neg = [b.to(config.device) for b in batch]
                 anchor_out, pos_out, neg_out = model(anchor, pos, neg)
+
+                distance_fn = WeightedDistance(weight=weight)
+                criterion = nn.TripletMarginWithDistanceLoss(distance_function=distance_fn,
+                                                             margin=config.loss_margin)
                 loss = criterion(anchor_out, pos_out, neg_out)
                 losses.append(loss.item())
                 prog_bar.set_description(f"[E{epoch+1}-v] L={mean(losses):.3f} es:{early_stop_counter}")
-                distances += [d.item() for d in F.pairwise_distance(anchor_out.squeeze(0),
-                                                                    pos_out.squeeze(0))]
-                distances += [d.item() for d in F.pairwise_distance(anchor_out.squeeze(0),
-                                                                    neg_out.squeeze(0))]
+                distances += [d.item() for d in distance_fn(anchor_out.squeeze(0), pos_out.squeeze(0))]
+                distances += [d.item() for d in distance_fn(anchor_out.squeeze(0), neg_out.squeeze(0))]
 
         prog_bar.close()
         all_validation_losses.append(losses)
@@ -417,7 +431,8 @@ def predict(text1, text2, model=None, scorer=lambda x: x):
     other = other.unsqueeze(0).to(config.device)
 
     anchor_out, other_out = model(anchor, other)
-    distance = F.pairwise_distance(anchor_out.squeeze(0), other_out.squeeze(0)).item()
+    distance = torch.norm(anchor_out - other_out, p=2, dim=1)
+    distance = distance.squeeze(0).detach().numpy()
     score = scorer(distance)
 
     return score

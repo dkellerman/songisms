@@ -10,6 +10,9 @@ def make_vals():
     vals = set()
     for neg in tqdm(Vote.objects.filter(alt2=None, label='bad'), "Negatives"):
         vals.add((0.0, neg.anchor, neg.alt1, ''),)
+    for neg in tqdm(Vote.objects.filter(label='neither'), "Negatives-2"):
+        vals.add((0.0, neg.anchor, neg.alt1, ''),)
+        vals.add((0.0, neg.anchor, neg.alt2, ''),)
 
     target_ct = len(vals) * 2
     prog_bar = tqdm(total=target_ct / 2, desc="Song rhymes")

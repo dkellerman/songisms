@@ -49,6 +49,8 @@ def test_normalize_lyric():
     assert(strip_periods_preserve_acronyms("la...") == "la")
     assert(strip_periods_preserve_acronyms("l.a...") == "l.a.")
     assert(strip_periods_preserve_acronyms("l.") == "l")
+    assert(strip_periods_preserve_acronyms("la.") == "la")
+    assert(strip_periods_preserve_acronyms("fla.") == "fla")
     assert(strip_periods_preserve_acronyms("i") == "i")
     assert(strip_periods_preserve_acronyms(".") == "")
     assert(strip_periods_preserve_acronyms("...") == "")
