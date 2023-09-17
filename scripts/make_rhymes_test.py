@@ -32,7 +32,7 @@ def make_vals():
 def output(vals):
     with open('./data/rhymes_test.csv', 'w') as f:
         vals = reversed(sorted(list(vals), key=lambda x: x[0]))
-        f.write('anchor,other,score,song_id\n')
+        f.write('score,anchor,other,song_id\n')
         f.write('\n'.join([','.join([str(score), anc, oth, song_id])
                           for score, anc, oth, song_id in vals]))
 

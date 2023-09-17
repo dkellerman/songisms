@@ -8,6 +8,7 @@
 1.0,attack,back,quack,hack,rack,jack,sack,lack,mack,wack,knack,zach,pack
 1.0,black,smack,brac,snack,clack,stack,crack,thwack,plaque,track,shack,whack,slack
 1.0,aback,almanac,bareback,bivouac,blackjack,cardiac,egomaniac,haystack,kleptomaniac
+1.0,stoop,loop,group,soup,troop,boop,swoop
 1.0,nights,lights
 1.0,green,seventeen
 1.0,stair,hair
@@ -17,10 +18,12 @@
 1.0,kegs,dregs
 1.0,clear,year
 0.7,passion,ashes
+0.7,fashion,matches
 1.0,break,mistake
 1.0,scold,hold
 0.9,desperado,staccato
 0.9,cover,lovers
+0.9,stutter,fluttered,cutters
 1.0,net,duet
 1.0,choke,baroque
 1.0,lice,price
@@ -39,11 +42,18 @@
 1.0,gone,chiffon,con,ex-con,echelon,hangers-on,paragon,put upon,dying swan
 1.0,rut,cut,glut,gut,hut
 1.0,home,catacomb,hippodrome,honeycomb,nome,roam
+0.9,mariner,barren fur,there in her,sharin' her
 0.8,shut,blood,buck,up,bug
+0.8,foot,mud,truck,pup,rug
 0.8,shout,loud
+0.8,curt,bird
 0.8,street,creed,leek,sheep,league
+0.8,moat,node,soak,rope,vogue
 0.8,whistler,frisk her,quizzed her,hipster
+0.8,heartless,darkness,largesse
 0.8,cut,flood,duck,hard up,lug,club
+0.8,tout,crowd
+0.8,suit,dude,fluke,soup,boob
 0.8,glut,mud,luck,plug,hub
 0.8,gut,stud,muck,shrug,pub
 0.8,hut,thud,truck,snug,scrub
@@ -91,6 +101,7 @@
 0.8,sailin',tail him
 0.8,taking,abating,draping,aging,aiding,ache in,great win,asian,enrage him
 0.6,taking,mayhem
+0.6,starker,harsh words,cocksure,barter
 0.8,fast,bashed,craft,attached,clasp,flask,jazzed
 0.8,last,cashed,draft,dispatched,gasp,mask,razzed
 0.8,cashed,clashed,raft,matched,rasp,task,jazzed
@@ -102,120 +113,7 @@
 0.8,trunk,grunt,front
 0.8,drunk,some
 1.0,forsaking,baking,making,faking,raking,staking
-0.8,hurt,absurd,burp,curb,iceberg
-0.8,alert,gallows bird,twerp,suburb,iceberg
-0.8,curt,stirred,twerp,iceberg
-0.8,dirt,word,burp,iceberg
-0.8,flirt,stirred,burp,curb,iceberg
-0.8,inert,word,burp,iceberg
-0.8,skirt,deterred,burp,iceberg
-0.8,heart,hard,harped,carb
-0.8,help,weld,felt
-0.8,welp,compelled,heartfelt
-0.8,help,propelled,melt
-0.8,yourself,compelled,else,welsh,wealth,quells,elves
-0.8,yourself,or else,more stealth,orwell
-1.0,command,land,understand,strand,expand
-1.0,commanding,landing,understanding,stranding,expanding
-1.0,commander,understand her
-1.0,expand me,strand thee
-1.0,appreciate,fate,relate
-1.0,appreciate,navigate,compensate
-1.0,appreciate,the quiche he ate
-1.0,attack,back,quack,hack,rack,jack,sack,lack,mack,wack,knack,zach,pack
-1.0,black,smack,brac,snack,clack,stack,crack,thwack,plaque,track,shack,whack,slack
-1.0,aback,almanac,bareback,bivouac,blackjack,cardiac,egomaniac,haystack,kleptomaniac
-1.0,nights,lights
-1.0,green,seventeen
-1.0,stair,hair
-1.0,undone,twenty-one
-1.0,means,limousines
-1.0,drive,thirty-five
-1.0,kegs,dregs
-1.0,clear,year
-0.7,passion,ashes
-1.0,break,mistake
-1.0,scold,hold
-0.9,desperado,staccato
-0.9,cover,lovers
-1.0,net,duet
-1.0,choke,baroque
-1.0,lice,price
-1.0,dark,mark
-1.0,trees,knees
-1.0,scare,affair,unaware,care,fair,glare,prayer,unfair
-1.0,afraid,charade,fade,grade,masquerade,parade,promenade
-1.0,flirt,alert,dessert,dirt,hurt,inert,introvert,shirt,skirt,unhurt
-1.0,attention,apprehension,convention,invention,misapprehension,suspension
-1.0,left out,doubt,gadabout,scout
-1.0,risk,disc
-1.0,chance,advance,circumstance,dance,lance,petulance,radiance
-1.0,dull,lull,miracle,numskull,spectacle
-1.0,leave,believe,deceive,grieve,ho-heave,sleeve
-1.0,ignored,adored,bored,deplored,explored,floored,gored,restored,scored,outscored,sword
-1.0,gone,chiffon,con,ex-con,echelon,hangers-on,paragon,put upon,dying swan
-1.0,rut,cut,glut,gut,hut
-1.0,home,catacomb,hippodrome,honeycomb,nome,roam
-0.8,shut,blood,buck,up,bug
-0.8,cut,flood,duck,hard up,lug,club
-0.8,glut,mud,luck,plug,hub
-0.8,gut,stud,muck,shrug,pub
-0.8,hut,thud,truck,snug,scrub
-0.8,fraud,hawk,fought
-0.8,safe,faith,case,behave,bathe,blaze,age
-0.8,waif,faith,ace,brave,bathe,craze,cage
-0.8,unsafe,faith,breathing space,cave,bathe,daze,page
-0.8,failsafe,faith,chase,grave,bathe,haze,rage
-0.8,safe,faith,commonplace,slave,bathe,maze,stage
-0.8,unsafe,faith,disgrace,wave,bathe,phrase,rage
-0.8,waif,faith,embrace,crave,bathe,paraphrase,stage
-0.8,failsafe,faith,face,forgave,bathe,rage
-0.8,safe,resting place,praise
-0.8,safe,space,forgave,praise
-0.8,safe,trace,gave,stage
-0.8,travel,bashful,dazzle,wrathful,glass full,satchel,fragile
-0.8,touch,tough,gush,does,lust,doth,nudge,us,was,love
-0.8,home,blown
-0.8,catacomb,bone
-0.8,chapperone,hippodrome
-0.8,honeycomb,cornerstone
-0.8,nome,gramophone
-0.8,roam,grown
-0.8,roam,throne
-0.8,home,undertone
-0.8,tome,zone
-0.8,roam,alone
-0.8,gnome,phone
-0.8,foam,own
-0.8,won,um,sung
-0.8,sun,gum,flung
-0.8,run,bum,hung
-0.8,fun,mum,rung
-0.8,bun,crumb,hung
-0.8,ton,serum,rung
-0.8,done,dumb,hung
-0.8,stun,gum,flung
-0.8,none,um,rung
-0.8,gone,wrong
-0.8,fun,wrung
-0.8,lonely,homely,phone me
-0.8,table,maple,ladle
-0.8,believer,please her
-0.8,sailin',him
-0.8,sailin',tail him
-0.8,taking,abating,draping,aging,aiding,ache in,great win,asian,enrage him
-0.6,taking,mayhem
-0.8,fast,bashed,craft,attached,clasp,flask,jazzed
-0.8,last,cashed,draft,dispatched,gasp,mask,razzed
-0.8,cashed,clashed,raft,matched,rasp,task,jazzed
-0.8,mast,crashed,shaft,scratched,clasp,flask,razzed
-0.8,blast,autographed,snatched
-0.8,flask,photographed,unlashed
-0.8,drunk,humped,thump,dumb
-0.8,skunk,hung,thumped,clump
-0.8,trunk,grunt,front
-0.8,drunk,some
-1.0,forsaking,baking,making,faking,raking,staking
+1.0,blabber,stabber,drabber,nab her,grab her
 0.8,hurt,absurd,burp,curb,iceberg
 0.8,alert,gallows bird,twerp,suburb,iceberg
 0.8,curt,stirred,twerp,iceberg
@@ -242,14 +140,18 @@
 0.9,alley,tallied
 0.7,tree,belief,peace
 0.7,scream,reef,lease
+0.7,scram,laugh,brass
 0.7,feeble,easel,evil,steeple
 0.7,stable,hazel,naval,april
+0.7,lob in,lozenge,grovelin',ramen
 0.6,labeler,appraisal for,grave alert,stapler
+0.6,stone age,tony,phone me,jolene
 0.7,fee,relief,police
 0.7,she,thief,release
 0.9,goodbye,lies,pride,i've
 0.9,quiet,eyes it,implied it,drive it
 0.9,cry,stride,pies,hive
+0.9,true,rude,dues,prove
 0.7,cry,aisle,fine
 0.7,island,aisle ten,alignment
 0.7,crying,i'll sing,whining
@@ -348,10 +250,11 @@
 0.0,light,bulb,lamp,art,brute,bill,bake,artery
 0.0,tread,host,simple,lesser,barnacle,circus,choir
 0.0,human,paranoid,sure enough,trapeze,master,gun slinger
-0.1,egg,ebb
-0.1,big,bid
-0.1,log,lob
+0.2,egg,ebb
+0.2,big,bid
+0.2,log,lob
 0.5,wind,friend
+0.5,crowned,owned,wand
 0.3,attention,detention,intention,pretention,tension
 0.3,left out,knockout,look out
 0.3,used to be,up on me
@@ -388,8 +291,14 @@
 0.7,alarm,storm,warm
 1.0,past,aghast
 0.0,tack,tack
-0.3,attack,tack
+0.1,attack,tack
+0.1,work,rework,make-work,tough work,he works
 0.6,burn,furnace
 0.0,top,top
 0.0,stop,stop
 0.0,hello world,small world,world,big world
+0.0,mountain,afternoon sun,book,illustrate,hat,glistening sea,xylem,lynx
+0.0,grain,grip,ladder,whistling wind,spatula
+0.0,nougat,blimp,cup,sunset's glow,bird,accordion,blaze,uplift,iris,shoe,bookshelf
+0.0,moth,chocolate,papaya,dwarf,lamp,butterfly,fahrenheit,glimpse
+0.0,flare,flock,dazzling show,key,jellyfish,paint,bowl,shimmering day,landscape

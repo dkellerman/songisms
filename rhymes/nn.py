@@ -21,7 +21,6 @@ from dataclasses import dataclass
 from tqdm import tqdm
 from torch.utils.data import DataLoader, random_split
 import matplotlib.pyplot as plt
-from wonderwords import RandomWord
 from sklearn import metrics
 from sklearn.preprocessing import RobustScaler, MinMaxScaler
 from positional_encodings.torch_encodings import PositionalEncoding1D, Summer
@@ -42,7 +41,7 @@ class Config:
     batch_size: int = 64
     epochs: int = 10
     lr: float = 0.001
-    loss_margin: float = 1.5
+    loss_margin: float = 1.8
     workers: int = 1
     positional_encoding: bool = False
     early_stop_epochs: int = 3  # stop training after n epochs of no validation improvement
@@ -66,7 +65,6 @@ def to_ipa(text):
 class RhymesTrainDataset(Dataset):
     def __init__(self, pad_to=config.max_len):
         self.pad_to = pad_to
-        self.rw = RandomWord()
         self.train_data = utils.data.rhymes_train
         random.shuffle(self.train_data)
 
@@ -76,7 +74,7 @@ class RhymesTrainDataset(Dataset):
         for v in votes:
             pos = v.alt1 if v.label == 'alt1' else v.alt2
             neg = v.alt1 if v.label == 'alt2' else v.alt2
-            rlhf.append((0.8, v.anchor, pos, neg))
+            rlhf.append((.8, v.anchor, pos, neg))
         random.shuffle(rlhf)
         self.rlhf = rlhf
         print("*counts:", 'RLHF =>', len(self.rlhf), 'TRAIN =>', len(self.train_data))
@@ -94,7 +92,7 @@ class RhymesTrainDataset(Dataset):
                 score, anchor, other = self.train_data.pop()
                 if score > .5:
                     pos = other
-                    neg = random.choice(list(utils.data.gpt_ipa.keys()))
+                    neg = random.choice(list(utils.data.ipa.keys()))
                 else:
                     neg = other
                     rhymes = pron.rhymes(anchor)
@@ -231,7 +229,7 @@ def train():
             weight, anchor, pos, neg = [b.to(config.device) for b in batch]
             anchor_out, pos_out, neg_out = model(anchor, pos, neg)
 
-            distance_fn = WeightedDistance(weight=weight)
+            distance_fn = WeightedDistance(weight=.1) # weight
             criterion = nn.TripletMarginWithDistanceLoss(distance_function=distance_fn,
                                                          margin=config.loss_margin)
             loss = criterion(anchor_out, pos_out, neg_out)
@@ -448,7 +446,7 @@ def score_to_label(score):
     return label
 
 
-def calc_cnn_output_size():
+def _calc_cnn_output_size():
     model = SiameseTripletNet()
     dummy_input = torch.randn((1, config.ipa_feature_len, config.max_len))
     output = model.cnn1(dummy_input)
@@ -457,4 +455,4 @@ def calc_cnn_output_size():
 
 
 if __name__ == '__main__':
-    print(calc_cnn_output_size())
+    print(_calc_cnn_output_size())
