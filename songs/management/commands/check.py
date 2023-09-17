@@ -112,7 +112,7 @@ class Command(BaseCommand):
                 print("[CHECK IPA]", song.title, song.spotify_id)
                 lines = [l for l in song.lyrics.split('\n') if l and l.strip()]
                 for l in lines:
-                    ipa = utils.to_ipa(l)
+                    ipa = utils.data.ipa.get(l)
                     _ = utils.get_syllables_from_ipa(ipa)
 
 
@@ -135,4 +135,4 @@ class Command(BaseCommand):
             print("\n[SUSPECT RHYMES]", song.spotify_id, song.title)
             for w1, w2, score in suspect:
                 print("\t*", w1, '/', w2, f"[{score:.2f}]",
-                      f"({utils.to_ipa(w1)} / {utils.to_ipa(w2)})")
+                      f"({utils.data.ipa.get(w1)} / {utils.data.ipa.get(w2)})")

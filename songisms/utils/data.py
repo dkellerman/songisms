@@ -9,10 +9,13 @@ from songisms import utils
 class Data:
     @cached_property
     def common_words(self):
+        return self.get_common_words()
+
+    def get_common_words(self, n=1000):
         from nltk.corpus import brown
         from nltk import FreqDist
         fd = FreqDist(i.lower() for i in brown.words())
-        return dict(fd.most_common()[:1000])
+        return dict(fd.most_common()[:n])
 
     @cached_property
     def custom_variants(self):
@@ -40,6 +43,18 @@ class Data:
             vals.update(json.loads(f.read()))
         with open('./data/ipa_gpt_custom.json', 'r') as f:
             vals.update(json.loads(f.read()))
+        return vals
+
+    @cached_property
+    def ipa(self):
+        vals = dict()
+        with open('./data/ipa.csv', 'r') as f:
+            for l in f.read().split('\n')[1:]:
+                l = l.strip()
+                if not l:
+                    continue
+                w, ipa = l.split(',')
+                vals[w] = ipa
         return vals
 
     @cached_property

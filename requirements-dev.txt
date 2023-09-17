@@ -12,3 +12,5 @@ positional-encodings[pytorch]
 pytube
 spotipy
 sh
+# py-espeak-ng
+# syrics

@@ -37,9 +37,8 @@ class Config:
     distances_file: str = './data/rhymes_distances.pt'
     train_file: str = './data/rhymes_train.csv'
     test_misses_file: str = './data/rhymes_test_misses.csv'
-    data_total_size: int = 3000  # number of rows to generate
-    rows: int = 3000  # number of rows to use for training/validation
-    test_size: int = 2000  # number of rows to use for testing
+    train_rows: int = 3000  # number of rows to use for training/validation
+    test_rows: int = 2000  # number of rows to use for testing
     batch_size: int = 64
     epochs: int = 10
     lr: float = 0.001
@@ -60,9 +59,8 @@ random.seed(config.random_seed)
 ipa_cache = None
 
 
-@lru_cache(maxsize=None)
 def to_ipa(text):
-    return re.sub(r'[\s.ː]+', '', utils.to_ipa(text))
+    return re.sub(r'[\s.]+', '', utils.data.ipa.get(text, '')).strip() or None
 
 
 class RhymesTrainDataset(Dataset):
@@ -84,7 +82,7 @@ class RhymesTrainDataset(Dataset):
         print("*counts:", 'RLHF =>', len(self.rlhf), 'TRAIN =>', len(self.train_data))
 
     def __len__(self):
-        return config.rows
+        return config.train_rows
 
     def __getitem__(self, idx):
         score, anc_ipa, pos_ipa, neg_ipa = None, None, None, None
@@ -117,7 +115,7 @@ class RhymesTestDataset(Dataset):
         random.shuffle(self.data)
 
     def __len__(self):
-        return config.test_size
+        return config.test_rows
 
     def __getitem__(self, idx):
         score, anchor, other = self.data.pop()
@@ -424,6 +422,9 @@ def predict(text1, text2, model=None, scorer=lambda x: x):
         model, scorer = load_script_model()
 
     anchor_ipa, other_ipa = to_ipa(text1), to_ipa(text2)
+    if not anchor_ipa or not other_ipa:
+        print(f"Could not find IPA for {text1} or {text2}")
+        return 0.0
     anchor, other = make_rhyme_tensors(anchor_ipa, other_ipa)
 
     # fake a batch dimension here

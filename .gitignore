@@ -29,6 +29,7 @@ scripts/**/*
 !scripts/lyric_sim.py
 !scripts/proc_gpt_ipa.py
 !scripts/make_rhymes_test.py
+!scripts/make_ipa.py
 
 # dependencies
 node_modules

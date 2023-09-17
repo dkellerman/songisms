@@ -24,7 +24,7 @@ class Command(BaseCommand):
     def predict_with_info(self, text1, text2):
         score = nn.predict(text1, text2)
 
-        print("IPA:", utils.to_ipa(text1), '|', utils.to_ipa(text2))
-        print("Tails:", utils.to_ipa(text1), '|', utils.to_ipa(text2))
+        print("IPA:", utils.data.ipa.get(text1), '|', utils.data.ipa.get(text2))
+        print("Tails:", utils.data.ipa.get(text1), '|', utils.data.ipa.get(text2))
         print("Score:", score)
         print("===>", nn.score_to_label(score))

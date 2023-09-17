@@ -104,6 +104,8 @@ def get_ipa_features_vector(ipa):
             features = [2.0] + utils.EMPTY_IPA_FEATURES
         elif char == "ˌ":
             features = [1.0] + utils.EMPTY_IPA_FEATURES
+        elif char == "ː":
+            features = [0.5] + utils.EMPTY_IPA_FEATURES
         else:
             ft = utils.get_ipa_features(char)
             if ft is None:
