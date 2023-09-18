@@ -2,6 +2,7 @@
 '''
 
 import json
+import csv
 from functools import cached_property
 from songisms import utils
 
@@ -19,17 +20,12 @@ class Data:
 
     @cached_property
     def custom_variants(self):
-        with open('./data/variants.txt', 'r') as f:
-            return [
-                [l.strip() for l in line.split(';') if l.strip()]
-                for line in f.readlines()
-            ]
+        return csv.reader(open('./data/variants.csv', 'r'))
 
     @cached_property
     def misspellings(self):
-        with open('./data/misspellings.txt', 'r') as f:
-            lines = [l.lower().strip().split('->')  for l in f.read().split('\n') if l.strip()]
-            return { l[0]: l[1].split(',')[0].strip() for l in lines }
+        with open('./data/misspellings.csv', 'r') as f:
+            return {vals[0]: vals[1:] for vals in csv.reader(f)}
 
     @cached_property
     def sim_sounds(self):
@@ -47,35 +43,21 @@ class Data:
 
     @cached_property
     def ipa(self):
-        vals = dict()
-        with open('./data/ipa.csv', 'r') as f:
-            for l in f.read().split('\n')[1:]:
-                l = l.strip()
-                if not l:
-                    continue
-                w, ipa = l.split(',')
-                vals[w] = ipa
-        return vals
+        return { k: v for k, v in csv.reader(open('./data/ipa.csv', 'r')) }
 
     @cached_property
     def idioms(self):
-        with open('./data/idioms.txt', 'r') as f:
-            return [l.strip() for l in f.read().split('\n') if l.strip()]
+        return list(csv.reader(open('./data/idioms.csv', 'r')))
 
     @cached_property
     def lines(self):
-        with open('./data/lines.txt', 'r') as f:
-            return [l.strip() for l in f.read().split('\n') if l.strip()]
+        return list(csv.reader(open('./data/lines.csv', 'r')))
 
     @cached_property
     def rhymes_train(self):
         with open('./data/rhymes_train.csv', 'r') as f:
             all = []
-            for line in f.read().split('\n'):
-                line = line.strip()
-                if not line:
-                    continue
-                vals = line.split(',')
+            for vals in csv.reader(f):
                 score = vals[0]
                 rhymes = utils.get_rhyme_pairs(';'.join(vals[1:]))
                 for r1, r2 in rhymes:
@@ -87,13 +69,8 @@ class Data:
     def rhymes_test(self):
         with open('./data/rhymes_test.csv', 'r') as f:
             all = []
-            for line in f.read().split('\n')[1:]:
-                line = line.strip()
-                if not line:
-                    continue
-                score, anc, oth, _ = line.split(',')
+            for score, anc, oth, _ in list(csv.reader(f))[1:]:
                 all.append((float(score), anc, oth))
             return all
-
 
 data = Data()

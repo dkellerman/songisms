@@ -36,7 +36,7 @@ class Config:
     distances_file: str = './data/rhymes_distances.pt'
     train_file: str = './data/rhymes_train.csv'
     test_misses_file: str = './data/rhymes_test_misses.csv'
-    train_rows: int = 3000  # number of rows to use for training/validation
+    train_rows: int = 2500  # number of rows to use for training/validation
     test_rows: int = 2000  # number of rows to use for testing
     batch_size: int = 64
     epochs: int = 10
@@ -59,7 +59,7 @@ ipa_cache = None
 
 
 def to_ipa(text):
-    return re.sub(r'[\s.]+', '', utils.data.ipa.get(text, '')).strip() or None
+    return re.sub(r'[\s]+', '.', utils.data.ipa.get(text, '')).strip() or None
 
 
 class RhymesTrainDataset(Dataset):
@@ -85,7 +85,7 @@ class RhymesTrainDataset(Dataset):
     def __getitem__(self, idx):
         score, anc_ipa, pos_ipa, neg_ipa = None, None, None, None
         while len(self.train_data) and (not anc_ipa or not pos_ipa or not neg_ipa):
-            if random.random() > .1 and len(self.rlhf):
+            if random.random() > .15 and len(self.rlhf):
                 score, anchor, pos, neg = self.rlhf.pop()
                 anc_ipa, pos_ipa, neg_ipa = to_ipa(anchor), to_ipa(pos), to_ipa(neg)
             else:
