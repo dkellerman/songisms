@@ -10,6 +10,7 @@ from songisms import utils
 from tqdm import tqdm
 from wonderwords import RandomWord
 from espeakng import ESpeakNG
+import pronouncing as pron
 
 rw = RandomWord()
 speaker = ESpeakNG()
@@ -17,16 +18,19 @@ speaker.voice = 'en-us'
 got = 0
 tot = 0
 times = []
-words = set()
+words = dict()
 
-def proc_ipa(tok):
+def handle(tok):
     global got, tot, times, words
+    tok = utils.normalize_lyric(tok)
+    if words.get(tok) or not utils.remove_all_punctuation(tok):
+        return
     t = time.time()
     ipa = espeak_ipa(tok)
     times.append(time.time() - t)
     if not ipa.strip():
         ipa = None
-    words.add((tok, ipa))
+    words[tok] = ipa
     tot += 1
     if ipa:
         got += 1
@@ -38,41 +42,38 @@ def espeak_ipa(tok):
 
 if __name__ == '__main__':
     for s in tqdm(Song.objects.exclude(lyrics=None), 'songs'):
-        for l in s.lyrics.split('\n'):
-            if not l.strip():
-                continue
-            toks = utils.tokenize_lyric(l)
-            for tok in toks:
-                if not tok.strip():
-                    continue
-                proc_ipa(tok)
+        for tok in utils.tokenize_lyric(s.lyrics):
+            handle(tok)
+        if s.rhymes_raw:
+            for tok1, tok2 in utils.get_rhyme_pairs(s.rhymes_raw):
+                handle(tok1)
+                handle(tok2)
 
     for l in tqdm(utils.data.lines, 'lines'):
         toks = utils.tokenize_lyric(l)
         for tok in toks:
-            if not tok.strip():
-                continue
-            proc_ipa(tok)
+            handle(tok)
 
     for i in tqdm(range(1000), 'random'):
-        word = utils.normalize_lyric(rw.word())
-        if not word.strip():
-            continue
-        proc_ipa(word)
+        word = rw.word()
+        handle(word)
 
-    common = [c for c in list(utils.data.get_common_words(10000).keys())
-            if utils.remove_all_punctuation(c).strip()]
+    common = [c for c in list(utils.data.get_common_words(10000).keys())]
     for c in tqdm(common, 'common'):
-        word = utils.normalize_lyric(c)
-        proc_ipa(word)
+        handle(word)
 
     for _, r1, r2 in tqdm(utils.data.rhymes_train, 'train'):
-        proc_ipa(r1)
-        proc_ipa(r2)
+        handle(r1)
+        handle(r2)
 
     for _, r1, r2 in tqdm(utils.data.rhymes_test, 'test'):
-        proc_ipa(r1)
-        proc_ipa(r2)
+        handle(r1)
+        handle(r2)
+
+    words2 = list(words.keys())
+    for tok in tqdm(words2, 'rhymes'):
+        for rtok in [r for r in pron.rhymes(tok) if r in common]:
+            handle(rtok)
 
     print(f"got {got} out of {tot} (missed {tot-got})",
           "({:.2f}%)".format(got / tot * 100))
@@ -80,7 +81,7 @@ if __name__ == '__main__':
 
     with open('./data/ipa.csv', 'w') as f:
         f.write("word,ipa\n")
-        for tok, ipa in words:
+        for tok, ipa in words.items():
             if utils.remove_non_lyric_punctuation(tok).strip() and ipa:
                 f.write(f"{tok.lower()},{ipa}\n")
 

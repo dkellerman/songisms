@@ -16,7 +16,7 @@ class RhymeManager(BaseManager):
 
         q = utils.normalize_lyric(q)
         variants = utils.get_variants(q)
-        print("*variants", variants)
+        print("* variants of", q, '=>', variants)
         all_q = [q] + variants
 
         target_ngram = '''

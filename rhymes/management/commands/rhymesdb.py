@@ -6,6 +6,7 @@ from django.db import transaction
 from nltk import FreqDist
 from rhymes.models import NGram, Rhyme, Vote
 from songisms import utils
+import pronouncing as pron
 
 
 class Command(BaseCommand):
@@ -44,9 +45,24 @@ class Command(BaseCommand):
                 down_votes[uid1] = down_votes.get(uid1, 0) + 1
                 down_votes[uid2] = down_votes.get(uid2, 0) + 1
 
+        # base dictionary for common words
+        for w1 in tqdm(utils.data.get_common_words(2000), 'dict'):
+            w1 = utils.normalize_lyric(w1)
+            if not w1:
+                continue
+            ngrams[w1] = ngrams.get(w1) or make_ngram(w1)
+            for w2 in pron.rhymes(w1):
+                w2 = utils.normalize_lyric(w2)
+                if not w2 or w2 not in utils.data.common_words:
+                    continue
+                ngrams[w2] = ngrams.get(w2) or make_ngram(w2)
+                uid = '_'.join(sorted([w1, w2]))
+                rhymes[uid] = Rhyme(uid=uid, from_ngram=ngrams[w1], to_ngram=ngrams[w2],
+                                    source='dict', score=1.0, uscore=0, frequency=0,
+                                    song_ct=0)
+
         # loop through all songs
         songs = Song.objects.filter(is_new=False).exclude(rhymes_raw=None)
-
         song_ngrams = set()
         for song in tqdm(songs, desc='parse ngrams'):
             # lyric ngrams
@@ -80,6 +96,28 @@ class Command(BaseCommand):
 
         for uid, _ in list(song_rhymes):
             rhymes[uid].song_ct += 1
+
+        # rhymes of rhymes
+        for uid, rhyme in tqdm(rhymes.items(), 'rhymes of rhymes'):
+            if rhyme.score > .95:
+                _, rto = uid.split('_')
+                rors = [uid2 for uid2 in rhymes.keys()
+                        if uid2.startswith(rto + '_')
+                        or uid2.endswith('_' + rto)]
+                for ror in rors:
+                    if not ror in rhymes:
+                        ror_from, ror_to = ror.split('_')
+                        ror_from = ngrams.get(ror_from) or make_ngram(ror_from)
+                        ror_to = ngrams.get(ror_from) or make_ngram(ror_from)
+                        rhymes[ror] = rhymes.get(ror) or Rhyme(
+                            uid=ror,
+                            from_ngram=ror_from,
+                            to_ngram=ror_to,
+                            source='ror:' + uid,
+                            score=get_score(ror),
+                            uscore=up_votes.get(ror, 0) - down_votes.get(ror, 0),
+                            frequency=0,
+                            song_ct=0)
 
         add_ngram_stats(ngrams, songs, song_ngrams)
 

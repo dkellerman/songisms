@@ -12,7 +12,7 @@ class Data:
     def common_words(self):
         return self.get_common_words()
 
-    def get_common_words(self, n=1000):
+    def get_common_words(self, n=500):
         from nltk.corpus import brown
         from nltk import FreqDist
         fd = FreqDist(i.lower() for i in brown.words())
@@ -47,11 +47,11 @@ class Data:
 
     @cached_property
     def idioms(self):
-        return list(csv.reader(open('./data/idioms.csv', 'r')))
+        return [l[0].strip().lower() for l in csv.reader(open('./data/idioms.csv', 'r'))]
 
     @cached_property
     def lines(self):
-        return list(csv.reader(open('./data/lines.csv', 'r')))
+        return [l[0].strip().lower() for l in csv.reader(open('./data/lines.csv', 'r'))]
 
     @cached_property
     def rhymes_train(self):
