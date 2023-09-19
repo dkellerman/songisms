@@ -28,6 +28,10 @@ from songisms import utils
 import pronouncing as pron
 
 
+def to_ipa(text):
+    return utils.to_ipa(text)
+
+
 @dataclass
 class Config:
     random_seed: int = 5050
@@ -55,11 +59,6 @@ class Config:
 config = Config()
 torch.manual_seed(config.random_seed)
 random.seed(config.random_seed)
-ipa_cache = None
-
-
-def to_ipa(text):
-    return re.sub(r'[\s]+', '.', utils.data.ipa.get(text, '')).strip() or None
 
 
 class RhymesTrainDataset(Dataset):
@@ -415,6 +414,7 @@ SCORE_LABELS = (
     (1.0, "Perfect rhyme"),
 )
 
+
 def predict(text1, text2, model=None, scorer=lambda x: x):
     if not model:
         model, scorer = load_script_model()
@@ -435,6 +435,20 @@ def predict(text1, text2, model=None, scorer=lambda x: x):
     score = scorer(distance)
 
     return score
+
+
+def get_vector(text, model=None):
+    if not model:
+        model, _ = load_script_model()
+    ipa = to_ipa(text)
+    if not ipa:
+        print(f"Could not find IPA for {text}")
+        return None
+    vec, oth = make_rhyme_tensors(ipa, '')
+    vec = vec.unsqueeze(0).to(config.device)
+    oth = oth.unsqueeze(0).to(config.device)
+    out, _ = model(vec, oth)
+    return out.squeeze(0).detach().tolist()
 
 
 def score_to_label(score):

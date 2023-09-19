@@ -2,10 +2,12 @@
 '''
 
 import re
-from functools import lru_cache, cached_property
+from functools import lru_cache
 from collections import defaultdict
 from typing import Any
 from . import utils
+
+espeak = None
 
 
 @lru_cache(maxsize=None)
@@ -14,73 +16,32 @@ def ftable():
     return featuretable.FeatureTable()
 
 
-@lru_cache(maxsize=None)
-def transducer():
-    import g2p
-    return g2p.make_g2p('eng', 'eng-ipa')
+def to_ipa_tokens(text):
+    toks = utils.tokenize_lyric(text)
+    ipa_toks = []
+    for tok in toks:
+        ipa = utils.data.ipa.get(tok)
+        if not ipa:
+            ipa = get_espeak_ipa(tok)
+        ipa_toks.append(ipa)
+    return ipa_toks
 
 
-def normalize_ipa(ipa):
-    '''Normalize IPA string
-    '''
-    if ipa.endswith("'") or ipa.endswith("ˌ"):
-        ipa = ipa[:-1]
-    # TODO? return utils.remove_non_lyric_punctuation(ipa)
-    return ipa
+def to_ipa(text):
+    return ''.join(to_ipa_tokens(text))
+
+
+def get_espeak_ipa(text):
+    global espeak
+    if not espeak:
+        from espeakng import ESpeakNG
+        espeak = ESpeakNG()
+        espeak.voice = 'en-us'
+    return espeak.g2p(text, ipa=2)
 
 
 def remove_stresses(text):
     return re.sub(r'\ˈ|\ˌ', '', text)
-
-
-@lru_cache(maxsize=3000)
-def to_ipa_tokens(text):
-    '''Translate to IPA, returns list of words
-       eng_to_ipa (lookup) -> custom lookup (via GPT) -> g2p (from letters)
-    '''
-    import eng_to_ipa
-
-    # eng_to_ipa puts a * next to every word it can't translate
-    text = utils.normalize_lyric(text)
-    words: Any = eng_to_ipa.convert(text)
-
-    ipa = []
-    for w in words.split():
-        if '*' in w or not w.strip():
-            plain_word = w.replace('*', '').strip()
-            w = utils.data.gpt_ipa.get(plain_word, None)
-            if not w:
-                w = get_g2p_ipa(plain_word)
-                if not w:
-                    print(f'WARNING! Could not get IPA for "{plain_word}" '
-                          f'while translating "{text}"')
-                    return ''
-        ipa.append(fix_ipa_word(w))
-    return ipa
-
-
-def to_ipa(text):
-    '''Translate to IPA, returns string
-    '''
-    return ' '.join(to_ipa_tokens(text))
-
-
-def fix_ipa_word(w):
-    '''Fixes some miscellanous IPA translation issues
-    '''
-    if not w:
-        return ''
-    w = re.sub(r"'ɛs$", "s", w)
-    w = re.sub(r"'", "", w)  # remove apostraphe (not stress)
-    return w.strip()
-
-
-def get_g2p_ipa(text):
-    '''Gets a IPA translation via g2p library (non-lookup)
-    '''
-    if text[-1] == "'":
-        return re.sub(r'ŋ$', 'n', transducer()(text[:-1] + 'g').output_string)
-    return transducer()(text).output_string
 
 
 def get_ipa_features(ipa_letter) -> Any:
@@ -145,38 +106,6 @@ def chop_ipa_tail(ipa_phrase):
         if index <= 0:
             return ipa_phrase
     return ipa_phrase[:index + 1]
-
-
-@lru_cache(maxsize=1000)
-def get_ipa_vowel_vector(text, max_len=100):
-    '''DB comparison vector for all vowels in a phrase
-    '''
-    ipa = to_ipa(text)
-    vec = []
-    for c in ipa:
-        if is_vowel(c):
-            ft = ftable().word_array([
-                'son', 'cons', 'voi', 'long',
-                'round', 'back', 'lo', 'hi', 'tense'
-            ], c).tolist() or ([0.0] * 9)
-            vec += ft
-    vec = [item for sublist in vec for item in sublist][-max_len:]
-    return vec
-
-
-def get_stresses_vector(q):
-    import pronouncing as pron
-    stresses = []
-    for word in q.split():
-        word = re.sub(r'in\'', 'ing', word)
-        p = pron.phones_for_word(word)
-        p = p[0] if len(p) else ''
-        if p:
-            s = pron.stresses(p)
-            stresses.append(s if len(s) else '0')
-        else:
-            stresses.append('1')
-    return [int(s) for s in (''.join(stresses))]
 
 
 FULL_IPA_FEATURE_LEN = len(get_ipa_features('a').numeric())
