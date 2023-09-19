@@ -17,7 +17,7 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        dry_run = [options[k] for k in ('dry_run',)]
+        dry_run = options['dry_run']
 
         try:
             from songs.models import Song  # songs app needs to be in INSTALLED_APPS
@@ -108,7 +108,7 @@ class Command(BaseCommand):
                     if not ror in rhymes:
                         ror_from, ror_to = ror.split('_')
                         ror_from = ngrams.get(ror_from) or make_ngram(ror_from)
-                        ror_to = ngrams.get(ror_from) or make_ngram(ror_from)
+                        ror_to = ngrams.get(ror_to) or make_ngram(ror_to)
                         rhymes[ror] = rhymes.get(ror) or Rhyme(
                             uid=ror,
                             from_ngram=ror_from,
@@ -169,12 +169,16 @@ def add_ngram_stats(ngrams, songs, song_ngrams):
         if ngram.n > 1:
             subgrams = [ngrams[gram] for gram in ngram.text.split() if gram and (gram in ngrams)]
             total_with_same_n = n_counts[ngram.n - 1]
-            ngram.pct = float(ngram.frequency / total_with_same_n)
-            chance_pct = 1.0
-            for subgram in subgrams:
-                gram_pct = float(subgram.frequency / single_word_ct)
-                chance_pct *= gram_pct
-            ngram.adj_pct = ngram.pct - chance_pct
+            if total_with_same_n > 0:
+                ngram.pct = float(ngram.frequency / total_with_same_n)
+                chance_pct = 1.0
+                for subgram in subgrams:
+                    gram_pct = float(subgram.frequency / single_word_ct)
+                    chance_pct *= gram_pct
+                ngram.adj_pct = ngram.pct - chance_pct
+            else:
+                ngram.pct = 0.0
+                ngram.adj_pct = 0.0
         else:
             ngram.pct = float(ngram.frequency / single_word_ct)
             ngram.adj_pct = ngram.pct
