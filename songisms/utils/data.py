@@ -15,7 +15,9 @@ class Data:
     def get_common_words(self, n=500):
         from nltk.corpus import brown
         from nltk import FreqDist
-        fd = FreqDist(i.lower() for i in brown.words())
+        fd = FreqDist(utils.normalize_lyric(i)
+                      for i in brown.words()
+                      if utils.remove_all_punctuation(i).strip())
         return dict(fd.most_common()[:n])
 
     @cached_property
@@ -31,19 +33,6 @@ class Data:
     def sim_sounds(self):
         with open('./data/simsounds.json', 'r') as f:
             return json.loads(f.read())
-
-    @cached_property
-    def gpt_ipa(self):
-        vals = dict()
-        with open('./data/ipa_gpt.json', 'r') as f:
-            vals.update(json.loads(f.read()))
-        with open('./data/ipa_gpt_custom.json', 'r') as f:
-            vals.update(json.loads(f.read()))
-        return vals
-
-    @cached_property
-    def ipa(self):
-        return { k: v for k, v in csv.reader(open('./data/ipa.csv', 'r')) }
 
     @cached_property
     def idioms(self):

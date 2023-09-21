@@ -1,3 +1,4 @@
+py-espeak-ng  # requires espeak-ng installed (on mac via ports)
 tqdm
 django-storages[google]
 scikit-learn
@@ -12,5 +13,4 @@ positional-encodings[pytorch]
 pytube
 spotipy
 sh
-# py-espeak-ng
-# syrics
+syrics

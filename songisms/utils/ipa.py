@@ -11,6 +11,13 @@ espeak = None
 
 
 @lru_cache(maxsize=None)
+def get_ipa_cache():
+    from rhymes.models import Cache
+    cache, _ = Cache.objects.get_or_create(key='ipa')
+    return cache
+
+
+@lru_cache(maxsize=None)
 def ftable():
     from panphon import featuretable
     return featuretable.FeatureTable()
@@ -20,15 +27,17 @@ def to_ipa_tokens(text):
     toks = utils.tokenize_lyric(text)
     ipa_toks = []
     for tok in toks:
-        ipa = utils.data.ipa.get(tok)
-        if not ipa:
-            ipa = get_espeak_ipa(tok)
+        ipa = get_ipa_cache().get(tok, get_espeak_ipa)
         ipa_toks.append(ipa)
     return ipa_toks
 
 
-def to_ipa(text):
-    return ''.join(to_ipa_tokens(text))
+def to_ipa(text, save_cache=True):
+    text = utils.normalize_lyric(text)
+    return get_ipa_cache().get(
+        text,
+        lambda t: ' '.join(to_ipa_tokens(t)),
+        save=save_cache)
 
 
 def get_espeak_ipa(text):

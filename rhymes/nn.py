@@ -3,18 +3,15 @@
 Use with rhymesnet management command:
     `./manage.py rhymesnet --train`
     `./manage.py rhymesnet --test`
-    `./manage.py rhymesnet --predict "word1" "word2"`
+    `./manage.py rhymesnet --predict "word 1" "word 2"`
 '''
 
 import time
-import re
 import random
 import torch
 import numpy as np
 from typing import List
-from functools import lru_cache
 from torch import nn
-import torch.nn.functional as F
 from torch.utils.data import Dataset
 from statistics import mean
 from dataclasses import dataclass
@@ -26,10 +23,6 @@ from sklearn.preprocessing import RobustScaler, MinMaxScaler
 from positional_encodings.torch_encodings import PositionalEncoding1D, Summer
 from songisms import utils
 import pronouncing as pron
-
-
-def to_ipa(text):
-    return utils.to_ipa(text)
 
 
 @dataclass
@@ -86,19 +79,19 @@ class RhymesTrainDataset(Dataset):
         while len(self.train_data) and (not anc_ipa or not pos_ipa or not neg_ipa):
             if random.random() > .15 and len(self.rlhf):
                 score, anchor, pos, neg = self.rlhf.pop()
-                anc_ipa, pos_ipa, neg_ipa = to_ipa(anchor), to_ipa(pos), to_ipa(neg)
+                anc_ipa, pos_ipa, neg_ipa = _to_ipa(anchor), _to_ipa(pos), _to_ipa(neg)
             else:
                 score, anchor, other = self.train_data.pop()
                 if score > .5:
                     pos = other
-                    neg = random.choice(list(utils.data.ipa.keys()))
+                    neg = random.choice(list(utils.get_ipa_cache().data.keys()))
                 else:
                     neg = other
                     rhymes = pron.rhymes(anchor)
                     if not rhymes or not len(rhymes):
                         continue
                     pos = random.choice(rhymes)
-                anc_ipa, pos_ipa, neg_ipa = to_ipa(anchor), to_ipa(pos), to_ipa(neg)
+                anc_ipa, pos_ipa, neg_ipa = _to_ipa(anchor), _to_ipa(pos), _to_ipa(neg)
 
         label = torch.tensor(score, dtype=torch.float32)
         return label, *make_rhyme_tensors(anc_ipa, pos_ipa, neg_ipa, pad_to=self.pad_to)
@@ -210,9 +203,11 @@ def train():
     dataset = RhymesTrainDataset()
     train_data, validation_data = random_split(dataset, [0.8, 0.2])
     loader = DataLoader(train_data, batch_size=config.batch_size,
-                        shuffle=True, num_workers=config.workers)
+                        shuffle=True, num_workers=config.workers,
+                        worker_init_fn=_init_loader_worker)
     validation_loader = DataLoader(validation_data, batch_size=config.batch_size,
-                                   shuffle=True, num_workers=config.workers)
+                                   shuffle=True, num_workers=config.workers,
+                                   worker_init_fn=_init_loader_worker)
     early_stop_counter = 0
     all_losses = []
     all_validation_losses = []
@@ -401,7 +396,7 @@ def test():
         f.write('text1,text2,ipa1,ipa2,pred,score\n')
         for vals in wrong:
             f.write(f"{vals[0]},{vals[1]},"
-                    f"{to_ipa(vals[0])},{to_ipa(vals[1])},"
+                    f"{_to_ipa(vals[0])},{_to_ipa(vals[1])},"
                     f"{'Y' if vals[2] else 'N'},{vals[3]:.3f}\n")
 
 
@@ -419,7 +414,7 @@ def predict(text1, text2, model=None, scorer=lambda x: x):
     if not model:
         model, scorer = load_script_model()
 
-    anchor_ipa, other_ipa = to_ipa(text1), to_ipa(text2)
+    anchor_ipa, other_ipa = _to_ipa(text1), _to_ipa(text2)
     if not anchor_ipa or not other_ipa:
         print(f"Could not find IPA for {text1} or {text2}")
         return 0.0
@@ -440,7 +435,7 @@ def predict(text1, text2, model=None, scorer=lambda x: x):
 def get_vector(text, model=None):
     if not model:
         model, _ = load_script_model()
-    ipa = to_ipa(text)
+    ipa = _to_ipa(text)
     if not ipa:
         print(f"Could not find IPA for {text}")
         return None
@@ -458,6 +453,16 @@ def score_to_label(score):
             label = val
             break
     return label
+
+
+def _to_ipa(text):
+    return utils.to_ipa(text)
+
+
+def _init_loader_worker(_):
+    # needed to access IPA cache in a process
+    import django
+    django.setup()
 
 
 def _calc_cnn_output_size():

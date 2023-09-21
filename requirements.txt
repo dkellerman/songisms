@@ -3,12 +3,10 @@ psycopg2
 gunicorn
 django-on-heroku
 nltk
-eng-to-ipa
 pronouncing
 inflect
 num2words
 panphon
-g2p
 minineedle
 django-cors-headers
 django-debug-toolbar
