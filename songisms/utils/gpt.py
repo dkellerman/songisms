@@ -57,6 +57,10 @@ def gpt_fetch_ipa(text):
 
             Make sure to include primary and secondary stresses where appropriate.
 
+            Also when you encounter a word with a hyphen, please include the hyphen
+            in the translation rather than separating it into two words. Try to make
+            sure the output line has the exact same number of words as the input line.
+
             IMPORTANT: Output a JSON array, with each item in the array
             being a string with a translation of each line. Output nothing else.
 

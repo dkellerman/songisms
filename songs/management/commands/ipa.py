@@ -33,17 +33,29 @@ class Command(BaseCommand):
             if options['id']:
                 songs = songs.filter(spotify_id__in=options['id'].split(','))
             limit = options['limit']
-            queue = []
+            self.fetch(songs, limit, options['force_fetch'])
 
-            for song in songs:
-                if not song.metadata or not song.metadata.get('ipa') or options['force_fetch']:
-                    queue.append(song)
+    def fetch(self, songs, limit, force=False):
+        queue = []
+        for song in songs:
+            if not song.metadata or not song.metadata.get('ipa') or force:
+                queue.append(song)
+        print("Queue size (TOTAL):", len(queue))
+        if len(queue):
+            print("Fetching", min(len(queue), limit or 0))
+            for song in queue[0:limit] if limit else queue:
+                try:
+                    print("==> Fetching IPA", song.pk, song.title)
+                    self.fetch_song(song)
+                except Exception as err:
+                    print("Error fetching IPA", err, song.pk, song.title)
 
-            print("Queue size (TOTAL):", len(queue))
-            if len(queue):
-                print("Fetching", min(len(queue), limit or 0))
-                for song in queue[0:limit] if limit else queue:
-                    fetch_wrapper(song)
+    def fetch_song(self, song, save=True):
+        ipa = utils.gpt_fetch_ipa(song.lyrics)
+        song.metadata = song.metadata or {}
+        song.metadata['ipa'] = ipa
+        if save:
+            song.save()
 
     def fill_cache(self, save=True):
         rw = RandomWord()
@@ -59,6 +71,15 @@ class Command(BaseCommand):
                 for tok1, tok2 in utils.get_rhyme_pairs(s.rhymes_raw):
                     add_tok(tok1)
                     add_tok(tok2)
+
+            # gpt ipa as whole lines
+            if s.metadata and s.metadata.get('ipa'):
+                lines = [l.strip() for l in s.lyrics.split('\n') if l.strip()]
+                ipa_lines = [l.strip() for l in s.metadata['ipa'].split('\n') if l.strip()]
+                for line, gpt_ipa in zip(lines, ipa_lines):
+                    line = utils.normalize_lyric(line)
+                    gpt_ipa = utils.remove_non_lyric_punctuation(gpt_ipa)
+                    utils.get_ipa_cache().data[line] = gpt_ipa
 
         for l in tqdm(utils.data.lines, 'lines'):
             for tok in utils.tokenize_lyric(l):
@@ -87,15 +108,3 @@ class Command(BaseCommand):
         print('total:', len(all))
         if save:
             utils.get_ipa_cache().save()
-
-
-def fetch_wrapper(song):
-    try:
-        print("==> Fetching IPA", song.pk, song.title)
-        ipa = utils.gpt_fetch_ipa(song.lyrics)
-        song.metadata = song.metadata or {}
-        song.metadata['ipa'] = ipa
-        song.save()
-    except Exception as err:
-        print("Error fetching IPA", err, song.pk, song.title)
-
